@@ -1,0 +1,78 @@
+.rankingBox {
+  width: 20rem;
+  height: calc(100vh - 6rem);
+  padding-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.625rem;
+  background-color: #fff;
+  position: absolute;
+  top: 3rem;
+  right: 0.625rem;
+  z-index: 100;
+  /* box-shadow: 5px 5px 25px 10px rgba(0, 0, 0, 0.469); */
+}
+
+.rankingHeader {
+  padding: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.rankingBody {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.rankingBody::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.rankingBody::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: #4a02af71;
+}
+
+.rankingElem {
+  height: 3rem;
+  padding: 0.625rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.rankingElem:hover {
+  background-color: #f3f3f3;
+}
+
+.profileIcon {
+  margin: 0.625rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2rem;
+  border: #4a02af solid 2px;
+}
+
+.profileInfo {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  /* flex: 1; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nickname {
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: bold;
+}
+
+.info {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #494949;
+}

@@ -1,0 +1,87 @@
+.mainBox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainTitle {
+  margin-bottom: 2rem;
+  font-size: 3rem; /* 48px*/
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+
+.countdownTime {
+  margin-bottom: 2rem;
+  font-size: 3rem; /* 48px*/
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+
+.mainBtn {
+  width: 6rem;
+  height:3rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: 0.625rem;
+  color: rgb(89, 0, 148);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.mainBtn:hover {
+  background-color: #f3f3f3;
+}
+
+.loginBtn {
+  width: 6.5rem;
+  height:3rem;
+  /* padding: 1rem; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  color: rgb(89, 0, 148);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background-color: #f3f3f3;
+}
+
+.loginText {
+  margin-left: 0.625rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  color: rgb(89, 0, 148);
+}
+
+.floatingBtn {
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 3.75rem;
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 3.75rem;
+  color: #fff;
+  background-color: rgb(89, 0, 148);
+  cursor: pointer;
+  position: absolute;
+  left: 3rem;
+  bottom: 3rem;
+}
+
+.floatingBtn:hover {
+  background-color: rgb(109, 0, 182);
+}
