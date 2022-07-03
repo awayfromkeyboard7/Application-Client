@@ -14,6 +14,7 @@ import {
   ReflexElement
 } from 'react-reflex';
 import Ranking from '../../components/widgets/ranking';
+import Popup from '../../components/popup';
 
 import reflexStyles from 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.css';
@@ -34,16 +35,112 @@ export default function Code() {
   HEAD는 숫자가 아닌 문자로 이루어져 있으며, 최소한 한 글자 이상이다.
   NUMBER는 한 글자에서 최대 다섯 글자 사이의 연속된 숫자로 이루어져 있으며, 앞쪽에 0이 올 수 있다. 0부터 99999 사이의 숫자로, 00000이나 0101 등도 가능하다.
   TAIL은 그 나머지 부분으로, 여기에는 숫자가 다시 나타날 수도 있으며, 아무 글자도 없을 수 있다.`);
-  const [codeText, setCodeText] = useState('');
+  const [problemTitle, setProblemTitle] = useState('파일명 정렬');
+  const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
-  const [codeResult, setCodeResult] = useState('테스트를 통과하였습니다');
+  const [codeResult, setCodeResult] = useState('');
+  const [isSuccessResult, setIsSuccessResult] = useState(true);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [isRankingOpen, setIsRankingOpen] = useState(false);
+  const [isRankingOpen, setIsRankingOpen] = useState(false);  
+  const [isPopup, setIsPopup] = useState(true);
   const [selectedLang, setSelectedLang] = useState('Python');
   const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(300);
+  const [ranks, setRanks] = useState([]);
 
   useEffect(() => {
+    setRanks([
+      {
+        rank: 1,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 2,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 3,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 4,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 5,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 6,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 7,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 8,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 9,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 10,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 11,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 12,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 13,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 14,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+      {
+        rank: 15,
+        nickname: 'annie1229',
+        info: 'swjungle',
+        imageUrl: '/jinny.jpg'
+      },
+    ])
     const date = new Date('2022-07-05T13:00:00');
 
     const interval = setInterval(() => {
@@ -115,7 +212,11 @@ export default function Code() {
       }),
     })
     .then(res => res.json())
-    .then(data => setCodeResult(`${data.success} ${data.msg}`))
+    .then(data => {
+      if (data.success) setIsSuccessResult(true);
+      else setIsSuccessResult(false);
+      setCodeResult(`${data.success} ${data.msg}`);
+    })
     .catch(error => console.log('error >> ', error));
   };
 
@@ -128,7 +229,7 @@ export default function Code() {
       </Head>
       <ReflexContainer>
       <div className={styles.header}>
-        <div className={styles.headerTitle}>문제 제목</div>
+        <div className={styles.headerTitle}>{problemTitle}</div>
         <div className={styles.btn} onClick={() => setIsRankingOpen(prev => !prev)}>랭킹 보기</div>
       </div>
       <ReflexElement className={styles.body} flex={1}>
@@ -162,7 +263,7 @@ export default function Code() {
               <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", height: "0.625rem", borderTop: "1px solid rgba(0,0,0,0.5)", borderBottom: "0" }} />
               <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                 <div className={styles.resultTitle}>실행 결과</div>
-                <div className={styles.resultArea}>{codeResult}</div>
+                <div className={isSuccessResult ? `${styles.resultArea} ${styles.textBlue}` : `${styles.resultArea} ${styles.textRed}`}>{codeResult}</div>
               </ReflexElement>
             </ReflexContainer>
           </ReflexElement>
@@ -183,7 +284,37 @@ export default function Code() {
       </div>
       {
         isRankingOpen
-        ? <Ranking />
+        ? <Ranking ranks={ranks} isAbsolute />
+        : null
+      }
+      {/* {
+        isPopup
+        ? <Popup 
+            title="아쉽지만 다음 기회에.."
+            content={`문제를 틀렸습니다.`}
+            label="메인으로"
+            onClick={() => setIsPopup(false)} 
+          />
+        : null
+      }
+      {
+        isPopup
+        ? <Popup 
+            title="정답입니다!🥳"
+            content={`문제를 맞추셨습니다.`}
+            label="다음 문제로"
+            onClick={() => setIsPopup(false)} 
+          />
+        : null
+      } */}
+      {
+        isPopup
+        ? <Popup 
+            title="🎉 축 우승! 🎉"
+            content={`모든 문제를 맞추셨습니다.\n상금 100만원의 주인공 🤩`}
+            label="상금 확인하러💰"
+            onClick={() => setIsPopup(false)} 
+          />
         : null
       }
     </div>

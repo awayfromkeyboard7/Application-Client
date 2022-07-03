@@ -8,7 +8,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 101;
 }
 
 .popupBox {
@@ -35,10 +35,12 @@
   color: #000;
   font-size: 1.25rem;
   text-align: center;
+  line-height: 2rem;
+  white-space: pre-wrap;
 }
 
 .popupBtn {
-  width: 6rem;
+  /* width: 6rem; */
   height:3rem;
   padding: 1rem;
   font-size: 1rem;

@@ -1,12 +1,12 @@
 import styles from '../styles/components/popup.module.css';
 
-export default function Popup({ close }) {
+export default function Popup({ title, content, label, onClick }) {
   return (
-    <div className={styles.popupBackground} onClick={close}>
+    <div className={styles.popupBackground} onClick={onClick}>
       <div className={styles.popupBox}>
-        <div className={styles.popupTitle}>아쉽지만 다음기회에..</div>
-        <div className={styles.popupText}>문제를 틀렸습니다...</div>
-        <div className={styles.popupBtn} onClick={close}>메인으로</div>
+        <div className={styles.popupTitle}>{title}</div>
+        <div className={styles.popupText}>{content}</div>
+        <div className={styles.popupBtn} onClick={onClick}>{label}</div>
       </div>
     </div>
   )

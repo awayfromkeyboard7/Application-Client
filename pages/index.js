@@ -10,10 +10,11 @@ export default function Home() {
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    const date = new Date('2022-07-05T13:00:00');
+    const date = new Date('2022-07-05T13:00:00+0900').getTime();
 
     const interval = setInterval(() => {
-      setCountdown(date - new Date());
+      setCountdown(date - new Date().getTime());
+      console.log('d-day : ', date);
       console.log(new Date());
     }, 1000);
 
@@ -23,13 +24,18 @@ export default function Home() {
   }, []);
 
   const unixToTime = (ts) => {
-    const date = new Date(ts);
-    const year = date.getFullYear();
-    const month = "0" + (date.getMonth()+1);
-    const day = date.getDate();
-    const hour = "0" + date.getHours();
-    const min = "0" + date.getMinutes();
-    const sec = "0" + date.getSeconds();
+    // const date = new Date(ts);
+    
+    // const year = date.getFullYear();
+    // const month = "0" + (date.getMonth()+1);
+    // const day = date.getDate();
+    // const hour = "0" + date.getHours();
+    // const min = "0" + date.getMinutes();
+    // const sec = "0" + date.getSeconds();
+    const day = Math.ceil(ts / (1000 * 60 * 60 * 24));
+    const hour = "0" + Math.ceil((ts % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const min = "0" + Math.ceil((ts % (1000 * 60 * 60)) / (1000 * 60));
+    const sec = "0" + Math.ceil((ts % (1000 * 60)) / 1000);
     
     return `D-${day}  ${hour.substr(-2)} : ${min.substr(-2)} : ${sec.substr(-2)}`;
   };
@@ -51,7 +57,12 @@ export default function Home() {
       <div className={styles.floatingBtn}>🤔</div>
       {
         isPopup
-        ? <Popup close={() => setIsPopup(false)} />
+        ? <Popup 
+            title="아쉽지만 다음 기회에.."
+            content="문제를 틀렸습니다."
+            label="메인으로"
+            onClick={() => setIsPopup(false)} 
+          />
         : null
       }
     </Layout>
