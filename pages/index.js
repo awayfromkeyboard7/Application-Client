@@ -24,14 +24,7 @@ export default function Home() {
   }, []);
 
   const unixToTime = (ts) => {
-    // const date = new Date(ts);
-    
-    // const year = date.getFullYear();
-    // const month = "0" + (date.getMonth()+1);
-    // const day = date.getDate();
-    // const hour = "0" + date.getHours();
-    // const min = "0" + date.getMinutes();
-    // const sec = "0" + date.getSeconds();
+    if(ts <= 0) return 'D-day  00 : 00 : 00';
     const day = Math.floor(ts / (1000 * 60 * 60 * 24));
     const hour = "0" + Math.floor((ts % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const min = "0" + Math.floor((ts % (1000 * 60 * 60)) / (1000 * 60));

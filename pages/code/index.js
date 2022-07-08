@@ -270,7 +270,6 @@ export default function Code() {
     onChangeLang(selectedLang);
     setCodeResult('');
     setIsPopup(false);
-    // changeSocketConnection('http://localhost:56');
   };
 
   const goToLobby = () => {
@@ -280,8 +279,8 @@ export default function Code() {
   };
 
   const judgeCode = async() => {
-    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
     await fetch(`/api/judge`, {
+    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -301,8 +300,8 @@ export default function Code() {
   };
 
   const judgeCodeWithSocket = async() => {
-    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
     await fetch(`/api/judge`, {
+    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

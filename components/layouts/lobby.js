@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import styles from '../../styles/layouts/lobby.module.css';
 
 export default function Layout({ children }) {
@@ -13,7 +12,6 @@ export default function Layout({ children }) {
 
       <main className={styles.main}>
         <div className={styles.background}></div>
-        {/* <Image src={'/images/splash_logo_black@3x.png'} width={200} height={80} /> */}
         <div className={styles.children}>{children}</div>
       </main>
     </div>
