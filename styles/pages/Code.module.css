@@ -23,6 +23,18 @@
   color: #fff;
 }
 
+.headerNotice {
+  font-size: 1rem;
+  line-height: 1.75rem;
+  color: #fff;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .toggleBtn {
   width: 5rem;
   height: 1.75rem;
@@ -83,10 +95,21 @@
   justify-content: space-between;
 }
 
+.text {
+  margin-right: 2rem;
+  padding: 0.625rem;
+  color: #f3f3f3;
+  font-size: 1rem;
+  line-height: 2rem;
+  letter-spacing: 1px;
+  overflow: hidden auto;
+}
+
 .textArea {
   padding: 0.625rem;
   display: flex;
   flex: 1;
+  flex-direction: column;
   color: #f3f3f3;
   font-size: 1rem;
   line-height: 2rem;
@@ -168,6 +191,7 @@
   font-size: 12px;
   line-height: 1.25rem;
   overflow: auto;
+  white-space: pre-wrap;
 }
 
 .textRed {

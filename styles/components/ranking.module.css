@@ -1,6 +1,7 @@
 .rankingBox {
   width: 20rem;
-  height: calc(100vh - 6rem);
+  /* height: calc(100vh - 6rem); */
+  height: 50vh;
   padding-bottom: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -45,6 +46,7 @@
 .rankingBody::-webkit-scrollbar-thumb {
   border-radius: 100px;
   background-color: #4a02af71;
+  /* background-color: #282a35a0; */
 }
 
 .rankingElem {

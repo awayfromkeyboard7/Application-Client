@@ -1,24 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-import { 
-  sendSocketMessage, 
-  socketInfoReceived, 
-  changeSocketConnection, 
-  createNewSocketConnection,
-  disconnectSocket 
-} from '../../lib/socket';
+import io from 'socket.io-client';
+// const socket = io.connect("http://localhost:70");
+// import { sendSocketMessage } from '../../lib/socket';
 import {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
 } from 'react-reflex';
-import ReactMarkdown from 'react-markdown';
 import Ranking from '../../components/widgets/ranking';
 import Popup from '../../components/popup';
 
@@ -26,26 +20,6 @@ import reflexStyles from 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.css';
 
 export default function Code() {
-  const router = useRouter();
-  const markdownText = `
-  # 헤딩
-
-  **굵게**
-
-  일반 텍스트
-
-  \`\`\
-  코드블럭
-  \`\`\
-
-  *기울이기*
-
-  글자 \`배경색\`
-
-  > 인용문
-  `;
-  // const [problemText, setProblemText] = useState(`*a + b*`);
-  
   const [problemText, setProblemText] = useState(`세 차례의 코딩 테스트와 두 차례의 면접이라는 기나긴 블라인드 공채를 무사히 통과해 카카오에 입사한 무지는 파일 저장소 서버 관리를 맡게 되었다.
 
   저장소 서버에는 프로그램의 과거 버전을 모두 담고 있어, 이름 순으로 정렬된 파일 목록은 보기가 불편했다. 파일을 이름 순으로 정렬하면 나중에 만들어진 ver-10.zip이 ver-9.zip보다 먼저 표시되기 때문이다.
@@ -62,35 +36,52 @@ export default function Code() {
   NUMBER는 한 글자에서 최대 다섯 글자 사이의 연속된 숫자로 이루어져 있으며, 앞쪽에 0이 올 수 있다. 0부터 99999 사이의 숫자로, 00000이나 0101 등도 가능하다.
   TAIL은 그 나머지 부분으로, 여기에는 숫자가 다시 나타날 수도 있으며, 아무 글자도 없을 수 있다.`);
   const [problemTitle, setProblemTitle] = useState('SW Jungle 코딩 대회 > 1. 파일명 정렬');
-  const [codeText, setCodeText] = useState("print('hello world')");
+  const [codeText, setCodeText] = useState(`from heapq import heappush, heappop
+
+  def solution(files):
+      answer = []
+      sort_q = []
+      nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      for idx, file in enumerate(files):
+          num_temp = ''
+          file_num = 0
+          head = ''
+          for text in file:
+              if text in nums:
+                  num_temp += text
+                  if 5 == len(num_temp):
+                      file_num = int(num_temp)
+                      num_temp = ''
+                      break
+              else:
+                  if num_temp != '':
+                      file_num = int(num_temp)
+                      num_temp = ''
+                      break
+                  else:
+                      head += text
+          if num_temp != '':
+              file_num = int(num_temp)
+          head = head.lower()
+          heappush(sort_q, ((head, file_num, idx), file))
+          print(idx, head, file_num, file)
+      while sort_q:
+          pop = heappop(sort_q)
+          answer.append(pop[1])
+          print('pop >>', pop[1])
+      return answer`);
   const [codeTitle, setCodeTitle] = useState('solution.py');
-  const [codeResult, setCodeResult] = useState('');
-  const [headerNotice, setHeaderNotice] = useState('');
+  const [codeResult, setCodeResult] = useState('통과했습니다.');
   const [isSuccessResult, setIsSuccessResult] = useState(true);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isRankingOpen, setIsRankingOpen] = useState(false);  
-  const [isPopup, setIsPopup] = useState(false);
-  const [popupTitle, setPopupTitle] = useState('');
-  const [popupContent, setPopupContent] = useState('');
-  const [popupLabel, setPopupLabel] = useState('');
-  const [popupBtnFunc, setPopupBtnFunc] = useState(() => () => setIsPopup(false));
+  const [isPopup, setIsPopup] = useState(true);
   const [selectedLang, setSelectedLang] = useState('Python');
   const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(20);
+  const [countdown, setCountdown] = useState(0);
   const [ranks, setRanks] = useState([]);
 
   useEffect(() => {
-    socketInfoReceived("receive_problem", (data) => {
-      console.log('react receive problem ', data);
-      setProblemTitle(`SW Jungle 코딩 대회 > ${data.title}`);
-      setProblemText(data.content);
-      setCountdown(data.timeLimit);
-    });
-    socketInfoReceived("receive_result", (data) => {
-      console.log('react receive result ', data);
-      setHeaderNotice(`📢 ${data.userId}님이 문제를 ${data.success ? '통과' : '실패'}하였습니다.`)
-    });
-
     setRanks([
       {
         rank: 1,
@@ -190,43 +181,17 @@ export default function Code() {
       setCountdown(prev => {
         if(0 < prev) return prev - 1;
         else {
-          // clearInterval(interval);
+          clearInterval(interval);
+          judgeCode();
           return prev;
         }
       });
     }, 1000);
 
     return () => {
-      // disconnectSocket();
       clearInterval(interval);
     };
   }, []);
-
-  useEffect(() => {
-    if(countdown === 0) {
-      judgeCode();
-      setIsPopup(true);
-    }
-  }, [countdown]);
-
-  useEffect(() => {
-    if(isSuccessResult) {
-      setPopupTitle("정답입니다!🥳");
-      setPopupContent(`문제를 맞추셨습니다.`);
-      setPopupLabel("다음 문제로");
-      setPopupBtnFunc(() => () => goToNextProblem());
-    } else {
-      setPopupTitle("아쉽지만 다음 기회에..😭");
-      setPopupContent(`문제를 틀렸습니다.\n1단계에서 301명이 떨어졌어요`);
-      setPopupLabel("메인으로");
-      setPopupBtnFunc(() => () => goToLobby());
-    }
-  }, [isSuccessResult]);
-  
-  useEffect(() => {
-    onChangeLang(selectedLang);
-    setIsSelectOpen(false);
-  }, [selectedLang]);
 
   const secToTime = (s) => {
     // const hour = "0" + String(parseInt(s / 3600));
@@ -238,20 +203,25 @@ export default function Code() {
 
   const onChange = useCallback((value) => {
     console.log(value);
-    sendSocketMessage("message", { "code": value } );
+    // sendSocketMessage("code", value);
+    // socket.emit("message", { "code": value });
     setCodeText(value);
   }, []);
 
-  const onChangeLang = (lang) => {
-    console.log('on change language!!!', lang);
-    switch(lang) {
-      case 'JavaScript':
+  useEffect(() => {
+    return () => {
+      // socket.close();
+    }
+  }, []);
+
+  useEffect(() => {
+    switch(selectedLang) {
+      case 'javascript':
         setCodemirrorExt([javascript()]);
         setCodeText("console.log('hello world');");
         setCodeTitle('solution.js');
         break;
-      case 'Python':
-        console.log('change python code text!');
+      case 'python':
         setCodemirrorExt([python()]);
         setCodeText("print('hello world')");
         setCodeTitle('solution.py');
@@ -262,28 +232,15 @@ export default function Code() {
         setCodeTitle('solution.cpp');
         break;
     }
-  };
-
-  const goToNextProblem = () => {
-    console.log('go to next problem!!!!');
-    sendSocketMessage("problem", { problemId: "1" } );
-    onChangeLang(selectedLang);
-    setCodeResult('');
-    setIsPopup(false);
-    // changeSocketConnection('http://localhost:56');
-  };
-
-  const goToLobby = () => {
-    console.log('go to next false!!!!');
-    setIsPopup(false);
-    router.push('/');
-  };
+    setIsSelectOpen(false);
+  }, [selectedLang]);
 
   const judgeCode = async() => {
     // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
-    await fetch(`/api/judge`, {
+    await fetch('/api/judge', {
       method: 'POST',
       headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:5050',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
@@ -294,39 +251,7 @@ export default function Code() {
     .then(data => {
       if (data.success) setIsSuccessResult(true);
       else setIsSuccessResult(false);
-      setCodeResult(`${data.success === true ? '통과 :' : '실패 :'} ${data.msg}`);
-      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
-    })
-    .catch(error => console.log('error >> ', error));
-  };
-
-  const judgeCodeWithSocket = async() => {
-    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
-    await fetch(`/api/judge`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        code: codeText 
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) setIsSuccessResult(true);
-      else setIsSuccessResult(false);
-      let newSocket = createNewSocketConnection('http://localhost:56');
-      sendSocketMessage('judge', {}, newSocket);
-      setCodeResult('');
-      socketInfoReceived("judge_result", (data) => {
-        console.log('react receive judge_result ', data);
-        setCodeResult(prev => prev + `${data.success === true ? '통과' : '실패'}\n`);
-      }, newSocket);
-      socketInfoReceived("close", (data) => {
-        console.log('react new socket close');
-        // disconnectSocket(newSocket);
-      }, newSocket);
-      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
+      setCodeResult(`${data.success} ${data.msg}`);
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -342,9 +267,8 @@ export default function Code() {
       <div className={styles.header}>
         <div className={styles.headerTitle}>{problemTitle}</div>
         <div className={styles.headerRow}>
-          {/* <div className={styles.text}>1번 문제 408/9256명 통과 🏃🏻 </div> */}
-          {/* <div className={styles.textArea}>📢 annie1229님이 문제를 통과하였습니다.</div> */}
-          <div className={styles.textArea}>{headerNotice}</div>
+          {/* <div className={styles.text}>1번 문제 408/9256명 통과 🏃🏻 </div>
+          <div className={styles.textArea}>📢 annie1229님이 문제를 통과하였습니다.</div> */}
           <div className={styles.btn} onClick={() => setIsRankingOpen(prev => !prev)}>랭킹 보기</div>
         </div>
       </div>
@@ -353,9 +277,6 @@ export default function Code() {
           <ReflexElement className={styles.bodyCol}>
             <div className={styles.timer}>{secToTime(countdown)}</div>
             <div className={styles.textArea}>{problemText}</div>
-            {/* <div className={styles.textArea}>
-              <ReactMarkdown>{markdownText}</ReactMarkdown>
-            </div> */}
           </ReflexElement>
           <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", width: "0.625rem", borderLeft: "0", borderRight: "1px solid rgba(0,0,0,0.5)" }} />
           <ReflexElement className={styles.bodyCol} flex={0.7}>
@@ -392,28 +313,18 @@ export default function Code() {
         <div />
         <div className={styles.footerRight}>
           <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
-          <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={judgeCodeWithSocket}>코드 제출</div>
+          <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={judgeCode}>코드 제출</div>
         </div>
       </div>
       </ReflexContainer>
       <div className={isSelectOpen ? styles.selectList : styles.hidden}>
         <div className={styles.selectElem} onClick={() => {setSelectedLang('C++')}}>C++</div>
-        <div className={styles.selectElem} onClick={() => {setSelectedLang('Python')}}>Python</div>
-        <div className={styles.selectElem} onClick={() => {setSelectedLang('JavaScript')}}>JavaScript</div>
+        <div className={styles.selectElem} onClick={() => {setSelectedLang('python')}}>Python</div>
+        <div className={styles.selectElem} onClick={() => {setSelectedLang('javascript')}}>JavaScript</div>
       </div>
       {
         isRankingOpen
         ? <Ranking ranks={ranks} isAbsolute />
-        : null
-      }
-      {
-        isPopup
-        ? <Popup 
-            title={popupTitle}
-            content={popupContent}
-            label={popupLabel}
-            onClick={popupBtnFunc} 
-          />
         : null
       }
       {/* {
@@ -426,16 +337,16 @@ export default function Code() {
           />
         : null
       } */}
-      {/* {
+      {
         isPopup
         ? <Popup 
             title="정답입니다!🥳"
-            content={`문제를 맞추셨습니다.`}
+            content={`문제를 맞추셨습니다.\n1단계에서 9256명 중 708명이 통과했어요👍🏻`}
             label="다음 문제로"
             onClick={() => setIsPopup(false)} 
           />
         : null
-      } */}
+      }
       {/* {
         isPopup
         ? <Popup 
