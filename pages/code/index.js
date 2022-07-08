@@ -247,8 +247,9 @@ export default function Code() {
   };
 
   const judgeCode = async() => {
-    await fetch(`/api/judge`, {
-    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
+    console.log('judge code start!!!', process.env.NEXT_PUBLIC_API_PROVIDER);
+    // await fetch(`/api/judge`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -268,8 +269,8 @@ export default function Code() {
   };
 
   const judgeCodeWithSocket = async() => {
-    await fetch(`/api/judge`, {
-    // await fetch(`${process.env.API_PROVIDER}/api/judge`, {
+    // await fetch(`/api/judge`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
