@@ -6,44 +6,25 @@ import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-import { 
-  sendSocketMessage, 
-  socketInfoReceived, 
-  createNewSocketConnection,
-} from '../../lib/socket';
 import {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
 } from 'react-reflex';
-import ReactMarkdown from 'react-markdown';
+
+import { 
+  sendSocketMessage, 
+  socketInfoReceived, 
+  createNewSocketConnection,
+} from '../../lib/socket';
 import Ranking from '../../components/widgets/ranking';
 import Popup from '../../components/popup';
 
-import reflexStyles from 'react-reflex/styles.css';
+import 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.css';
 
 export default function Code() {
-  const router = useRouter();
-  const markdownText = `
-  # 헤딩
-
-  **굵게**
-
-  일반 텍스트
-
-  \`\`\
-  코드블럭
-  \`\`\
-
-  *기울이기*
-
-  글자 \`배경색\`
-
-  > 인용문
-  `;
-  // const [problemText, setProblemText] = useState(`*a + b*`);
-  
+  const router = useRouter();  
   const [problemText, setProblemText] = useState(`세 차례의 코딩 테스트와 두 차례의 면접이라는 기나긴 블라인드 공채를 무사히 통과해 카카오에 입사한 무지는 파일 저장소 서버 관리를 맡게 되었다.
 
   저장소 서버에는 프로그램의 과거 버전을 모두 담고 있어, 이름 순으로 정렬된 파일 목록은 보기가 불편했다. 파일을 이름 순으로 정렬하면 나중에 만들어진 ver-10.zip이 ver-9.zip보다 먼저 표시되기 때문이다.
@@ -79,13 +60,11 @@ export default function Code() {
 
   useEffect(() => {
     socketInfoReceived("receive_problem", (data) => {
-      console.log('react receive problem ', data);
       setProblemTitle(`SW Jungle 코딩 대회 > ${data.title}`);
       setProblemText(data.content);
       setCountdown(data.timeLimit);
     });
     socketInfoReceived("receive_result", (data) => {
-      console.log('react receive result ', data);
       setHeaderNotice(`📢 ${data.userId}님이 문제를 ${data.success ? '통과' : '실패'}하였습니다.`)
     });
 
@@ -187,9 +166,7 @@ export default function Code() {
       console.log(new Date());
       setCountdown(prev => {
         if(0 < prev) return prev - 1;
-        else {
-          return prev;
-        }
+        else return prev;
       });
     }, 1000);
 
@@ -213,7 +190,7 @@ export default function Code() {
       setPopupBtnFunc(() => () => goToNextProblem());
     } else {
       setPopupTitle("아쉽지만 다음 기회에..😭");
-      setPopupContent(`문제를 틀렸습니다.\n1단계에서 301명이 떨어졌어요`);
+      setPopupContent(`문제를 틀렸습니다.`);
       setPopupLabel("메인으로");
       setPopupBtnFunc(() => () => goToLobby());
     }
@@ -225,7 +202,6 @@ export default function Code() {
   }, [selectedLang]);
 
   const secToTime = (s) => {
-    // const hour = "0" + String(parseInt(s / 3600));
     const min = "0" + String(parseInt((s % 3600) / 60));
     const sec = "0" + String(parseInt(s % 60));
     
@@ -306,6 +282,7 @@ export default function Code() {
     .then(data => {
       if (data.success) setIsSuccessResult(true);
       else setIsSuccessResult(false);
+
       let newSocket = createNewSocketConnection('http://localhost:56');
       sendSocketMessage('judge', {}, newSocket);
       setCodeResult('');
@@ -331,8 +308,6 @@ export default function Code() {
       <div className={styles.header}>
         <div className={styles.headerTitle}>{problemTitle}</div>
         <div className={styles.headerRow}>
-          {/* <div className={styles.text}>1번 문제 408/9256명 통과 🏃🏻 </div> */}
-          {/* <div className={styles.textArea}>📢 annie1229님이 문제를 통과하였습니다.</div> */}
           <div className={styles.textArea}>{headerNotice}</div>
           <div className={styles.btn} onClick={() => setIsRankingOpen(prev => !prev)}>랭킹 보기</div>
         </div>
@@ -342,9 +317,6 @@ export default function Code() {
           <ReflexElement className={styles.bodyCol}>
             <div className={styles.timer}>{secToTime(countdown)}</div>
             <div className={styles.textArea}>{problemText}</div>
-            {/* <div className={styles.textArea}>
-              <ReactMarkdown>{markdownText}</ReactMarkdown>
-            </div> */}
           </ReflexElement>
           <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", width: "0.625rem", borderLeft: "0", borderRight: "1px solid rgba(0,0,0,0.5)" }} />
           <ReflexElement className={styles.bodyCol} flex={0.7}>
@@ -352,7 +324,7 @@ export default function Code() {
               <ReflexElement flex={0.8} minSize={40} style={{ overflow: 'hidden' }}>
                 <div className={styles.codeHeader}>
                   <div className={styles.codeTitle}>{codeTitle}</div>
-                  <div className={styles.toggleBtn} onClick={() => {setIsSelectOpen(prev => !prev)}}>
+                  <div className={styles.toggleBtn} onClick={() => setIsSelectOpen(prev => !prev)}>
                     {selectedLang}
                   </div>
                 </div>
@@ -386,55 +358,23 @@ export default function Code() {
       </div>
       </ReflexContainer>
       <div className={isSelectOpen ? styles.selectList : styles.hidden}>
-        <div className={styles.selectElem} onClick={() => {setSelectedLang('C++')}}>C++</div>
-        <div className={styles.selectElem} onClick={() => {setSelectedLang('Python')}}>Python</div>
-        <div className={styles.selectElem} onClick={() => {setSelectedLang('JavaScript')}}>JavaScript</div>
+        <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div>
+        <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
+        <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
       </div>
       {
         isRankingOpen
-        ? <Ranking ranks={ranks} isAbsolute />
-        : null
+        && <Ranking ranks={ranks} isAbsolute />
       }
       {
         isPopup
-        ? <Popup 
+        && <Popup 
             title={popupTitle}
             content={popupContent}
             label={popupLabel}
             onClick={popupBtnFunc} 
           />
-        : null
       }
-      {/* {
-        isPopup
-        ? <Popup 
-            title="아쉽지만 다음 기회에..😭"
-            content={`문제를 틀렸습니다.\n1단계에서 301명이 떨어졌어요`}
-            label="메인으로"
-            onClick={() => setIsPopup(false)} 
-          />
-        : null
-      } */}
-      {/* {
-        isPopup
-        ? <Popup 
-            title="정답입니다!🥳"
-            content={`문제를 맞추셨습니다.`}
-            label="다음 문제로"
-            onClick={() => setIsPopup(false)} 
-          />
-        : null
-      } */}
-      {/* {
-        isPopup
-        ? <Popup 
-            title="🎉 축 우승! 🎉"
-            content={`모든 문제를 맞추셨습니다.\n상금 100만원의 주인공 🤩`}
-            label="상금 확인하러💰"
-            onClick={() => setIsPopup(false)} 
-          />
-        : null
-      } */}
     </div>
   )
 }
