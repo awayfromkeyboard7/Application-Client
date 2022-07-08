@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/image'
 import Layout from '../../components/layouts/lobby';
-import Popup from '../../components/popup';
-import Ranking from '../../components/widgets/ranking';
 import styles from '../../styles/pages/End.module.css'
 
 export default function Home() {
   const [countdown, setCountdown] = useState(0);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isPopup, setIsPopup] = useState(false);
   const [ranks, setRanks] = useState([]);
 
   useEffect(() => {
@@ -117,15 +112,6 @@ export default function Home() {
       clearInterval(interval);
     };
   }, []);
-
-  const unixToTime = (ts) => {
-    const day = Math.floor(ts / (1000 * 60 * 60 * 24));
-    const hour = "0" + Math.floor((ts % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const min = "0" + Math.floor((ts % (1000 * 60 * 60)) / (1000 * 60));
-    const sec = "0" + Math.floor((ts % (1000 * 60)) / 1000);
-    
-    return `${hour.substr(-2)} : ${min.substr(-2)} : ${sec.substr(-2)}`;
-  };
 
   return (
     <Layout>

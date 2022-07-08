@@ -9,9 +9,7 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { 
   sendSocketMessage, 
   socketInfoReceived, 
-  changeSocketConnection, 
   createNewSocketConnection,
-  disconnectSocket 
 } from '../../lib/socket';
 import {
   ReflexContainer,
@@ -190,14 +188,12 @@ export default function Code() {
       setCountdown(prev => {
         if(0 < prev) return prev - 1;
         else {
-          // clearInterval(interval);
           return prev;
         }
       });
     }, 1000);
 
     return () => {
-      // disconnectSocket();
       clearInterval(interval);
     };
   }, []);
@@ -243,7 +239,6 @@ export default function Code() {
   }, []);
 
   const onChangeLang = (lang) => {
-    console.log('on change language!!!', lang);
     switch(lang) {
       case 'JavaScript':
         setCodemirrorExt([javascript()]);
@@ -251,7 +246,6 @@ export default function Code() {
         setCodeTitle('solution.js');
         break;
       case 'Python':
-        console.log('change python code text!');
         setCodemirrorExt([python()]);
         setCodeText("print('hello world')");
         setCodeTitle('solution.py');
@@ -265,7 +259,6 @@ export default function Code() {
   };
 
   const goToNextProblem = () => {
-    console.log('go to next problem!!!!');
     sendSocketMessage("problem", { problemId: "1" } );
     onChangeLang(selectedLang);
     setCodeResult('');
@@ -273,7 +266,6 @@ export default function Code() {
   };
 
   const goToLobby = () => {
-    console.log('go to next false!!!!');
     setIsPopup(false);
     router.push('/');
   };
@@ -318,12 +310,10 @@ export default function Code() {
       sendSocketMessage('judge', {}, newSocket);
       setCodeResult('');
       socketInfoReceived("judge_result", (data) => {
-        console.log('react receive judge_result ', data);
         setCodeResult(prev => prev + `${data.success === true ? '통과' : '실패'}\n`);
       }, newSocket);
       socketInfoReceived("close", (data) => {
         console.log('react new socket close');
-        // disconnectSocket(newSocket);
       }, newSocket);
       sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })

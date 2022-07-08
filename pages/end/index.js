@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Layout from '../../components/layouts/lobby';
-import Popup from '../../components/popup';
 import Ranking from '../../components/widgets/ranking';
 import styles from '../../styles/pages/End.module.css'
 
 export default function Home() {
   const [countdown, setCountdown] = useState(0);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isPopup, setIsPopup] = useState(false);
   const [ranks, setRanks] = useState([]);
 
   useEffect(() => {
