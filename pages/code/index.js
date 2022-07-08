@@ -259,9 +259,9 @@ export default function Code() {
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) setIsSuccessResult(true);
+      if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
-      setCodeResult(`${data.success === true ? '통과 :' : '실패 :'} ${data.msg}`);
+      setCodeResult(`${data.result === true ? '통과 :' : '실패 :'} ${data.msg}`);
       // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
@@ -280,7 +280,7 @@ export default function Code() {
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) setIsSuccessResult(true);
+      if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
 
       // let newSocket = createNewSocketConnection('http://localhost:56');
