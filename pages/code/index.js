@@ -59,14 +59,14 @@ export default function Code() {
   const [ranks, setRanks] = useState([]);
 
   useEffect(() => {
-    socketInfoReceived("receive_problem", (data) => {
-      setProblemTitle(`SW Jungle 코딩 대회 > ${data.title}`);
-      setProblemText(data.content);
-      setCountdown(data.timeLimit);
-    });
-    socketInfoReceived("receive_result", (data) => {
-      setHeaderNotice(`📢 ${data.userId}님이 문제를 ${data.success ? '통과' : '실패'}하였습니다.`)
-    });
+    // socketInfoReceived("receive_problem", (data) => {
+    //   setProblemTitle(`SW Jungle 코딩 대회 > ${data.title}`);
+    //   setProblemText(data.content);
+    //   setCountdown(data.timeLimit);
+    // });
+    // socketInfoReceived("receive_result", (data) => {
+    //   setHeaderNotice(`📢 ${data.userId}님이 문제를 ${data.success ? '통과' : '실패'}하였습니다.`)
+    // });
 
     setRanks([
       {
@@ -210,7 +210,7 @@ export default function Code() {
 
   const onChange = useCallback((value) => {
     console.log(value);
-    sendSocketMessage("message", { "code": value } );
+    // sendSocketMessage("message", { "code": value } );
     setCodeText(value);
   }, []);
 
@@ -235,7 +235,7 @@ export default function Code() {
   };
 
   const goToNextProblem = () => {
-    sendSocketMessage("problem", { problemId: "1" } );
+    // sendSocketMessage("problem", { problemId: "1" } );
     onChangeLang(selectedLang);
     setCodeResult('');
     setIsPopup(false);
@@ -247,7 +247,6 @@ export default function Code() {
   };
 
   const judgeCode = async() => {
-    console.log('judge code start!!!', process.env.NEXT_PUBLIC_API_PROVIDER);
     // await fetch(`/api/judge`, {
     await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
@@ -263,7 +262,7 @@ export default function Code() {
       if (data.success) setIsSuccessResult(true);
       else setIsSuccessResult(false);
       setCodeResult(`${data.success === true ? '통과 :' : '실패 :'} ${data.msg}`);
-      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
+      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -284,16 +283,16 @@ export default function Code() {
       if (data.success) setIsSuccessResult(true);
       else setIsSuccessResult(false);
 
-      let newSocket = createNewSocketConnection('http://localhost:56');
-      sendSocketMessage('judge', {}, newSocket);
-      setCodeResult('');
-      socketInfoReceived("judge_result", (data) => {
-        setCodeResult(prev => prev + `${data.success === true ? '통과' : '실패'}\n`);
-      }, newSocket);
-      socketInfoReceived("close", (data) => {
-        console.log('react new socket close');
-      }, newSocket);
-      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
+      // let newSocket = createNewSocketConnection('http://localhost:56');
+      // sendSocketMessage('judge', {}, newSocket);
+      // setCodeResult('');
+      // socketInfoReceived("judge_result", (data) => {
+      //   setCodeResult(prev => prev + `${data.success === true ? '통과' : '실패'}\n`);
+      // }, newSocket);
+      // socketInfoReceived("close", (data) => {
+      //   console.log('react new socket close');
+      // }, newSocket);
+      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };
