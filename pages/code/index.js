@@ -247,8 +247,8 @@ export default function Code() {
   };
 
   const judgeCode = async() => {
-    // await fetch(`/api/judge`, {
-    await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
+    await fetch(`/api/judge`, {
+    // await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -268,8 +268,8 @@ export default function Code() {
   };
 
   const judgeCodeWithSocket = async() => {
-    // await fetch(`/api/judge`, {
-    await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
+    await fetch(`/api/judge`, {
+    // await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ export default function Code() {
       <Head>
         <title>Code IDE</title>
         <meta name="description" content="Online Judge" />
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ReflexContainer>
