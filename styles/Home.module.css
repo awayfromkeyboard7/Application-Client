@@ -1,62 +1,37 @@
-.mainBox {
+.main {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.header {
+  height: 3.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  background-color: #282A35;
+  border-bottom: #000 solid 4px;
 }
 
-.mainTitle {
-  margin-bottom: 2rem;
-  font-size: 3rem; /* 48px*/
+.headerTitle {
+  font-size: 1.5rem; /* 24px*/
   font-weight: bold;
-  text-align: center;
   color: #fff;
-}
-
-.countdownTime {
-  margin-bottom: 2rem;
-  font-size: 3rem; /* 48px*/
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-}
-
-.info {
-  margin-bottom: 2rem;
-  font-size: 1.675rem; /* 48px*/
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-}
-
-.mainBtn {
-  width: 6rem;
-  height:3rem;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 0.625rem;
-  color: rgb(89, 0, 148);
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.mainBtn:hover {
-  background-color: #f3f3f3;
 }
 
 .loginBtn {
-  width: 6.5rem;
-  height:3rem;
-  /* padding: 1rem; */
+  height: 2rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 0.625rem;
+  border-radius: 5px;
   color: rgb(89, 0, 148);
   background-color: #fff;
   cursor: pointer;
@@ -75,23 +50,118 @@
   color: rgb(89, 0, 148);
 }
 
-.floatingBtn {
-  width: 3.75rem;
-  height: 3.75rem;
-  border-radius: 3.75rem;
+.myPageBtn {
+  height: 2rem;
+  padding: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
   text-align: center;
-  font-size: 2.5rem;
-  line-height: 3.75rem;
-  color: #fff;
-  background-color: rgb(89, 0, 148);
+  border-radius: 5px;
+  color: rgb(89, 0, 148);
+  background-color: #fff;
   cursor: pointer;
-  position: absolute;
-  right: 3rem;
-  bottom: 3rem;
 }
 
-.floatingBtn:hover {
-  background-color: rgb(109, 0, 182);
+.myPageBtn:hover {
+  background-color: #f3f3f3;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  /* background-color: #f3f3f3; */
+  background-color: #282A35;
+}
+
+.boxText {
+  margin-top: 1.25rem;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2.5rem;
+  text-align: center;
+  color: #fff;
+}
+
+.box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.box:hover {
+  background-color: rgb(89, 0, 148);
+}
+
+.box:hover > div {
+  color: #fff;
+  transform: scale(1.2);
+  transition-duration: .5s;
+  /* transition-delay: .4s; */
+}
+
+.friendsList {
+  width: 18.75rem; /* 300px */
+  display: flex;
+  flex-direction: column;
+  border-left: #000 solid 4px;
+  background-color: #f3f3f3;
+}
+
+.friendsHeader {
+  height: 3rem;
+  font-size: 1.5rem; /* 24px*/
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+  color: #fff;
+  background-color: rgb(89, 0, 148);
+}
+
+.friendElem {
+  height: 2.5rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.friendElem:hover {
+  background-color: #d0d0d0;
+}
+
+.friendNickname {
+  font-size: 1rem; /* 24px*/
+  font-weight: bold;
+  line-height: 1rem;
+  color: #000;
+}
+
+.connectInfo {
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.infoText {
+  margin-left: 5px;
+  font-size: 1rem; /* 24px*/
+  font-weight: bold;
+  line-height: 1rem;
+  color: #999999;
 }
 
 .hidden {

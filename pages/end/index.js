@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
-import Layout from '../../components/layouts/lobby';
+import Layout from '../../components/layouts/center';
 import Ranking from '../../components/widgets/ranking';
 import styles from '../../styles/pages/End.module.css'
 

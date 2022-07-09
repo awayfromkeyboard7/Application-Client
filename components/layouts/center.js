@@ -9,7 +9,10 @@ export default function Layout({ children }) {
         <meta name="description" content="Online Judge" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.children}>{children}</div>
+      <main className={styles.main}>
+        <div className={styles.background}></div>
+        <div className={styles.children}>{children}</div>
+      </main>
     </div>
   )
 }

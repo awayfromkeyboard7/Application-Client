@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../../components/layouts/lobby';
+import Layout from '../../components/layouts/center';
 import styles from '../../styles/pages/End.module.css'
 
 export default function Home() {

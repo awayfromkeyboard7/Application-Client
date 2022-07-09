@@ -55,7 +55,7 @@ export default function Code() {
   const [popupBtnFunc, setPopupBtnFunc] = useState(() => () => setIsPopup(false));
   const [selectedLang, setSelectedLang] = useState('Python');
   const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(20);
+  const [countdown, setCountdown] = useState(60);
   const [ranks, setRanks] = useState([]);
 
   useEffect(() => {

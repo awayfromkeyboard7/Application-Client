@@ -1,64 +1,83 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image'
+import { useRouter } from 'next/router';
 import Layout from '../components/layouts/lobby';
-import Popup from '../components/popup';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  const [countdown, setCountdown] = useState(0);
+  const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
-  const [isPopup, setIsPopup] = useState(false);
-
-  useEffect(() => {
-    const date = new Date('2022-07-05T18:00:00+0900').getTime();
-
-    const interval = setInterval(() => {
-      setCountdown(date - new Date().getTime());
-      console.log('d-day : ', date);
-      console.log(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const unixToTime = (ts) => {
-    if(ts <= 0) return 'D-day  00 : 00 : 00';
-    const day = Math.floor(ts / (1000 * 60 * 60 * 24));
-    const hour = "0" + Math.floor((ts % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const min = "0" + Math.floor((ts % (1000 * 60 * 60)) / (1000 * 60));
-    const sec = "0" + Math.floor((ts % (1000 * 60)) / 1000);
-    
-    return `D-${day ? day : 'day'}  ${hour.substr(-2)} : ${min.substr(-2)} : ${sec.substr(-2)}`;
+  const friends = [
+    {
+      nickname: 'annie1229',
+      isOnline: true
+    },
+    {
+      nickname: 'prof.choi',
+      isOnline: true
+    },
+    {
+      nickname: 'codeking_moonjiro',
+      isOnline: false
+    },
+    {
+      nickname: 'afk7',
+      isOnline: false
+    },
+    {
+      nickname: 'larger',
+      isOnline: true
+    }
+  ];
+  
+  const goToCode = () => {
+    router.push('/code');
   };
 
   return (
     <Layout>
-      <div className={styles.mainBox}>
-        <div className={styles.mainTitle}>SW Jungle 코딩 대회</div>
-        <div className={styles.countdownTime}>{unixToTime(countdown)}</div>
-        {/* <div className={isLogin ? styles.info : styles.hidden}>🧑🏻‍💻9256명이 대회를 기다리고 있어요⏳</div> */}
-        {
-          isLogin
-          ? <div className={styles.mainBtn} onClick={() => setIsLogin(prev => !prev)}>참가 신청</div>
-          : <div className={styles.loginBtn}  onClick={() => setIsLogin(prev => !prev)}>
-              <Image src="/github.png" alt="github Logo" width={30} height={30} />
-              <div className={styles.loginText}>로그인</div>
+      <div className={styles.main}>
+        <div className={styles.header}>
+          <div className={styles.headerTitle}>BLUEFROG</div>
+          {
+            isLogin
+            ? <div className={styles.myPageBtn} onClick={() => setIsLogin(prev => !prev)}>마이페이지</div>
+            : <div className={styles.loginBtn}  onClick={() => setIsLogin(prev => !prev)}>
+                <Image src="/github.png" alt="github Logo" width={20} height={20} />
+                <div className={styles.loginText}>로그인</div>
+              </div>
+          }
+        </div>
+        <div className={styles.body}>
+          <div className={styles.box} onClick={goToCode}>
+            <div>
+              <Image src="/personal.png" alt="personalGame" width={150} height={150} />
+              <div className={styles.boxText}>개인전</div>
             </div>
-        }
+          </div>
+          <div className={styles.box}>
+            <div>
+              <Image src="/team.png" alt="teamGame" width={150} height={150} />
+              <div className={styles.boxText}>팀전</div>
+            </div>
+          </div>
+          {
+            isLogin
+            && <div className={styles.friendsList}>
+                <div className={styles.friendsHeader}>친구목록</div>
+                {
+                  friends.map(friend => <div className={styles.friendElem} key={friend.nickname}>
+                    <div className={styles.friendNickname}>{friend.nickname}</div>
+                    <div className={styles.connectInfo}>
+                      <Image src={friend.isOnline ? '/online.png' : '/offline.png'} alt="online" width={10} height={10} />
+                      <div className={styles.infoText}>{friend.isOnline ? 'online' : 'offline'}</div>
+                    </div>
+                  </div>)
+                }
+              </div>
+          }
+        </div>
       </div>
-      <div className={styles.floatingBtn}>🤔</div>
-      {
-        isPopup
-        ? <Popup 
-            title="아쉽지만 다음 기회에.."
-            content="문제를 틀렸습니다."
-            label="메인으로"
-            onClick={() => setIsPopup(false)} 
-          />
-        : null
-      }
     </Layout>
   )
 }
