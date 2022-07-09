@@ -302,6 +302,7 @@ export default function Code() {
       <Head>
         <title>Code IDE</title>
         <meta name="description" content="Online Judge" />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ReflexContainer>
