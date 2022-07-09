@@ -194,7 +194,7 @@ export default function Code() {
       setPopupLabel("메인으로");
       setPopupBtnFunc(() => () => goToLobby());
     }
-  }, [isSuccessResult]);
+  }, [isSuccessResult, selectedLang]);
   
   useEffect(() => {
     onChangeLang(selectedLang);

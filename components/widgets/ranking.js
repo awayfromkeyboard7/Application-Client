@@ -9,6 +9,7 @@ export default function Ranking({ ranks, isAbsolute=false }) {
         {
           ranks.map(elem => 
             <RankingElem 
+              key={elem.rank}
               rank={elem.rank} 
               nickname={elem.nickname} 
               info={elem.info} 
