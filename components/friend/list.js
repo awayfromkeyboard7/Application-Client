@@ -8,6 +8,7 @@ export default function Ranking({ friends }) {
       {
         friends.map(friend => 
           <Item 
+            key={friend.nickname}
             nickname={friend.nickname} 
             isOnline={friend.isOnline} 
           />)
