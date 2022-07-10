@@ -15,16 +15,16 @@ export default function Problem({ problems }) {
             <div className={styles.exampleItem}>
               <div className={styles.subTitle}>예제 입력</div>
               {
-                example?.inputText?.split('\\n').map(text => 
-                  <div className={styles.subText}>{text}</div>
+                example?.inputText?.split('\\n').map((text, idx) => 
+                  <div className={styles.subText} key={idx}>{text}</div>
                 )
               }
             </div>
             <div className={styles.exampleItem}>
               <div className={styles.subTitle}>예제 출력</div>
               {
-                example?.outputText?.split('\\n').map(text => 
-                  <div className={styles.subText}>{text}</div>
+                example?.outputText?.split('\\n').map((text, idx) => 
+                  <div className={styles.subText} key={idx}>{text}</div>
                 )
               }
             </div>
