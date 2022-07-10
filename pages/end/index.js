@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Layout from '../../components/layouts/center';
-import Ranking from '../../components/widgets/ranking';
-import styles from '../../styles/pages/End.module.css'
+import Ranking from '../../components/rank/list';
+import styles from '../../styles/pages/End.module.scss'
 
 export default function Home() {
   const [countdown, setCountdown] = useState(0);

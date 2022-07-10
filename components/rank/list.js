@@ -1,5 +1,5 @@
-import RankingElem from './rankingElem';
-import styles from '../../styles/components/ranking.module.css';
+import Item from './item';
+import styles from '../../styles/components/ranking.module.scss';
 
 export default function Ranking({ ranks, isAbsolute=false }) {
   return (
@@ -8,7 +8,7 @@ export default function Ranking({ ranks, isAbsolute=false }) {
       <div className={styles.rankingBody}>
         {
           ranks.map(elem => 
-            <RankingElem 
+            <Item 
               key={elem.rank}
               rank={elem.rank} 
               nickname={elem.nickname} 

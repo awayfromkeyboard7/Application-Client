@@ -1,10 +1,12 @@
+@import '../variables.module.scss';
+
 .container {
   height: 100vh;
   width: 100vw;
   padding: 0;
   margin: 0;
   overflow: hidden;
-  background-color: #282A35;
+  background-color: $navy-color;
 }
 
 .header {
@@ -35,6 +37,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .toggleBtn {
   width: 5rem;
   height: 1.75rem;
@@ -48,10 +51,10 @@
   background-color: #424556;
   position: relative;
   cursor: pointer;
-}
 
-.toggleBtn:hover {
-  background-color: #55596e;
+  &:hover {
+    background-color: #55596e;
+  }
 }
 
 .selectList {
@@ -76,15 +79,15 @@
   font-size: 0.75rem;
   color: #000;
   background-color: #fff;
-}
 
-.selectElem:hover {
-  height: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color:  #310175;
+  &:hover {
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color:  #310175;
+  }
 }
 
 .body {
@@ -110,7 +113,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  color: #f3f3f3;
+  color: $white-dark-color;
   font-size: 1rem;
   line-height: 2rem;
   letter-spacing: 1px;
@@ -229,19 +232,19 @@
   text-align: center;
   background-color: #424556;
   cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #55596e;
+  
+  &:hover {
+    background-color: #55596e;
+  }
 }
 
 .btnSubmit {
   margin-left: 0.675rem;
-  background-color: #4a02af;
-}
+  background-color: $purple-color;
 
-.btnSubmit:hover {
-  background-color: #5500cd;
+  &:hover {
+    background-color: $purple-dark-color;
+  }
 }
 
 .hidden {

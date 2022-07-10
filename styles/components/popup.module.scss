@@ -1,3 +1,5 @@
+@import '../variables.module.scss';
+
 .popupBackground {
   width: 100vw;
   height: 100vh;
@@ -40,7 +42,6 @@
 }
 
 .popupBtn {
-  /* width: 6rem; */
   height:3rem;
   padding: 1rem;
   font-size: 1rem;
@@ -49,10 +50,10 @@
   text-align: center;
   border-radius: 0.625rem;
   color: #fff;
-  background-color: rgb(89, 0, 148);
+  background-color: $purple-color;
   cursor: pointer;
-}
 
-.popupBtn:hover {
-  background-color: rgb(112, 1, 185);
+  &:hover {
+    background-color: $purple-dark-color;
+  }
 }

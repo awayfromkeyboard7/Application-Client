@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import styles from '../../styles/layouts/lobby.module.scss';
+import styles from '../../styles/layouts/main.module.scss';
 
-export default function Layout({ children }) {
+export default function Layout({ header, body }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -9,7 +9,8 @@ export default function Layout({ children }) {
         <meta name="description" content="Online Judge" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.children}>{children}</div>
+      <div className={styles.header}>{header}</div>
+      <div className={styles.body}>{body}</div>
     </div>
   )
 }

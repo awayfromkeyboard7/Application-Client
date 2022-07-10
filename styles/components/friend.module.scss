@@ -1,0 +1,55 @@
+@import '../variables.module.scss';
+
+.friendsList {
+  width: 18.75rem; /* 300px */
+  display: flex;
+  flex-direction: column;
+  border-left: #000 solid 4px;
+  background-color: #f3f3f3;
+}
+
+.friendsHeader {
+  height: 3rem;
+  font-size: 1.5rem; /* 24px*/
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+  color: #fff;
+  background-color: $purple-color;
+}
+
+.friendElem {
+  height: 2.5rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    background-color: $gray-light-color;
+  }
+}
+
+.friendNickname {
+  font-size: 1rem; /* 24px*/
+  font-weight: bold;
+  line-height: 1rem;
+  color: #000;
+}
+
+.connectInfo {
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.infoText {
+  margin-left: 5px;
+  font-size: 1rem; /* 24px*/
+  font-weight: bold;
+  line-height: 1rem;
+  color: $gray-color;
+}

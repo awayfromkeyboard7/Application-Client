@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import styles from '../../styles/components/ranking.module.css';
+import styles from '../../styles/components/result.module.scss';
 
-export default function RankingElem({ rank, nickname, info, image }) {
+export default function RankingElem({ rank, nickname, time, image }) {
   const [rankText, setRankText] = useState(rank);
   const [isEmoji, setIsEmoji] = useState(false);
 
@@ -27,15 +27,13 @@ export default function RankingElem({ rank, nickname, info, image }) {
   }, [rank]);
 
   return (
-    <div className={styles.rankingElem}>
+    <div className={styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
         <Image src={image} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div>
-      <div className={styles.profileInfo}>
-        <div className={styles.nickname}>{nickname}</div>
-        <div className={styles.info}>{info}</div>
-      </div>
+      <div className={styles.nickname}>{nickname}</div>
+      <div className={styles.time}>{time}</div>
     </div>
   )
 }

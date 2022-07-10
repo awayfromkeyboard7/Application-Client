@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Layout from '../../components/layouts/center';
-import styles from '../../styles/pages/End.module.css'
+import styles from '../../styles/pages/End.module.scss'
 
 export default function Home() {
   const [countdown, setCountdown] = useState(0);

@@ -1,0 +1,28 @@
+@import '../variables.module.scss';
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  height: 3.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $navy-color;
+  border-bottom: #000 solid 4px;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  background-color: $navy-color;
+}

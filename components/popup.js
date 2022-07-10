@@ -1,4 +1,4 @@
-import styles from '../styles/components/popup.module.css';
+import styles from '../styles/components/popup.module.scss';
 
 export default function Popup({ title, content, label, onClick }) {
   return (

@@ -110,60 +110,6 @@
   /* transition-delay: .4s; */
 }
 
-.friendsList {
-  width: 18.75rem; /* 300px */
-  display: flex;
-  flex-direction: column;
-  border-left: #000 solid 4px;
-  background-color: #f3f3f3;
-}
-
-.friendsHeader {
-  height: 3rem;
-  font-size: 1.5rem; /* 24px*/
-  font-weight: bold;
-  text-align: center;
-  line-height: 3rem;
-  color: #fff;
-  background-color: rgb(89, 0, 148);
-}
-
-.friendElem {
-  height: 2.5rem;
-  padding-left: 0.625rem;
-  padding-right: 0.625rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.friendElem:hover {
-  background-color: #d0d0d0;
-}
-
-.friendNickname {
-  font-size: 1rem; /* 24px*/
-  font-weight: bold;
-  line-height: 1rem;
-  color: #000;
-}
-
-.connectInfo {
-  width: 4rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.infoText {
-  margin-left: 5px;
-  font-size: 1rem; /* 24px*/
-  font-weight: bold;
-  line-height: 1rem;
-  color: #999999;
-}
-
 .hidden {
   display: none;
 }

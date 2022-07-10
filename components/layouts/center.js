@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import styles from '../../styles/layouts/lobby.module.css';
+import styles from '../../styles/layouts/center.module.scss';
 
 export default function Layout({ children }) {
   return (

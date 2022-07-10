@@ -17,11 +17,11 @@ import {
   socketInfoReceived, 
   createNewSocketConnection,
 } from '../../lib/socket';
-import Ranking from '../../components/widgets/ranking';
+import Ranking from '../../components/rank/list';
 import Popup from '../../components/popup';
 
 import 'react-reflex/styles.css';
-import styles from '../../styles/pages/Code.module.css';
+import styles from '../../styles/pages/Code.module.scss';
 
 export default function Code() {
   const router = useRouter();  
@@ -159,9 +159,26 @@ export default function Code() {
         info: 'swjungle',
         imageUrl: '/jinny.jpg'
       },
-    ])
+    ]);
     const date = new Date('2022-07-05T13:00:00');
 
+    async function getProblem() {
+      await fetch(`/api/get-problem`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          code: codeText 
+        }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => console.log('error >> ', error));
+    }
+    
     const interval = setInterval(() => {
       console.log(new Date());
       setCountdown(prev => {
@@ -248,7 +265,6 @@ export default function Code() {
 
   const judgeCode = async() => {
     await fetch(`/api/judge`, {
-    // await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -269,7 +285,6 @@ export default function Code() {
 
   const judgeCodeWithSocket = async() => {
     await fetch(`/api/judge`, {
-    // await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
