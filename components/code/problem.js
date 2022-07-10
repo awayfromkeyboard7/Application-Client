@@ -10,8 +10,8 @@ export default function Problem({ problems }) {
       <div className={styles.text}>{problems.outputText}</div>
       <div className={styles.title}>예제</div>
       {
-        problems?.examples?.map(example => 
-          <div className={styles.exampleBox}>
+        problems?.examples?.map((example, idx) => 
+          <div className={styles.exampleBox} key={idx}>
             <div className={styles.exampleItem}>
               <div className={styles.subTitle}>예제 입력</div>
               {
