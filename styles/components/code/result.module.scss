@@ -1,0 +1,58 @@
+@import '../../variables.module.scss';
+
+.container {
+  height: 90%;
+  margin-bottom: 1rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.resultBox {
+  margin-bottom: 2px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: $navy-dark-color;
+}
+
+.test {
+  color: $white-dark-color;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 1px;
+}
+
+.outputBox {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  width: 10rem;
+  color: $gray-color;
+  font-weight: bold;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.textRed,
+.textBlue,
+.text {
+  margin-left: 0.25rem;
+  color: $white-dark-color;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.textBlue {
+  color: $success-color;
+}
+
+.textRed {
+  color: $error-color;
+}

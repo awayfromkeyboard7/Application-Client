@@ -1,0 +1,65 @@
+@import '../../variables.module.scss';
+
+.container {
+  height: 94%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.content {
+  color: $white-dark-color;
+  font-size: 1rem;
+  line-height: 2rem;
+  letter-spacing: 1px;
+}
+
+.title {
+  margin-top: 2rem;
+  color: $gray-color;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 2rem;
+  letter-spacing: 1px;
+}
+
+.text {
+  margin-left: 0.25rem;
+  color: $white-dark-color;
+  font-size: 1rem;
+  line-height: 2rem;
+  letter-spacing: 1px;
+}
+
+.exampleBox {
+  margin-top: 0.625rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.exampleItem {
+  margin: 0.125rem 0.5rem;
+  padding: 0.625rem;
+  flex: 1;
+  background-color: $navy-dark-color;
+}
+
+.subTitle {
+  color: $gray-color;
+  font-size: 0.875rem;
+  font-weight: bold;
+  line-height: 1.75rem;
+  overflow-wrap: break-word;
+  letter-spacing: 1px;
+}
+
+.subText {
+  margin-left: 0.25rem;
+  color: $white-dark-color;
+  font-size: 0.875rem;
+  line-height: 1.75rem;
+  overflow-wrap: break-word;
+  letter-spacing: 1px;
+}

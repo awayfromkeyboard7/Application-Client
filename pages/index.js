@@ -55,12 +55,10 @@ export default function Home() {
         'Content-Type': 'application/json',
       },
     })
-    .then(res => {
-      return res.json();
-    })
+    .then(res => res.json())
     .then(data => {
       Cookie.set('userToken', 'bluefrog');
-      setIsLogin(true);
+      // setIsLogin(true);
       router.push(data.url);
     })
     .catch(error => console.log('error >> ', error));
