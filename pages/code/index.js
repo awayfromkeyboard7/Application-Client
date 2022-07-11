@@ -31,6 +31,7 @@ export default function Code() {
   const router = useRouter();  
   const gitId = getCookie('uid');
   const [problems, setProblems] = useState({});
+  const [playerList, setPlayerList] = useState([]);
   const [outputs, setOutputs] = useState({});
   const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
@@ -80,14 +81,26 @@ export default function Code() {
   ];
 
   useEffect(() => {
-    // socketInfoReceived("receive_problem", (data) => {
-    //   setProblemTitle(`SW Jungle 코딩 대회 > ${data.title}`);
-    //   setProblemText(data.content);
-    //   setCountdown(data.timeLimit);
-    // });
-    // socketInfoReceived("receive_result", (data) => {
-    //   setHeaderNotice(`📢 ${data.userId}님이 문제를 ${data.success ? '통과' : '실패'}하였습니다.`)
-    // });
+    const getProblem = async() => {
+      await fetch(`/api/gamelog/getGameLog`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          gameLogId: router.query.gameLogId
+        }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log('success get problem!!', data);
+        if(data.success) {
+          setProblems(data.info.problemId);
+          setPlayerList(data.info.userHistory);
+        }
+      })
+      .catch(error => console.log('error >> ', error));
+    };
 
     const date = new Date('2022-07-05T13:00:00');
 
@@ -99,7 +112,7 @@ export default function Code() {
       });
     }, 1000);
 
-    // getProblem();
+    getProblem();
 
     return () => {
       clearInterval(interval);
@@ -141,7 +154,7 @@ export default function Code() {
 
   const onChange = useCallback((value) => {
     console.log(value);
-    // sendSocketMessage("message", { "code": value } );
+    sendSocketMessage("message", { "code": value } );
     setCodeText(value);
   }, []);
 
@@ -166,7 +179,7 @@ export default function Code() {
   };
 
   const goToNextProblem = () => {
-    // sendSocketMessage("problem", { problemId: "1" } );
+    sendSocketMessage("problem", { problemId: "1" } );
     onChangeLang(selectedLang);
     setOutputs({});
     setCodeResult('');
@@ -182,44 +195,44 @@ export default function Code() {
     router.push('/code/result');
   };
 
-  const getProblem = async() => {
-    await fetch(`/api/problem`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log('success get problem!!', data);
-      if(data.success) {
-        setProblems(data.problems);
-      }
-    })
-    .catch(error => console.log('error >> ', error));
-  };
-  
-  const startGame = async() => {
-    console.log('uid', gitId);
-    await fetch(`/api/gamelog/createNew`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        gitId
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log('start game', data);
-      if(data.success === true) {
-        console.log('success get problem!!', data);
-        setProblems(data["GameLog_id"].problemId);
-      }
-    })
-    .catch(error => console.log('error >> ', error));
-  };
+  // const getProblem = async() => {
+  //   await fetch(`/api/problem`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     console.log('success get problem!!', data);
+  //     if(data.success) {
+  //       setProblems(data.problems);
+  //     }
+  //   })
+  //   .catch(error => console.log('error >> ', error));
+  // };
+
+  // const startGame = async() => {
+  //   console.log('uid', gitId);
+    // await fetch(`/api/gamelog/createNew`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ 
+    //     gitId
+    //   }),
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   console.log('start game', data);
+    //   if(data.success === true) {
+    //     console.log('success get problem!!', data);
+    //     setProblems(data["GameLog_id"].problemId);
+    //   }
+    // })
+    // .catch(error => console.log('error >> ', error));
+  // };
 
   const judgeCode = async() => {
     await fetch(`/api/judge`, {
@@ -236,7 +249,7 @@ export default function Code() {
       if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
       setOutputs(data);
-      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
+      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -296,7 +309,7 @@ export default function Code() {
                 <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", height: "0.625rem", borderTop: "1px solid rgba(0,0,0,0.5)", borderBottom: "0" }} />
                 <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                   <div className={styles.resultTitle}>플레이어</div>
-                  <Player players={players} />
+                  <Player players={playerList} />
                 </ReflexElement>
               </ReflexContainer>
             </ReflexElement>
@@ -354,7 +367,7 @@ export default function Code() {
               onClick={popupBtnFunc} 
             />
         }
-        <CheckValidUser func={startGame}/>
+        {/* <CheckValidUser func={startGame}/> */}
         </>
       }
     />

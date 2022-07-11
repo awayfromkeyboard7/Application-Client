@@ -92,7 +92,7 @@ export default function ResultPage() {
           onClickPlayAgain={goToCode}
         />
         <Sidebar />
-        <CheckValidUser func={() => {}} />
+        {/* <CheckValidUser func={() => {}} /> */}
       </>
       }
     />

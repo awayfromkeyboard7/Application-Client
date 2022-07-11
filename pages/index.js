@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { 
+  sendSocketMessage, 
+  socketInfoReceived, 
+  createNewSocketConnection,
+} from '../lib/socket';
+import { 
   setCookie, 
   getCookie, 
   hasCookie, 
@@ -26,8 +31,12 @@ export default function Home() {
     }
   }, [isLogin]);
 
-  const goToCode = () => {
-    router.push('/code');
+  // const goToCode = () => {
+  //   router.push('/code');
+  // };
+
+  const goToWait = () => {
+    router.push('/code/wait');
   };
 
   const login = async() => {
@@ -65,7 +74,7 @@ export default function Home() {
       }
       body={
       <>
-        <div className={styles.box} onClick={goToCode}>
+        <div className={styles.box} onClick={goToWait}>
           <div>
             <Image src="/personal.png" alt="personalGame" width={150} height={150} />
             <div className={styles.boxText}>개인전</div>
