@@ -1,69 +1,62 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cookie from '../../../lib/cookie';
+import { getCookie } from 'cookies-next';
 import Layout from '../../../components/layouts/main';
 import Result from '../../../components/result/box';
-import Friends from '../../../components/friend/list';
+import Sidebar from '../../../components/sidebar';
+import CheckValidUser from '../../../components/checkValidUser';
 import styles from '../../../styles/components/result.module.scss'
 
-export default function Home() {
+export default function ResultPage() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
   const [ranks, setRanks] = useState([]);
-  const friends = [
-    {
-      nickname: 'annie1229',
-      isOnline: true
-    },
-    {
-      nickname: 'prof.choi',
-      isOnline: true
-    },
-    {
-      nickname: 'codeking_moonjiro',
-      isOnline: false
-    },
-    {
-      nickname: 'afk7',
-      isOnline: false
-    },
-    {
-      nickname: 'larger',
-      isOnline: true
-    }
-  ];
   
   useEffect(() => {
     setRanks([
       {
         rank: 1,
-        nickname: 'annie1229',
-        time: '00분 30초',
-        imageUrl: '/jinny.jpg'
+        nickname: 'afk7',
+        time: '02:30',
+        language: 'Python',
+        imageUrl: '/jinny.jpg',
+        rate: 100
       },
       {
         rank: 2,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
+        nickname: 'prof.choi',
+        time: '01:12',
+        language: 'Python',
+        imageUrl: '/jinny.jpg',
+        rate: 80
       },
       {
         rank: 3,
         nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
+        time: '05:06',
+        language: 'JavaScript',
+        imageUrl: '/jinny.jpg',
+        rate: 65
       },
       {
-        rank: 4,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
+        rank: 0,
+        nickname: 'codeking_moonjiro',
+        language: 'Python',
+        imageUrl: '/jinny.jpg',
+        rate: -1
       },
+      {
+        rank: 0,
+        nickname: 'larger',
+        language: 'Python',
+        imageUrl: '/jinny.jpg',
+        rate: -1
+      }
     ]);
   }, []);
 
   useEffect(() => {
-    const token = Cookie.get('userToken');
+    const token = getCookie('uid');
     if(token) {
       // token이 있으면 서버에 유효한 토큰인지 확인하고 true
       // 유효하지 않으면 false
@@ -78,11 +71,15 @@ export default function Home() {
     router.push('/code');
   };
 
+  const goToLobby = () => {
+    router.push('/');
+  };
+
   return (
     <Layout 
       header={
       <>
-        <div className={styles.headerTitle}>BLUEFROG</div>
+        <div className={styles.headerTitle} onClick={goToLobby}>BLUEFROG</div>
         <div className={styles.myPageBtn}>마이페이지</div>
       </>
       }
@@ -91,10 +88,11 @@ export default function Home() {
         <Result 
           type="personal" 
           ranks={ranks} 
-          onClickGoToMain={() => {}} 
-          onClickPlayAgain={() => {}}
+          onClickGoToMain={goToLobby} 
+          onClickPlayAgain={goToCode}
         />
-        <Friends friends={friends} />
+        <Sidebar />
+        <CheckValidUser func={() => {}} />
       </>
       }
     />

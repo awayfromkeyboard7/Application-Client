@@ -1,0 +1,48 @@
+@import '../variables.module.scss';
+
+.sidebar {
+  height: calc(100vh - 3.75rem);
+  width: 18.75rem; /* 300px */
+  display: flex;
+  flex-direction: column;
+  border-left: #000 solid 4px;
+  background-color: #f3f3f3;
+}
+
+.sidebarHeader {
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem; /* 24px*/
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+}
+
+.headerTitleActive,
+.headerTitle {
+  height: 3rem;
+  flex: 1;
+  font-size: 1.25rem; /* 24px*/
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+  color: $purple-color;
+  background-color: #fff;
+}
+
+.headerTitleActive {
+  color: #fff;
+  background-color: $purple-color;
+}
+
+.sidebarBody {
+  flex: 1;
+  border-top: $purple-color solid 2px;
+  overflow: auto;
+}
+
+.sidebarFooter {
+  align-self: flex-end;
+  justify-self: flex-end;
+}

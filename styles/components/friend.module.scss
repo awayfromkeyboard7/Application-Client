@@ -1,21 +1,6 @@
 @import '../variables.module.scss';
 
-.friendsList {
-  width: 18.75rem; /* 300px */
-  display: flex;
-  flex-direction: column;
-  border-left: #000 solid 4px;
-  background-color: #f3f3f3;
-}
-
-.friendsHeader {
-  height: 3rem;
-  font-size: 1.5rem; /* 24px*/
-  font-weight: bold;
-  text-align: center;
-  line-height: 3rem;
-  color: #fff;
-  background-color: $purple-color;
+.friendContainer {
 }
 
 .friendElem {
@@ -37,10 +22,14 @@
   font-weight: bold;
   line-height: 1rem;
   color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .connectInfo {
   width: 4rem;
+  margin-left: 0.625rem;
   display: flex;
   flex-direction: row;
   align-items: center;

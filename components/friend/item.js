@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function RankingElem({ nickname, isOnline }) {
+export default function FriendItem({ nickname, isOnline, onClick }) {
   return (
-    <div className={styles.friendElem} key={nickname}>
+    <div className={styles.friendElem} onClick={() => onClick(nickname)} key={nickname}>
       <div className={styles.friendNickname}>{nickname}</div>
       <div className={styles.connectInfo}>
         <Image src={isOnline ? '/online.png' : '/offline.png'} alt="online" width={10} height={10} />

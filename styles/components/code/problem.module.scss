@@ -1,7 +1,7 @@
 @import '../../variables.module.scss';
 
 .container {
-  height: 94%;
+  height: 100%;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -13,6 +13,7 @@
   font-size: 1rem;
   line-height: 2rem;
   letter-spacing: 1px;
+  white-space: pre-wrap;
 }
 
 .title {
@@ -30,6 +31,7 @@
   font-size: 1rem;
   line-height: 2rem;
   letter-spacing: 1px;
+  white-space: pre-wrap;
 }
 
 .exampleBox {
@@ -53,6 +55,7 @@
   line-height: 1.75rem;
   overflow-wrap: break-word;
   letter-spacing: 1px;
+  white-space: pre-wrap;
 }
 
 .subText {
@@ -62,4 +65,5 @@
   line-height: 1.75rem;
   overflow-wrap: break-word;
   letter-spacing: 1px;
+  white-space: pre-wrap;
 }

@@ -1,40 +1,22 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
-import Cookie from '../lib/cookie';
+import { 
+  setCookie, 
+  getCookie, 
+  hasCookie, 
+  deleteCookie 
+} from 'cookies-next';
 import Layout from '../components/layouts/main';
-import Friends from '../components/friend/list';
+import Sidebar from '../components/sidebar';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
-  const friends = [
-    {
-      nickname: 'annie1229',
-      isOnline: true
-    },
-    {
-      nickname: 'prof.choi',
-      isOnline: true
-    },
-    {
-      nickname: 'codeking_moonjiro',
-      isOnline: false
-    },
-    {
-      nickname: 'afk7',
-      isOnline: false
-    },
-    {
-      nickname: 'larger',
-      isOnline: true
-    }
-  ];
-  
+
   useEffect(() => {
-    const token = Cookie.get('userToken');
-    if(token) {
+    if(hasCookie('uid')) {
       // token이 있으면 서버에 유효한 토큰인지 확인하고 true
       // 유효하지 않으면 false
       setIsLogin(true);
@@ -54,18 +36,15 @@ export default function Home() {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include'  
     })
     .then(res => res.json())
-    .then(data => {
-      Cookie.set('userToken', 'bluefrog');
-      // setIsLogin(true);
-      router.push(data.url);
-    })
+    .then(data => router.push(data.url))
     .catch(error => console.log('error >> ', error));
   };
 
   const logout = async() => {
-    Cookie.remove('userToken');
+    deleteCookie('uid');
     setIsLogin(false);
   }
 
@@ -100,7 +79,7 @@ export default function Home() {
         </div>
         {
           isLogin
-          && <Friends friends={friends} />
+          && <Sidebar />
         }
       </>
       }

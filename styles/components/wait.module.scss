@@ -7,8 +7,7 @@
   color: #fff;
 }
 
-.myPageBtn,
-.btn {
+.myPageBtn {
   height: 2rem;
   padding: 0.5rem;
   flex-direction: row;
@@ -32,11 +31,14 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: $navy-color;
 }
 
 .mainHeader {
   display: flex;
+  align-self: flex-start;
   justify-content: flex-start;
 }
 
@@ -49,108 +51,64 @@
   border-radius: 5px;
 }
 
+.countdown {
+  margin-top: 4rem;
+  font-size: 1.5rem; /* 24px*/
+  // font-weight: bold;
+  color: $white-dark-color;
+}
 .mainBody {
   display: flex;
   flex: 1;
   align-items: center;
   justify-content: center;
 }
+
 .mainFooter {
   width: 50%;
+  margin-top: 4rem;
   display: flex;
   flex-direction: row;
   align-self: center;
   justify-content: space-between;
 }
 
-.resultBox {
-  width: 80%;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+.waitBox {
+  width: 60%;
+  min-width: 35rem;
+  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  background-color: $white-dark-color;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  // background-color: $white-dark-color;
   border-radius: 0.625rem;
 }
 
-.resultItemMine,
-.resultItem {
-  height: 5rem;
-  padding: 0.625rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.resultItemMine {
-  background-color: $gray-light-color;
-}
-
-.rank {
-  width: 1.75rem;
-  font-size: 1.25rem;
-  line-height: 2.5rem;
-  font-weight: bold;
-  color: $gray-super-dark-color;
-  text-align: center;
-}
-
-.rankEmoji {
-  width: 1.75rem;
-  font-size: 1.75rem;
-  line-height: 2.5rem;
-  font-weight: bold;
-  color: $gray-super-dark-color;
-  text-align: center;
-}
-
-.profileIcon {
+.waitItem {
   margin: 0.625rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 2rem;
-  border: $purple-color solid 2px;
-}
-
-.profileInfo {
-  padding-left: 0.625rem;
-  padding-right: 0.625rem;
-  /* flex: 1; */
   display: flex;
   flex-direction: column;
+  flex: 1 0 21%;
+  align-items: center;
   justify-content: center;
 }
 
-.resultInfoBox {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
-.resultInfos {
-  display: flex;
-  flex-direction: row;
+.profileIcon {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
 }
 
 .nickname {
+  width: 5rem;
+  margin-top: 1rem;
+  color: $white-dark-color;
   font-size: 1rem;
   line-height: 1.25rem;
+  text-align: center;
   font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.text,
-.time {
-  flex: 1;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1.25rem;
-  color: $gray-super-dark-color;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,4 +116,29 @@
 
 .hidden {
   display: none;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  width: 10rem;
+  height: 2rem;    // 60px
+  padding: 0 0.675rem;    // 0 20px
+  font-size: 1rem;    // 16px
+  border: 1px solid $gray-color;
+  border-radius: 0.25rem;   // 4px
+  outline: none;
+
+  &:focus {
+    border: 2px solid $purple-color;
+  }
+
+  &::placeholder {
+    color: #999999
+  }
 }
