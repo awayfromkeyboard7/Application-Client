@@ -189,7 +189,7 @@ export default function WaitPage() {
       body={
       <>
         <Wait 
-          type="personal" 
+          type={router?.query?.mode} 
           players={players} 
           onClickGoToMain={goToLobby} 
           onClickPlayAgain={goToCode}

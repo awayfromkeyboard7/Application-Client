@@ -35,8 +35,11 @@ export default function Home() {
   //   router.push('/code');
   // };
 
-  const goToWait = () => {
-    router.push('/code/wait');
+  const goToWait = (mode) => {
+    router.push({
+      pathname: '/code/wait',
+      query: { mode }
+    });
   };
 
   const login = async() => {
@@ -74,13 +77,13 @@ export default function Home() {
       }
       body={
       <>
-        <div className={styles.box} onClick={goToWait}>
+        <div className={styles.box} onClick={() => goToWait('personal')}>
           <div>
             <Image src="/personal.png" alt="personalGame" width={150} height={150} />
             <div className={styles.boxText}>개인전</div>
           </div>
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} onClick={() => goToWait('team')}>
           <div>
             <Image src="/team.png" alt="teamGame" width={150} height={150} />
             <div className={styles.boxText}>팀전</div>

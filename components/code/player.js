@@ -1,12 +1,7 @@
-import { useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/components/code/player.module.scss';
 
 export default function Player({ players }) {
-  useEffect(() => {
-    console.log('player change >> ', players)
-  }, [players]);
-
   const ActivePlayer = ({ player }) => {
     return (
       <>
