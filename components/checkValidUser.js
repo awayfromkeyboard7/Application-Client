@@ -3,21 +3,16 @@ import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import Popup from './popup';
 
-export default function CheckValidUser({ func }) {
+export default function CheckValidUser() {
   const router = useRouter();  
   const gitId = getCookie('uid');
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    console.log('check valid user!!!');
-    if(gitId) {
-      console.log('is valid user!!!');
-      func();
-    } else {
+    if(!gitId) {
       setIsInvalid(true);
       if(isInvalid) {
-        console.log('xxxxxxxx is not valid user xxxxxxx');
         setIsPopup(true);
       }
     }
@@ -29,7 +24,8 @@ export default function CheckValidUser({ func }) {
   };
 
   return (
-  <> {
+  <> 
+  {
     isPopup
     && <Popup 
         title="⛔️잘못된 접근입니다.⛔️"
@@ -37,6 +33,7 @@ export default function CheckValidUser({ func }) {
         label="메인으로"
         onClick={goToLobby} 
       />
-  } </>
+  } 
+  </>
   )
 }

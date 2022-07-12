@@ -9,7 +9,6 @@ import styles from '../../../styles/components/result.module.scss'
 
 export default function ResultPage() {
   const router = useRouter();  
-  const [isLogin, setIsLogin] = useState(false);
   const [ranks, setRanks] = useState([]);
   
   useEffect(() => {
@@ -55,18 +54,6 @@ export default function ResultPage() {
     ]);
   }, []);
 
-  useEffect(() => {
-    const token = getCookie('uid');
-    if(token) {
-      // token이 있으면 서버에 유효한 토큰인지 확인하고 true
-      // 유효하지 않으면 false
-      setIsLogin(true);
-    } else {
-      // token이 없으면 false
-      setIsLogin(false);
-    }
-  }, [isLogin]);
-
   const goToCode = () => {
     router.push('/code');
   };
@@ -92,7 +79,7 @@ export default function ResultPage() {
           onClickPlayAgain={goToCode}
         />
         <Sidebar />
-        {/* <CheckValidUser func={() => {}} /> */}
+        {/* <CheckValidUser /> */}
       </>
       }
     />

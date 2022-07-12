@@ -1,12 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
-import { 
-  socket,
-  sendSocketMessage, 
-  socketInfoReceived, 
-  createNewSocketConnection,
-} from '../../../lib/socket';
+import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
@@ -15,7 +10,6 @@ import styles from '../../../styles/components/wait.module.scss'
 
 export default function WaitPage() {
   const router = useRouter();  
-  const [gameLogId, setGameLogId] = useState('');
   const defaultUsers = [
     {
       id: 1,
@@ -66,10 +60,20 @@ export default function WaitPage() {
       isPlayer: false
     },
   ];
+  const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
 
   useEffect(() => {
-    console.log('!!!!!!!!use effect game log id!', gameLogId);
+    socket.on("enterNewUser", (users) => {
+      addPlayer(users);
+    });
+    socket.on("startGame", (gameLogId) => {
+      setGameLogId(gameLogId);
+    });
+    socket.emit("waitGame", { uname: getCookie("uname"), imgUrl: getCookie("uimg") });
+  }, []);
+
+  useEffect(() => {
     if(gameLogId !== '') {
       router.push({
         pathname: '/code',
@@ -77,24 +81,10 @@ export default function WaitPage() {
       });
     }
   }, [gameLogId]);
-
-  useEffect(() => {
-    // sendSocketMessage("waitGame", { "userName": getCookie("uname") });
-    socket.on("enterNewUser", (users) => {
-      console.log(users)
-      addPlayer(users);
-    });
-    socket.on("startGame", (gameLogId) => {
-      console.log('gameLogId>>>>>>>', gameLogId);
-      setGameLogId(gameLogId);
-    });
-    socket.emit("waitGame", { uname: getCookie("uname"), imgUrl: getCookie("uimg") });
-  }, []);
-
+  
   const startGame = async() => {
     let sendPlayers = [];
     for(let player of players) {
-      console.log('player >>', player);
       if(player.isPlayer) {
         sendPlayers.push(
           {
@@ -118,12 +108,9 @@ export default function WaitPage() {
     })
     .then(res => res.json())
     .then(data => {
-      console.log('start game', data);
-      if(data.success === true) {
-        console.log('success get problem!!', data);
+      if(data.success) {
         setGameLogId(data.gameLogId);
         socket.emit("startGame", data.gameLogId);
-        // setProblems(data["gameLogId"].problemId);
       }
     })
     .catch(error => console.log('error >> ', error));
@@ -131,8 +118,6 @@ export default function WaitPage() {
 
   const goToCode = async () => {
     await startGame();
-    
-    // router.push('/code');
   };
 
   const goToLobby = () => {
@@ -140,14 +125,11 @@ export default function WaitPage() {
   };
 
   const addPlayer = (users) => {
-    // console.log(info);
-    // console.log(allPlayer);
     let copyPlayers = [...defaultUsers];
     
     for(let i = 0; i < users.length; i++) {
       if(players[i].isPlayer === false) {
         copyPlayers[i].nickname = users[i].uname;
-        // copyPlayers[i].imageUrl = users[i].uimg === '' ? '/jinny.jpg' : users[i].uimg;
         copyPlayers[i].imageUrl = users[i].imgUrl ?? '/jinny.jpg';
         copyPlayers[i].isPlayer = true;
       }
@@ -174,7 +156,7 @@ export default function WaitPage() {
           // addPlayer={info => addPlayer(info)}
         />
         <Sidebar />
-        {/* <CheckValidUser func={() => {}} /> */}
+        {/* <CheckValidUser /> */}
       </>
       }
     />

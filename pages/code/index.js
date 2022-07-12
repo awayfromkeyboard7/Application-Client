@@ -47,39 +47,6 @@ export default function Code() {
   const [codemirrorExt, setCodemirrorExt] = useState([python()]);
   const [countdown, setCountdown] = useState(900);
 
-  const players = [
-    {
-      nickname: 'afk7',
-      language: 'Python',
-      imageUrl: '/jinny.jpg',
-      rate: 100
-    },
-    {
-      nickname: 'prof.choi',
-      language: 'Python',
-      imageUrl: '/jinny.jpg',
-      rate: 80
-    },
-    {
-      nickname: 'annie1229',
-      language: 'JavaScript',
-      imageUrl: '/jinny.jpg',
-      rate: 65
-    },
-    {
-      nickname: 'codeking_moonjiro',
-      language: 'Python',
-      imageUrl: '/jinny.jpg',
-      rate: -1
-    },
-    {
-      nickname: 'larger',
-      language: 'Python',
-      imageUrl: '/jinny.jpg',
-      rate: -1
-    }
-  ];
-
   useEffect(() => {
     const getProblem = async() => {
       await fetch(`/api/gamelog/getGameLog`, {
@@ -187,52 +154,12 @@ export default function Code() {
   };
 
   const goToLobby = () => {
-    setIsPopup(false);
     router.push('/');
   };
 
   const goToResult = () => {
     router.push('/code/result');
   };
-
-  // const getProblem = async() => {
-  //   await fetch(`/api/problem`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     console.log('success get problem!!', data);
-  //     if(data.success) {
-  //       setProblems(data.problems);
-  //     }
-  //   })
-  //   .catch(error => console.log('error >> ', error));
-  // };
-
-  // const startGame = async() => {
-  //   console.log('uid', gitId);
-    // await fetch(`/api/gamelog/createNew`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ 
-    //     gitId
-    //   }),
-    // })
-    // .then(res => res.json())
-    // .then(data => {
-    //   console.log('start game', data);
-    //   if(data.success === true) {
-    //     console.log('success get problem!!', data);
-    //     setProblems(data["GameLog_id"].problemId);
-    //   }
-    // })
-    // .catch(error => console.log('error >> ', error));
-  // };
 
   const judgeCode = async() => {
     await fetch(`/api/judge`, {
@@ -348,7 +275,6 @@ export default function Code() {
           <div />
           <div className={styles.footerRight}>
             <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
-            {/* <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={judgeCodeWithSocket}>코드 제출</div> */}
             <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
           </div>
         </div>
@@ -367,7 +293,7 @@ export default function Code() {
               onClick={popupBtnFunc} 
             />
         }
-        {/* <CheckValidUser func={startGame}/> */}
+        {/* <CheckValidUser /> */}
         </>
       }
     />
