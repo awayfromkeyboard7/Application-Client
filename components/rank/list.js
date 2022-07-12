@@ -13,7 +13,7 @@ export default function RankingList({ ranks, isAbsolute=false }) {
             rank={elem.rank} 
             nickname={elem.nickname} 
             info={elem.info} 
-            image={elem.imageUrl} 
+            image={elem.avatarUrl} 
           />
         )
       }

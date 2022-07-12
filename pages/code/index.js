@@ -16,6 +16,7 @@ import {
   sendSocketMessage, 
   socketInfoReceived, 
   createNewSocketConnection,
+  socket,
 } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
 import Problem from '../../components/code/problem';
@@ -30,10 +31,11 @@ import styles from '../../styles/pages/Code.module.scss';
 
 export default function Code() {
   const router = useRouter();  
-  const gitId = getCookie('uid');
+  const gitId = getCookie('uname');
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
   const [outputs, setOutputs] = useState({});
+  const [passRate, setPassRate] = useState(0);
   const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
   const [codeResult, setCodeResult] = useState('');
@@ -47,6 +49,25 @@ export default function Code() {
   const [selectedLang, setSelectedLang] = useState('Python');
   const [codemirrorExt, setCodemirrorExt] = useState([python()]);
   const [countdown, setCountdown] = useState(900);
+
+  const updatePlayerList = (info) => {
+    let result = [...playerList];
+    console.log('player list >>', playerList);
+    for(let player of result) {
+      if(player.gitId === info.gitId) {
+        player.passRate = info.passRate;
+        break;
+      }
+    }
+    console.log('submit code socket result!!!', result);
+    setPlayerList(result);
+  };
+
+  useEffect(() => {
+    socket.on('submitCode', (submitInfo) => {
+      updatePlayerList(submitInfo);
+    });
+  }, [playerList]);
 
   useEffect(() => {
     const getProblem = async() => {
@@ -161,7 +182,11 @@ export default function Code() {
   };
 
   const goToResult = () => {
-    router.push('/code/result');
+    socket.emit('submitCode', { gitId, passRate });
+    router.push({
+      pathname: '/code/result',
+      query: { gameLogId: router?.query?.gameLogId }
+    });
   };
 
   const judgeCode = async() => {
@@ -179,6 +204,7 @@ export default function Code() {
       if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
       setOutputs(data);
+      setPassRate(data.result ? 100 : 0);
       sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));

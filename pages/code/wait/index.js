@@ -13,65 +13,105 @@ export default function WaitPage() {
   const defaultUsers = [
     {
       id: 1,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 2,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 3,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 4,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 5,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 6,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 7,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
     {
       id: 8,
-      nickname: 'waiting...',
-      imageUrl: '/default_profile.jpg',
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
       isPlayer: false
     },
   ];
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
 
+  // useEffect(() => {
+  //   // router.beforePopState(() => {
+  //   //   alert('exit before leaving!!!!!');
+  //   //   socket.emit('exitWait', getCookie("uname"));
+  //   // })
+  //   const handler = () => {
+  //     alert('exit before leaving!!!!!');
+  //     socket.emit('exitWait', getCookie("uname"));
+  //     throw 'route change abort!!!';
+  //   };
+  //   router.events.on('routeChangeStart', handler);
+
+  //   return () => {
+  //     router.events.off('routeChangeStart', handler);
+  //   }
+  // }, [router]);
+
   useEffect(() => {
+    // const exitWait = (e) => {
+    //   e.preventDefault();
+    //   // window.alert('exit page???');
+    //   // alert('exit page???');
+    //   // console.log('exit wait function!!!!!', getCookie("uname"));
+    //   // socket.emit('exitWait', getCookie("uname"));
+    //   e.returnValue = "";
+    // };
+
+    // window.addEventListener('beforeunload', exitWait);
     socket.on("enterNewUser", (users) => {
       addPlayer(users);
     });
     socket.on("startGame", (gameLogId) => {
       setGameLogId(gameLogId);
     });
-    socket.emit("waitGame", { uname: getCookie("uname"), imgUrl: getCookie("uimg") });
+    socket.emit("waitGame", { gitId: getCookie("uname"), avatarUrl: getCookie("uimg") });
+
+    return () => {
+      console.log('exit wait screen!!!!!', getCookie("uname"));
+      // window.removeEventListener('beforeunload', exitWait);
+      socket.emit('exitWait', getCookie("uname"));
+    }
   }, []);
+
+
+  useEffect(() => {
+    socket.on("exitWait", (users) => {
+      addPlayer(users);
+    });
+  }, [players]);
 
   useEffect(() => {
     if(gameLogId !== '') {
@@ -88,8 +128,8 @@ export default function WaitPage() {
       if(player.isPlayer) {
         sendPlayers.push(
           {
-            gitId: player.nickname,
-            avatarUrl: player.imageUrl
+            gitId: player.gitId,
+            avatarUrl: player.avatarUrl
           }
         )
       }
@@ -126,11 +166,11 @@ export default function WaitPage() {
 
   const addPlayer = (users) => {
     let copyPlayers = [...defaultUsers];
-    
+    console.log('add player>>>>>>>', users);
     for(let i = 0; i < users.length; i++) {
-      if(players[i].isPlayer === false) {
-        copyPlayers[i].nickname = users[i].uname;
-        copyPlayers[i].imageUrl = users[i].imgUrl ?? '/jinny.jpg';
+      if(copyPlayers[i].isPlayer === false) {
+        copyPlayers[i].gitId = users[i].gitId;
+        copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/jinny.jpg';
         copyPlayers[i].isPlayer = true;
       }
     }

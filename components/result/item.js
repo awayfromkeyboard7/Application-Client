@@ -5,11 +5,11 @@ import styles from '../../styles/components/result.module.scss';
 
 export default function ResultItem({ info }) {
   const myNickname = getCookie('uname');
-  const [rankText, setRankText] = useState(info.rank);
+  const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
 
   useEffect(() => {
-    switch(info.rank) {
+    switch(info.ranking) {
       case 1:
         setRankText('🥇');
         setIsEmoji(true);
@@ -27,25 +27,40 @@ export default function ResultItem({ info }) {
         setIsEmoji(false);
         break;
       default:
-        setRankText(info.rank);
+        setRankText(info.ranking);
         break;
     }
-  }, [info.rank]);
-  
+  }, [info.ranking]);
+
+  const unixToTime = (ts) => {
+    const date = new Date(ts);
+    const year = date.getFullYear();
+    const month = "0" + (date.getMonth()+1);
+    const day = date.getDate();
+    let hour = "0" + date.getHours();
+    const min = "0" + date.getMinutes();
+    const sec = "0" + date.getSeconds();
+    const isAM = date.getHours() < 12 ? true : false;
+
+    if(!isAM) hour = "0" + (date.getHours() - 12);
+    
+    return `${min.substr(-2)}:${sec.substr(-2)}`;
+  };
+
   return (
     <div className={myNickname === info.nickname ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
-        <Image src={info.imageUrl} width={40} height={40} className={styles.profileIcon} alt="프로필" />
+        <Image src={info.avatarUrl} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div>
       <div className={styles.resultInfoBox}>
-        <div className={styles.nickname}>{info.nickname}</div>
+        <div className={styles.nickname}>{info.gitId}</div>
         {
-          info.rate < 0
+          info.passRate < 0
           ? <div className={styles.text}>Clashing...</div>
           : <div className={styles.resultInfos}>
-              <div className={styles.text}>✅ {info.rate < 0 ? 'N/A' : `${info.rate}%`}</div>
-              <div className={styles.text}>⏳ {info.time ?? 'Clashing...'}</div>
+              <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${info.passRate}%`}</div>
+              <div className={styles.text}>⏳ {unixToTime(info.submitAt) ?? 'Clashing...'}</div>
               <div className={styles.text}>💻 {info.language}</div>
             </div>
         }

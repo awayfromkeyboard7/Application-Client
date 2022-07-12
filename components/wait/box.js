@@ -34,8 +34,8 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {
-          players.map(item => 
-            <Item info={item} key={item.id} />
+          players.map((item, idx) => 
+            <Item info={item} key={`${item.id}${idx}`} />
           )
         }
         </div>

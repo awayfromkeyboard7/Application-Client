@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/components/code/player.module.scss';
 
 export default function Player({ players }) {
+  useEffect(() => {
+    console.log('player change >> ', players)
+  }, [players]);
+
   const ActivePlayer = ({ player }) => {
     return (
       <>
@@ -34,7 +39,7 @@ export default function Player({ players }) {
         players?.map(player => 
           <div className={styles.playerBox} key={player._id}>
           {
-            player.ranking === 0
+            player.passRate === 0
             ? <InactivePlayer player={player} />
             : <ActivePlayer player={player} />
           }

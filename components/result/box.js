@@ -10,8 +10,8 @@ export default function ResultBox({ type, ranks, onClickPlayAgain, onClickGoToMa
       <div className={styles.mainBody}> 
         <div className={styles.resultBox}>
         {
-          ranks.map(item => 
-            <Item info={item} key={item.nickname} />
+          ranks.map((item, idx) => 
+            <Item info={item} key={`${item.gitId}${idx}`} />
           )
         }
         </div>
