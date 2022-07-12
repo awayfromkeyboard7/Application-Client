@@ -23,6 +23,7 @@ import Player from '../../components/code/player';
 import Output from '../../components/code/output';
 import Popup from '../../components/popup';
 import CheckValidUser from '../../components/checkValidUser';
+import CheckValidAccess from '../../components/CheckValidAccess';
 
 import 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.scss';
@@ -79,7 +80,9 @@ export default function Code() {
       });
     }, 1000);
 
-    getProblem();
+    if(router?.query?.gameLogId && router.query.gameLogId !== '') {
+      getProblem();
+    }
 
     return () => {
       clearInterval(interval);
@@ -294,6 +297,7 @@ export default function Code() {
             />
         }
         {/* <CheckValidUser /> */}
+        <CheckValidAccess check={router.query.gameLogId} message="유효하지 않은 게임입니다." />
         </>
       }
     />
