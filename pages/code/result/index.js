@@ -11,14 +11,16 @@ import styles from '../../../styles/components/result.module.scss'
 export default function ResultPage() {
   const router = useRouter();  
   const [ranks, setRanks] = useState([]);
+  const [gameStartAt, setGameStartAt] = useState();
   
   useEffect(() => {
     socket.emit('getRanking', router?.query?.gameLogId);
   }, []);
 
   useEffect(() => {
-    socket.on('getRanking', (ranking) => {
+    socket.on('getRanking', (ranking, startAt) => {
       setRanks(ranking);
+      setGameStartAt(startAt);
     });
   }, [ranks]);
 
@@ -43,6 +45,7 @@ export default function ResultPage() {
         <Result 
           type="personal" 
           ranks={ranks} 
+          startAt={gameStartAt}
           onClickGoToMain={goToLobby} 
           onClickPlayAgain={goToCode}
         />

@@ -34,7 +34,7 @@ export default function Player({ players }) {
         players?.map(player => 
           <div className={styles.playerBox} key={player._id}>
           {
-            player.passRate === 0
+            player.passRate < 0
             ? <InactivePlayer player={player} />
             : <ActivePlayer player={player} />
           }

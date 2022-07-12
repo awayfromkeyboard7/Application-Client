@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
-import { socket } from '../../../lib/socket';
+import { socket, changeSocketConnection } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
@@ -102,7 +102,8 @@ export default function WaitPage() {
     return () => {
       console.log('exit wait screen!!!!!', getCookie("uname"));
       // window.removeEventListener('beforeunload', exitWait);
-      socket.emit('exitWait', getCookie("uname"));
+      // socket.emit('exitWait', getCookie("uname"));
+      // changeSocketConnection(process.env.NEXT_PUBLIC_SOCKET_PROVIDER);
     }
   }, []);
 
@@ -161,6 +162,7 @@ export default function WaitPage() {
   };
 
   const goToLobby = () => {
+    socket.emit('exitWait', getCookie("uname"));
     router.push('/');
   };
 

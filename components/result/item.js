@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultItem({ info }) {
+export default function ResultItem({ info, startAt }) {
   const myNickname = getCookie('uname');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -33,9 +33,11 @@ export default function ResultItem({ info }) {
   }, [info.ranking]);
 
   const unixToTime = (ts) => {
-    const date = new Date(ts);
-    const min = "0" + date.getMinutes();
-    const sec = "0" + date.getSeconds();
+    const start = new Date(startAt).getTime();
+    const end = new Date(ts).getTime();
+    const s = parseInt((end - start) / 1000);
+    const min = "0" + String(parseInt((s % 3600) / 60));
+    const sec = "0" + String(parseInt(s % 60));
     
     return `${min.substr(-2)}:${sec.substr(-2)}`;
   };

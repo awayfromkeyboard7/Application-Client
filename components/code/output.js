@@ -10,7 +10,7 @@ export default function Output({ outputs }) {
             <div className={styles.outputBox}>
               <div className={styles.title}>{`실행 결과 >>`}</div>
               {
-                outputs?.result === true
+                outputs?.results[idx] === true
                 ? <div className={styles.textBlue}>성공</div>
                 : <div className={styles.textRed}>실패</div>
               }

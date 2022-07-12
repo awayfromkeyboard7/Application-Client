@@ -1,7 +1,7 @@
 import Item from './item';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultBox({ type, ranks, onClickPlayAgain, onClickGoToMain }) {
+export default function ResultBox({ type, ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
@@ -11,7 +11,7 @@ export default function ResultBox({ type, ranks, onClickPlayAgain, onClickGoToMa
         <div className={styles.resultBox}>
         {
           ranks.map((item, idx) => 
-            <Item info={item} key={`${item.gitId}${idx}`} />
+            <Item info={item} startAt={startAt} key={`${item.gitId}${idx}`} />
           )
         }
         </div>

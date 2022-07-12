@@ -65,6 +65,7 @@ export default function Code() {
 
   useEffect(() => {
     socket.on('submitCode', (submitInfo) => {
+      console.log('submitInfo>>>>>>', submitInfo);
       updatePlayerList(submitInfo);
     });
   }, [playerList]);
@@ -118,7 +119,7 @@ export default function Code() {
   }, [countdown]);
 
   useEffect(() => {
-    if(isSuccessResult) {
+    if(passRate === 100) {
       setPopupTitle("정답입니다!🥳");
       setPopupContent(`문제를 맞추셨습니다.`);
       setPopupLabel("다음 문제로");
@@ -145,7 +146,7 @@ export default function Code() {
 
   const onChange = useCallback((value) => {
     console.log(value);
-    sendSocketMessage("message", { "code": value } );
+    // sendSocketMessage("message", { "code": value } );
     setCodeText(value);
   }, []);
 
@@ -181,12 +182,36 @@ export default function Code() {
     router.push('/');
   };
 
-  const goToResult = () => {
+  const goToResult = async() => {
+    // passRate 계산
+    
+
+    await submitCode();
     socket.emit('submitCode', { gitId, passRate });
     router.push({
       pathname: '/code/result',
       query: { gameLogId: router?.query?.gameLogId }
     });
+  };
+
+  const submitCode = async() => {
+    await fetch(`/api/gamelog/update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        gameId: router.query.gameLogId,
+        gitId,
+        code: codeText,
+        language: selectedLang,
+        ranking: 0,
+        passRate,
+        submitAt: new Date()
+      }),
+    })
+    .then(res => console.log('submit code!! ', res))
+    .catch(error => console.log('error >> ', error));
   };
 
   const judgeCode = async() => {
@@ -204,8 +229,10 @@ export default function Code() {
       if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
       setOutputs(data);
-      setPassRate(data.result ? 100 : 0);
-      sendSocketMessage("result", { userId: "annie1229", success: data.success } );
+      console.log('judgeCode >>>>>>', data);
+      setPassRate(data.passRate);
+      // setPassRate(data.results ? 100 : 0);
+      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };
