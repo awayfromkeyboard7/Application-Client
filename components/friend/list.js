@@ -3,7 +3,7 @@ import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendList({ friends, onClick }) {
   return (
-    <div className={styles.friendContainer}> 
+    <> 
     {
       friends.map(friend => 
         <Item 
@@ -14,6 +14,6 @@ export default function FriendList({ friends, onClick }) {
         />
       )
     }
-    </div>
+    </>
   )
 }

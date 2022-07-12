@@ -31,10 +31,10 @@ export default function Player({ players }) {
   return (
     <div className={styles.container}>
       {
-        players?.map((player, idx) => 
+        players?.map(player => 
           <div className={styles.playerBox} key={player._id}>
           {
-            player.rate < 0
+            player.ranking === 0
             ? <InactivePlayer player={player} />
             : <ActivePlayer player={player} />
           }
