@@ -251,6 +251,7 @@ export default function Code() {
       },
       body: JSON.stringify({ 
         code,
+        gitId,
         problemId: problems._id,
         language: selectedLang
       }),
