@@ -96,7 +96,8 @@ export default function Code() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          gameLogId: router.query.gameLogId
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode
         }),
       })
       .then(res => res.json())
@@ -246,7 +247,9 @@ export default function Code() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        code
+        code,
+        problemId: problems._id,
+        language: selectedLang
       }),
     })
     .then(res => res.json())
