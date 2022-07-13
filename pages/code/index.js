@@ -110,7 +110,6 @@ export default function Code() {
 
     return () => {
       clearInterval(interval);
-      yProvider.destroy();
     };
   }, []);
 
@@ -121,6 +120,10 @@ export default function Code() {
       setDoc(yDoc);
       setProvider(yProvider);
       setIsDoc(true);
+
+      return () => {
+        yProvider.destroy();
+      }
     }
   }, [router]);
 
