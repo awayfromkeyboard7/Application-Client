@@ -55,12 +55,15 @@ export default function Code() {
   const updatePlayerList = (info) => {
     let result = [...playerList];
     console.log('player list >>', playerList);
-    for(let player of result) {
-      if(player.gitId === info.gitId) {
-        player.passRate = info.passRate;
-        break;
-      }
+    for (let i = 0; i < info.length; i++) {
+      result[i] = info[i];
     }
+    // for(let player of result) {
+    //   if(player.gitId === info.gitId) {
+    //     player.passRate = info.passRate;
+    //     break;
+    //   }
+    // }
     console.log('submit code socket result!!!', result);
     setPlayerList(result);
   };
@@ -203,7 +206,7 @@ export default function Code() {
     
 
     await submitCode();
-    socket.emit('submitCode', { gitId, passRate });
+    socket.emit('submitCode', { gitId, passRate, gameLogId: router?.query?.gameLogId });
     router.push({
       pathname: '/code/result',
       query: { 
