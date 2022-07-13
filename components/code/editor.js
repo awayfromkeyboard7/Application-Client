@@ -198,7 +198,7 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
         extensions: [
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
-          [selectedLang === 'JavaScript' ? python() : javascript()],
+          [selectedLang === 'JavaScript' ? javascript() : python()],
           keymap.of([indentWithTab]),
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,
