@@ -91,6 +91,7 @@ export default function Code() {
 
     if(isSubmit) {
       submitResult();
+      setIsSubmit(false);
     }
   }, [isSubmit]);
 
@@ -270,7 +271,7 @@ export default function Code() {
       setOutputs(data);
       console.log('judgeCode >>>>>>', data);
       setPassRate(data.passRate);
-      if(submit) {
+      if(submit === true) {
         setIsSubmit(true);
       }
     })
