@@ -7,6 +7,7 @@ import {
   hasCookie, 
   deleteCookie 
 } from 'cookies-next';
+import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
@@ -16,6 +17,10 @@ export default function Home() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
+
+  useEffect(() => {
+    socket.emit('exitWait', getCookie("uname"));
+  }, []);
 
   useEffect(() => {
     if(hasCookie('uid')) {

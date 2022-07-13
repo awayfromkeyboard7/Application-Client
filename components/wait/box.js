@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Item from './item';
 import styles from '../../styles/components/wait.module.scss';
 
 export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain }) {
+  const router = useRouter();
   const [countdown, setCountdown] = useState(180);
 
   useEffect(() => {
@@ -44,7 +46,10 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         <div className={styles.myPageBtn} onClick={onClickPlayAgain}>게임 시작</div>
         <div className={styles.myPageBtn} onClick={onClickGoToMain}>메인으로</div>
       </div>
-      <div className={styles.floatingBtn}>🗣</div>
+      {
+        router?.query?.mode === 'team'
+        && <div className={styles.floatingBtn}>🗣</div>
+      }
     </div>
   )
 }

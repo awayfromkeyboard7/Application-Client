@@ -202,9 +202,6 @@ export default function Code() {
   };
 
   const goToResult = async() => {
-    // passRate 계산
-    
-
     await submitCode();
     socket.emit('submitCode', { gitId, passRate, gameLogId: router?.query?.gameLogId });
     router.push({
@@ -340,6 +337,7 @@ export default function Code() {
                       doc={doc} 
                       provider={provider} 
                       gitId={gitId} 
+                      selectedLang={selectedLang}
                     />
                   </div>
                 </ReflexElement>

@@ -2,6 +2,7 @@ import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
 import { keymap, ViewUpdate } from '@codemirror/view';
 import { python } from '@codemirror/lang-python'
+import { javascript } from '@codemirror/lang-javascript'
 import { indentWithTab } from '@codemirror/commands';
 import { useEffect, useRef } from 'react';
 import * as random from 'lib0/random';
@@ -20,7 +21,8 @@ import styles from '../../styles/pages/Code.module.scss';
 // ];
 
 export const usercolors = [
-  { color: '#6C5B7B', light: '#6C5B7B33' }, // 보라
+  { color: '#6C5B7B', light: '#6C5B7B33' }, // 애쉬보라
+  { color: '#7C46E0', light: '#7C46E033' }, // 보라
   { color: '#355C7D', light: '#355C7D33' }, // 파랑
   { color: '#ffbc42', light: '#ffbc4233' }, // 인디핑크
   { color: '#F67280', light: '#F6728033' }, // 핑크
@@ -30,6 +32,7 @@ export const usercolors = [
   { color: '#100E40', light: '#732C5A33' }, // 진한 남색
   { color: '#383B73', light: '#383B7333' }, // 인디 파랑
   { color: '#D4522B', light: '#D4522B33' }, // 주황
+  { color: '#1C9ACF', light: '#1C9ACF33' }, // 하늘
 ];
 
 const ivory = '#abb2bf',
@@ -40,12 +43,30 @@ const ivory = '#abb2bf',
   selection = 'rgba(128, 203, 196, 0.2)',
   cursor = '#ffcc00';
 
-const CodeEditor = ({ doc, provider, gitId }) => {
+const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
   const editorRef = useRef();
   
   useEffect(() => {
-    const userColor = usercolors[random.uint32() % usercolors.length];
-    
+    let userColor = usercolors[random.uint32() % usercolors.length];
+
+    switch(gitId) {
+      case 'park-hg':
+        userColor = { color: '#F2D096', light: '#F2D09633' } // 노랑
+        break;
+      case 'Son0-0':
+        userColor = { color: '#1C9ACF', light: '#1C9ACF33' } // 하늘
+        break;
+      case 'dd0114':
+        userColor = { color: '#D4522B', light: '#D4522B33' } // 주황
+        break;
+      case 'EilLagerTodd':
+        userColor = { color: '#ffbc42', light: '#ffbc4233' } // 핑크
+        break;
+      case 'annie1229':
+        userColor = { color: '#7C46E0', light: '#7C46E033' } // 보라
+        break;
+    }
+
     if(doc) {
       const ytext = doc.getText('codemirror');
       provider.awareness.setLocalStateField('user', {
@@ -64,8 +85,20 @@ const CodeEditor = ({ doc, provider, gitId }) => {
           'span': {
             color: 'rgb(159, 70, 217)'
           },
+          '.ͼa': {
+            color: '#C9414D'
+          },
+          '.ͼb': {
+            color: '#EC7F37'
+          },
+          '.ͼc': {
+            color: '#E7C335'
+          },
           '.ͼd': {
-            color: 'rgb(255, 248, 118)'
+            color: '#4FA757'
+          },
+          '.ͼf': {
+            color: '#1C9ACF'
           },
           // done
           '.cm-content': {
@@ -102,18 +135,19 @@ const CodeEditor = ({ doc, provider, gitId }) => {
           },
 
           '.cm-ySelectionInfo': {
-            padding: '4px',
+            paddingLeft: '3px',
+            paddingRight: '3px',
             position: "absolute",
-            top: "-2em",
+            top: "-1.25em",
             left: "-1px",
-            fontSize: ".75em",
+            fontSize: ".675em",
             fontFamily: "Pretendard",
             fontStyle: "normal",
             fontWeight: "bold",
             lineHeight: "normal",
             userSelect: "none",
             color: "white",
-            zIndex: "99999 !important",
+            zIndex: "99999999999999 !important",
             transition: "opacity .3s ease-in-out",
             backgroundColor: "inherit",
             borderRadius: "4px",
@@ -164,7 +198,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
         extensions: [
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
-          python(),
+          [selectedLang === 'JavaScript' ? python() : javascript()],
           keymap.of([indentWithTab]),
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,

@@ -47,7 +47,7 @@ export default function MyPage() {
               {/* <div className={styles.infoText}>PM 6:00 ~ 7:00</div> */}
             </div>
             <div className={styles.dateBox}>
-              <div className={styles.month}>-></div>
+              <div className={styles.month}>→</div>
             </div>
           </div>
         </div>

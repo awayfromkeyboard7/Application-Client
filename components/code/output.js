@@ -5,7 +5,7 @@ export default function Output({ outputs }) {
     <div className={styles.container}>
       {
         outputs?.msg?.map((output, idx) => 
-          <div className={styles.resultBox} key={idx}>
+          <div className={outputs?.results[idx] === true ? styles.resultBoxBlue : styles.resultBoxRed} key={idx}>
             <div className={styles.test}>{`테스트 ${idx + 1}`}</div>
             <div className={styles.outputBox}>
               <div className={styles.title}>{`실행 결과 >>`}</div>
