@@ -33,6 +33,7 @@ export default function Code() {
   const [playerList, setPlayerList] = useState([]);
   const [outputs, setOutputs] = useState({});
   const [passRate, setPassRate] = useState(0);
+  const [isSubmit, setIsSubmit] = useState(false);
   const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
   const [codeResult, setCodeResult] = useState('');
@@ -74,6 +75,24 @@ export default function Code() {
       updatePlayerList(submitInfo);
     });
   }, [playerList]);
+
+  useEffect(() => {
+    const submitResult = async () => {
+      await submitCode();
+      socket.emit('submitCode', { gitId, passRate, gameLogId: router?.query?.gameLogId });
+      router.push({
+        pathname: '/code/result',
+        query: { 
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode 
+        }
+      });
+    };
+
+    if(isSubmit) {
+      submitResult();
+    }
+  }, [isSubmit]);
 
   useEffect(() => {
     const date = new Date('2022-07-05T13:00:00');
@@ -202,19 +221,10 @@ export default function Code() {
   };
 
   const goToResult = async() => {
-    await submitCode();
-    socket.emit('submitCode', { gitId, passRate, gameLogId: router?.query?.gameLogId });
-    router.push({
-      pathname: '/code/result',
-      query: { 
-        gameLogId: router?.query?.gameLogId,
-        mode: router?.query?.mode 
-      }
-    });
+    await judgeCode(true);
   };
 
   const submitCode = async() => {
-    await judgeCode();
     const code = doc.getText('codemirror');
     console.log('submit code >> ', code);
 
@@ -237,7 +247,7 @@ export default function Code() {
     .catch(error => console.log('error >> ', error));
   };
 
-  const judgeCode = async() => {
+  const judgeCode = async(submit=false) => {
     const code = doc.getText('codemirror');
     console.log('judge code >> ', code);
 
@@ -260,7 +270,9 @@ export default function Code() {
       setOutputs(data);
       console.log('judgeCode >>>>>>', data);
       setPassRate(data.passRate);
-      // setPassRate(data.results ? 100 : 0);
+      if(submit) {
+        setIsSubmit(true);
+      }
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -324,15 +336,6 @@ export default function Code() {
                     </div>
                   </div>
                   <div className={styles.codeArea}>
-                    {/* <CodeMirror
-                      value={codeText}
-                      width="auto"
-                      height="100%"
-                      className={styles.CodeMirror}
-                      theme={dracula}
-                      extensions={codemirrorExt}
-                      onChange={onChange}
-                    /> */}
                     <Editor 
                       doc={doc} 
                       provider={provider} 

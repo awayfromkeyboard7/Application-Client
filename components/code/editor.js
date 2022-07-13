@@ -83,7 +83,8 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
             backgroundColor: background
           },
           'span': {
-            color: 'rgb(159, 70, 217)'
+            // color: 'rgb(159, 70, 217)'
+            color: 'rgb(255, 248, 118)'
           },
           '.ͼa': {
             color: '#C9414D'
