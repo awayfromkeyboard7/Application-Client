@@ -118,7 +118,7 @@ export default function WaitPage() {
     if(gameLogId !== '') {
       router.push({
         pathname: '/code',
-        query: { gameLogId }
+        query: { gameLogId, mode: router?.query?.mode }
       });
     }
   }, [gameLogId]);
@@ -195,7 +195,6 @@ export default function WaitPage() {
           players={players} 
           onClickGoToMain={goToLobby} 
           onClickPlayAgain={goToCode}
-          // addPlayer={info => addPlayer(info)}
         />
         <Sidebar />
         {/* <CheckValidUser /> */}

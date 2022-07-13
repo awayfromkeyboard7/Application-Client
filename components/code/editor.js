@@ -29,19 +29,18 @@ const ivory = '#abb2bf',
   selection = 'rgba(128, 203, 196, 0.2)',
   cursor = '#ffcc00';
 
-export const userColor = usercolors[random.uint32() % usercolors.length];
-
 const CodeEditor = ({ doc, provider, gitId }) => {
   const editorRef = useRef();
-
+  
   useEffect(() => {
+    const userColor = usercolors[random.uint32() % usercolors.length];
+    console.log('random ', random.uint32(), gitId, userColor);
     if(doc) {
       const ytext = doc.getText('codemirror');
-      const codeUserColor = provider.awareness.getLocalState('color');
       provider.awareness.setLocalStateField('user', {
         name: gitId,
-        color: codeUserColor.color,
-        colorLight: codeUserColor.light,
+        color: userColor.color,
+        colorLight: userColor.light,
       });
 
       const materialPalenightTheme = EditorView.theme(
@@ -52,8 +51,8 @@ const CodeEditor = ({ doc, provider, gitId }) => {
             color: '#ffffff',
             backgroundColor: background
           },
-          '.ca': {
-            color: "yellow",
+          '.cd': {
+            color: '#9ac2c9'
           },
           // done
           '.cm-content': {
@@ -108,7 +107,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
             opacity: "1",
             transitionDelay: "0s",
           },
-          
+
           '.cm-gutters': {
             background: '#282A35',
             color: '#676e95',
@@ -152,7 +151,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
         extensions: [
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
-          [python()],
+          python(),
           keymap.of([indentWithTab]),
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,

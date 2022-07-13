@@ -73,6 +73,22 @@ export default function Code() {
   }, [playerList]);
 
   useEffect(() => {
+    const date = new Date('2022-07-05T13:00:00');
+
+    const interval = setInterval(() => {
+      console.log(new Date());
+      setCountdown(prev => {
+        if(0 < prev) return prev - 1;
+        else return prev;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
     const getProblem = async() => {
       await fetch(`/api/gamelog/getGameLog`, {
         method: 'POST',
@@ -94,28 +110,13 @@ export default function Code() {
       .catch(error => console.log('error >> ', error));
     };
 
-    const date = new Date('2022-07-05T13:00:00');
-
-    const interval = setInterval(() => {
-      console.log(new Date());
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
-
     if(router?.query?.gameLogId && router.query.gameLogId !== '') {
       getProblem();
     }
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
     if(isDoc === false && router?.query?.gameLogId) {
-      let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
+      const url = router?.query?.mode === 'team' ? router?.query?.gameLogId : `${gitId}_${router?.query?.gameLogId}`
+      let yProvider = new WebrtcProvider(url, yDoc);
       awareness = yProvider.awareness;
       setDoc(yDoc);
       setProvider(yProvider);
@@ -363,7 +364,7 @@ export default function Code() {
               onClick={popupBtnFunc} 
             />
         }
-        {/* <CheckValidUser /> */}
+        <CheckValidUser />
         {/* <CheckValidAccess check={router.query.gameLogId} message="유효하지 않은 게임입니다." /> */}
         </>
       }

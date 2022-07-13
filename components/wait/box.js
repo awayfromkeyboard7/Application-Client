@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Item from './item';
 import styles from '../../styles/components/wait.module.scss';
 
-export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain, addPlayer }) {
+export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain }) {
   const [countdown, setCountdown] = useState(180);
 
   useEffect(() => {

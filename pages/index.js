@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { 
-  sendSocketMessage, 
-  socketInfoReceived, 
-  createNewSocketConnection,
-} from '../lib/socket';
-import { 
   setCookie, 
   getCookie, 
   hasCookie, 
@@ -14,11 +9,13 @@ import {
 } from 'cookies-next';
 import Layout from '../components/layouts/main';
 import Sidebar from '../components/sidebar';
+import Popup from '../components/popup';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
+  const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
     if(hasCookie('uid')) {
@@ -36,10 +33,14 @@ export default function Home() {
   // };
 
   const goToWait = (mode) => {
-    router.push({
-      pathname: '/code/wait',
-      query: { mode }
-    });
+    if(isLogin) {
+      router.push({
+        pathname: '/code/wait',
+        query: { mode }
+      });
+    } else {
+      setIsPopup(true);
+    }
   };
 
   const login = async() => {
@@ -93,6 +94,15 @@ export default function Home() {
           isLogin
           && <Sidebar />
         }
+        {
+          isPopup
+          && <Popup 
+              title="⛔️로그인이 필요합니다.⛔️"
+              content="게임에 참가하시려면 로그인이 필요합니다."
+              label="메인으로"
+              onClick={() => setIsPopup(false)} 
+            />
+        } 
       </>
       }
     />
