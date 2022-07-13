@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { python } from '@codemirror/lang-python';
-import { cpp } from '@codemirror/lang-cpp';
-import { dracula } from '@uiw/codemirror-theme-dracula';
+// import CodeMirror from '@uiw/react-codemirror';
+// import { javascript } from '@codemirror/lang-javascript';
+// import { python } from '@codemirror/lang-python';
+// import { cpp } from '@codemirror/lang-cpp';
+// import { dracula } from '@uiw/codemirror-theme-dracula';
+import * as Y from 'yjs';
+import { WebrtcProvider } from 'y-webrtc';
 import {
   ReflexContainer,
   ReflexSplitter,
@@ -19,6 +21,7 @@ import {
   socket,
 } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
+import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
 import Output from '../../components/code/output';
@@ -28,6 +31,10 @@ import CheckValidAccess from '../../components/checkValidAccess';
 
 import 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.scss';
+
+let awareness;
+let yLines;
+let undoManager;
 
 export default function Code() {
   const router = useRouter();  
@@ -47,8 +54,10 @@ export default function Code() {
   const [popupLabel, setPopupLabel] = useState('');
   const [popupBtnFunc, setPopupBtnFunc] = useState(() => () => setIsPopup(false));
   const [selectedLang, setSelectedLang] = useState('Python');
-  const [codemirrorExt, setCodemirrorExt] = useState([python()]);
+  // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
   const [countdown, setCountdown] = useState(900);
+  const [doc, setDoc] = useState();
+  const [provider, setProvider] = useState();
 
   const updatePlayerList = (info) => {
     let result = [...playerList];
@@ -102,12 +111,20 @@ export default function Code() {
       });
     }, 1000);
 
+    let yDoc = new Y.Doc();
+    let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
+    awareness = yProvider.awareness;
+    yLines = yDoc.getArray('lines~9');
+    undoManager = new Y.UndoManager(yLines);
+    setDoc(yDoc);
+    setProvider(yProvider);
     if(router?.query?.gameLogId && router.query.gameLogId !== '') {
       getProblem();
     }
 
     return () => {
       clearInterval(interval);
+      yProvider.destroy();
     };
   }, []);
 
@@ -153,17 +170,17 @@ export default function Code() {
   const onChangeLang = (lang) => {
     switch(lang) {
       case 'JavaScript':
-        setCodemirrorExt([javascript()]);
+        // setCodemirrorExt([javascript()]);
         setCodeText("console.log('hello world');");
         setCodeTitle('solution.js');
         break;
       case 'Python':
-        setCodemirrorExt([python()]);
+        // setCodemirrorExt([python()]);
         setCodeText("print('hello world')");
         setCodeTitle('solution.py');
         break;
       case 'C++':
-        setCodemirrorExt([cpp()]);
+        // setCodemirrorExt([cpp()]);
         setCodeText('std::cout << "출력 ";');
         setCodeTitle('solution.cpp');
         break;
@@ -307,7 +324,7 @@ export default function Code() {
                     </div>
                   </div>
                   <div className={styles.codeArea}>
-                    <CodeMirror
+                    {/* <CodeMirror
                       value={codeText}
                       width="auto"
                       height="100%"
@@ -315,6 +332,11 @@ export default function Code() {
                       theme={dracula}
                       extensions={codemirrorExt}
                       onChange={onChange}
+                    /> */}
+                    <Editor 
+                      doc={doc} 
+                      provider={provider} 
+                      gitId={gitId} 
                     />
                   </div>
                 </ReflexElement>
@@ -350,7 +372,7 @@ export default function Code() {
             />
         }
         {/* <CheckValidUser /> */}
-        <CheckValidAccess check={router.query.gameLogId} message="유효하지 않은 게임입니다." />
+        {/* <CheckValidAccess check={router.query.gameLogId} message="유효하지 않은 게임입니다." /> */}
         </>
       }
     />
