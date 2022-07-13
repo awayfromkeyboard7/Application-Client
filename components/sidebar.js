@@ -27,6 +27,10 @@ export default function Sidebar({ menu='friends' }) {
     {
       nickname: 'bluefrog',
       isOnline: false
+    },
+    {
+      nickname: 'swjungle',
+      isOnline: false
     }
   ];
   
@@ -53,6 +57,11 @@ export default function Sidebar({ menu='friends' }) {
       }
       </div>
       <div className={styles.sidebarFooter}>
+      {
+        sidebarMenu === 'friends'
+        ? '보이스 챗'
+        : null
+      }
       </div>
     </div>
   )

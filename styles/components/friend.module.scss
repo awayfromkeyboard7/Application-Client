@@ -15,6 +15,7 @@
 }
 
 .friendNickname {
+  flex: 1;
   font-size: 1rem; /* 24px*/
   font-weight: bold;
   line-height: 1rem;
@@ -25,8 +26,9 @@
 }
 
 .connectInfo {
-  width: 4rem;
-  margin-left: 0.625rem;
+  // width: 4rem;
+  width: 1.25rem;
+  // margin-right: 0.625rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -38,4 +40,32 @@
   font-weight: bold;
   line-height: 1rem;
   color: $gray-color;
+}
+
+.inviteBtnDisable,
+.inviteBtnClicked,
+.inviteBtn {
+  height: 2rem;
+  padding: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  color: $white-dark-color;
+  background-color: $purple-color;
+  cursor: pointer;
+}
+
+.inviteBtn {
+  background-color: $white-dark-color;
+  color: $purple-color;
+  outline: $purple-color solid 2px;
+}
+
+.inviteBtnDisable {
+  background-color: $gray-color;
+  color: $white-dark-color;
 }
