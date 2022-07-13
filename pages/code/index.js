@@ -48,6 +48,7 @@ export default function Code() {
   const [countdown, setCountdown] = useState(900);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
+  const [isDoc, setIsDoc] = useState(false);
 
   let yDoc = new Y.Doc();
 
@@ -107,22 +108,21 @@ export default function Code() {
       getProblem();
     }
 
-    // let yDoc = new Y.Doc();
-    // let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
-    // awareness = yProvider.awareness;
-    // setDoc(yDoc);
-    // setProvider(yProvider);
-
-    let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
-    awareness = yProvider.awareness;
-    setDoc(yDoc);
-    setProvider(yProvider);
-
     return () => {
       clearInterval(interval);
       yProvider.destroy();
     };
   }, []);
+
+  useEffect(() => {
+    if(isDoc === false && router?.query?.gameLogId) {
+      let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
+      awareness = yProvider.awareness;
+      setDoc(yDoc);
+      setProvider(yProvider);
+      setIsDoc(true);
+    }
+  }, [router]);
 
   useEffect(() => {
     if(countdown === 0) {

@@ -52,7 +52,9 @@ const CodeEditor = ({ doc, provider, gitId }) => {
             color: '#ffffff',
             backgroundColor: background
           },
-      
+          '.ca': {
+            color: "yellow",
+          },
           // done
           '.cm-content': {
             caretColor: cursor
@@ -106,8 +108,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
             opacity: "1",
             transitionDelay: "0s",
           },
-      
-          // done
+          
           '.cm-gutters': {
             background: '#282A35',
             color: '#676e95',
@@ -151,7 +152,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
         extensions: [
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
-          python(),
+          [python()],
           keymap.of([indentWithTab]),
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,
