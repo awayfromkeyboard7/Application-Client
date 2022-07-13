@@ -353,7 +353,11 @@ export default function Code() {
           </ReflexContainer>
         </ReflexElement>
         <div className={styles.footer}>
-          <div />
+          {
+            router?.query?.mode === 'team'
+            ? <div className={styles.voiceBtn}>팀 보이스</div>
+            : <div />
+          }
           <div className={styles.footerRight}>
             <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
             <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>

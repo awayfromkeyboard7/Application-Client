@@ -44,6 +44,7 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         <div className={styles.myPageBtn} onClick={onClickPlayAgain}>게임 시작</div>
         <div className={styles.myPageBtn} onClick={onClickGoToMain}>메인으로</div>
       </div>
+      <div className={styles.floatingBtn}>🗣</div>
     </div>
   )
 }
