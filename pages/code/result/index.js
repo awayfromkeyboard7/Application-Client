@@ -43,7 +43,7 @@ export default function ResultPage() {
       body={
       <>
         <Result 
-          type="personal" 
+          type={router?.query?.mode}
           ranks={ranks} 
           startAt={gameStartAt}
           onClickGoToMain={goToLobby} 

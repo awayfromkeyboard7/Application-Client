@@ -205,7 +205,10 @@ export default function Code() {
     socket.emit('submitCode', { gitId, passRate });
     router.push({
       pathname: '/code/result',
-      query: { gameLogId: router?.query?.gameLogId }
+      query: { 
+        gameLogId: router?.query?.gameLogId,
+        mode: router?.query?.mode 
+      }
     });
   };
 
