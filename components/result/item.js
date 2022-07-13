@@ -3,34 +3,44 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultItem({ info, startAt }) {
+export default function ResultItem({ info, startAt, idx }) {
   const myNickname = getCookie('uname');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
 
+  // useEffect(() => {
+  //   setRankText(convertRank(info.ranking));
+  // }, [info.ranking]);
+
   useEffect(() => {
-    switch(info.ranking) {
+    setRankText(info.passRate < 0 ? '-' : convertRank(idx + 1));
+  }, [info.passRate]);
+
+  const convertRank = (rank) => {
+    let result;
+    switch(rank) {
       case 1:
-        setRankText('🥇');
+        result = '🥇';
         setIsEmoji(true);
         break;
       case 2:
-        setRankText('🥈');
+        result = '🥈';
         setIsEmoji(true);
         break;
       case 3:
-        setRankText('🥉');
+        result = '🥉';
         setIsEmoji(true);
         break;
       case 0:
-        setRankText('-');
+        result = '-';
         setIsEmoji(false);
         break;
       default:
-        setRankText(info.ranking);
+        result = rank;
         break;
     }
-  }, [info.ranking]);
+    return result;
+  }
 
   const unixToTime = (ts) => {
     const start = new Date(startAt).getTime();

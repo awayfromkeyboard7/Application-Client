@@ -11,7 +11,7 @@ export default function ResultBox({ type, ranks, startAt, onClickPlayAgain, onCl
         <div className={styles.resultBox}>
         {
           ranks.map((item, idx) => 
-            <Item info={item} startAt={startAt} key={`${item.gitId}${idx}`} />
+            <Item info={item} startAt={startAt} key={`${item.gitId}${idx}`} idx={idx} />
           )
         }
         </div>

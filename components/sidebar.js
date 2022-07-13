@@ -13,20 +13,20 @@ export default function Sidebar({ menu='friends' }) {
       isOnline: true
     },
     {
-      nickname: 'prof.choi',
-      isOnline: true
-    },
-    {
-      nickname: 'codeking_moonjiro',
+      nickname: 'EilLargerTodd',
       isOnline: false
     },
     {
-      nickname: 'afk7',
-      isOnline: false
+      nickname: 'park-hg',
+      isOnline: true
     },
     {
-      nickname: 'larger',
+      nickname: 'Son0-0',
       isOnline: true
+    },
+    {
+      nickname: 'bluefrog',
+      isOnline: false
     }
   ];
   

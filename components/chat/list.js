@@ -14,7 +14,7 @@ export default function ChatList({ roomName, onClickBack }) {
       sendAt: new Date().getTime()
     },
     {
-      senderId: 'annie1229',
+      senderId: roomName,
       messageId: '1234533',
       text: '고고?',
       sendAt: new Date().getTime()
@@ -58,7 +58,7 @@ export default function ChatList({ roomName, onClickBack }) {
 
     const newMessage = {
       text,
-      senderId: 'annie1229',
+      senderId: nickname,
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
