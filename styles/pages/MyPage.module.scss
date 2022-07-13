@@ -1,5 +1,70 @@
 @import '../variables.module.scss';
 
+
+.header {
+  height: 3.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #282A35;
+  border-bottom: #000 solid 4px;
+}
+
+.headerTitle {
+  font-size: 1.5rem; /* 24px*/
+  font-weight: bold;
+  line-height: 2rem;
+  color: #fff;
+}
+
+.loginBtn {
+  height: 2rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  color: rgb(89, 0, 148);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background-color: #f3f3f3;
+}
+
+.loginText {
+  margin-left: 0.625rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  color: rgb(89, 0, 148);
+}
+
+.myPageBtn {
+  height: 2rem;
+  padding: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  color: rgb(89, 0, 148);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.myPageBtn:hover {
+  background-color: #f3f3f3;
+}
+
 .mainRow {
   display: flex;
   flex-direction: row;
@@ -8,12 +73,12 @@
 }
 
 .mainBox {
-  margin-right: 3rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .mainTitle {
@@ -129,9 +194,25 @@
   display: none;
 }
 
+.profileIcon {
+  width: 150px;
+  height: 150px;
+  margin: 1rem;
+  border-radius: 100px;
+  border: $purple-color solid 4px;
+}
+
+.nickname {
+  margin-bottom: 2rem;
+  color: $white-dark-color;
+  font-size: 1.25rem;
+  font-weight: bold;
+
+}
+
 .scheduleBox {
   width: 60vw;
-  height: 5rem;
+  height: 4rem;
   margin: 1rem;
   display: flex;
   flex-direction: row;
@@ -139,8 +220,8 @@
 }
 
 .dateBox {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -150,15 +231,17 @@
 }
 
 .date {
-  font-size: 2rem;
+  font-size: 1rem;
   color: #fff;
   font-weight: bold;
 }
 
 .month {
-  font-size: 1rem;
+  font-size: 2rem;
+  line-height: 4rem;
   color: #fff;
   font-weight: bold;
+  white-space: pre-wrap;
 }
 
 .infoBox {
@@ -171,7 +254,7 @@
 }
 
 .infoTitle {
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #000;
   font-weight: bold;
 }

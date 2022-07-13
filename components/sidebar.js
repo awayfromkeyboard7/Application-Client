@@ -57,11 +57,6 @@ export default function Sidebar({ menu='friends' }) {
       }
       </div>
       <div className={styles.sidebarFooter}>
-      {
-        sidebarMenu === 'friends'
-        ? '보이스 챗'
-        : null
-      }
       </div>
     </div>
   )
