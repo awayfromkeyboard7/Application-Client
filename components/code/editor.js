@@ -8,20 +8,31 @@ import * as random from 'lib0/random';
 import '../../styles/components/code/editor.module.css';
 import styles from '../../styles/pages/Code.module.scss';
 
+// export const usercolors = [
+//   { color: '#30bced', light: '#30bced33' },
+//   { color: '#6eeb83', light: '#6eeb8333' },
+//   { color: '#ffbc42', light: '#ffbc4233' },
+//   { color: '#ecd444', light: '#ecd44433' },
+//   { color: '#ee6352', light: '#ee635233' },
+//   { color: '#9ac2c9', light: '#9ac2c933' },
+//   { color: '#8acb88', light: '#8acb8833' },
+//   { color: '#1be7ff', light: '#1be7ff33' },
+// ];
+
 export const usercolors = [
-  { color: '#30bced', light: '#30bced33' },
-  { color: '#6eeb83', light: '#6eeb8333' },
-  { color: '#ffbc42', light: '#ffbc4233' },
-  { color: '#ecd444', light: '#ecd44433' },
-  { color: '#ee6352', light: '#ee635233' },
-  { color: '#9ac2c9', light: '#9ac2c933' },
-  { color: '#8acb88', light: '#8acb8833' },
-  { color: '#1be7ff', light: '#1be7ff33' },
+  { color: '#6C5B7B', light: '#6C5B7B33' }, // 보라
+  { color: '#355C7D', light: '#355C7D33' }, // 파랑
+  { color: '#ffbc42', light: '#ffbc4233' }, // 인디핑크
+  { color: '#F67280', light: '#F6728033' }, // 핑크
+  { color: '#F2D096', light: '#F2D09633' }, // 노랑
+  { color: '#8FB9AA', light: '#8FB9AA33' }, // 민트
+  { color: '#732C5A', light: '#732C5A33' }, // 보라2
+  { color: '#100E40', light: '#732C5A33' }, // 진한 남색
+  { color: '#383B73', light: '#383B7333' }, // 인디 파랑
+  { color: '#D4522B', light: '#D4522B33' }, // 주황
 ];
 
 const ivory = '#abb2bf',
-  stone = '#7d8799', // Brightened compared to original to increase contrast
-  invalid = '#ffffff',
   darkBackground = '#1e1f27',
   highlightBackground = 'rgba(0, 0, 0, 0.3)',
   background = '#282A35',
@@ -34,7 +45,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
   
   useEffect(() => {
     const userColor = usercolors[random.uint32() % usercolors.length];
-    console.log('random ', random.uint32(), gitId, userColor);
+    
     if(doc) {
       const ytext = doc.getText('codemirror');
       provider.awareness.setLocalStateField('user', {
@@ -45,14 +56,16 @@ const CodeEditor = ({ doc, provider, gitId }) => {
 
       const materialPalenightTheme = EditorView.theme(
         {
-          // done
           '&': {
             height: "100%",
             color: '#ffffff',
             backgroundColor: background
           },
-          '.cd': {
-            color: '#9ac2c9'
+          'span': {
+            color: 'rgb(159, 70, 217)'
+          },
+          '.ͼd': {
+            color: 'rgb(255, 248, 118)'
           },
           // done
           '.cm-content': {
