@@ -49,6 +49,8 @@ export default function Code() {
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
 
+  let yDoc = new Y.Doc();
+
   const updatePlayerList = (info) => {
     let result = [...playerList];
     console.log('player list >>', playerList);
@@ -105,7 +107,12 @@ export default function Code() {
       getProblem();
     }
 
-    let yDoc = new Y.Doc();
+    // let yDoc = new Y.Doc();
+    // let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
+    // awareness = yProvider.awareness;
+    // setDoc(yDoc);
+    // setProvider(yProvider);
+
     let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
     awareness = yProvider.awareness;
     setDoc(yDoc);
