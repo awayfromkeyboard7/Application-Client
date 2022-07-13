@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-// import CodeMirror from '@uiw/react-codemirror';
-// import { javascript } from '@codemirror/lang-javascript';
-// import { python } from '@codemirror/lang-python';
-// import { cpp } from '@codemirror/lang-cpp';
-// import { dracula } from '@uiw/codemirror-theme-dracula';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import {
@@ -14,12 +9,7 @@ import {
 } from 'react-reflex';
 import { getCookie } from 'cookies-next';
 
-import { 
-  sendSocketMessage, 
-  socketInfoReceived, 
-  createNewSocketConnection,
-  socket,
-} from '../../lib/socket';
+import { socket } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
 import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
@@ -111,16 +101,15 @@ export default function Code() {
       });
     }, 1000);
 
-    let yDoc = new Y.Doc();
-    let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
-    awareness = yProvider.awareness;
-    yLines = yDoc.getArray('lines~9');
-    undoManager = new Y.UndoManager(yLines);
-    setDoc(yDoc);
-    setProvider(yProvider);
     if(router?.query?.gameLogId && router.query.gameLogId !== '') {
       getProblem();
     }
+
+    let yDoc = new Y.Doc();
+    let yProvider = new WebrtcProvider(router?.query?.gameLogId, yDoc);
+    awareness = yProvider.awareness;
+    setDoc(yDoc);
+    setProvider(yProvider);
 
     return () => {
       clearInterval(interval);
@@ -163,7 +152,6 @@ export default function Code() {
 
   const onChange = useCallback((value) => {
     console.log(value);
-    // sendSocketMessage("message", { "code": value } );
     setCodeText(value);
   }, []);
 
@@ -188,7 +176,6 @@ export default function Code() {
   };
 
   const goToNextProblem = () => {
-    sendSocketMessage("problem", { problemId: "1" } );
     onChangeLang(selectedLang);
     setOutputs({});
     setCodeResult('');
@@ -212,6 +199,10 @@ export default function Code() {
   };
 
   const submitCode = async() => {
+    await judgeCode();
+    const code = doc.getText('codemirror');
+    console.log('submit code >> ', code);
+
     await fetch(`/api/gamelog/update`, {
       method: 'POST',
       headers: {
@@ -220,7 +211,7 @@ export default function Code() {
       body: JSON.stringify({ 
         gameId: router.query.gameLogId,
         gitId,
-        code: codeText,
+        code,
         language: selectedLang,
         ranking: 0,
         passRate,
@@ -232,13 +223,16 @@ export default function Code() {
   };
 
   const judgeCode = async() => {
+    const code = doc.getText('codemirror');
+    console.log('judge code >> ', code);
+
     await fetch(`/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        code: codeText 
+        code
       }),
     })
     .then(res => res.json())
@@ -249,7 +243,6 @@ export default function Code() {
       console.log('judgeCode >>>>>>', data);
       setPassRate(data.passRate);
       // setPassRate(data.results ? 100 : 0);
-      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -268,17 +261,6 @@ export default function Code() {
     .then(data => {
       if (data.result) setIsSuccessResult(true);
       else setIsSuccessResult(false);
-
-      // let newSocket = createNewSocketConnection('http://localhost:56');
-      // sendSocketMessage('judge', {}, newSocket);
-      // setCodeResult('');
-      // socketInfoReceived("judge_result", (data) => {
-      //   setCodeResult(prev => prev + `${data.success === true ? '통과' : '실패'}\n`);
-      // }, newSocket);
-      // socketInfoReceived("close", (data) => {
-      //   console.log('react new socket close');
-      // }, newSocket);
-      // sendSocketMessage("result", { userId: "annie1229", success: data.success } );
     })
     .catch(error => console.log('error >> ', error));
   };

@@ -3,7 +3,6 @@ import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
 import { keymap, ViewUpdate } from '@codemirror/view';
 import { python } from '@codemirror/lang-python'
 import { indentWithTab } from '@codemirror/commands';
-import { materialPalenight } from 'codemirror6-themes';
 import { useEffect, useRef } from 'react';
 import * as random from 'lib0/random';
 import '../../styles/components/code/editor.module.css';
@@ -42,32 +41,8 @@ const CodeEditor = ({ doc, provider, gitId }) => {
       provider.awareness.setLocalStateField('user', {
         name: gitId,
         color: codeUserColor.color,
-        colorLight: codeUserColor.color,
+        colorLight: codeUserColor.light,
       });
-
-
-      const dracular = EditorView.theme({
-        "&": {
-          height: "300px",
-          color: "black",
-          backgroundColor: "#034"
-        },
-        ".cm-scroller": {overflow: "auto"},
-        ".cm-content": {
-          caretColor: "#0e9"
-        },
-        "&.cm-focused .cm-cursor": {
-          borderLeftColor: "#0e9"
-        },
-        "&.cm-focused .cm-selectionBackground, ::selection": {
-          backgroundColor: "#074"
-        },
-        ".cm-gutters": {
-          backgroundColor: "#045",
-          color: "#ddd",
-          border: "none"
-        }
-      }, {dark: true});
 
       const materialPalenightTheme = EditorView.theme(
         {
@@ -110,6 +85,26 @@ const CodeEditor = ({ doc, provider, gitId }) => {
           '&.cm-focused .cm-matchingBracket, &.cm-focused .cm-nonmatchingBracket': {
             backgroundColor: '#bad0f847',
             outline: '1px solid #515a6b'
+          },
+
+          '.cm-ySelectionInfo': {
+            padding: '4px',
+            position: "absolute",
+            top: "-2em",
+            left: "-1px",
+            fontSize: ".75em",
+            fontFamily: "Pretendard",
+            fontStyle: "normal",
+            fontWeight: "bold",
+            lineHeight: "normal",
+            userSelect: "none",
+            color: "white",
+            zIndex: "99999 !important",
+            transition: "opacity .3s ease-in-out",
+            backgroundColor: "inherit",
+            borderRadius: "4px",
+            opacity: "1",
+            transitionDelay: "0s",
           },
       
           // done
@@ -163,7 +158,6 @@ const CodeEditor = ({ doc, provider, gitId }) => {
         ],
       });
 
-
       const view = new EditorView({
         state,
         parent: editorRef.current
@@ -174,7 +168,7 @@ const CodeEditor = ({ doc, provider, gitId }) => {
       }  
     }
 
-  }, [doc]);
+  }, [doc, provider, gitId]);
 
   return <div className={styles.CodeMirror} ref={editorRef}></div>
 
