@@ -66,11 +66,11 @@ export default function WaitPage() {
   // useEffect(() => {
   //   // router.beforePopState(() => {
   //   //   alert('exit before leaving!!!!!');
-  //   //   socket.emit('exitWait', getCookie("uname"));
+  //   //   socket.emit('exitWait', getCookie('uname'));
   //   // })
   //   const handler = () => {
   //     alert('exit before leaving!!!!!');
-  //     socket.emit('exitWait', getCookie("uname"));
+  //     socket.emit('exitWait', getCookie('uname'));
   //     throw 'route change abort!!!';
   //   };
   //   router.events.on('routeChangeStart', handler);
@@ -85,31 +85,31 @@ export default function WaitPage() {
     //   e.preventDefault();
     //   // window.alert('exit page???');
     //   // alert('exit page???');
-    //   // console.log('exit wait function!!!!!', getCookie("uname"));
-    //   // socket.emit('exitWait', getCookie("uname"));
-    //   e.returnValue = "";
+    //   // console.log('exit wait function!!!!!', getCookie('uname'));
+    //   // socket.emit('exitWait', getCookie('uname'));
+    //   e.returnValue = '';
     // };
 
     // window.addEventListener('beforeunload', exitWait);
-    socket.on("enterNewUser", (users) => {
+    socket.on('enterNewUser', (users) => {
       addPlayer(users);
     });
-    socket.on("startGame", (gameLogId) => {
+    socket.on('startGame', (gameLogId) => {
       setGameLogId(gameLogId);
     });
-    socket.emit("waitGame", { gitId: getCookie("uname"), avatarUrl: getCookie("uimg") });
+    socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
 
     return () => {
-      console.log('exit wait screen!!!!!', getCookie("uname"));
+      console.log('exit wait screen!!!!!', getCookie('uname'));
       // window.removeEventListener('beforeunload', exitWait);
-      // socket.emit('exitWait', getCookie("uname"));
+      // socket.emit('exitWait', getCookie('uname'));
       // changeSocketConnection(process.env.NEXT_PUBLIC_SOCKET_PROVIDER);
     }
   }, []);
 
 
   useEffect(() => {
-    socket.on("exitWait", (users) => {
+    socket.on('exitWait', (users) => {
       addPlayer(users);
     });
   }, [players]);
@@ -151,7 +151,7 @@ export default function WaitPage() {
     .then(data => {
       if(data.success) {
         setGameLogId(data.gameLogId);
-        socket.emit("startGame", data.gameLogId);
+        socket.emit('startGame', data.gameLogId);
       }
     })
     .catch(error => console.log('error >> ', error));
@@ -162,7 +162,7 @@ export default function WaitPage() {
   };
 
   const goToLobby = () => {
-    socket.emit('exitWait', getCookie("uname"));
+    socket.emit('exitWait', getCookie('uname'));
     router.push('/');
   };
 

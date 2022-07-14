@@ -19,7 +19,7 @@ export default function Home() {
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    socket.emit('exitWait', getCookie("uname"));
+    socket.emit('exitWait', getCookie('uname'));
   }, []);
 
   useEffect(() => {

@@ -71,13 +71,13 @@ export default function ChatList({ roomName, onClickBack }) {
   const unixToTime = (ts) => {
     const date = new Date(ts);
     const year = date.getFullYear();
-    const month = "0" + (date.getMonth()+1);
+    const month = '0' + (date.getMonth()+1);
     const day = date.getDate();
-    let hour = "0" + date.getHours();
-    const min = "0" + date.getMinutes();
+    let hour = '0' + date.getHours();
+    const min = '0' + date.getMinutes();
     const isAM = date.getHours() < 12 ? true : false;
 
-    if(!isAM) hour = "0" + (date.getHours() - 12);
+    if(!isAM) hour = '0' + (date.getHours() - 12);
     
     return `${isAM ? '오전' : '오후'} ${hour.substr(-2)}:${min.substr(-2)}`;
   };

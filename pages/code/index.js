@@ -161,14 +161,14 @@ export default function Code() {
 
   useEffect(() => {
     if(passRate === 100) {
-      setPopupTitle("정답입니다!🥳");
+      setPopupTitle('정답입니다!🥳');
       setPopupContent(`문제를 맞추셨습니다.`);
-      setPopupLabel("다음 문제로");
+      setPopupLabel('다음 문제로');
       setPopupBtnFunc(() => () => goToNextProblem());
     } else {
-      setPopupTitle("아쉽지만 다음 기회에..😭");
+      setPopupTitle('아쉽지만 다음 기회에..😭');
       setPopupContent(`문제를 틀렸습니다.`);
-      setPopupLabel("메인으로");
+      setPopupLabel('메인으로');
       setPopupBtnFunc(() => () => goToLobby());
     }
   }, [isSuccessResult, selectedLang]);
@@ -179,8 +179,8 @@ export default function Code() {
   }, [selectedLang]);
 
   const secToTime = (s) => {
-    const min = "0" + String(parseInt((s % 3600) / 60));
-    const sec = "0" + String(parseInt(s % 60));
+    const min = '0' + String(parseInt((s % 3600) / 60));
+    const sec = '0' + String(parseInt(s % 60));
     
     return `${min.substr(-2)}분 ${sec.substr(-2)}초`;
   };
@@ -319,14 +319,14 @@ export default function Code() {
                 <ReflexElement flex={0.7} style={{ overflow: 'hidden' }}>
                   { problems && <Problem problems={problems}/>}
                 </ReflexElement>
-                <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", height: "0.625rem", borderTop: "1px solid rgba(0,0,0,0.5)", borderBottom: "0" }} />
+                <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
                 <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                   <div className={styles.resultTitle}>플레이어</div>
                   <Player players={playerList} />
                 </ReflexElement>
               </ReflexContainer>
             </ReflexElement>
-            <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", width: "0.625rem", borderLeft: "0", borderRight: "1px solid rgba(0,0,0,0.5)" }} />
+            <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', width: '0.625rem', borderLeft: '0', borderRight: '1px solid rgba(0,0,0,0.5)' }} />
             <ReflexElement className={styles.bodyCol} flex={0.65}>
               <ReflexContainer orientation='horizontal'>
                 <ReflexElement flex={0.7} minSize={40} style={{ overflow: 'hidden' }}>
@@ -345,7 +345,7 @@ export default function Code() {
                     />
                   </div>
                 </ReflexElement>
-                <ReflexSplitter style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", height: "0.625rem", borderTop: "1px solid rgba(0,0,0,0.5)", borderBottom: "0" }} />
+                <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
                 <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                   <div className={styles.resultTitle}>실행 결과</div>
                   <Output outputs={outputs}/>

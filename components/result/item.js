@@ -46,8 +46,8 @@ export default function ResultItem({ info, startAt, idx }) {
     const start = new Date(startAt).getTime();
     const end = new Date(ts).getTime();
     const s = parseInt((end - start) / 1000);
-    const min = "0" + String(parseInt((s % 3600) / 60));
-    const sec = "0" + String(parseInt(s % 60));
+    const min = '0' + String(parseInt((s % 3600) / 60));
+    const sec = '0' + String(parseInt(s % 60));
     
     return `${min.substr(-2)}:${sec.substr(-2)}`;
   };
