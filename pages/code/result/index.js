@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
+import Header from '../../../components/header';
 import Result from '../../../components/result/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
-import styles from '../../../styles/components/result.module.scss'
 
 export default function ResultPage() {
   const router = useRouter();  
@@ -24,15 +23,15 @@ export default function ResultPage() {
     });
   }, [ranks]);
 
-  const goToCode = () => {
-    router.push('/code');
-  };
-
   const goToWait = () => {
     router.push({
       pathname: '/code/wait',
       query: { mode: router?.query?.mode }
     });
+  };
+
+  const goToMyPage = () => {
+    router.push('/mypage');
   };
 
   const goToLobby = () => {
@@ -41,24 +40,19 @@ export default function ResultPage() {
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
-        <div className={styles.myPageBtn}>마이페이지</div>
-      </>
-      }
+      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
-      <>
-        <Result 
-          type={router?.query?.mode}
-          ranks={ranks} 
-          startAt={gameStartAt}
-          onClickGoToMain={goToLobby} 
-          onClickPlayAgain={goToWait}
-        />
-        <Sidebar />
-        {/* <CheckValidUser /> */}
-      </>
+        <>
+          <Result 
+            type={router?.query?.mode}
+            ranks={ranks} 
+            startAt={gameStartAt}
+            onClickGoToMain={goToLobby} 
+            onClickPlayAgain={goToWait}
+          />
+          <Sidebar />
+          <CheckValidUser />
+        </>
       }
     />
   )

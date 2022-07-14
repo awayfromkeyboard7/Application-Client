@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { 
   setCookie, 
@@ -9,9 +8,10 @@ import {
 } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
+import Header from '../components/header';
+import LobbyBox from '../components/lobby/box';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
-import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const router = useRouter();  
@@ -76,33 +76,11 @@ export default function Home() {
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle}>{`{ CODE: ‘뚝딱’ }`}</div>
-        {
-          isLogin
-          ? <div className={styles.myPageBtn} onClick={goToMyPage}>마이페이지</div>
-          : <div className={styles.loginBtn}  onClick={login}>
-              <Image src="/github.png" alt="github Logo" width={20} height={20} />
-              <div className={styles.loginText}>로그인</div>
-            </div>
-        }
-      </>
-      }
+      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
       <>
-        <div className={styles.box} onClick={() => goToWait('personal')}>
-          <div>
-            <Image src="/personal.png" alt="personalGame" width={150} height={150} />
-            <div className={styles.boxText}>개인전</div>
-          </div>
-        </div>
-        <div className={styles.box} onClick={() => goToWait('team')}>
-          <div>
-            <Image src="/team.png" alt="teamGame" width={150} height={150} />
-            <div className={styles.boxText}>팀전</div>
-          </div>
-        </div>
+        <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
+        <LobbyBox mode="team" onClick={() => goToWait('team')}/>
         {
           isLogin
           && <Sidebar />

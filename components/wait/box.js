@@ -21,8 +21,8 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
   }, []);
 
   const secToTime = (s) => {
-    const min = "0" + String(parseInt((s % 3600) / 60));
-    const sec = "0" + String(parseInt(s % 60));
+    const min = '0' + String(parseInt((s % 3600) / 60));
+    const sec = '0' + String(parseInt(s % 60));
     
     return `⏳ ${min.substr(-2)}분 ${sec.substr(-2)}초 후 게임이 시작됩니다!`;
   };
@@ -43,8 +43,8 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.myPageBtn} onClick={onClickPlayAgain}>게임 시작</div>
-        <div className={styles.myPageBtn} onClick={onClickGoToMain}>메인으로</div>
+        <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
+        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {
         router?.query?.mode === 'team'

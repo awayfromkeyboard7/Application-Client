@@ -1,24 +1,19 @@
-import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { 
-  setCookie, 
   getCookie, 
-  hasCookie, 
   deleteCookie 
 } from 'cookies-next';
 import Layout from '../../components/layouts/main';
+import Header from '../../components/header';
 import styles from '../../styles/pages/MyPage.module.scss'
 
 export default function MyPage() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
-  const [isPopup, setIsPopup] = useState(false);
 
   const logout = async() => {
     deleteCookie('uid');
     deleteCookie('uname');
-    setIsLogin(false);
     goToLobby();
   }
 
@@ -28,12 +23,7 @@ export default function MyPage() {
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
-        <div className={styles.myPageBtn} onClick={logout}>로그아웃</div>
-      </>
-      }
+      header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
       <>
         <div className={styles.mainBox}>

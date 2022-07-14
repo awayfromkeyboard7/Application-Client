@@ -1,13 +1,6 @@
 @import '../variables.module.scss';
 
-.headerTitle {
-  font-size: 1.5rem; /* 24px*/
-  font-weight: bold;
-  line-height: 2rem;
-  color: #fff;
-}
-
-.myPageBtn {
+.btn {
   height: 2rem;
   padding: 0.5rem;
   flex-direction: row;
@@ -117,31 +110,6 @@
 
 .hidden {
   display: none;
-}
-
-.form {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.input {
-  width: 10rem;
-  height: 2rem;    // 60px
-  padding: 0 0.675rem;    // 0 20px
-  font-size: 1rem;    // 16px
-  border: 1px solid $gray-color;
-  border-radius: 0.25rem;   // 4px
-  outline: none;
-
-  &:focus {
-    border: 2px solid $purple-color;
-  }
-
-  &::placeholder {
-    color: #999999
-  }
 }
 
 .floatingBtn {

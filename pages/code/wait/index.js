@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
-import { socket, changeSocketConnection } from '../../../lib/socket';
+import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
+import Header from '../../../components/header';
 import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
-import styles from '../../../styles/components/wait.module.scss'
 
 export default function WaitPage() {
   const router = useRouter();  
@@ -127,12 +127,7 @@ export default function WaitPage() {
     let sendPlayers = [];
     for(let player of players) {
       if(player.isPlayer) {
-        sendPlayers.push(
-          {
-            gitId: player.gitId,
-            avatarUrl: player.avatarUrl
-          }
-        )
+        sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl})
       }
     };
 
@@ -166,6 +161,10 @@ export default function WaitPage() {
     router.push('/');
   };
 
+  const goToMyPage = () => {
+    router.push('/mypage');
+  };
+
   const addPlayer = (users) => {
     let copyPlayers = [...defaultUsers];
     console.log('add player>>>>>>>', users);
@@ -182,23 +181,18 @@ export default function WaitPage() {
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
-        <div className={styles.myPageBtn}>마이페이지</div>
-      </>
-      }
+      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
-      <>
-        <Wait 
-          type={router?.query?.mode} 
-          players={players} 
-          onClickGoToMain={goToLobby} 
-          onClickPlayAgain={goToCode}
-        />
-        <Sidebar />
-        {/* <CheckValidUser /> */}
-      </>
+        <>
+          <Wait 
+            type={router?.query?.mode} 
+            players={players} 
+            onClickGoToMain={goToLobby} 
+            onClickPlayAgain={goToCode}
+          />
+          <Sidebar />
+          <CheckValidUser />
+        </>
       }
     />
   )
