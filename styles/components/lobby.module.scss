@@ -21,24 +21,8 @@
 .headerTitle {
   font-size: 1.5rem; /* 24px*/
   font-weight: bold;
+  line-height: 2rem;
   color: #fff;
-}
-
-.loginBtn {
-  height: 2rem;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  color: rgb(89, 0, 148);
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.loginBtn:hover {
-  background-color: #f3f3f3;
 }
 
 .loginText {

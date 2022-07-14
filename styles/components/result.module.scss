@@ -3,10 +3,12 @@
 .headerTitle {
   font-size: 1.5rem; /* 24px*/
   font-weight: bold;
+  line-height: 2rem;
   color: #fff;
 }
 
-.myPageBtn {
+.myPageBtn,
+.btn {
   height: 2rem;
   padding: 0.5rem;
   flex-direction: row;
@@ -34,9 +36,17 @@
 }
 
 .mainHeader {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mainTitle {
+  padding: 0.625rem;
   font-size: 1rem; /* 24px*/
   font-weight: bold;
-  color: #fff;
+  color: $purple-color;
+  background-color: $white-dark-color;
+  border-radius: 5px;
 }
 
 .mainBody {
@@ -55,20 +65,28 @@
 
 .resultBox {
   width: 80%;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
   background-color: $white-dark-color;
   border-radius: 0.625rem;
 }
 
+.resultItemMine,
 .resultItem {
   height: 5rem;
   padding: 0.625rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.resultItemMine {
+  background-color: $gray-light-color;
 }
 
 .rank {
@@ -106,6 +124,17 @@
   justify-content: center;
 }
 
+.resultInfoBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.resultInfos {
+  display: flex;
+  flex-direction: row;
+}
+
 .nickname {
   font-size: 1rem;
   line-height: 1.25rem;
@@ -115,11 +144,11 @@
   text-overflow: ellipsis;
 }
 
+.text,
 .time {
-  margin-left: 0.625rem;
   flex: 1;
-  text-align: right;
-  font-size: 0.875rem;
+  font-size: 1rem;
+  font-weight: bold;
   line-height: 1.25rem;
   color: $gray-super-dark-color;
   white-space: nowrap;

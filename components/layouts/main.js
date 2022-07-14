@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../../styles/layouts/main.module.scss';
 
-export default function Layout({ header, body }) {
+export default function Main({ header, body }) {
   return (
     <div className={styles.container}>
       <Head>

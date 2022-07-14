@@ -1,7 +1,7 @@
 @import '../../variables.module.scss';
 
 .container {
-  height: 90%;
+  height: calc(100% - 40px);
   margin-bottom: 1rem;
   padding: 0.625rem;
   display: flex;
@@ -9,12 +9,22 @@
   overflow: auto;
 }
 
+.resultBoxRed,
+.resultBoxBlue,
 .resultBox {
   margin-bottom: 2px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   background-color: $navy-dark-color;
+}
+
+.resultBoxRed {
+  background-color: $error-trans-color;
+}
+
+.resultBoxBlue {
+  background-color: $success-trans-color;
 }
 
 .test {
@@ -47,12 +57,15 @@
   font-size: 0.875rem;
   line-height: 1.5rem;
   letter-spacing: 1px;
+  white-space: pre-wrap;
 }
 
 .textBlue {
   color: $success-color;
+  font-weight: bold;
 }
 
 .textRed {
   color: $error-color;
+  font-weight: bold;
 }

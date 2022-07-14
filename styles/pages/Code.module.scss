@@ -19,10 +19,19 @@
   border-bottom: rgba(0,0,0,0.5) solid 1px;
 }
 
-.headerTitle {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+.headerTitle,
+.headerLogo {
+  font-size: 1.5rem; /* 24px*/
+  font-weight: bold;
+  line-height: 2rem;
   color: #fff;
+}
+
+.headerTitle {
+  margin-left: 0.625rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-weight: normal;
 }
 
 .headerNotice {
@@ -65,7 +74,7 @@
   border-radius: 4px;
   position: absolute;
   background-color: #fff;
-  top: 5.25rem;
+  top: 6rem;
   /* left: 0; */
   right: 0.625rem;
   z-index: 100 !important;
@@ -128,16 +137,21 @@
   overflow: auto;
 }
 
+.timerIcon {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
 .timer {
   height: 2.5rem;
-  padding-left: 0.625rem;
+  width: 5.75rem;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.25rem;
+  text-align: right;
   line-height: 2.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: rgba(0,0,0,0.5) solid 1px;
 }
 
 .codeHeader {
@@ -220,6 +234,7 @@
   flex-direction: row;
 }
 
+.voiceBtn,
 .btn {
   width: 5rem;
   height: 1.75rem;
@@ -235,6 +250,14 @@
   
   &:hover {
     background-color: #55596e;
+  }
+}
+
+.voiceBtn {
+  color: $navy-color;
+  background-color: $green-color;
+  &:hover {
+    background-color: $green-light-color;
   }
 }
 

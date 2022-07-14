@@ -1,0 +1,66 @@
+@import '../../variables.module.scss';
+
+.container {
+  height: calc(100% - 40px);
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.playerBox {
+  padding: 0.25rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rate {
+  margin-right: 0.625rem;
+  width: 3rem;
+  color: $white-dark-color;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.25rem;
+}
+
+.profileIconInactive,
+.profileIcon {
+  width: 3rem;
+  height: 3rem;
+  // border-radius: 3rem;
+}
+
+.profileIconInactive {
+  filter: brightness(50%);
+}
+
+.infoBox {
+  padding-left: 0.625rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.nickname {
+  color: $white-dark-color;
+  font-weight: bold;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.info {
+  color: $gray-light-color;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.textGray {
+  color: $gray-color;
+}

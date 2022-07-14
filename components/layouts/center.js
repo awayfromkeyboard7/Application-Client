@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../../styles/layouts/center.module.scss';
 
-export default function Layout({ children }) {
+export default function Center({ children }) {
   return (
     <div className={styles.container}>
       <Head>

@@ -1,101 +1,58 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cookie from '../../../lib/cookie';
+import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
+import Header from '../../../components/header';
 import Result from '../../../components/result/box';
-import Friends from '../../../components/friend/list';
-import styles from '../../../styles/components/result.module.scss'
+import Sidebar from '../../../components/sidebar';
+import CheckValidUser from '../../../components/checkValidUser';
 
-export default function Home() {
+export default function ResultPage() {
   const router = useRouter();  
-  const [isLogin, setIsLogin] = useState(false);
   const [ranks, setRanks] = useState([]);
-  const friends = [
-    {
-      nickname: 'annie1229',
-      isOnline: true
-    },
-    {
-      nickname: 'prof.choi',
-      isOnline: true
-    },
-    {
-      nickname: 'codeking_moonjiro',
-      isOnline: false
-    },
-    {
-      nickname: 'afk7',
-      isOnline: false
-    },
-    {
-      nickname: 'larger',
-      isOnline: true
-    }
-  ];
+  const [gameStartAt, setGameStartAt] = useState();
   
   useEffect(() => {
-    setRanks([
-      {
-        rank: 1,
-        nickname: 'annie1229',
-        time: '00분 30초',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 2,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 3,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 4,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-    ]);
+    socket.emit('getRanking', router?.query?.gameLogId);
   }, []);
 
   useEffect(() => {
-    const token = Cookie.get('userToken');
-    if(token) {
-      // token이 있으면 서버에 유효한 토큰인지 확인하고 true
-      // 유효하지 않으면 false
-      setIsLogin(true);
-    } else {
-      // token이 없으면 false
-      setIsLogin(false);
-    }
-  }, [isLogin]);
+    socket.on('getRanking', (ranking, startAt) => {
+      setRanks(ranking);
+      setGameStartAt(startAt);
+    });
+  }, [ranks]);
 
-  const goToCode = () => {
-    router.push('/code');
+  const goToWait = () => {
+    router.push({
+      pathname: '/code/wait',
+      query: { mode: router?.query?.mode }
+    });
+  };
+
+  const goToMyPage = () => {
+    router.push('/mypage');
+  };
+
+  const goToLobby = () => {
+    router.push('/');
   };
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle}>BLUEFROG</div>
-        <div className={styles.myPageBtn}>마이페이지</div>
-      </>
-      }
+      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
-      <>
-        <Result 
-          type="personal" 
-          ranks={ranks} 
-          onClickGoToMain={() => {}} 
-          onClickPlayAgain={() => {}}
-        />
-        <Friends friends={friends} />
-      </>
+        <>
+          <Result 
+            type={router?.query?.mode}
+            ranks={ranks} 
+            startAt={gameStartAt}
+            onClickGoToMain={goToLobby} 
+            onClickPlayAgain={goToWait}
+          />
+          <Sidebar />
+          <CheckValidUser />
+        </>
       }
     />
   )

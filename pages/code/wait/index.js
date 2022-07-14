@@ -1,101 +1,198 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cookie from '../../../lib/cookie';
+import { getCookie } from 'cookies-next';
+import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
-import Result from '../../../components/result/box';
-import Friends from '../../../components/friend/list';
-import styles from '../../../styles/components/result.module.scss'
+import Header from '../../../components/header';
+import Wait from '../../../components/wait/box';
+import Sidebar from '../../../components/sidebar';
+import CheckValidUser from '../../../components/checkValidUser';
 
-export default function Home() {
+export default function WaitPage() {
   const router = useRouter();  
-  const [isLogin, setIsLogin] = useState(false);
-  const [ranks, setRanks] = useState([]);
-  const friends = [
+  const defaultUsers = [
     {
-      nickname: 'annie1229',
-      isOnline: true
+      id: 1,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
     },
     {
-      nickname: 'prof.choi',
-      isOnline: true
+      id: 2,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
     },
     {
-      nickname: 'codeking_moonjiro',
-      isOnline: false
+      id: 3,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
     },
     {
-      nickname: 'afk7',
-      isOnline: false
+      id: 4,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
     },
     {
-      nickname: 'larger',
-      isOnline: true
-    }
+      id: 5,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
+    },
+    {
+      id: 6,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
+    },
+    {
+      id: 7,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
+    },
+    {
+      id: 8,
+      gitId: 'waiting...',
+      avatarUrl: '/default_profile.jpg',
+      isPlayer: false
+    },
   ];
-  
+  const [gameLogId, setGameLogId] = useState('');
+  const [players, setPlayers] = useState(defaultUsers);
+
+  // useEffect(() => {
+  //   // router.beforePopState(() => {
+  //   //   alert('exit before leaving!!!!!');
+  //   //   socket.emit('exitWait', getCookie('uname'));
+  //   // })
+  //   const handler = () => {
+  //     alert('exit before leaving!!!!!');
+  //     socket.emit('exitWait', getCookie('uname'));
+  //     throw 'route change abort!!!';
+  //   };
+  //   router.events.on('routeChangeStart', handler);
+
+  //   return () => {
+  //     router.events.off('routeChangeStart', handler);
+  //   }
+  // }, [router]);
+
   useEffect(() => {
-    setRanks([
-      {
-        rank: 1,
-        nickname: 'annie1229',
-        time: '00분 30초',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 2,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 3,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-      {
-        rank: 4,
-        nickname: 'annie1229',
-        time: '',
-        imageUrl: '/jinny.jpg'
-      },
-    ]);
+    // const exitWait = (e) => {
+    //   e.preventDefault();
+    //   // window.alert('exit page???');
+    //   // alert('exit page???');
+    //   // console.log('exit wait function!!!!!', getCookie('uname'));
+    //   // socket.emit('exitWait', getCookie('uname'));
+    //   e.returnValue = '';
+    // };
+
+    // window.addEventListener('beforeunload', exitWait);
+    socket.on('enterNewUser', (users) => {
+      addPlayer(users);
+    });
+    socket.on('startGame', (gameLogId) => {
+      setGameLogId(gameLogId);
+    });
+    socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+
+    return () => {
+      console.log('exit wait screen!!!!!', getCookie('uname'));
+      // window.removeEventListener('beforeunload', exitWait);
+      // socket.emit('exitWait', getCookie('uname'));
+      // changeSocketConnection(process.env.NEXT_PUBLIC_SOCKET_PROVIDER);
+    }
   }, []);
 
-  useEffect(() => {
-    const token = Cookie.get('userToken');
-    if(token) {
-      // token이 있으면 서버에 유효한 토큰인지 확인하고 true
-      // 유효하지 않으면 false
-      setIsLogin(true);
-    } else {
-      // token이 없으면 false
-      setIsLogin(false);
-    }
-  }, [isLogin]);
 
-  const goToCode = () => {
-    router.push('/code');
+  useEffect(() => {
+    socket.on('exitWait', (users) => {
+      addPlayer(users);
+    });
+  }, [players]);
+
+  useEffect(() => {
+    if(gameLogId !== '') {
+      router.push({
+        pathname: '/code',
+        query: { gameLogId, mode: router?.query?.mode }
+      });
+    }
+  }, [gameLogId]);
+  
+  const startGame = async() => {
+    let sendPlayers = [];
+    for(let player of players) {
+      if(player.isPlayer) {
+        sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl})
+      }
+    };
+
+    console.log('send players', sendPlayers);
+
+    await fetch(`/api/gamelog/createNew`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        players: sendPlayers
+      }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        setGameLogId(data.gameLogId);
+        socket.emit('startGame', data.gameLogId);
+      }
+    })
+    .catch(error => console.log('error >> ', error));
   };
+
+  const goToCode = async () => {
+    await startGame();
+  };
+
+  const goToLobby = () => {
+    socket.emit('exitWait', getCookie('uname'));
+    router.push('/');
+  };
+
+  const goToMyPage = () => {
+    router.push('/mypage');
+  };
+
+  const addPlayer = (users) => {
+    let copyPlayers = [...defaultUsers];
+    console.log('add player>>>>>>>', users);
+    for(let i = 0; i < users.length; i++) {
+      if(copyPlayers[i].isPlayer === false) {
+        copyPlayers[i].gitId = users[i].gitId;
+        copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/jinny.jpg';
+        copyPlayers[i].isPlayer = true;
+      }
+    }
+    console.log('addplayer', copyPlayers);
+    setPlayers(copyPlayers);
+  }
 
   return (
     <Layout 
-      header={
-      <>
-        <div className={styles.headerTitle}>BLUEFROG</div>
-        <div className={styles.myPageBtn}>마이페이지</div>
-      </>
-      }
+      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
-      <>
-        <Result 
-          type="personal" 
-          ranks={ranks} 
-          onClickGoToMain={() => {}} 
-          onClickPlayAgain={() => {}}
-        />
-        <Friends friends={friends} />
-      </>
+        <>
+          <Wait 
+            type={router?.query?.mode} 
+            players={players} 
+            onClickGoToMain={goToLobby} 
+            onClickPlayAgain={goToCode}
+          />
+          <Sidebar />
+          <CheckValidUser />
+        </>
       }
     />
   )
