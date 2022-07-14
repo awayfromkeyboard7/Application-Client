@@ -28,6 +28,13 @@ export default function ResultPage() {
     router.push('/code');
   };
 
+  const goToWait = () => {
+    router.push({
+      pathname: '/code/wait',
+      query: { mode: router?.query?.mode }
+    });
+  };
+
   const goToLobby = () => {
     router.push('/');
   };
@@ -47,7 +54,7 @@ export default function ResultPage() {
           ranks={ranks} 
           startAt={gameStartAt}
           onClickGoToMain={goToLobby} 
-          onClickPlayAgain={goToCode}
+          onClickPlayAgain={goToWait}
         />
         <Sidebar />
         {/* <CheckValidUser /> */}
