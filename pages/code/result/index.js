@@ -36,7 +36,7 @@ export default function ResultPage() {
     <Layout 
       header={
       <>
-        <div className={styles.headerTitle} onClick={goToLobby}>BLUEFROG</div>
+        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
         <div className={styles.myPageBtn}>마이페이지</div>
       </>
       }

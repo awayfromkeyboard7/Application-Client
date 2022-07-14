@@ -78,7 +78,7 @@ export default function Home() {
     <Layout 
       header={
       <>
-        <div className={styles.headerTitle}>BLUEFROG</div>
+        <div className={styles.headerTitle}>{`{ CODE: ‘뚝딱’ }`}</div>
         {
           isLogin
           ? <div className={styles.myPageBtn} onClick={goToMyPage}>마이페이지</div>

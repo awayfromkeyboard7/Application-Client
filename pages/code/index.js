@@ -301,7 +301,7 @@ export default function Code() {
       header={
       <>
         <div className={styles.headerRow}>
-          <div className={styles.headerLogo} onClick={goToLobby}>{`BLUEFROG`}</div>
+          <div className={styles.headerLogo} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
           <div className={styles.headerTitle}>{` > ${problems.title ?? ''}`}</div>
         </div>
         <div className={styles.headerRow}>

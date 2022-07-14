@@ -30,7 +30,7 @@ export default function MyPage() {
     <Layout 
       header={
       <>
-        <div className={styles.headerTitle} onClick={goToLobby}>BLUEFROG</div>
+        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
         <div className={styles.myPageBtn} onClick={logout}>로그아웃</div>
       </>
       }
