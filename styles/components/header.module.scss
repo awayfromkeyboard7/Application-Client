@@ -77,47 +77,6 @@
   background-color: #f3f3f3;
 }
 
-.body {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  /* background-color: #f3f3f3; */
-  background-color: #282A35;
-}
-
-.boxText {
-  margin-top: 1.25rem;
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 2.5rem;
-  text-align: center;
-  color: #fff;
-}
-
-.box {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.box > div {
-  display: flex;
-  flex-direction: column;
-}
-
-.box:hover {
-  background-color: rgb(89, 0, 148);
-}
-
-.box:hover > div {
-  color: #fff;
-  transform: scale(1.2);
-  transition-duration: .5s;
-  /* transition-delay: .4s; */
-}
-
 .hidden {
   display: none;
 }

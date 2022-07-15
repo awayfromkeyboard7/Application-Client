@@ -63,34 +63,7 @@ export default function WaitPage() {
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
 
-  // useEffect(() => {
-  //   // router.beforePopState(() => {
-  //   //   alert('exit before leaving!!!!!');
-  //   //   socket.emit('exitWait', getCookie('uname'));
-  //   // })
-  //   const handler = () => {
-  //     alert('exit before leaving!!!!!');
-  //     socket.emit('exitWait', getCookie('uname'));
-  //     throw 'route change abort!!!';
-  //   };
-  //   router.events.on('routeChangeStart', handler);
-
-  //   return () => {
-  //     router.events.off('routeChangeStart', handler);
-  //   }
-  // }, [router]);
-
   useEffect(() => {
-    // const exitWait = (e) => {
-    //   e.preventDefault();
-    //   // window.alert('exit page???');
-    //   // alert('exit page???');
-    //   // console.log('exit wait function!!!!!', getCookie('uname'));
-    //   // socket.emit('exitWait', getCookie('uname'));
-    //   e.returnValue = '';
-    // };
-
-    // window.addEventListener('beforeunload', exitWait);
     socket.on('enterNewUser', (users) => {
       addPlayer(users);
     });
@@ -98,13 +71,6 @@ export default function WaitPage() {
       setGameLogId(gameLogId);
     });
     socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
-
-    return () => {
-      console.log('exit wait screen!!!!!', getCookie('uname'));
-      // window.removeEventListener('beforeunload', exitWait);
-      // socket.emit('exitWait', getCookie('uname'));
-      // changeSocketConnection(process.env.NEXT_PUBLIC_SOCKET_PROVIDER);
-    }
   }, []);
 
 
@@ -130,8 +96,6 @@ export default function WaitPage() {
         sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl})
       }
     };
-
-    console.log('send players', sendPlayers);
 
     await fetch(`/api/gamelog/createNew`, {
       method: 'POST',
@@ -167,7 +131,7 @@ export default function WaitPage() {
 
   const addPlayer = (users) => {
     let copyPlayers = [...defaultUsers];
-    console.log('add player>>>>>>>', users);
+    
     for(let i = 0; i < users.length; i++) {
       if(copyPlayers[i].isPlayer === false) {
         copyPlayers[i].gitId = users[i].gitId;
@@ -175,7 +139,7 @@ export default function WaitPage() {
         copyPlayers[i].isPlayer = true;
       }
     }
-    console.log('addplayer', copyPlayers);
+    
     setPlayers(copyPlayers);
   }
 

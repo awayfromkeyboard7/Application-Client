@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { 
-  setCookie, 
   getCookie, 
-  hasCookie, 
-  deleteCookie 
+  hasCookie
 } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
@@ -33,10 +31,6 @@ export default function Home() {
     }
   }, [isLogin]);
 
-  // const goToCode = () => {
-  //   router.push('/code');
-  // };
-
   const goToWait = (mode) => {
     if(isLogin) {
       router.push({
@@ -56,24 +50,6 @@ export default function Home() {
     }
   };
 
-  const login = async() => {
-    await fetch(`/api/login`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'  
-    })
-    .then(res => res.json())
-    .then(data => router.push(data.url))
-    .catch(error => console.log('error >> ', error));
-  };
-
-  const logout = async() => {
-    deleteCookie('uid');
-    setIsLogin(false);
-  }
-
   return (
     <Layout 
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
@@ -81,10 +57,7 @@ export default function Home() {
       <>
         <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
         <LobbyBox mode="team" onClick={() => goToWait('team')}/>
-        {
-          isLogin
-          && <Sidebar />
-        }
+        { isLogin && <Sidebar />}
         {
           isPopup
           && <Popup 

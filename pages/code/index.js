@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
@@ -8,23 +8,16 @@ import {
   ReflexElement
 } from 'react-reflex';
 import { getCookie } from 'cookies-next';
-
 import { socket } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
 import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
 import Output from '../../components/code/output';
-import Popup from '../../components/popup';
 import CheckValidUser from '../../components/checkValidUser';
 import CheckValidAccess from '../../components/checkValidAccess';
-
 import 'react-reflex/styles.css';
 import styles from '../../styles/pages/Code.module.scss';
-
-let awareness;
-let yLines;
-let undoManager;
 
 export default function Code() {
   const router = useRouter();  
@@ -36,42 +29,38 @@ export default function Code() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
-  const [codeResult, setCodeResult] = useState('');
-  const [isSuccessResult, setIsSuccessResult] = useState(true);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [isPopup, setIsPopup] = useState(false);
-  const [popupTitle, setPopupTitle] = useState('');
-  const [popupContent, setPopupContent] = useState('');
-  const [popupLabel, setPopupLabel] = useState('');
-  const [popupBtnFunc, setPopupBtnFunc] = useState(() => () => setIsPopup(false));
   const [selectedLang, setSelectedLang] = useState('Python');
   // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(900);
+  const [countdown, setCountdown] = useState(30);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
 
   let yDoc = new Y.Doc();
 
-  const updatePlayerList = (info) => {
-    let result = [...playerList];
-    console.log('player list >>', playerList);
-    for (let i = 0; i < info.length; i++) {
-      result[i] = info[i];
-    }
-    console.log('submit code socket result!!!', result);
-    setPlayerList(result);
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(new Date());
+      setCountdown(prev => {
+        if(0 < prev) return prev - 1;
+        else return prev;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     socket.on('submitCode', (submitInfo) => {
-      console.log('submitInfo>>>>>>', submitInfo);
       updatePlayerList(submitInfo);
     });
   }, [playerList]);
 
   useEffect(() => {
-    const submitResult = async () => {
+    const submitResult = async() => {
       await submitCode();
       socket.emit('submitCode', router?.query?.gameLogId);
       router.push({
@@ -90,22 +79,6 @@ export default function Code() {
   }, [isSubmit]);
 
   useEffect(() => {
-    const date = new Date('2022-07-05T13:00:00');
-
-    const interval = setInterval(() => {
-      console.log(new Date());
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
     const getProblem = async() => {
       await fetch(`/api/gamelog/getGameLog`, {
         method: 'POST',
@@ -119,7 +92,6 @@ export default function Code() {
       })
       .then(res => res.json())
       .then(data => {
-        console.log('success get problem!!', data);
         if(data.success) {
           setProblems(data.info.problemId);
           setPlayerList(data.info.userHistory);
@@ -135,7 +107,6 @@ export default function Code() {
     if(isDoc === false && router?.query?.gameLogId) {
       const url = router?.query?.mode === 'team' ? router?.query?.gameLogId : `${gitId}_${router?.query?.gameLogId}`
       let yProvider = new WebrtcProvider(url, yDoc);
-      awareness = yProvider.awareness;
       setDoc(yDoc);
       setProvider(yProvider);
       setIsDoc(true);
@@ -148,24 +119,9 @@ export default function Code() {
 
   useEffect(() => {
     if(countdown === 0) {
-      judgeCode();
-      setIsPopup(true);
+      judgeCode(true);
     }
   }, [countdown]);
-
-  useEffect(() => {
-    if(passRate === 100) {
-      setPopupTitle('정답입니다!🥳');
-      setPopupContent(`문제를 맞추셨습니다.`);
-      setPopupLabel('다음 문제로');
-      setPopupBtnFunc(() => () => goToNextProblem());
-    } else {
-      setPopupTitle('아쉽지만 다음 기회에..😭');
-      setPopupContent(`문제를 틀렸습니다.`);
-      setPopupLabel('메인으로');
-      setPopupBtnFunc(() => () => goToLobby());
-    }
-  }, [isSuccessResult, selectedLang]);
   
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -179,10 +135,14 @@ export default function Code() {
     return `${min.substr(-2)}분 ${sec.substr(-2)}초`;
   };
 
-  const onChange = useCallback((value) => {
-    console.log(value);
-    setCodeText(value);
-  }, []);
+  const updatePlayerList = (info) => {
+    let result = [...playerList];
+    console.log('player list >>', playerList);
+    for (let i = 0; i < info.length; i++) {
+      result[i] = info[i];
+    }
+    setPlayerList(result);
+  };
 
   const onChangeLang = (lang) => {
     switch(lang) {
@@ -204,13 +164,6 @@ export default function Code() {
     }
   };
 
-  const goToNextProblem = () => {
-    onChangeLang(selectedLang);
-    setOutputs({});
-    setCodeResult('');
-    setIsPopup(false);
-  };
-
   const goToLobby = () => {
     router.push('/');
   };
@@ -221,7 +174,6 @@ export default function Code() {
 
   const submitCode = async() => {
     const code = doc.getText('codemirror');
-    console.log('submit code >> ', code);
 
     await fetch(`/api/gamelog/update`, {
       method: 'POST',
@@ -244,8 +196,7 @@ export default function Code() {
 
   const judgeCode = async(submit=false) => {
     const code = doc.getText('codemirror');
-    console.log('judge code >> ', code);
-
+    
     await fetch(`/api/judge`, {
       method: 'POST',
       headers: {
@@ -260,32 +211,12 @@ export default function Code() {
     })
     .then(res => res.json())
     .then(data => {
-      if (data.result) setIsSuccessResult(true);
-      else setIsSuccessResult(false);
       setOutputs(data);
       console.log('judgeCode >>>>>>', data);
       setPassRate(data.passRate);
       if(submit === true) {
         setIsSubmit(true);
       }
-    })
-    .catch(error => console.log('error >> ', error));
-  };
-
-  const judgeCodeWithSocket = async() => {
-    await fetch(`/api/judge`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        code: codeText 
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.result) setIsSuccessResult(true);
-      else setIsSuccessResult(false);
     })
     .catch(error => console.log('error >> ', error));
   };
@@ -365,15 +296,6 @@ export default function Code() {
           <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
           <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
         </div>
-        {
-          isPopup
-          && <Popup 
-              title={popupTitle}
-              content={popupContent}
-              label={popupLabel}
-              onClick={popupBtnFunc} 
-            />
-        }
         <CheckValidUser />
         {/* <CheckValidAccess check={router.query.gameLogId} message="유효하지 않은 게임입니다." /> */}
         </>
