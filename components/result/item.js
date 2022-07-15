@@ -53,7 +53,7 @@ export default function ResultItem({ info, startAt, idx }) {
   };
 
   return (
-    <div className={myNickname === info.nickname ? styles.resultItemMine : styles.resultItem}>
+    <div className={myNickname === info.gitId ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
         <Image src={info.avatarUrl} width={40} height={40} className={styles.profileIcon} alt="프로필" />

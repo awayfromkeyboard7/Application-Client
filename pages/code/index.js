@@ -17,7 +17,7 @@ import Output from '../../components/code/output';
 import CheckValidUser from '../../components/checkValidUser';
 import CheckValidAccess from '../../components/checkValidAccess';
 import 'react-reflex/styles.css';
-import styles from '../../styles/pages/Code.module.scss';
+import styles from '../../styles/pages/code.module.scss';
 
 export default function Code() {
   const router = useRouter();  

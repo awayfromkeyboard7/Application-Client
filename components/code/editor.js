@@ -7,7 +7,7 @@ import { indentWithTab } from '@codemirror/commands';
 import { useEffect, useRef } from 'react';
 import * as random from 'lib0/random';
 import '../../styles/components/code/editor.module.css';
-import styles from '../../styles/pages/Code.module.scss';
+import styles from '../../styles/pages/code.module.scss';
 
 export const usercolors = [
   { color: '#6C5B7B', light: '#6C5B7B33' }, // 애쉬보라

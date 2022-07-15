@@ -9,9 +9,9 @@ export default function RankingList({ ranks, isAbsolute=false }) {
       {
         ranks.map(elem => 
           <Item 
-            key={elem.rank}
-            rank={elem.rank} 
-            nickname={elem.nickname} 
+            key={elem.ranking}
+            rank={elem.ranking} 
+            nickname={elem.gitId} 
             info={elem.info} 
             image={elem.avatarUrl} 
           />
