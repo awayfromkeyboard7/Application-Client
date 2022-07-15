@@ -22,8 +22,19 @@ export default function Home() {
 
   useEffect(() => {
     if(hasCookie('uid')) {
-      // token이 있으면 서버에 유효한 토큰인지 확인하고 true
-      // 유효하지 않으면 false
+      if(isLogin) {
+        // token이 있으면 서버에 유효한 토큰인지 확인하고 true
+        // 유효하지 않으면 false
+        socket.emit('setGitId', getCookie('uname'));
+        socket.on('comeon', id => {
+          const myInfo = {
+            gitId: getCookie('uname'),
+            avatarUrl: getCookie('uimg')
+          }
+          socket.emit('acceptInvite', id, myInfo)
+          // router.push('/code/wait');
+        })
+      }
       setIsLogin(true);
     } else {
       // token이 없으면 false

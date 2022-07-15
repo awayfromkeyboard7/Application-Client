@@ -64,13 +64,22 @@ export default function WaitPage() {
   const [players, setPlayers] = useState(defaultUsers);
 
   useEffect(() => {
-    socket.on('enterNewUser', (users) => {
-      addPlayer(users);
-    });
-    socket.on('startGame', (gameLogId) => {
-      setGameLogId(gameLogId);
-    });
-    socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+    if (router?.query?.mode === 'personal') {
+      socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });  
+      socket.on('enterNewUser', (users) => {
+        addPlayer(users);
+      });
+      socket.on('startGame', (gameLogId) => {
+        setGameLogId(gameLogId);
+      });
+    }
+    else if (router?.query?.mode === 'team'){
+      socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+      socket.on('enterNewUserToTeam', (users) => {
+        console.log('waitingTEAM!!!!!!!!!!', 'mode: ', router?.query?.mode, 'socket nsp?', socket.nsp);
+        addPlayer(users);
+      });
+    }
   }, []);
 
 
