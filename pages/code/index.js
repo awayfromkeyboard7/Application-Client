@@ -53,6 +53,15 @@ export default function Code() {
     };
   }, []);
 
+  const updatePlayerList = (info) => {
+    let result = [...playerList];
+    console.log('player list >>', playerList);
+    for (let i = 0; i < info.length; i++) {
+      result[i] = info[i];
+    }
+    setPlayerList(result);
+  };
+
   useEffect(() => {
     socket.on('submitCode', (submitInfo) => {
       updatePlayerList(submitInfo);
@@ -133,15 +142,6 @@ export default function Code() {
     const sec = '0' + String(parseInt(s % 60));
     
     return `${min.substr(-2)}분 ${sec.substr(-2)}초`;
-  };
-
-  const updatePlayerList = (info) => {
-    let result = [...playerList];
-    console.log('player list >>', playerList);
-    for (let i = 0; i < info.length; i++) {
-      result[i] = info[i];
-    }
-    setPlayerList(result);
   };
 
   const onChangeLang = (lang) => {
