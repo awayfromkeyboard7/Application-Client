@@ -16,7 +16,7 @@ export default function Home() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
-  const [isNoti, setIsNoti] = useState(true);
+  const [isNoti, setIsNoti] = useState(false);
   const [inviteId, setInviteId] = useState(null);
   const [inviteImageUrl, setInviteImageUrl] = useState(null);
 
@@ -43,10 +43,12 @@ export default function Home() {
   }, [isLogin]);
 
   const goToWait = (mode) => {
+    const query = mode === 'team' ? { mode, roomId: getCookie('uname') } : { mode }
+
     if(isLogin) {
       router.push({
         pathname: '/code/wait',
-        query: { mode }
+        query
       });
     } else {
       setIsPopup(true);
@@ -66,11 +68,11 @@ export default function Home() {
       gitId: getCookie('uname'),
       avatarUrl: getCookie('uimg')
     }
-    // socket.emit('acceptInvite', id, myInfo);
+    socket.emit('acceptInvite', inviteId, myInfo);
     setIsNoti(false);
     router.push({
       pathname: '/code/wait',
-      query: { mode: 'team' }
+      query: { mode: 'team', roomId: inviteId }
     });
   };
 

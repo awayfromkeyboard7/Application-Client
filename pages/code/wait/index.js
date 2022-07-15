@@ -70,6 +70,11 @@ export default function WaitPage() {
         console.log('waitingTEAM!!!!!!!!!!', 'mode: ', router?.query?.mode, 'socket nsp?', socket.nsp);
         addPlayer(users);
       });
+      socket.on('setUsers', (users) => {
+        console.log('setUsers', users)
+        addPlayer(users);
+      })
+      socket.emit('getUsers', router?.query?.roomId);
     } else {
       socket.on('enterNewUser', (users) => {
         addPlayer(users);
@@ -145,12 +150,10 @@ export default function WaitPage() {
   const addPlayer = (users) => {
     let copyPlayers = [...defaultUsers];
     
-    for(let i = 0; i < users.length; i++) {
-      if(copyPlayers[i].isPlayer === false) {
-        copyPlayers[i].gitId = users[i].gitId;
-        copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/jinny.jpg';
-        copyPlayers[i].isPlayer = true;
-      }
+    for(let i = 0; i < users?.length; i++) {
+      copyPlayers[i].gitId = users[i].gitId;
+      copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/jinny.jpg';
+      copyPlayers[i].isPlayer = true;
     }
     
     setPlayers(copyPlayers);
