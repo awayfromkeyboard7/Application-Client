@@ -32,7 +32,7 @@ export default function Code() {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('Python');
   // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(30);
+  const [countdown, setCountdown] = useState(900);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
@@ -105,7 +105,7 @@ export default function Code() {
     }
 
     if(isDoc === false && router?.query?.gameLogId) {
-      const url = router?.query?.mode === 'team' ? router?.query?.gameLogId : `${gitId}_${router?.query?.gameLogId}`
+      const url = router?.query?.mode === 'team' ? router?.query?.roomId : `${gitId}_${router?.query?.gameLogId}`
       let yProvider = new WebrtcProvider(url, yDoc);
       setDoc(yDoc);
       setProvider(yProvider);

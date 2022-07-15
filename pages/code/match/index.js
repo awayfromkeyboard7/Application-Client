@@ -37,25 +37,14 @@ export default function MatchPage() {
     }
   ];
   const [gameLogId, setGameLogId] = useState('');
+  const [roomId, setRoomId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
 
   useEffect(() => {
-    if (router?.query?.mode === 'personal') {
-      socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });  
-      socket.on('enterNewUser', (users) => {
-        addPlayer(users);
-      });
-      socket.on('startGame', (gameLogId) => {
-        setGameLogId(gameLogId);
-      });
-    }
-    else if (router?.query?.mode === 'team'){
-      socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
-      socket.on('enterNewUserToTeam', (users) => {
-        console.log('waitingTEAM!!!!!!!!!!', 'mode: ', router?.query?.mode, 'socket nsp?', socket.nsp);
-        addPlayer(users);
-      });
-    }
+    socket.on('teamGameStart', (roomId, gameLogId) => {
+      setGameLogId(gameLogId);
+      setRoomId(roomId);
+    })
   }, []);
 
 
@@ -69,7 +58,7 @@ export default function MatchPage() {
     if(gameLogId !== '') {
       router.push({
         pathname: '/code',
-        query: { gameLogId, mode: router?.query?.mode }
+        query: { mode: 'team', gameLogId, roomId }
       });
     }
   }, [gameLogId]);

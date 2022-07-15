@@ -130,6 +130,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
+    socket.emit("startMatching", getCookie('uname'));
     router.push('/code/match');
   };
 
