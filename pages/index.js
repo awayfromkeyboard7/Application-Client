@@ -10,11 +10,15 @@ import Header from '../components/header';
 import LobbyBox from '../components/lobby/box';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
+import Notification from '../components/notification';
 
 export default function Home() {
   const router = useRouter();  
   const [isLogin, setIsLogin] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
+  const [isNoti, setIsNoti] = useState(true);
+  const [inviteId, setInviteId] = useState(null);
+  const [inviteImageUrl, setInviteImageUrl] = useState(null);
 
   useEffect(() => {
     socket.emit('exitWait', getCookie('uname'));
@@ -27,12 +31,8 @@ export default function Home() {
         // 유효하지 않으면 false
         socket.emit('setGitId', getCookie('uname'));
         socket.on('comeon', id => {
-          const myInfo = {
-            gitId: getCookie('uname'),
-            avatarUrl: getCookie('uimg')
-          }
-          socket.emit('acceptInvite', id, myInfo)
-          // router.push('/code/wait');
+          setInviteId(id);
+          setIsNoti(true);
         })
       }
       setIsLogin(true);
@@ -61,6 +61,23 @@ export default function Home() {
     }
   };
 
+  const onClickAccept = () => {
+    const myInfo = {
+      gitId: getCookie('uname'),
+      avatarUrl: getCookie('uimg')
+    }
+    // socket.emit('acceptInvite', id, myInfo);
+    setIsNoti(false);
+    router.push({
+      pathname: '/code/wait',
+      query: { mode: 'team' }
+    });
+  };
+
+  const onClickDecline = () => {
+    setIsNoti(false);
+  };
+
   return (
     <Layout 
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
@@ -78,6 +95,17 @@ export default function Home() {
               onClick={() => setIsPopup(false)} 
             />
         } 
+        {
+          isLogin 
+          && isNoti
+          && <Notification 
+              title={`${inviteId}님이 팀전에 초대했습니다!`}
+              content="게임에 참가하시겠습니까?"
+              imgUrl={inviteImageUrl ?? "/default_profile.jpg"}
+              onClickAccept={onClickAccept}
+              onClickDecline={onClickDecline}
+            />
+        }
       </>
       }
     />

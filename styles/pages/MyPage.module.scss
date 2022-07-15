@@ -60,24 +60,26 @@
   color: #fff;
   background-color: $purple-color;
   // clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
-  position: relative;
+  // position: relative;
 }
 
 .totalRank,
 .myRank {
-  position: absolute;
-  font-size: 1rem;
-  color: red;
+  // position: absolute;
+  height: 2rem;
+  padding-left: 4px;
+  font-size: 2rem;
+  line-height: 2rem;
+  color: $mustard-color;
   font-weight: bold;
-  left: 0;
-  top: 0;
+  // left: 0;
+  // top: 0;
 }
 
 .totalRank {
-  right: 0;
-  bottom: -1rem;
+  padding-right: 4px;
   text-align: right;
-  color: $gray-super-dark-color;
+  color: $gray-color;
 }
 
 .date {

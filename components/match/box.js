@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Grid, MutatingDots, Oval, Rings, BallTriangle } from 'react-loader-spinner';
 import Item from './item';
-import styles from '../../styles/components/wait.module.scss';
+import styles from '../../styles/components/match.module.scss';
 
 export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain }) {
   const router = useRouter();
@@ -24,13 +25,13 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
     const min = '0' + String(parseInt((s % 3600) / 60));
     const sec = '0' + String(parseInt(s % 60));
     
-    return `⏳ ${min.substr(-2)}분 ${sec.substr(-2)}초 후 게임이 시작됩니다!`;
+    return `팀전 대기 중...${min.substr(-2)}분 ${sec.substr(-2)}초 ⏳`;
   };
 
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
-        <div className={styles.mainTitle}>{`${type === 'team' ? '팀' : '개인'}전`}</div>
+        <div className={styles.mainTitle}>팀전</div>
       </div>
       <div className={styles.countdown}>{secToTime(countdown)}</div>
       <div className={styles.mainBody}> 
@@ -41,9 +42,20 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
           )
         }
         </div>
+        <div className={styles.waitBox}>
+          <div className={styles.loadingBox}>
+            <Grid 
+              height={60} 
+              width={60} 
+              color="#282A35" 
+              ariaLabel="loading" 
+            />
+            <div className={styles.text}>매칭 중..</div>
+          </div>
+        </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
+        <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {

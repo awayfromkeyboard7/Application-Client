@@ -4,11 +4,11 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
-import Wait from '../../../components/wait/box';
+import Match from '../../../components/match/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
 
-export default function WaitPage() {
+export default function MatchPage() {
   const router = useRouter();  
   const defaultUsers = [
     {
@@ -34,31 +34,7 @@ export default function WaitPage() {
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
       isPlayer: false
-    },
-    {
-      id: 5,
-      gitId: 'waiting...',
-      avatarUrl: '/default_profile.jpg',
-      isPlayer: false
-    },
-    {
-      id: 6,
-      gitId: 'waiting...',
-      avatarUrl: '/default_profile.jpg',
-      isPlayer: false
-    },
-    {
-      id: 7,
-      gitId: 'waiting...',
-      avatarUrl: '/default_profile.jpg',
-      isPlayer: false
-    },
-    {
-      id: 8,
-      gitId: 'waiting...',
-      avatarUrl: '/default_profile.jpg',
-      isPlayer: false
-    },
+    }
   ];
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
@@ -129,10 +105,6 @@ export default function WaitPage() {
     await startGame();
   };
 
-  const goToMatch = () => {
-    router.push('/code/match');
-  };
-
   const goToLobby = () => {
     socket.emit('exitWait', getCookie('uname'));
     router.push('/');
@@ -161,11 +133,11 @@ export default function WaitPage() {
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
         <>
-          <Wait 
+          <Match 
             type={router?.query?.mode} 
             players={players} 
             onClickGoToMain={goToLobby} 
-            onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
+            onClickPlayAgain={goToCode}
           />
           <Sidebar />
           <CheckValidUser />
