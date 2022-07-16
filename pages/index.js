@@ -23,6 +23,7 @@ export default function Home() {
   useEffect(() => {
     // socket.emit('exitWait', getCookie('uname'));
     if (router?.query?.mode === 'team') {
+      // 이건 뭐죠...?
       socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
     } 
     else {

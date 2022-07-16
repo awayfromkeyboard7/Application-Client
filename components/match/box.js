@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Grid, MutatingDots, Oval, Rings, BallTriangle } from 'react-loader-spinner';
+import { Grid } from 'react-loader-spinner';
 import Item from './item';
 import styles from '../../styles/components/match.module.scss';
 
-export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain }) {
+export default function MatchBox({ players, onClickGoToMain }) {
   const router = useRouter();
   const [countdown, setCountdown] = useState(180);
 
@@ -37,8 +37,8 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {
-          players.map((item, idx) => 
-            <Item info={item} key={`${item.id}${idx}`} />
+          players?.map(item => 
+            <Item info={item} key={item.gitId} />
           )
         }
         </div>
@@ -55,7 +55,6 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         </div>
       </div>
       <div className={styles.mainFooter}>
-        {/* <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div> */}
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {
