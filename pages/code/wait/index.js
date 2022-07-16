@@ -76,6 +76,8 @@ export default function WaitPage() {
         console.log('setUsers', users)
         addPlayer(users);
       });
+
+      // 팀전 대기 중 화면으로 이동
       socket.on("goToMachingRoom", (bangjang) => {
         console.log("let's go MATCHING ROOM!!!!!!", bangjang);
         router.push({
@@ -83,6 +85,7 @@ export default function WaitPage() {
           query: { mode: 'team', roomId: bangjang }
         });
       })
+
       socket.emit('getUsers', router?.query?.roomId);
     } else {
       socket.on('enterNewUser', (users) => {
