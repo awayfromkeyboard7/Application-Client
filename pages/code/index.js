@@ -32,25 +32,37 @@ export default function Code() {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('Python');
   // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(900);
+  const [countdown, setCountdown] = useState(899);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
 
   let yDoc = new Y.Doc();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log(new Date());
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log(new Date());
+  //     setCountdown(prev => {
+  //       if(0 < prev) return prev - 1;
+  //       else return prev;
+  //     });
+  //   }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    socket.on('timeLimitCode', ts => {
+      setCountdown(parseInt(ts / 1000));
+    });
+    socket.on('timeOutCode', () => {
+      goToResult();
+    });
+    socket.on('submitCode', (submitInfo) => {
+      updatePlayerList(submitInfo);
+    });
   }, []);
 
   const updatePlayerList = (info) => {
@@ -61,12 +73,6 @@ export default function Code() {
     }
     setPlayerList(result);
   };
-
-  useEffect(() => {
-    socket.on('submitCode', (submitInfo) => {
-      updatePlayerList(submitInfo);
-    });
-  }, [playerList]);
 
   useEffect(() => {
     const submitResult = async() => {
@@ -179,7 +185,7 @@ export default function Code() {
   };
 
   const submitCode = async() => {
-    const code = doc.getText('codemirror');
+    const code = doc?.getText('codemirror');
 
     await fetch(`/api/gamelog/update`, {
       method: 'POST',
@@ -201,7 +207,7 @@ export default function Code() {
   };
 
   const submitCodeTeam = async() => {
-    const code = doc.getText('codemirror');
+    const code = doc?.getText('codemirror');
 
     await fetch(`/api/gamelog/updateTeam`, {
       method: 'POST',
@@ -224,7 +230,7 @@ export default function Code() {
   }
 
   const judgeCode = async(submit=false) => {
-    const code = doc.getText('codemirror');
+    const code = doc?.getText('codemirror');
     
     await fetch(`/api/judge`, {
       method: 'POST',
