@@ -39,20 +39,6 @@ export default function Code() {
 
   let yDoc = new Y.Doc();
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log(new Date());
-  //     setCountdown(prev => {
-  //       if(0 < prev) return prev - 1;
-  //       else return prev;
-  //     });
-  //   }, 1000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
-
   useEffect(() => {
     socket.on('timeLimitCode', ts => {
       setCountdown(parseInt(ts / 1000));
@@ -60,9 +46,29 @@ export default function Code() {
     socket.on('timeOutCode', () => {
       goToResult();
     });
+    // park-hg start
     socket.on('submitCode', (submitInfo) => {
       updatePlayerList(submitInfo);
     });
+    socket.on('SubmitCodeTeam', (result) => {
+      console.log('SubmitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
+      // PLEASE update player list here!!!!!!!!
+    });
+    socket.on('TeamGameOver', () => {
+      console.log('TeamGameOver');
+      router.push({
+        pathname: '/code/result',
+        query: { 
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode 
+        }
+      });
+    })
+    socket.on('shareJudgedCode', (data) => {
+      console.log('shareJudgedCode', data)
+      setOutputs(data);
+    })
+    // park-hg end
   }, []);
 
   const updatePlayerList = (info) => {
@@ -77,12 +83,16 @@ export default function Code() {
   useEffect(() => {
     const submitResult = async() => {
       //도현 분기처리 추가
+      console.log("what mode submit code at????????", router?.query?.roomId);
       if (router?.query?.mode === "team"){
         await submitCodeTeam();
-      }else{
+        socket.emit('SubmitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+      }
+      else {
+        console.log("team should not be here!!!!!!!!!!!!");
         await submitCode();
+        socket.emit('submitCode', router?.query?.gameLogId);
       };
-      socket.emit('submitCode', router?.query?.gameLogId);
       router.push({
         pathname: '/code/result',
         query: { 
@@ -93,7 +103,7 @@ export default function Code() {
     };
 
     if(isSubmit) {
-      console.log('!!!!!!!!!!!!!');
+      console.log('team mode submit???????');
       submitResult();
       setIsSubmit(false);
     }
@@ -206,6 +216,7 @@ export default function Code() {
     .catch(error => console.log('error >> ', error));
   };
 
+  //도현 추가
   const submitCodeTeam = async() => {
     const code = doc?.getText('codemirror');
 
@@ -225,7 +236,7 @@ export default function Code() {
         moderater: router?.query?.roomId
       }),
     })
-    .then(res => console.log('submit code!! ', res))
+    .then(res => console.log('submit code team!! ', res))
     .catch(error => console.log('error >> ', error));
   }
 
@@ -246,8 +257,14 @@ export default function Code() {
     })
     .then(res => res.json())
     .then(data => {
+
       setOutputs(data);
+      // park-hg start
+      // 팀원 중 한명이 제출하면 다같이 결과를 공유
+      socket.emit("shareJudgedCode", data, router?.query?.roomId);
       console.log('judgeCode >>>>>>', data);
+      // park-hg end
+
       setPassRate(data.passRate);
       if(submit === true) {
         setIsSubmit(true);
