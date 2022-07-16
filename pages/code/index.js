@@ -70,7 +70,12 @@ export default function Code() {
 
   useEffect(() => {
     const submitResult = async() => {
-      await submitCode();
+      //도현 분기처리 추가
+      if (router?.query?.mode === "team"){
+        await submitCodeTeam();
+      }else{
+        await submitCode();
+      };
       socket.emit('submitCode', router?.query?.gameLogId);
       router.push({
         pathname: '/code/result',
@@ -82,6 +87,7 @@ export default function Code() {
     };
 
     if(isSubmit) {
+      console.log('!!!!!!!!!!!!!');
       submitResult();
       setIsSubmit(false);
     }
@@ -193,6 +199,29 @@ export default function Code() {
     .then(res => console.log('submit code!! ', res))
     .catch(error => console.log('error >> ', error));
   };
+
+  const submitCodeTeam = async() => {
+    const code = doc.getText('codemirror');
+
+    await fetch(`/api/gamelog/updateTeam`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        submitAt: new Date(),
+        gameId: router.query.gameLogId,
+        gitId,
+        code,
+        language: selectedLang,
+        ranking: 0,
+        passRate,
+        moderater: router?.query?.roomId
+      }),
+    })
+    .then(res => console.log('submit code!! ', res))
+    .catch(error => console.log('error >> ', error));
+  }
 
   const judgeCode = async(submit=false) => {
     const code = doc.getText('codemirror');
