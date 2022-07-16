@@ -36,6 +36,7 @@ export default function Code() {
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
+  const [isTimeout, setIsTimeout] = useState(false);
 
   let yDoc = new Y.Doc();
 
@@ -44,13 +45,7 @@ export default function Code() {
       setCountdown(parseInt(ts / 1000));
     });
     socket.on('timeOutCode', () => {
-      if(router?.query?.mode === 'team') {
-        if(router?.query?.roomId === getCookie('uname')) {
-          goToResult();
-        }
-      } else {
-        goToResult();
-      }
+      setCountdown(0);
     });
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
@@ -142,7 +137,7 @@ export default function Code() {
     }
 
     if(isDoc === false && router?.query?.gameLogId) {
-      const url = router?.query?.mode === 'team' ? router?.query?.roomId : `${gitId}_${router?.query?.gameLogId}`
+      const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
       let yProvider = new WebrtcProvider(url, yDoc);
       setDoc(yDoc);
       setProvider(yProvider);
@@ -155,8 +150,19 @@ export default function Code() {
   }, [router]);
 
   useEffect(() => {
-    if(countdown === 0) {
-      judgeCode(true);
+    const timeOutJudge = async() => {
+      await judgeCode(true);
+    }
+
+    if(countdown === 0 && isTimeout === false) {
+      if(router?.query?.mode === 'team') {
+        if(router?.query?.roomId === getCookie('uname')) {
+          timeOutJudge();
+        }
+      } else {
+        timeOutJudge();
+      }
+      setIsTimeout(true);
     }
   }, [countdown]);
   
@@ -257,7 +263,7 @@ export default function Code() {
       body: JSON.stringify({ 
         code: code ?? '',
         gitId,
-        problemId: problems._id,
+        problemId: problems?._id ?? '',
         language: selectedLang
       }),
     })
