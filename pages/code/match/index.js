@@ -41,6 +41,13 @@ export default function MatchPage() {
   const [players, setPlayers] = useState(defaultUsers);
 
   useEffect(() => {
+    console.log("Can I start match?????? roomId is", router.query?.roomId);
+    console.log("Can I start match?????? uname is", getCookie('uname'));
+
+    if (router.query?.roomId === getCookie('uname')) {
+      // console.log("Can I start match??????", roomId, getCookie('uname'));
+      socket.emit("startMatching", getCookie('uname'));
+    }
     socket.on('teamGameStart', (roomId, gameLogId) => {
       setGameLogId(gameLogId);
       setRoomId(roomId);
@@ -49,9 +56,19 @@ export default function MatchPage() {
 
 
   useEffect(() => {
-    socket.on('exitWait', (users) => {
-      addPlayer(users);
-    });
+    if (router?.query?.mode === 'team') {
+      socket.on('exitTeamGame', (msg) => {
+        console.log(msg);
+        router.push('/');
+        // addPlayer(users);
+      });
+    } 
+    else {
+      socket.on('exitWait', (users) => {
+        addPlayer(users);
+      });
+    }
+
   }, [players]);
 
   useEffect(() => {
@@ -95,8 +112,15 @@ export default function MatchPage() {
   };
 
   const goToLobby = () => {
-    socket.emit('exitWait', getCookie('uname'));
-    router.push('/');
+    // socket.emit('exitWait', getCookie('uname'));
+    if (router?.query?.mode === 'team') {
+      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+    } 
+    else {
+      socket.emit('exitWait', getCookie('uname'));
+      router.push('/');
+    }
+    // router.push('/');
   };
 
   const goToMyPage = () => {

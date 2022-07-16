@@ -21,7 +21,13 @@ export default function Home() {
   const [inviteImageUrl, setInviteImageUrl] = useState(null);
 
   useEffect(() => {
-    socket.emit('exitWait', getCookie('uname'));
+    // socket.emit('exitWait', getCookie('uname'));
+    if (router?.query?.mode === 'team') {
+      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+    } 
+    else {
+      socket.emit('exitWait', getCookie('uname'));
+    }
   }, []);
 
   useEffect(() => {

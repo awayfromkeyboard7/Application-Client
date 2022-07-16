@@ -73,6 +73,13 @@ export default function WaitPage() {
       socket.on('setUsers', (users) => {
         console.log('setUsers', users)
         addPlayer(users);
+      });
+      socket.on("goToMachingRoom", (bangjang) => {
+        console.log("let's go MATCHING ROOM!!!!!!", bangjang);
+        router.push({
+          pathname: '/code/match',
+          query: { mode: 'team', roomId: bangjang }
+        });
       })
       socket.emit('getUsers', router?.query?.roomId);
     } else {
@@ -88,9 +95,21 @@ export default function WaitPage() {
 
 
   useEffect(() => {
-    socket.on('exitWait', (users) => {
-      addPlayer(users);
-    });
+    // socket.on('exitWait', (users) => {
+    //   addPlayer(users);
+    // });
+    if (router?.query?.mode === 'team') {
+      socket.on('exitTeamGame', (msg) => {
+        console.log(msg);
+        // addPlayer(users);
+        router.push('/');
+      });
+    } 
+    else {
+      socket.on('exitWait', (users) => {
+        addPlayer(users);
+      });
+    }
   }, [players]);
 
   useEffect(() => {
@@ -134,13 +153,28 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    socket.emit("startMatching", getCookie('uname'));
-    router.push('/code/match');
+    // socket.emit("startMatching", getCookie('uname'));
+    console.log("matching players.........", players );
+    socket.emit("goToMachingRoom",  getCookie('uname'));
+    // socket.on("goToMachingRoom", (roomId) => {
+    //   // router.push('/code/match');
+    //   router.push({
+    //     pathname: '/code/match',
+    //     query: { mode: 'team', roomId: roomId }
+    //   });
+    // })
   };
 
   const goToLobby = () => {
-    socket.emit('exitWait', getCookie('uname'));
-    router.push('/');
+    // socket.emit('exitWait', getCookie('uname'));
+    if (router?.query?.mode === 'team') {
+      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+    } 
+    else {
+      socket.emit('exitWait', getCookie('uname'));
+      router.push('/');
+  }
+    // router.push('/');
   };
 
   const goToMyPage = () => {

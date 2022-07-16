@@ -55,7 +55,7 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
+        {/* <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div> */}
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {
