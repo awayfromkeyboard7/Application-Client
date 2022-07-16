@@ -249,7 +249,7 @@ export default function Code() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        code,
+        code: code ?? '',
         gitId,
         problemId: problems._id,
         language: selectedLang
@@ -261,7 +261,9 @@ export default function Code() {
       setOutputs(data);
       // park-hg start
       // 팀원 중 한명이 제출하면 다같이 결과를 공유
-      socket.emit("shareJudgedCode", data, router?.query?.roomId);
+      if (router?.query?.mode === 'team') {
+        socket.emit("shareJudgedCode", data, router?.query?.roomId);
+      }
       console.log('judgeCode >>>>>>', data);
       // park-hg end
 
