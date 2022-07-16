@@ -44,7 +44,13 @@ export default function Code() {
       setCountdown(parseInt(ts / 1000));
     });
     socket.on('timeOutCode', () => {
-      goToResult();
+      if(router?.query?.mode === 'team') {
+        if(router?.query?.roomId === getCookie('uname')) {
+          goToResult();
+        }
+      } else {
+        goToResult();
+      }
     });
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
