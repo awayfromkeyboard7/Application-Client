@@ -65,7 +65,9 @@ export default function WaitPage() {
 
   useEffect(() => {
     if (router?.query?.mode === 'team'){
-      socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+      if (router?.query?.roomId === getCookie('uname')) {
+        socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+      }
       socket.on('enterNewUserToTeam', (users) => {
         console.log('waitingTEAM!!!!!!!!!!', 'mode: ', router?.query?.mode, 'socket nsp?', socket.nsp);
         addPlayer(users);
