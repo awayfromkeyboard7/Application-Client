@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
@@ -14,6 +15,7 @@ import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
 import Output from '../../components/code/output';
+const Voice = dynamic(() => import('../../lib/peer'));
 import CheckValidUser from '../../components/checkValidUser';
 import CheckValidAccess from '../../components/checkValidAccess';
 import 'react-reflex/styles.css';
@@ -360,7 +362,8 @@ export default function Code() {
         <div className={styles.footer}>
           {
             router?.query?.mode === 'team'
-            ? <div className={styles.voiceBtn}>팀 보이스</div>
+            // ? <div className={styles.voiceBtn}>팀 보이스</div>
+            ? <Voice />
             : <div />
           }
           <div className={styles.footerRight}>
