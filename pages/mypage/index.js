@@ -946,17 +946,17 @@ export default function MyPage() {
                 image={getCookie('uimg')} 
               />
               <div className={styles.textMenu}>전체 랭킹</div>
-            {
-              ranks.map((elem, idx) => 
-                <Rank 
-                  key={elem.ranking}
-                  rank={elem.ranking} 
-                  nickname={elem.gitId} 
-                  info={elem.info} 
-                  image={elem.avatarUrl} 
-                />
-              )
-            }
+              {/* {
+                ranks.map((elem, idx) => 
+                  <Rank 
+                    key={elem.ranking}
+                    rank={elem.ranking} 
+                    nickname={elem.gitId} 
+                    info={elem.info} 
+                    image={elem.avatarUrl} 
+                  />
+                )
+              } */}
             </div>
           </div>
         </div>

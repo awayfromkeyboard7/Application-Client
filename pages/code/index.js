@@ -32,26 +32,64 @@ export default function Code() {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('Python');
   // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
-  const [countdown, setCountdown] = useState(900);
+  const [countdown, setCountdown] = useState(899);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
+  const [isTimeout, setIsTimeout] = useState(false);
 
   let yDoc = new Y.Doc();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      console.log(new Date());
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
+    socket.on('timeLimitCode', ts => {
+      setCountdown(parseInt(ts / 1000));
+    });
 
-    return () => {
-      clearInterval(interval);
-    };
+    socket.on('timeOutCode', () => {
+      setCountdown(0);
+    });
+    
+    // park-hg start
+    socket.on('submitCode', (submitInfo) => {
+      setPlayerList(submitInfo);
+      // updatePlayerList(submitInfo);
+    });
+    socket.on('submitCodeTeam', (result) => {
+      console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
+      // PLEASE update player list here!!!!!!!!
+      setPlayerList([result[0][0], result[1][0]]);
+      // updatePlayerList([result[0][0], result[1][0]]);
+    });
+    socket.on('teamGameOver', () => {
+      console.log('teamGameOver');
+      router.push({
+        pathname: '/code/result',
+        query: { 
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode 
+        }
+      });
+    });
+    socket.on('shareJudgedCode', (data) => {
+      console.log('shareJudgedCode', data)
+      setOutputs(data);
+    });
+    // park-hg end
   }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      socket.on('timeOutCode', () => {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            goToResult();
+          }
+        } else {
+          goToResult();
+        }
+      });
+    }
+  }, [router.isReady]);
 
   const updatePlayerList = (info) => {
     let result = [...playerList];
@@ -63,20 +101,18 @@ export default function Code() {
   };
 
   useEffect(() => {
-    socket.on('submitCode', (submitInfo) => {
-      updatePlayerList(submitInfo);
-    });
-  }, [playerList]);
-
-  useEffect(() => {
     const submitResult = async() => {
       //도현 분기처리 추가
+      console.log("what mode submit code at????????", router?.query?.roomId);
       if (router?.query?.mode === "team"){
         await submitCodeTeam();
-      }else{
+        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+      }
+      else {
+        console.log("team should not be here!!!!!!!!!!!!");
         await submitCode();
+        socket.emit('submitCode', router?.query?.gameLogId);
       };
-      socket.emit('submitCode', router?.query?.gameLogId);
       router.push({
         pathname: '/code/result',
         query: { 
@@ -87,7 +123,7 @@ export default function Code() {
     };
 
     if(isSubmit) {
-      console.log('!!!!!!!!!!!!!');
+      console.log('team mode submit???????');
       submitResult();
       setIsSubmit(false);
     }
@@ -120,7 +156,7 @@ export default function Code() {
     }
 
     if(isDoc === false && router?.query?.gameLogId) {
-      const url = router?.query?.mode === 'team' ? router?.query?.roomId : `${gitId}_${router?.query?.gameLogId}`
+      const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
       let yProvider = new WebrtcProvider(url, yDoc);
       setDoc(yDoc);
       setProvider(yProvider);
@@ -133,10 +169,23 @@ export default function Code() {
   }, [router]);
 
   useEffect(() => {
-    if(countdown === 0) {
-      judgeCode(true);
+    const timeOutJudge = async() => {
+      await judgeCode(true);
     }
-  }, [countdown]);
+
+    if(countdown === 0 && isTimeout === false) {
+      if(router.isReady) {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            timeOutJudge();
+          }
+        } else {
+          timeOutJudge();
+        }
+      }
+      setIsTimeout(true);
+    }
+  }, [countdown, router.isReady]);
   
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -179,7 +228,7 @@ export default function Code() {
   };
 
   const submitCode = async() => {
-    const code = doc.getText('codemirror');
+    const code = doc?.getText('codemirror');
 
     await fetch(`/api/gamelog/update`, {
       method: 'POST',
@@ -200,8 +249,9 @@ export default function Code() {
     .catch(error => console.log('error >> ', error));
   };
 
+  //도현 추가
   const submitCodeTeam = async() => {
-    const code = doc.getText('codemirror');
+    const code = doc?.getText('codemirror');
 
     await fetch(`/api/gamelog/updateTeam`, {
       method: 'POST',
@@ -219,29 +269,37 @@ export default function Code() {
         moderater: router?.query?.roomId
       }),
     })
-    .then(res => console.log('submit code!! ', res))
+    .then(res => console.log('submit code team!! ', res))
     .catch(error => console.log('error >> ', error));
   }
 
   const judgeCode = async(submit=false) => {
-    const code = doc.getText('codemirror');
-    
+    const code = doc?.getText('codemirror');
+    console.log("timeout judgeCode????", code, 'problemId', problems._id, 'lang', selectedLang);
     await fetch(`/api/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        code,
+        code: code ?? '',
         gitId,
-        problemId: problems._id,
+        problemId: problems?._id ?? '',
         language: selectedLang
       }),
     })
     .then(res => res.json())
     .then(data => {
+
       setOutputs(data);
+      // park-hg start
+      // 팀원 중 한명이 제출하면 다같이 결과를 공유
+      if (router?.query?.mode === 'team') {
+        socket.emit("shareJudgedCode", data, router?.query?.roomId);
+      }
       console.log('judgeCode >>>>>>', data);
+      // park-hg end
+
       setPassRate(data.passRate);
       if(submit === true) {
         setIsSubmit(true);

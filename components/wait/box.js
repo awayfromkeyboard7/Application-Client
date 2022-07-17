@@ -1,24 +1,10 @@
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 import Item from './item';
 import styles from '../../styles/components/wait.module.scss';
 
-export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMain }) {
+export default function WaitBox({ type, players, countdown, onClickPlayAgain, onClickGoToMain }) {
   const router = useRouter();
-  const [countdown, setCountdown] = useState(180);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   const secToTime = (s) => {
     const min = '0' + String(parseInt((s % 3600) / 60));
@@ -43,7 +29,7 @@ export default function WaitBox({ type, players, onClickPlayAgain, onClickGoToMa
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
+        <div className={router?.query?.roomId === getCookie('uname') ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {

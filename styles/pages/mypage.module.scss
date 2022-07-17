@@ -66,6 +66,22 @@
   }
 }
 
+.gameHistoryItemBlue {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex: 1;
+  background-color: $success-trans-color;
+}
+
+.gameHistoryItemRed {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex: 1;
+  background-color: $error-trans-color;
+}
+
 .gameHistoryColorTagRed,
 .gameHistoryColorTagBlue,
 .gameHistoryColorTag {
@@ -90,7 +106,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border-right: $gray-light-color solid 1px;
+  border-right: $navy-trans-color solid 1px;
 }
 
 .gameHistoryMode {
@@ -160,7 +176,7 @@
 }
 
 .splitterVerticalGray {
-  background-color: $gray-light-color;
+  background-color: $navy-trans-color;
 }
 
 .gameHistoryPlayersCol {

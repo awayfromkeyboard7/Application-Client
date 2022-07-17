@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -30,7 +29,7 @@ export default function GameHistory({ gameInfo }) {
 
   const TeamGameWin = () => {
     return (
-      <>
+      <div className={styles.gameHistoryItemBlue}>
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
@@ -52,13 +51,13 @@ export default function GameHistory({ gameInfo }) {
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   };
 
   const TeamGameLose = () => {
     return (
-      <>
+      <div className={styles.gameHistoryItemRed}>
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
@@ -80,7 +79,7 @@ export default function GameHistory({ gameInfo }) {
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   };
 

@@ -8,8 +8,9 @@ import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
 
+
 export default function WaitPage() {
-  const router = useRouter();  
+  const router = useRouter();
   const defaultUsers = [
     {
       id: 1,
@@ -62,48 +63,75 @@ export default function WaitPage() {
   ];
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
+  const [countdown, setCountdown] = useState(179);
+  const [isMatching, setIsMatching] = useState(false);
 
   useEffect(() => {
-    if (router?.query?.mode === 'team'){
-      if (router?.query?.roomId === getCookie('uname')) {
-        socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
-      }
-      socket.on('enterNewUserToTeam', (users) => {
-        console.log('waitingTEAM!!!!!!!!!!', 'mode: ', router?.query?.mode, 'socket nsp?', socket.nsp);
-        addPlayer(users);
-      });
-      socket.on('setUsers', (users) => {
-        console.log('setUsers', users)
-        addPlayer(users);
-      });
-      socket.on("goToMachingRoom", (bangjang) => {
-        console.log("let's go MATCHING ROOM!!!!!!", bangjang);
-        router.push({
-          pathname: '/code/match',
-          query: { mode: 'team', roomId: bangjang }
+    socket.on('timeLimit', ts => {
+      setCountdown(parseInt(ts / 1000));
+    });
+    console.log(router?.query?.mode);
+    if (router.isReady) {
+      if (router?.query?.mode === 'team'){
+        if (router?.query?.roomId === getCookie('uname')) {
+          socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+        }
+        socket.on('timeOut', () => {
+          if(players[0]?.gitId === getCookie('uname') && !isMatching) {
+            goToMatch();
+          }
         });
-      })
-      socket.emit('getUsers', router?.query?.roomId);
-    } else {
-      socket.on('enterNewUser', (users) => {
-        addPlayer(users);
-      });
-      socket.on('startGame', (gameLogId) => {
-        setGameLogId(gameLogId);
-      });
-      socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+        socket.on('enterNewUserToTeam', (users) => {
+          addPlayer(users);
+        });
+        socket.on('setUsers', (users) => {
+          addPlayer(users);
+        });
+
+        // 팀전 대기 중 화면으로 이동
+        socket.once("goToMachingRoom", (bangjang) => {
+          setIsMatching(true);
+          router.push({
+            pathname: '/code/match',
+            query: { mode: 'team', roomId: bangjang }
+        });
+        socket.on('enterNewUserToTeam', (users) => {
+          addPlayer(users);
+        });
+        socket.on('setUsers', (users) => {
+          addPlayer(users);
+        });
+  
+        // 팀전 대기 중 화면으로 이동
+        socket.on("goToMachingRoom", (bangjang) => {
+          router.push({
+            pathname: '/code/match',
+            query: { mode: 'team', roomId: bangjang }
+          });
+        })
+        socket.emit('getUsers', router?.query?.roomId);
+      } 
+      else {
+        socket.on('timeOut', () => {
+          if(players[0]?.gitId === getCookie('uname')) {
+            goToCode();
+          }
+        });
+        socket.on('enterNewUser', (users) => {
+          addPlayer(users);
+        });
+        socket.on('startGame', (gameLogId) => {
+          setGameLogId(gameLogId);
+        });
+        socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+      }
     }
-  }, []);
+  }, [router.isReady]);
 
 
   useEffect(() => {
-    // socket.on('exitWait', (users) => {
-    //   addPlayer(users);
-    // });
     if (router?.query?.mode === 'team') {
-      socket.on('exitTeamGame', (msg) => {
-        console.log(msg);
-        // addPlayer(users);
+      socket.on('exitTeamGame', () => {
         router.push('/');
       });
     } 
@@ -156,20 +184,11 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    // socket.emit("startMatching", getCookie('uname'));
-    console.log("matching players.........", players );
-    socket.emit("goToMachingRoom",  getCookie('uname'));
-    // socket.on("goToMachingRoom", (roomId) => {
-    //   // router.push('/code/match');
-    //   router.push({
-    //     pathname: '/code/match',
-    //     query: { mode: 'team', roomId: roomId }
-    //   });
-    // })
+    console.log('matching players.........',getCookie('uname'), players );
+    socket.emit('goToMachingRoom', getCookie('uname'));
   };
 
   const goToLobby = () => {
-    // socket.emit('exitWait', getCookie('uname'));
     if (router?.query?.mode === 'team') {
       socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
     } 
@@ -177,7 +196,6 @@ export default function WaitPage() {
       socket.emit('exitWait', getCookie('uname'));
       router.push('/');
   }
-    // router.push('/');
   };
 
   const goToMyPage = () => {
@@ -204,6 +222,7 @@ export default function WaitPage() {
           <Wait 
             type={router?.query?.mode} 
             players={players} 
+            countdown={countdown}
             onClickGoToMain={goToLobby} 
             onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
           />
