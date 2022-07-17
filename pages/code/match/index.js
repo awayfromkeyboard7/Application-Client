@@ -94,7 +94,7 @@ export default function MatchPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        players: sendPlayers
+        players: sendPlayers,
       }),
     })
     .then(res => res.json())
