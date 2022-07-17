@@ -64,6 +64,7 @@ export default function WaitPage() {
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
   const [countdown, setCountdown] = useState(179);
+  const [isMatching, setIsMatching] = useState(false);
 
   useEffect(() => {
     socket.on('timeLimit', ts => {
@@ -71,15 +72,28 @@ export default function WaitPage() {
     });
     console.log(router?.query?.mode);
     if (router.isReady) {
-      console.log(router?.query?.mode);
       if (router?.query?.mode === 'team'){
         if (router?.query?.roomId === getCookie('uname')) {
           socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
         }
         socket.on('timeOut', () => {
-          if(players[0]?.gitId === getCookie('uname')) {
+          if(players[0]?.gitId === getCookie('uname') && !isMatching) {
             goToMatch();
           }
+        });
+        socket.on('enterNewUserToTeam', (users) => {
+          addPlayer(users);
+        });
+        socket.on('setUsers', (users) => {
+          addPlayer(users);
+        });
+
+        // 팀전 대기 중 화면으로 이동
+        socket.once("goToMachingRoom", (bangjang) => {
+          setIsMatching(true);
+          router.push({
+            pathname: '/code/match',
+            query: { mode: 'team', roomId: bangjang }
         });
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
@@ -97,7 +111,6 @@ export default function WaitPage() {
         })
         socket.emit('getUsers', router?.query?.roomId);
       } 
-      
       else {
         socket.on('timeOut', () => {
           if(players[0]?.gitId === getCookie('uname')) {

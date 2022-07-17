@@ -5,13 +5,13 @@ export default function ResultBox({ type, ranks, startAt, onClickPlayAgain, onCl
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
-        <div className={styles.mainTitle}>{`${type === 'team' ? '팀' : '개인'}전(${ranks.length}인) 결과`}</div>
+        <div className={styles.mainTitle}>{`${type === 'team' ? '팀전 결과' : `개인전(${ranks?.length}인) 결과`}`}</div>
       </div>
       <div className={styles.mainBody}> 
         <div className={styles.resultBox}>
         {
-          ranks.map((item, idx) => 
-            <Item info={item} startAt={startAt} key={`${item.gitId}${idx}`} idx={idx} />
+          ranks?.map((item, idx) => 
+            <Item info={item} startAt={startAt} key={item.gitId} idx={idx} />
           )
         }
         </div>

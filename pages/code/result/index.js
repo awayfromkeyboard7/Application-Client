@@ -13,15 +13,23 @@ export default function ResultPage() {
   const [gameStartAt, setGameStartAt] = useState();
   
   useEffect(() => {
-    socket.emit('getRanking', router?.query?.gameLogId);
+    if(router?.query?.mode === 'team') {
+      socket.on('getTeamRanking', (result, startAt) => {
+        console.log('get team ranking??????? >>', result, startAt);
+        if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
+          setRanks([result[0][0], result[1][0]]);
+        }
+        setGameStartAt(startAt);
+      });
+      socket.emit('getTeamRanking', router?.query?.gameLogId);
+    } else {
+      socket.on('getRanking', (ranking, startAt) => {
+        setRanks(ranking);
+        setGameStartAt(startAt);
+      });
+      socket.emit('getRanking', router?.query?.gameLogId);
+    }
   }, []);
-
-  useEffect(() => {
-    socket.on('getRanking', (ranking, startAt) => {
-      setRanks(ranking);
-      setGameStartAt(startAt);
-    });
-  }, [ranks]);
 
   const goToWait = () => {
     router.push({

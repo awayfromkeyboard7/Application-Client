@@ -36,6 +36,7 @@ export default function Code() {
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
+  const [isTimeout, setIsTimeout] = useState(false);
 
   let yDoc = new Y.Doc();
 
@@ -43,25 +44,24 @@ export default function Code() {
     socket.on('timeLimitCode', ts => {
       setCountdown(parseInt(ts / 1000));
     });
-    // socket.on('timeOutCode', () => {
-    //   if(router?.query?.mode === 'team') {
-    //     if(router?.query?.roomId === getCookie('uname')) {
-    //       goToResult();
-    //     }
-    //   } else {
-    //     goToResult();
-    //   }
-    // });
+
+    socket.on('timeOutCode', () => {
+      setCountdown(0);
+    });
+    
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
-      updatePlayerList(submitInfo);
+      setPlayerList(submitInfo);
+      // updatePlayerList(submitInfo);
     });
     socket.on('submitCodeTeam', (result) => {
       console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
       // PLEASE update player list here!!!!!!!!
+      setPlayerList([result[0][0], result[1][0]]);
+      // updatePlayerList([result[0][0], result[1][0]]);
     });
-    socket.on('TeamGameOver', () => {
-      console.log('TeamGameOver');
+    socket.on('teamGameOver', () => {
+      console.log('teamGameOver');
       router.push({
         pathname: '/code/result',
         query: { 
@@ -69,14 +69,13 @@ export default function Code() {
           mode: router?.query?.mode 
         }
       });
-    })
+    });
     socket.on('shareJudgedCode', (data) => {
       console.log('shareJudgedCode', data)
       setOutputs(data);
-    })
+    });
     // park-hg end
   }, []);
-
 
   useEffect(() => {
     if (router.isReady) {
@@ -157,7 +156,7 @@ export default function Code() {
     }
 
     if(isDoc === false && router?.query?.gameLogId) {
-      const url = router?.query?.mode === 'team' ? router?.query?.roomId : `${gitId}_${router?.query?.gameLogId}`
+      const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
       let yProvider = new WebrtcProvider(url, yDoc);
       setDoc(yDoc);
       setProvider(yProvider);
@@ -170,13 +169,23 @@ export default function Code() {
   }, [router]);
 
   useEffect(() => {
-    // const timeoutJudge = async() => {
-    //   await judgeCode(true);
-    // }
-    if(countdown === 0) {
-      goToResult();
+    const timeOutJudge = async() => {
+      await judgeCode(true);
     }
-  }, [countdown]);
+
+    if(countdown === 0 && isTimeout === false) {
+      if(router.isReady) {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            timeOutJudge();
+          }
+        } else {
+          timeOutJudge();
+        }
+      }
+      setIsTimeout(true);
+    }
+  }, [countdown, router.isReady]);
   
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -275,7 +284,7 @@ export default function Code() {
       body: JSON.stringify({ 
         code: code ?? '',
         gitId,
-        problemId: problems._id,
+        problemId: problems?._id ?? '',
         language: selectedLang
       }),
     })
