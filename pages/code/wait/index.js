@@ -165,7 +165,8 @@ export default function WaitPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        players: sendPlayers
+        players: sendPlayers,
+        totalUsers: sendPlayers.length
       }),
     })
     .then(res => res.json())
