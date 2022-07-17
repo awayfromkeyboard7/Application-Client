@@ -8,7 +8,6 @@ import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
 
-
 export default function WaitPage() {
   const router = useRouter();
   const defaultUsers = [
