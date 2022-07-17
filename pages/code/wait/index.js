@@ -63,6 +63,7 @@ export default function WaitPage() {
   const [gameLogId, setGameLogId] = useState('');
   const [players, setPlayers] = useState(defaultUsers);
   const [countdown, setCountdown] = useState(179);
+  const [isMatching, setIsMatching] = useState(false);
 
   useEffect(() => {
     socket.on('timeLimit', ts => {
@@ -73,7 +74,7 @@ export default function WaitPage() {
         socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
       }
       socket.on('timeOut', () => {
-        if(players[0]?.gitId === getCookie('uname')) {
+        if(players[0]?.gitId === getCookie('uname') && !isMatching) {
           goToMatch();
         }
       });
@@ -85,7 +86,8 @@ export default function WaitPage() {
       });
 
       // 팀전 대기 중 화면으로 이동
-      socket.on("goToMachingRoom", (bangjang) => {
+      socket.once("goToMachingRoom", (bangjang) => {
+        setIsMatching(true);
         router.push({
           pathname: '/code/match',
           query: { mode: 'team', roomId: bangjang }
