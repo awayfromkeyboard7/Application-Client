@@ -1,11 +1,11 @@
-import Item from './item';
+import Item from './teamItem';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultBox({ type, ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+export default function TeamResultBox({ type, ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
-        <div className={styles.mainTitle}>{`${type === 'team' ? '팀전 결과' : `개인전(${ranks?.length}인) 결과`}`}</div>
+        <div className={styles.mainTitle}>팀전 결과</div>
       </div>
       <div className={styles.mainBody}> 
         <div className={styles.resultBox}>

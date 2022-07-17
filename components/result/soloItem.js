@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultItem({ info, startAt, idx }) {
+export default function SoloResultItem({ info, startAt, idx }) {
   const myNickname = getCookie('uname');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -14,7 +14,7 @@ export default function ResultItem({ info, startAt, idx }) {
 
   useEffect(() => {
     setRankText(info.passRate < 0 ? '-' : convertRank(idx + 1));
-  }, [info.passRate]);
+  }, [info.passRate, idx]);
 
   const convertRank = (rank) => {
     let result;

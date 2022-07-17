@@ -94,7 +94,9 @@ export default function WaitPage() {
           router.push({
             pathname: '/code/match',
             query: { mode: 'team', roomId: bangjang }
+          })
         });
+        
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
         });

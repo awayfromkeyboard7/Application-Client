@@ -52,13 +52,11 @@ export default function Code() {
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
       setPlayerList(submitInfo);
-      // updatePlayerList(submitInfo);
     });
     socket.on('submitCodeTeam', (result) => {
       console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
       // PLEASE update player list here!!!!!!!!
       setPlayerList([result[0][0], result[1][0]]);
-      // updatePlayerList([result[0][0], result[1][0]]);
     });
     socket.on('teamGameOver', () => {
       console.log('teamGameOver');
@@ -78,27 +76,18 @@ export default function Code() {
   }, []);
 
   useEffect(() => {
-    if (router.isReady) {
-      socket.on('timeOutCode', () => {
-        if(router?.query?.mode === 'team') {
-          if(router?.query?.roomId === getCookie('uname')) {
-            goToResult();
-          }
-        } else {
-          goToResult();
-        }
-      });
-    }
+    // if (router.isReady) {
+    //   socket.on('timeOutCode', () => {
+    //     if(router?.query?.mode === 'team') {
+    //       if(router?.query?.roomId === getCookie('uname')) {
+    //         goToResult();
+    //       }
+    //     } else {
+    //       goToResult();
+    //     }
+    //   });
+    // }
   }, [router.isReady]);
-
-  const updatePlayerList = (info) => {
-    let result = [...playerList];
-    console.log('player list >>', playerList);
-    for (let i = 0; i < info.length; i++) {
-      result[i] = info[i];
-    }
-    setPlayerList(result);
-  };
 
   useEffect(() => {
     const submitResult = async() => {
@@ -130,40 +119,42 @@ export default function Code() {
   }, [isSubmit]);
 
   useEffect(() => {
-    const getProblem = async() => {
-      await fetch(`/api/gamelog/getGameLog`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          gameLogId: router?.query?.gameLogId,
-          mode: router?.query?.mode
-        }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          setProblems(data.info.problemId);
-          setPlayerList(data.info.userHistory);
+    if(router.isReady) {
+      const getProblem = async() => {
+        await fetch(`/api/gamelog/getGameLog`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            gameLogId: router?.query?.gameLogId,
+            mode: router?.query?.mode
+          }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            setProblems(data.info.problemId);
+            setPlayerList(data.info.userHistory);
+          }
+        })
+        .catch(error => console.log('error >> ', error));
+      };
+
+      if(router?.query?.gameLogId && router.query.gameLogId !== '') {
+        getProblem();
+      }
+
+      if(isDoc === false && router?.query?.gameLogId) {
+        const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
+        let yProvider = new WebrtcProvider(url, yDoc);
+        setDoc(yDoc);
+        setProvider(yProvider);
+        setIsDoc(true);
+
+        return () => {
+          yProvider.destroy();
         }
-      })
-      .catch(error => console.log('error >> ', error));
-    };
-
-    if(router?.query?.gameLogId && router.query.gameLogId !== '') {
-      getProblem();
-    }
-
-    if(isDoc === false && router?.query?.gameLogId) {
-      const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
-      let yProvider = new WebrtcProvider(url, yDoc);
-      setDoc(yDoc);
-      setProvider(yProvider);
-      setIsDoc(true);
-
-      return () => {
-        yProvider.destroy();
       }
     }
   }, [router]);

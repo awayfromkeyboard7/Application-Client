@@ -80,12 +80,23 @@
   text-align: center;
 }
 
+.profileIconBox {
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.profileIconOverlap,
 .profileIcon {
   margin: 0.625rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 2rem;
   border: $purple-color solid 2px;
+}
+
+.profileIconOverlap {
+  margin-left: -1.25rem;
 }
 
 .profileInfo {

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
-import Result from '../../../components/result/box';
+import Result from '../../../components/result/soloBox';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
 
