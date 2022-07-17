@@ -55,7 +55,7 @@ export default function MatchPage() {
   }, [gameLogId]);
   
   const startGame = async() => {
-    await fetch(`/api/gamelog/createNew`, {
+    await fetch(`/gamelog/createNew`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

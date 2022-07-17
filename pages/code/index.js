@@ -123,7 +123,7 @@ export default function Code() {
   useEffect(() => {
     if(router.isReady) {
       const getProblem = async() => {
-        await fetch(`/api/gamelog/getGameLog`, {
+        await fetch(`/gamelog/getGameLog`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ export default function Code() {
   const submitCode = async() => {
     const code = doc?.getText('codemirror');
 
-    await fetch(`/api/gamelog/update`, {
+    await fetch(`/gamelog/update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -246,7 +246,7 @@ export default function Code() {
   const submitCodeTeam = async() => {
     const code = doc?.getText('codemirror');
 
-    await fetch(`/api/gamelog/updateTeam`, {
+    await fetch(`/gamelog/updateTeam`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -269,7 +269,7 @@ export default function Code() {
   const judgeCode = async(submit=false) => {
     const code = doc?.getText('codemirror');
     console.log("timeout judgeCode????", code, 'problemId', problems._id, 'lang', selectedLang);
-    await fetch(`/api/judge`, {
+    await fetch(`/judge`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

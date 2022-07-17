@@ -21,7 +21,7 @@ export default function Header({ label, onClickBtn }) {
   };
 
   const login = async() => {
-    await fetch(`/api/login`, {
+    await fetch(`/login`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
