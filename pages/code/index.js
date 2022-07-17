@@ -49,14 +49,17 @@ export default function Code() {
     });
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
-      updatePlayerList(submitInfo);
+      setPlayerList(submitInfo);
+      // updatePlayerList(submitInfo);
     });
-    socket.on('SubmitCodeTeam', (result) => {
-      console.log('SubmitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
+    socket.on('submitCodeTeam', (result) => {
+      console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
       // PLEASE update player list here!!!!!!!!
+      setPlayerList([result[0][0], result[1][0]]);
+      // updatePlayerList([result[0][0], result[1][0]]);
     });
-    socket.on('TeamGameOver', () => {
-      console.log('TeamGameOver');
+    socket.on('teamGameOver', () => {
+      console.log('teamGameOver');
       router.push({
         pathname: '/code/result',
         query: { 
@@ -64,22 +67,13 @@ export default function Code() {
           mode: router?.query?.mode 
         }
       });
-    })
+    });
     socket.on('shareJudgedCode', (data) => {
       console.log('shareJudgedCode', data)
       setOutputs(data);
-    })
+    });
     // park-hg end
   }, []);
-
-  const updatePlayerList = (info) => {
-    let result = [...playerList];
-    console.log('player list >>', playerList);
-    for (let i = 0; i < info.length; i++) {
-      result[i] = info[i];
-    }
-    setPlayerList(result);
-  };
 
   useEffect(() => {
     const submitResult = async() => {
@@ -87,7 +81,7 @@ export default function Code() {
       console.log("what mode submit code at????????", router?.query?.roomId);
       if (router?.query?.mode === "team"){
         await submitCodeTeam();
-        socket.emit('SubmitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
       }
       else {
         console.log("team should not be here!!!!!!!!!!!!");
