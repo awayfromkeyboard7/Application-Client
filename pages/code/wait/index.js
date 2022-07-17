@@ -8,8 +8,9 @@ import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
 import CheckValidUser from '../../../components/checkValidUser';
 
+
 export default function WaitPage() {
-  const router = useRouter();  
+  const router = useRouter();
   const defaultUsers = [
     {
       id: 1,
@@ -68,46 +69,51 @@ export default function WaitPage() {
     socket.on('timeLimit', ts => {
       setCountdown(parseInt(ts / 1000));
     });
-    if (router?.query?.mode === 'team'){
-      if (router?.query?.roomId === getCookie('uname')) {
-        socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
-      }
-      socket.on('timeOut', () => {
-        if(players[0]?.gitId === getCookie('uname')) {
-          goToMatch();
+    console.log(router?.query?.mode);
+    if (router.isReady) {
+      console.log(router?.query?.mode);
+      if (router?.query?.mode === 'team'){
+        if (router?.query?.roomId === getCookie('uname')) {
+          socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
         }
-      });
-      socket.on('enterNewUserToTeam', (users) => {
-        addPlayer(users);
-      });
-      socket.on('setUsers', (users) => {
-        addPlayer(users);
-      });
-
-      // 팀전 대기 중 화면으로 이동
-      socket.on("goToMachingRoom", (bangjang) => {
-        router.push({
-          pathname: '/code/match',
-          query: { mode: 'team', roomId: bangjang }
+        socket.on('timeOut', () => {
+          if(players[0]?.gitId === getCookie('uname')) {
+            goToMatch();
+          }
         });
-      })
-
-      socket.emit('getUsers', router?.query?.roomId);
-    } else {
-      socket.on('timeOut', () => {
-        if(players[0]?.gitId === getCookie('uname')) {
-          goToCode();
-        }
-      });
-      socket.on('enterNewUser', (users) => {
-        addPlayer(users);
-      });
-      socket.on('startGame', (gameLogId) => {
-        setGameLogId(gameLogId);
-      });
-      socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+        socket.on('enterNewUserToTeam', (users) => {
+          addPlayer(users);
+        });
+        socket.on('setUsers', (users) => {
+          addPlayer(users);
+        });
+  
+        // 팀전 대기 중 화면으로 이동
+        socket.on("goToMachingRoom", (bangjang) => {
+          router.push({
+            pathname: '/code/match',
+            query: { mode: 'team', roomId: bangjang }
+          });
+        })
+        socket.emit('getUsers', router?.query?.roomId);
+      } 
+      
+      else {
+        socket.on('timeOut', () => {
+          if(players[0]?.gitId === getCookie('uname')) {
+            goToCode();
+          }
+        });
+        socket.on('enterNewUser', (users) => {
+          addPlayer(users);
+        });
+        socket.on('startGame', (gameLogId) => {
+          setGameLogId(gameLogId);
+        });
+        socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+      }
     }
-  }, []);
+  }, [router.isReady]);
 
 
   useEffect(() => {
@@ -164,7 +170,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    console.log('matching players.........', players );
+    console.log('matching players.........',getCookie('uname'), players );
     socket.emit('goToMachingRoom', getCookie('uname'));
   };
 

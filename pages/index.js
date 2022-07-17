@@ -22,14 +22,16 @@ export default function Home() {
 
   useEffect(() => {
     // socket.emit('exitWait', getCookie('uname'));
-    if (router?.query?.mode === 'team') {
-      // 이건 뭐죠...?
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
-    } 
-    else {
-      socket.emit('exitWait', getCookie('uname'));
+    if (router.isReady) {
+      if (router?.query?.mode === 'team') {
+        // 이건 뭐죠...?
+        socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+      } 
+      else {
+        socket.emit('exitWait', getCookie('uname'));
+      }
     }
-  }, []);
+  }, [router.isReady]);
 
   useEffect(() => {
     if(hasCookie('uid')) {

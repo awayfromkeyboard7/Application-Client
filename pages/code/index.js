@@ -43,21 +43,21 @@ export default function Code() {
     socket.on('timeLimitCode', ts => {
       setCountdown(parseInt(ts / 1000));
     });
-    socket.on('timeOutCode', () => {
-      if(router?.query?.mode === 'team') {
-        if(router?.query?.roomId === getCookie('uname')) {
-          goToResult();
-        }
-      } else {
-        goToResult();
-      }
-    });
+    // socket.on('timeOutCode', () => {
+    //   if(router?.query?.mode === 'team') {
+    //     if(router?.query?.roomId === getCookie('uname')) {
+    //       goToResult();
+    //     }
+    //   } else {
+    //     goToResult();
+    //   }
+    // });
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
       updatePlayerList(submitInfo);
     });
-    socket.on('SubmitCodeTeam', (result) => {
-      console.log('SubmitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
+    socket.on('submitCodeTeam', (result) => {
+      console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
       // PLEASE update player list here!!!!!!!!
     });
     socket.on('TeamGameOver', () => {
@@ -77,6 +77,21 @@ export default function Code() {
     // park-hg end
   }, []);
 
+
+  useEffect(() => {
+    if (router.isReady) {
+      socket.on('timeOutCode', () => {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            goToResult();
+          }
+        } else {
+          goToResult();
+        }
+      });
+    }
+  }, [router.isReady]);
+
   const updatePlayerList = (info) => {
     let result = [...playerList];
     console.log('player list >>', playerList);
@@ -92,7 +107,7 @@ export default function Code() {
       console.log("what mode submit code at????????", router?.query?.roomId);
       if (router?.query?.mode === "team"){
         await submitCodeTeam();
-        socket.emit('SubmitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
       }
       else {
         console.log("team should not be here!!!!!!!!!!!!");
@@ -155,8 +170,11 @@ export default function Code() {
   }, [router]);
 
   useEffect(() => {
+    // const timeoutJudge = async() => {
+    //   await judgeCode(true);
+    // }
     if(countdown === 0) {
-      judgeCode(true);
+      goToResult();
     }
   }, [countdown]);
   
@@ -248,7 +266,7 @@ export default function Code() {
 
   const judgeCode = async(submit=false) => {
     const code = doc?.getText('codemirror');
-    
+    console.log("timeout judgeCode????", code, 'problemId', problems._id, 'lang', selectedLang);
     await fetch(`/api/judge`, {
       method: 'POST',
       headers: {

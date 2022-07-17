@@ -15,18 +15,20 @@ export default function MatchPage() {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    if (router.query?.roomId === getCookie('uname')) {
-      socket.emit('startMatching', getCookie('uname'));
+    if (router.isReady) {
+      if (router.query?.roomId === getCookie('uname')) {
+        socket.emit('startMatching', getCookie('uname'));
+      }
+      socket.on('getTeamInfo', users => {
+        setPlayers(users);
+      });
+      socket.emit('getTeamInfo', router?.query?.roomId);
+      socket.on('teamGameStart', (roomId, gameLogId) => {
+        setGameLogId(gameLogId);
+        setRoomId(roomId);
+      })
     }
-    socket.on('getTeamInfo', users => {
-      setPlayers(users);
-    });
-    socket.emit('getTeamInfo', router?.query?.roomId);
-    socket.on('teamGameStart', (roomId, gameLogId) => {
-      setGameLogId(gameLogId);
-      setRoomId(roomId);
-    })
-  }, []);
+  }, [router.isReady]);
 
 
   useEffect(() => {
