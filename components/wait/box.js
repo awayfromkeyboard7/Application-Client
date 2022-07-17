@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 import Item from './item';
 import styles from '../../styles/components/wait.module.scss';
 
@@ -28,7 +29,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
+        <div className={router?.query?.roomId === getCookie('uname') ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {

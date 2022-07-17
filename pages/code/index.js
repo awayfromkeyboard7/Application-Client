@@ -44,9 +44,11 @@ export default function Code() {
     socket.on('timeLimitCode', ts => {
       setCountdown(parseInt(ts / 1000));
     });
+
     socket.on('timeOutCode', () => {
       setCountdown(0);
     });
+    
     // park-hg start
     socket.on('submitCode', (submitInfo) => {
       setPlayerList(submitInfo);
@@ -74,6 +76,29 @@ export default function Code() {
     });
     // park-hg end
   }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      socket.on('timeOutCode', () => {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            goToResult();
+          }
+        } else {
+          goToResult();
+        }
+      });
+    }
+  }, [router.isReady]);
+
+  const updatePlayerList = (info) => {
+    let result = [...playerList];
+    console.log('player list >>', playerList);
+    for (let i = 0; i < info.length; i++) {
+      result[i] = info[i];
+    }
+    setPlayerList(result);
+  };
 
   useEffect(() => {
     const submitResult = async() => {
@@ -149,16 +174,18 @@ export default function Code() {
     }
 
     if(countdown === 0 && isTimeout === false) {
-      if(router?.query?.mode === 'team') {
-        if(router?.query?.roomId === getCookie('uname')) {
+      if(router.isReady) {
+        if(router?.query?.mode === 'team') {
+          if(router?.query?.roomId === getCookie('uname')) {
+            timeOutJudge();
+          }
+        } else {
           timeOutJudge();
         }
-      } else {
-        timeOutJudge();
       }
       setIsTimeout(true);
     }
-  }, [countdown]);
+  }, [countdown, router.isReady]);
   
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -248,7 +275,7 @@ export default function Code() {
 
   const judgeCode = async(submit=false) => {
     const code = doc?.getText('codemirror');
-    
+    console.log("timeout judgeCode????", code, 'problemId', problems._id, 'lang', selectedLang);
     await fetch(`/api/judge`, {
       method: 'POST',
       headers: {
