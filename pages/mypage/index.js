@@ -133,7 +133,7 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        gitId: getCookie('uname')
+        gitId: getCookie('gitId')
       })
     })
     .then(res => res.json())
@@ -153,9 +153,9 @@ export default function MyPage() {
   };
 
   const logout = async() => {
-    deleteCookie('uid');
-    deleteCookie('uname');
-    deleteCookie('uimg');
+    deleteCookie('nodeId');
+    deleteCookie('gitId');
+    deleteCookie('avatarUrl');
     signOut();
     goToLobby();
   }
@@ -187,17 +187,17 @@ export default function MyPage() {
             <div className={styles.mainCol}>
               <div className={styles.profileBox}>
                 <div className={styles.profileIcon}>
-                  <Image src={getCookie('uimg') ?? '/default_profile.jpg'} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+                  <Image src={getCookie('avatarUrl') ?? '/default_profile.jpg'} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                 </div>
-                <div className={styles.nickname}>{getCookie('uname')}</div>
+                <div className={styles.nickname}>{getCookie('gitId')}</div>
               </div>
               <div className={styles.rankingBox}>
                 <div className={styles.textMenu}>내 랭킹</div>
                 <Rank 
                   rank={myRanking} 
-                  nickname={getCookie('uname')} 
+                  nickname={getCookie('gitId')} 
                   info={myTotalScore}
-                  image={getCookie('uimg')} 
+                  image={getCookie('avatarUrl')} 
                 />
                 {/* <div className={styles.textMenu}>전체 랭킹</div> */}
                 {/* {

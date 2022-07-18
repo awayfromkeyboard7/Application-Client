@@ -14,7 +14,7 @@ export default function Header({ label, onClickBtn }) {
   useEffect(() => {
     // console.log('change login status?????????', data, status, isValidUser);
     if(status === 'authenticated') {
-      if(hasCookie('uname')) {
+      if(hasCookie('gitId')) {
         setIsValidUser(true);
       } else {
         sendAccessToken(data.accessToken);
@@ -25,9 +25,9 @@ export default function Header({ label, onClickBtn }) {
   }, [status])
 
   const deleteCookies = () => {
-    deleteCookie('uid');
-    deleteCookie('uname');
-    deleteCookie('uimg');
+    deleteCookie('nodeId');
+    deleteCookie('gitId');
+    deleteCookie('avatarUrl');
     setIsValidUser(false);
   };
 

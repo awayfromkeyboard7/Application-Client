@@ -24,8 +24,8 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (router.isReady) {
-      if (router.query?.roomId === getCookie('uname')) {
-        socket.emit('startMatching', getCookie('uname'));
+      if (router.query?.roomId === getCookie('gitId')) {
+        socket.emit('startMatching', getCookie('gitId'));
       }
       socket.on('getTeamInfo', users => {
         setPlayers(users);
@@ -88,10 +88,10 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
     } 
     else {
-      socket.emit('exitWait', getCookie('uname'));
+      socket.emit('exitWait', getCookie('gitId'));
       router.push('/');
     }
   };

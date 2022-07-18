@@ -13,7 +13,7 @@ export default function FriendItem({ gitId, isOnline, onClick }) {
 
   const onClickFollow = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', getCookie('uname'), gitId);
+      socket.emit('inviteMember', getCookie('gitId'), gitId);
       setIsFollow(true);
     }
   };

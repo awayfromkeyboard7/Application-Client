@@ -4,7 +4,7 @@ import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/chat.module.scss';
 
 export default function ChatList({ roomName, onClickBack }) {
-  const nickname = getCookie('uname');
+  const nickname = getCookie('gitId');
   const [text, setText] = useState('');
   const [chatList, setChatList] = useState([
     {

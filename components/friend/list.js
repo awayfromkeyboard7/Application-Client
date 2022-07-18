@@ -29,7 +29,7 @@ export default function FriendList({ onClick }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        gitId: getCookie('uname')
+        gitId: getCookie('gitId')
       }),
     })
     .then(res => res.json())
