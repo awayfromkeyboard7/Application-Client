@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
 import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
-import CheckValidUser from '../../../components/checkValidUser';
+import Loading from '../../../components/loading';
 
 export default function WaitPage() {
   const router = useRouter();
+  const { status } = useSession();
   const defaultUsers = [
     {
       id: 1,
@@ -64,6 +66,12 @@ export default function WaitPage() {
   const [players, setPlayers] = useState(defaultUsers);
   const [countdown, setCountdown] = useState(179);
   const [isMatching, setIsMatching] = useState(false);
+
+  useEffect(() => {
+    if(status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status]);
 
   useEffect(() => {
     socket.on('timeLimit', ts => {
@@ -160,7 +168,7 @@ export default function WaitPage() {
       }
     };
 
-    await fetch(`/gamelog/createNew`, {
+    await fetch(`/server/api/gamelog/createNew`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -220,6 +228,7 @@ export default function WaitPage() {
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
         <>
+          { status !== 'authenticated' && <Loading /> }
           <Wait 
             type={router?.query?.mode} 
             players={players} 
@@ -228,7 +237,6 @@ export default function WaitPage() {
             onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
           />
           <Sidebar />
-          <CheckValidUser />
         </>
       }
     />

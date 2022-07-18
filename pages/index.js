@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { 
-  getCookie, 
-  hasCookie
-} from 'cookies-next';
+import { useSession } from 'next-auth/react';
+import { getCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
 import Header from '../components/header';
@@ -14,6 +12,7 @@ import Notification from '../components/notification';
 
 export default function Home() {
   const router = useRouter();  
+  const { status } = useSession();
   const [isLogin, setIsLogin] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
@@ -34,20 +33,20 @@ export default function Home() {
   }, [router.isReady]);
 
   useEffect(() => {
-    if(hasCookie('uid')) {
-      if(isLogin) {
-        // token이 있으면 서버에 유효한 토큰인지 확인하고 true
-        // 유효하지 않으면 false
-        socket.emit('setGitId', getCookie('uname'));
-        socket.on('comeon', id => {
-          setInviteId(id);
-          setIsNoti(true);
-        })
-      }
+    if(status === 'authenticated') {
       setIsLogin(true);
-    } else {
-      // token이 없으면 false
+    } else if(status === 'unauthenticated') {
       setIsLogin(false);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if(isLogin) {
+      socket.emit('setGitId', getCookie('uname'));
+      socket.on('comeon', id => {
+        setInviteId(id);
+        setIsNoti(true);
+      });
     }
   }, [isLogin]);
 
@@ -93,31 +92,31 @@ export default function Home() {
     <Layout 
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
-      <>
-        <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
-        <LobbyBox mode="team" onClick={() => goToWait('team')}/>
-        { isLogin && <Sidebar />}
-        {
-          isPopup
-          && <Popup 
-              title="⛔️로그인이 필요합니다.⛔️"
-              content="게임에 참가하시려면 로그인이 필요합니다."
-              label="메인으로"
-              onClick={() => setIsPopup(false)} 
-            />
-        } 
-        {
-          isLogin 
-          && isNoti
-          && <Notification 
-              title={`${inviteId}님이 팀전에 초대했습니다!`}
-              content="게임에 참가하시겠습니까?"
-              imgUrl={inviteImageUrl ?? "/default_profile.jpg"}
-              onClickAccept={onClickAccept}
-              onClickDecline={onClickDecline}
-            />
-        }
-      </>
+        <>
+          <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
+          <LobbyBox mode="team" onClick={() => goToWait('team')}/>
+          { isLogin && <Sidebar />}
+          {
+            isPopup
+            && <Popup 
+                title="⛔️로그인이 필요합니다.⛔️"
+                content="게임에 참가하시려면 로그인이 필요합니다."
+                label="메인으로"
+                onClick={() => setIsPopup(false)} 
+              />
+          } 
+          {
+            isLogin 
+            && isNoti
+            && <Notification 
+                title={`${inviteId}님이 팀전에 초대했습니다!`}
+                content="게임에 참가하시겠습니까?"
+                imgUrl={inviteImageUrl ?? "/default_profile.jpg"}
+                onClickAccept={onClickAccept}
+                onClickDecline={onClickDecline}
+              />
+          }
+        </>
       }
     />
   )

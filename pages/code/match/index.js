@@ -1,18 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
 import Match from '../../../components/match/box';
 import Sidebar from '../../../components/sidebar';
-import CheckValidUser from '../../../components/checkValidUser';
+import Loading from '../../../components/loading';
 
 export default function MatchPage() {
   const router = useRouter();  
+  const { status } = useSession();
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
   const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    if(status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -55,7 +63,7 @@ export default function MatchPage() {
   }, [gameLogId]);
   
   const startGame = async() => {
-    await fetch(`/gamelog/createNew`, {
+    await fetch(`/server/api/gamelog/createNew`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -97,6 +105,7 @@ export default function MatchPage() {
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
         <>
+          { status !== 'authenticated' && <Loading /> }
           <Match 
             type={router?.query?.mode} 
             players={players} 
@@ -104,7 +113,6 @@ export default function MatchPage() {
             onClickPlayAgain={goToCode}
           />
           <Sidebar />
-          <CheckValidUser />
         </>
       }
     />

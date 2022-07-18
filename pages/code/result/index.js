@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
 import Result from '../../../components/result/soloBox';
 import Sidebar from '../../../components/sidebar';
-import CheckValidUser from '../../../components/checkValidUser';
+import Loading from '../../../components/loading';
 
 export default function ResultPage() {
   const router = useRouter();  
+  const { status } = useSession();
   const [ranks, setRanks] = useState([]);
   const [gameStartAt, setGameStartAt] = useState();
   
+  useEffect(() => {
+    if(status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status]);
+
   useEffect(() => {
     if(router?.query?.mode === 'team') {
       socket.on('getTeamRanking', (result, startAt) => {
@@ -51,6 +59,7 @@ export default function ResultPage() {
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
         <>
+          { status !== 'authenticated' && <Loading /> }
           <Result 
             type={router?.query?.mode}
             ranks={ranks} 
@@ -59,7 +68,6 @@ export default function ResultPage() {
             onClickPlayAgain={goToWait}
           />
           <Sidebar />
-          <CheckValidUser />
         </>
       }
     />

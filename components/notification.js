@@ -5,7 +5,7 @@ export default function Notification({ title, content, imgUrl, onClickAccept, on
   return (
     <div className={styles.notiBox}>
       <div className={styles.notiMain}>
-        <Image src={imgUrl} width={50} height={50} />
+        <Image src={imgUrl ?? '/default_profile.jpg'} width={50} height={50} />
         <div className={styles.notiInfo}>
           <div className={styles.title}>{title}</div>
           <div className={styles.content}>{content}</div>

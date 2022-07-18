@@ -77,7 +77,7 @@ export default function TeamResultItem({ teamInfo, startAt, idx }) {
         {
           teamInfo?.map(info => 
             <div className={styles.profileIcon} key={info.gitId}>
-              <Image src={info.avatarUrl} width={40} height={40} className={styles.profileIcon} alt="프로필" />
+              <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
             </div>
           )
         }
