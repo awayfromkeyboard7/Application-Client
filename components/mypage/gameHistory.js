@@ -1,7 +1,36 @@
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import GamePlayer from './gamePlayer';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ gameInfo }) {
+export default function GameHistory({ gameLogId }) {
+  const [gameInfo, setGameInfo] = useState({});
+  const [isOpenCode, setIsOpenCode] = useState(false);
+  const [playerCode, setPlayerCode] = useState('');
+
+  useEffect(() => {
+    getGameInfo();
+  }, [gameLogId]);
+
+  const getGameInfo = async() => {
+    await fetch(`/server/api/gamelog/getGameLog`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        gameLogId
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        console.log('[gameHistory] get game info', data.info);
+        setGameInfo(data.info);
+      }
+    })
+    .catch(error => console.log('error >> ', error));
+  };
+
   const unixToTime = (ts) => {
     const date = new Date(ts); 
     const year = date.getFullYear();
@@ -16,15 +45,10 @@ export default function GameHistory({ gameInfo }) {
     return `${year}. ${month.substr(-2)}. ${day.substr(-2)}`;
   };
 
-  const PlayerItem = ({ info }) => {
-    return (
-      <div className={styles.gameHistoryPlayerItem}>
-        <div className={styles.gameHistoryPlayerProfileImage}>
-          <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={20} height={20} alt="profile" className={styles.gameHistoryPlayerProfileImage} />
-        </div>
-        <div className={styles.gameHistoryPlayerNickname}>{info.gitId}</div>
-      </div>
-    )
+  const onClickPlayer = (player) => {
+    console.log('onClick player >>>', player);
+    setPlayerCode(player.code);
+    setIsOpenCode(true);
   };
 
   const TeamGameWin = () => {
@@ -40,13 +64,13 @@ export default function GameHistory({ gameInfo }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
             }
             </div>
           </div>
@@ -68,13 +92,13 @@ export default function GameHistory({ gameInfo }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
             }
             </div>
           </div>
@@ -96,13 +120,13 @@ export default function GameHistory({ gameInfo }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.userHistory?.slice(0, 4).map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.userHistory?.slice(4)?.map(player => <PlayerItem info={player} key={player.gitId} />)
+              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
             }
             </div>
           </div>
@@ -110,7 +134,6 @@ export default function GameHistory({ gameInfo }) {
       </>
     )
   };
-
 
   return (
     <div className={styles.gameHistoryItem}>
@@ -120,6 +143,15 @@ export default function GameHistory({ gameInfo }) {
           ? <TeamGameWin />
           : <TeamGameLose />
         : <SoloGame />
+      }
+      {
+        isOpenCode
+        && <div className={styles.codeBackground}>
+            <div className={styles.codeBox}>
+              <div className={styles.codeEditor}>{playerCode}</div>
+              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
+            </div>
+          </div>
       }
     </div>
   )

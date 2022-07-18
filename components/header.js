@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image'
+import { hasCookie, deleteCookie } from 'cookies-next';
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
@@ -11,11 +12,24 @@ export default function Header({ label, onClickBtn }) {
   const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
-    console.log('change login status?????????', data, status);
-    if(status === "authenticated") {
-      sendAccessToken(data.accessToken);
+    // console.log('change login status?????????', data, status, isValidUser);
+    if(status === 'authenticated') {
+      if(hasCookie('uname')) {
+        setIsValidUser(true);
+      } else {
+        sendAccessToken(data.accessToken);
+      }
+    } else if(status === 'unauthenticated') {
+      deleteCookies();
     }
   }, [status])
+
+  const deleteCookies = () => {
+    deleteCookie('uid');
+    deleteCookie('uname');
+    deleteCookie('uimg');
+    setIsValidUser(false);
+  };
 
   const goToLobby = () => {
     router.push('/');
@@ -36,19 +50,20 @@ export default function Header({ label, onClickBtn }) {
       if(data.success) {
         setIsValidUser(true);
       } else {
+        deleteCookies();
         signOut();
-        setIsValidUser(false);
       }
     })
     .catch(error => {
       console.log('error >> ', error);
+      deleteCookies();
       signOut();
-      setIsValidUser(false);
     });
   };
 
   return (
     <>
+      { status === 'loading' && <Loading /> }
       <div className={styles.headerRow}>
         <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
       </div>
@@ -62,7 +77,6 @@ export default function Header({ label, onClickBtn }) {
           </div>
       }
       </div>
-      { status === 'loading' && <Loading /> }
     </>
   )
 }

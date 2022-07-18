@@ -1,18 +1,20 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendItem({ gitId, isOnline, onClick }) {
-  const router = useRouter();  
-  const [isClick, setIsClick] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
 
-  const onClickInvite = () => {
+  useEffect(() => {
+    // 이미 팔로우중인 사용자인지 확인하고 isFollow state 변경
+  }, []);
+
+  const onClickFollow = () => {
     if(isClick === false) {
       socket.emit('inviteMember', getCookie('uname'), gitId);
-      setIsClick(true);
+      setIsFollow(true);
     }
   };
 
@@ -23,11 +25,9 @@ export default function FriendItem({ gitId, isOnline, onClick }) {
       </div>
       <div className={styles.friendNickname} onClick={() => onClick(gitId)}>{gitId}</div>
       {
-        router?.asPath === '/'
-        ? null
-        : isOnline
-          ? <div className={isClick ? styles.inviteBtnClicked : styles.inviteBtn} onClick={onClickInvite}>초대</div>
-          : <div className={styles.inviteBtnDisable}>초대</div>
+        isFollow
+        ? <div className={styles.inviteBtnClicked} onClick={onClickFollow}>팔로우</div>
+        : <div className={styles.inviteBtn}>팔로우</div>
       }
     </div>
   )

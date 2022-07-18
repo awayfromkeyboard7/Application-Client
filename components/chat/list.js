@@ -17,7 +17,7 @@ export default function ChatList({ roomName, onClickBack }) {
       senderId: roomName,
       messageId: '1234533',
       text: '고고?',
-      sendAt: new Date().getTime()
+      sendAt: new Date().getTime() + 10000
     }
   ]);
 
