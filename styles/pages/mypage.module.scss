@@ -1,0 +1,256 @@
+@import '../variables.module.scss';
+
+.mainRow {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.gameHistoryBox,
+.mainCol {
+  width: 18.75rem; /* 300px */
+  display: flex;
+  flex-direction: column;
+}
+
+.gameHistoryBox {
+  flex: 1;
+  border-right: #000 solid 4px;
+}
+
+.gameHistoryHeader {
+  height: 3rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gameHistoryLeft,
+.gameHistoryRight {
+  display: flex;
+  flex-direction: row;
+}
+
+.toggleBtn,
+.title {
+  padding: 0.625rem;
+  color: $white-dark-color;
+  font-size: 1rem;
+  line-height: 2rem;
+  overflow: hidden auto;
+}
+
+.gameHistoryBody {
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.gameHistoryItem {
+  height: 8.125rem;
+  // width: 80%;
+  min-height: 8.125rem !important;
+  min-width: 25rem;
+  margin: 0.625rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  background-color: $white-dark-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-light-color;
+  }
+}
+
+.gameHistoryItemBlue {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex: 1;
+  background-color: $success-trans-color;
+}
+
+.gameHistoryItemRed {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex: 1;
+  background-color: $error-trans-color;
+}
+
+.gameHistoryColorTagRed,
+.gameHistoryColorTagBlue,
+.gameHistoryColorTag {
+  width: 1rem;
+  min-width: 1rem !important;
+  background-color: $purple-color;
+}
+
+.gameHistoryColorTagBlue {
+  background-color: $success-color;
+}
+
+.gameHistoryColorTagRed {
+  background-color: $error-color;
+}
+
+.gameHistoryMain {
+  width: 5rem;
+  min-width: 5rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-right: $navy-trans-color solid 1px;
+}
+
+.gameHistoryMode {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  color: #000;
+  background-color: $gray-color;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gameHistoryWin,
+.gameHistoryLose,
+.gameHistoryRank {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  color: #000;
+}
+
+.gameHistoryWin {
+  color: $success-color;
+}
+
+.gameHistoryLose {
+  color: $error-color;
+}
+
+.gameHistoryInfo {
+  width: calc(100% - 6rem);
+  padding: 0.625rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.gameHistoryDate {
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: right;
+  color: $gray-dark-color;
+}
+
+.gameHistoryEtc {
+  flex: 1;
+}
+
+.gameHistoryPlayersBox {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.splitterVerticalGray,
+.splitterVertical {
+  margin-right: 0.625rem;
+  margin-left: 0.625rem;
+  width: 1px;
+}
+
+.splitterVerticalGray {
+  background-color: $navy-trans-color;
+}
+
+.gameHistoryPlayersCol {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gameHistoryPlayerItem {
+  margin: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.gameHistoryPlayerProfileImage {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 20px;
+  border: $purple-color solid 2px;
+}
+
+.gameHistoryPlayerNickname {
+  margin-left: 4px;
+  font-size: 0.875rem;
+  color: $gray-super-dark-color;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $white-dark-color;
+}
+
+.profileIcon {
+  width: 100px;
+  height: 100px;
+  margin: 0.625rem;
+  border-radius: 100px;
+  border: $purple-color solid 4px;
+}
+
+.nickname {
+  max-width: 10rem;
+  padding: 0.625rem;
+  color: $purple-color;
+  font-size: 1.25rem;
+  font-weight: bold;
+  overflow: hidden auto;
+}
+
+.textMenu {
+  padding-left: 0.625rem;
+  background-color: $purple-color;
+  color: $white-dark-color;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 2rem;
+}
+
+.rankingBox {
+  padding-bottom: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $white-dark-color;
+  overflow: auto;
+}

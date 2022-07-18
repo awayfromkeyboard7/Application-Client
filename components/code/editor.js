@@ -1,24 +1,13 @@
 import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
-import { keymap, ViewUpdate } from '@codemirror/view';
+import { keymap } from '@codemirror/view';
 import { python } from '@codemirror/lang-python'
 import { javascript } from '@codemirror/lang-javascript'
 import { indentWithTab } from '@codemirror/commands';
 import { useEffect, useRef } from 'react';
 import * as random from 'lib0/random';
 import '../../styles/components/code/editor.module.css';
-import styles from '../../styles/pages/Code.module.scss';
-
-// export const usercolors = [
-//   { color: '#30bced', light: '#30bced33' },
-//   { color: '#6eeb83', light: '#6eeb8333' },
-//   { color: '#ffbc42', light: '#ffbc4233' },
-//   { color: '#ecd444', light: '#ecd44433' },
-//   { color: '#ee6352', light: '#ee635233' },
-//   { color: '#9ac2c9', light: '#9ac2c933' },
-//   { color: '#8acb88', light: '#8acb8833' },
-//   { color: '#1be7ff', light: '#1be7ff33' },
-// ];
+import styles from '../../styles/pages/code.module.scss';
 
 export const usercolors = [
   { color: '#6C5B7B', light: '#6C5B7B33' }, // 애쉬보라
@@ -64,6 +53,16 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
         break;
       case 'annie1229':
         userColor = { color: '#7C46E0', light: '#7C46E033' } // 보라
+        break;
+    }
+
+    let langMode = python();
+    switch(selectedLang) {
+      case 'JavaScript':
+        langMode = javascript();
+        break;
+      case 'Python':
+        langMode = python();
         break;
     }
 
@@ -199,7 +198,7 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
         extensions: [
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
-          [selectedLang === 'JavaScript' ? javascript() : python()],
+          langMode,
           keymap.of([indentWithTab]),
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,
@@ -216,7 +215,7 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
       }  
     }
 
-  }, [doc, provider, gitId]);
+  }, [doc, provider, gitId, selectedLang]);
 
   return <div className={styles.CodeMirror} ref={editorRef}></div>
 

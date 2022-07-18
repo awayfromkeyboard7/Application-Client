@@ -1,0 +1,68 @@
+@import '../variables.module.scss';
+
+.notiBox {
+  width: 16.5rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: #ffffffbc;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.3);
+}
+
+.notiMain {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.notiInfo {
+  margin-left: 0.625rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: $navy-color;
+}
+
+.content {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: $gray-dark-color;
+}
+
+.notiFooter {
+  margin-top: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.acceptBtn,
+.declineBtn {
+  padding: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: $white-dark-color;
+  white-space: nowrap;
+  background-color: $purple-color;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $purple-dark-color;
+  }
+}
+
+.declineBtn {
+  background-color: $gray-dark-color;
+  &:hover {
+    background-color: $gray-color;
+  }
+}

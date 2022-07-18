@@ -60,9 +60,10 @@
 }
 
 .inviteBtn {
+  padding: calc(0.5rem - 2px);
   background-color: $white-dark-color;
   color: $purple-color;
-  outline: $purple-color solid 2px;
+  border: $purple-color solid 2px;
 }
 
 .inviteBtnDisable {

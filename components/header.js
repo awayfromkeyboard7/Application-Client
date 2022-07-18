@@ -1,36 +1,50 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image'
-import { hasCookie } from 'cookies-next';
+import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
 export default function Header({ label, onClickBtn }) {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
+  const { data, status } = useSession();
+  const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
-    if(hasCookie('uid')) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
+    console.log('change login status?????????', data, status);
+    if(status === "authenticated") {
+      sendAccessToken(data.accessToken);
     }
-  }, [isLogin]);
+  }, [status])
 
   const goToLobby = () => {
     router.push('/');
   };
 
-  const login = async() => {
-    await fetch(`/api/login`, {
-      method: 'GET',
+  const sendAccessToken = async(accessToken) => {
+    await fetch(`/server/api/user/get-info`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include'  
+      body: JSON.stringify({
+        accessToken
+      })
     })
     .then(res => res.json())
-    .then(data => router.push(data.url))
-    .catch(error => console.log('error >> ', error));
+    .then(data => {
+      if(data.success) {
+        setIsValidUser(true);
+      } else {
+        signOut();
+        setIsValidUser(false);
+      }
+    })
+    .catch(error => {
+      console.log('error >> ', error);
+      signOut();
+      setIsValidUser(false);
+    });
   };
 
   return (
@@ -40,14 +54,15 @@ export default function Header({ label, onClickBtn }) {
       </div>
       <div className={styles.headerRow}>
       {
-        isLogin
+        isValidUser
         ? <div className={styles.myPageBtn} onClick={onClickBtn}>{label}</div>
-        : <div className={styles.loginBtn}  onClick={login}>
+        : <div className={styles.loginBtn}  onClick={signIn}>
             <Image src="/github.png" alt="github Logo" width={20} height={20} />
             <div className={styles.loginText}>로그인</div>
           </div>
       }
       </div>
+      { status === 'loading' && <Loading /> }
     </>
   )
 }

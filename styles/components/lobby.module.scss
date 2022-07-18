@@ -1,75 +1,3 @@
-.main {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.header {
-  height: 3.75rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #282A35;
-  border-bottom: #000 solid 4px;
-}
-
-.headerTitle {
-  font-size: 1.5rem; /* 24px*/
-  font-weight: bold;
-  line-height: 2rem;
-  color: #fff;
-}
-
-.loginText {
-  margin-left: 0.625rem;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  color: rgb(89, 0, 148);
-}
-
-.myPageBtn {
-  height: 2rem;
-  padding: 0.5rem;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 5px;
-  color: rgb(89, 0, 148);
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.myPageBtn:hover {
-  background-color: #f3f3f3;
-}
-
-.body {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  /* background-color: #f3f3f3; */
-  background-color: #282A35;
-}
-
-.boxText {
-  margin-top: 1.25rem;
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 2.5rem;
-  text-align: center;
-  color: #fff;
-}
-
 .box {
   display: flex;
   flex: 1;
@@ -92,6 +20,15 @@
   transform: scale(1.2);
   transition-duration: .5s;
   /* transition-delay: .4s; */
+}
+
+.boxText {
+  margin-top: 1.25rem;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2.5rem;
+  text-align: center;
+  color: #fff;
 }
 
 .hidden {

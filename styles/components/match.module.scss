@@ -19,20 +19,6 @@
   }
 }
 
-.btnInactive {
-  height: 2rem;
-  padding: 0.5rem;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 5px;
-  color: $gray-dark-color;
-  background-color: rgba(255, 255, 255, 0.061);
-}
-
 .body {
   height: 100%;
   min-width: 35rem;
@@ -68,14 +54,15 @@
   color: $white-dark-color;
 }
 .mainBody {
+  width: 100%;
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .mainFooter {
-  width: 50%;
+  // width: 50%;
   display: flex;
   flex-direction: row;
   align-self: center;
@@ -83,15 +70,17 @@
 }
 
 .waitBox {
-  width: 60%;
-  min-width: 35rem;
+  height: 25rem;
+  width: 25rem;
+  margin: 2rem;
   padding: 1rem;
+  margin: 0.625rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  // background-color: $white-dark-color;
+  background-color: $white-dark-color;
   border-radius: 0.625rem;
 }
 
@@ -99,11 +88,25 @@
   margin: 0.625rem;
   display: flex;
   flex-direction: column;
-  flex: 1 0 21%;
+  flex: 1 0 35%;
   align-items: center;
   justify-content: center;
 }
 
+.loadingBox {
+  padding-top:1.25rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: $navy-color;
+}
 .profileIcon {
   width: 5rem;
   height: 5rem;
@@ -113,7 +116,7 @@
 .nickname {
   width: 5rem;
   margin-top: 1rem;
-  color: $white-dark-color;
+  color: $navy-color;
   font-size: 1rem;
   line-height: 1.25rem;
   text-align: center;

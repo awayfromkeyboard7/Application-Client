@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function ResultItem({ info, startAt, idx }) {
+export default function SoloResultItem({ info, startAt, idx }) {
   const myNickname = getCookie('uname');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -14,7 +14,7 @@ export default function ResultItem({ info, startAt, idx }) {
 
   useEffect(() => {
     setRankText(info.passRate < 0 ? '-' : convertRank(idx + 1));
-  }, [info.passRate]);
+  }, [info.passRate, idx]);
 
   const convertRank = (rank) => {
     let result;
@@ -53,10 +53,10 @@ export default function ResultItem({ info, startAt, idx }) {
   };
 
   return (
-    <div className={myNickname === info.nickname ? styles.resultItemMine : styles.resultItem}>
+    <div className={myNickname === info.gitId ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
-        <Image src={info.avatarUrl} width={40} height={40} className={styles.profileIcon} alt="프로필" />
+        <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div>
       <div className={styles.resultInfoBox}>
         <div className={styles.nickname}>{info.gitId}</div>

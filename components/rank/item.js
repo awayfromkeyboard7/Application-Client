@@ -30,7 +30,7 @@ export default function RankingItem({ rank, nickname, info, image }) {
     <div className={styles.rankingElem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
-        <Image src={image} width={40} height={40} className={styles.profileIcon} alt="프로필" />
+        <Image src={image ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div>
       <div className={styles.profileInfo}>
         <div className={styles.nickname}>{nickname}</div>

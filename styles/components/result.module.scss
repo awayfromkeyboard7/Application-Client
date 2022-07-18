@@ -1,32 +1,5 @@
 @import '../variables.module.scss';
 
-.headerTitle {
-  font-size: 1.5rem; /* 24px*/
-  font-weight: bold;
-  line-height: 2rem;
-  color: #fff;
-}
-
-.myPageBtn,
-.btn {
-  height: 2rem;
-  padding: 0.5rem;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 5px;
-  color: $purple-color;
-  background-color: #fff;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $white-dark-color;
-  }
-}
-
 .body {
   padding: 1.5rem;
   display: flex;
@@ -107,12 +80,23 @@
   text-align: center;
 }
 
+.profileIconBox {
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.profileIconOverlap,
 .profileIcon {
   margin: 0.625rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 2rem;
   border: $purple-color solid 2px;
+}
+
+.profileIconOverlap {
+  margin-left: -1.25rem;
 }
 
 .profileInfo {
@@ -154,6 +138,26 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.btn {
+  height: 2rem;
+  padding: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 5px;
+  color: $purple-color;
+  background-color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $white-dark-color;
+  }
 }
 
 .hidden {

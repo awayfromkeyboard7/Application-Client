@@ -1,27 +1,43 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
-import Result from '../../../components/result/box';
+import Result from '../../../components/result/soloBox';
 import Sidebar from '../../../components/sidebar';
-import CheckValidUser from '../../../components/checkValidUser';
+import Loading from '../../../components/loading';
 
 export default function ResultPage() {
   const router = useRouter();  
+  const { status } = useSession();
   const [ranks, setRanks] = useState([]);
   const [gameStartAt, setGameStartAt] = useState();
   
   useEffect(() => {
-    socket.emit('getRanking', router?.query?.gameLogId);
-  }, []);
+    if(status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status]);
 
   useEffect(() => {
-    socket.on('getRanking', (ranking, startAt) => {
-      setRanks(ranking);
-      setGameStartAt(startAt);
-    });
-  }, [ranks]);
+    if(router?.query?.mode === 'team') {
+      socket.on('getTeamRanking', (result, startAt) => {
+        console.log('get team ranking??????? >>', result, startAt);
+        if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
+          setRanks([result[0][0], result[1][0]]);
+        }
+        setGameStartAt(startAt);
+      });
+      socket.emit('getTeamRanking', router?.query?.gameLogId);
+    } else {
+      socket.on('getRanking', (ranking, startAt) => {
+        setRanks(ranking);
+        setGameStartAt(startAt);
+      });
+      socket.emit('getRanking', router?.query?.gameLogId);
+    }
+  }, []);
 
   const goToWait = () => {
     router.push({
@@ -43,6 +59,7 @@ export default function ResultPage() {
       header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
       body={
         <>
+          { status !== 'authenticated' && <Loading /> }
           <Result 
             type={router?.query?.mode}
             ranks={ranks} 
@@ -51,7 +68,6 @@ export default function ResultPage() {
             onClickPlayAgain={goToWait}
           />
           <Sidebar />
-          <CheckValidUser />
         </>
       }
     />
