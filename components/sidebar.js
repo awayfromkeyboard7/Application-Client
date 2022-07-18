@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Friends from './friend/list';
 import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
+import { socket } from '../lib/socket';
+import { getCookie } from 'cookies-next';
 
 export default function Sidebar({ menu='friends' }) {
   const [sidebarMenu, setSidebarMenu] = useState(menu);
@@ -37,6 +39,8 @@ export default function Sidebar({ menu='friends' }) {
   const onClickFriend = (friend) => {
     setRoomName(friend);
     setSidebarMenu('chat');
+    console.log(friend);
+    socket.emit("getChatMessage", getCookie('uname'), friend);
   };
 
   const onClickBack = () => {

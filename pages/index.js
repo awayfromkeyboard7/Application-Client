@@ -9,6 +9,7 @@ import LobbyBox from '../components/lobby/box';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
 import Notification from '../components/notification';
+import ChatList from '../components/chat/list';
 
 export default function Home() {
   const router = useRouter();  
@@ -18,6 +19,7 @@ export default function Home() {
   const [isNoti, setIsNoti] = useState(false);
   const [inviteId, setInviteId] = useState(null);
   const [inviteImageUrl, setInviteImageUrl] = useState(null);
+
 
   useEffect(() => {
     // socket.emit('exitWait', getCookie('uname'));
