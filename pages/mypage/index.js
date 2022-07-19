@@ -17,10 +17,6 @@ export default function MyPage() {
   const [myTotalScore, setMyTotalScore] = useState(0);
   const [gameLogs, setGameLogs] = useState([]);
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
-
   const ranks = [
     {
       gitId: 'annie1229',
@@ -119,6 +115,10 @@ export default function MyPage() {
       info: 'swjungle'
     }
   ];
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     if(status !== 'authenticated') {

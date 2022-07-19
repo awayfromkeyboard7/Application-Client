@@ -50,16 +50,15 @@
 }
 
 .gameHistoryItem {
-  height: 8.125rem;
+  height: 11.25rem;
   // width: 80%;
-  min-height: 8.125rem !important;
+  min-height: 11.25rem !important;
   min-width: 25rem;
   margin: 0.625rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   background-color: $white-dark-color;
-  cursor: pointer;
 }
 
 .gameHistoryItemBlue {
@@ -183,6 +182,7 @@
 }
 
 .gameHistoryPlayerItem {
+  height: 2rem;
   margin: 2px;
   display: flex;
   flex-direction: row;
@@ -199,14 +199,43 @@
   border: $purple-color solid 2px;
 }
 
+.gameHistoryPlayerInfoBox {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.gameHistoryPlayerPassRate,
+.gameHistoryPlayerLanguage,
 .gameHistoryPlayerNickname {
   margin-left: 4px;
+  flex: 1;
   font-size: 0.875rem;
   color: $gray-super-dark-color;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.gameHistoryPlayerPassRate {
+  margin-left: 0.625rem;
+}
+
+.gameHistoryPlayerLanguage {
+  height: 1.5rem;
+  padding: 0.25rem;
+  text-align: center;
+  line-height: 1rem;
+  color: $white-dark-color;
+  background-color: $gray-color;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-dark-color;
+  }
 }
 
 .profileBox {
@@ -272,14 +301,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
+  justify-content: space-between;
+  overflow: hidden;
   border-radius: 0.625rem;
   background-color: $navy-color;
 }
 
 .codeEditor {
-  width: 100%;
-  flex: 1;
+  width: calc(100% - 2.5rem);
+  // flex: 1;
   color: $white-dark-color;
   background-color: $navy-color;
 }
@@ -303,4 +333,9 @@
   &:hover {
     background-color: $white-dark-color;
   }
+}
+
+.CodeMirror { 
+  height: calc(100% - 2.5rem) !important;
+  width:100% !important;
 }

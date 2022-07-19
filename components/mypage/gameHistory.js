@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
+import { getCookie } from 'cookies-next';
 import GamePlayer from './gamePlayer';
+import Code from './code';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogId }) {
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
+  const [playerLanguage, setPlayerLanguage] = useState('Python');
 
   useEffect(() => {
-    getGameInfo();
+    if(gameLogId) {
+      getGameInfo();
+    }
   }, [gameLogId]);
 
   const getGameInfo = async() => {
@@ -24,7 +29,8 @@ export default function GameHistory({ gameLogId }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        console.log('[gameHistory] get game info', data.info);
+        if(gameLogId === '62d651067812f91c7e523a15')
+          console.log('[gameHistory] get game info', data.info);
         setGameInfo(data.info);
       }
     })
@@ -48,6 +54,7 @@ export default function GameHistory({ gameLogId }) {
   const onClickPlayer = (player) => {
     console.log('onClick player >>>', player);
     setPlayerCode(player.code);
+    setPlayerLanguage(player.language);
     setIsOpenCode(true);
   };
 
@@ -113,7 +120,7 @@ export default function GameHistory({ gameLogId }) {
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>개인전</div>
-          <div className={styles.gameHistoryRank}>3 / 7</div>
+          <div className={styles.gameHistoryRank}>{`${getMyRanking()} / ${gameInfo?.userHistory?.length}`}</div>
         </div>
         <div className={styles.gameHistoryInfo}>
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
@@ -135,11 +142,22 @@ export default function GameHistory({ gameLogId }) {
     )
   };
 
+  const getMyRanking = () => {
+    if(gameInfo?.userHistory) {
+      for(let info of gameInfo.userHistory) {
+        if(info?.gitId === getCookie('gitId')) {
+          return info.ranking;
+        }
+      }
+    }
+    return 0;
+  }
+
   return (
     <div className={styles.gameHistoryItem}>
       {
-        gameInfo.gameMode === 'team'
-        ? gameInfo.teamA[0]?.ranking === 1 
+        gameInfo?.gameMode === 'team'
+        ? gameInfo?.teamA[0]?.ranking === 1 
           ? <TeamGameWin />
           : <TeamGameLose />
         : <SoloGame />
@@ -148,7 +166,7 @@ export default function GameHistory({ gameLogId }) {
         isOpenCode
         && <div className={styles.codeBackground}>
             <div className={styles.codeBox}>
-              <div className={styles.codeEditor}>{playerCode}</div>
+              <Code code={playerCode} language={playerLanguage} />
               <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
             </div>
           </div>

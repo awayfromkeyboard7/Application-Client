@@ -23,41 +23,41 @@ export default function FriendList({ onClick }) {
   }, [searchText]);
 
   const getFriends = async() => {
-    await fetch(`/server/api/gamelog/getGameLog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        gitId: getCookie('gitId')
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setUserList(data.friends);
-      }
-    })
-    .catch(error => console.log('error >> ', error));
+    // await fetch(`/server/api/gamelog/getGameLog`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ 
+    //     gitId: getCookie('gitId')
+    //   }),
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   if(data.success) {
+    //     setUserList(data.friends);
+    //   }
+    // })
+    // .catch(error => console.log('error >> ', error));
   };
 
   const findUser = async() => {
-    await fetch(`/server/api/gamelog/getGameLog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        gitId: searchText
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setUserList([data.user]);
-      }
-    })
-    .catch(error => console.log('error >> ', error));
+    // await fetch(`/server/api/gamelog/getGameLog`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ 
+    //     gitId: searchText
+    //   }),
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   if(data.success) {
+    //     setUserList([data.user]);
+    //   }
+    // })
+    // .catch(error => console.log('error >> ', error));
   };
 
   const onChange = (e) => {
