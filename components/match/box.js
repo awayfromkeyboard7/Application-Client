@@ -8,18 +8,18 @@ export default function MatchBox({ players, onClickGoToMain }) {
   const router = useRouter();
   const [countdown, setCountdown] = useState(180);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown(prev => {
-        if(0 < prev) return prev - 1;
-        else return prev;
-      });
-    }, 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCountdown(prev => {
+  //       if(0 < prev) return prev - 1;
+  //       else return prev;
+  //     });
+  //   }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   const secToTime = (s) => {
     const min = '0' + String(parseInt((s % 3600) / 60));
