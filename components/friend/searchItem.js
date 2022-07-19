@@ -4,18 +4,22 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ gitId, isOnline, onClick }) {
+export default function FriendItem({ gitId, nodeId, myInfo, isOnline, onClick }) {
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
     // 이미 팔로우중인 사용자인지 확인하고 isFollow state 변경
-  }, []);
+    myInfo?.following?.map(userNodeId => {
+      if(userNodeId === nodeId) {
+        setIsFollow(true);
+      }
+    });
+  }, [nodeId]);
 
   const onClickFollow = () => {
-    if(isClick === false) {
-      socket.emit('inviteMember', getCookie('gitId'), gitId);
-      setIsFollow(true);
-    }
+    console.log('onClickFollow >>>>>', getCookie('nodeId'), gitId);
+    socket.emit('followMember', getCookie('nodeId'), gitId);
+    setIsFollow(true);
   };
 
   return (
@@ -26,8 +30,8 @@ export default function FriendItem({ gitId, isOnline, onClick }) {
       <div className={styles.friendNickname} onClick={() => onClick(gitId)}>{gitId}</div>
       {
         isFollow
-        ? <div className={styles.inviteBtnClicked} onClick={onClickFollow}>팔로우</div>
-        : <div className={styles.inviteBtn}>팔로우</div>
+        ? <div className={styles.inviteBtnClicked}>팔로우</div>
+        : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
       }
     </div>
   )
