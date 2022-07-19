@@ -13,7 +13,7 @@ export default function Sidebar({ menu='friends' }) {
     setRoomName(friend);
     setSidebarMenu('chat');
     console.log(friend);
-    socket.emit("getChatMessage", getCookie('uname'), friend);
+    socket.emit("getChatMessage", getCookie('gitId'), friend);
   };
 
   const onClickBack = () => {

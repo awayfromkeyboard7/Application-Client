@@ -5,7 +5,7 @@ import Popup from './popup';
 
 export default function CheckValidUser() {
   const router = useRouter();  
-  const gitId = getCookie('uid');
+  const gitId = getCookie('nodeId');
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
 

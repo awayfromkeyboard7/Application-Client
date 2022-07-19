@@ -24,8 +24,8 @@ export default function ChatList({ roomName, onClickBack }) {
   }, []);
 
   useEffect(() => {
-    // 나: getCookie('uname') -> 친구: roomName
-    socket.emit("getChatMessage", getCookie('uname'), roomName);
+    // 나: getCookie('gitId') -> 친구: roomName
+    socket.emit("getChatMessage", getCookie('gitId'), roomName);
   }, [roomName]);
 
   const ChatItem = ({ chat }) => {
@@ -69,7 +69,7 @@ export default function ChatList({ roomName, onClickBack }) {
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
-    socket.emit('sendChatMessage', getCookie('uname'), roomName, newMessage);
+    socket.emit('sendChatMessage', getCookie('gitId'), roomName, newMessage);
     if(text !== '') {
       setChatList([...chatList, newMessage]);
       setText('');

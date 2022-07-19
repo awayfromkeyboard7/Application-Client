@@ -35,8 +35,8 @@ export default function Home() {
   }, [router.isReady]);
 
   // useEffect(() => {
-  //   if(status === 'authenticated' && hasCookie('uname')) {
-  //     console.log('has cookie??????', hasCookie('uname'));
+  //   if(status === 'authenticated' && hasCookie('gitId')) {
+  //     console.log('has cookie??????', hasCookie('gitId'));
   //     setIsLogin(true);
   //   } else if(status === 'unauthenticated') {
   //     setIsLogin(false);

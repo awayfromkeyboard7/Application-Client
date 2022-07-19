@@ -26,9 +26,9 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
   }, [status]);
 
   const deleteCookies = () => {
-    deleteCookie('uid');
-    deleteCookie('uname');
-    deleteCookie('uimg');
+    deleteCookie('nodeId');
+    deleteCookie('gitId');
+    deleteCookie('avatarUrl');
     checkValidUser(false);
     setIsValidUser(false);
   };
