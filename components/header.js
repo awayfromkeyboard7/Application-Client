@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { hasCookie, deleteCookie } from 'cookies-next';
 import Image from 'next/image'
 import { hasCookie, deleteCookie } from 'cookies-next';
 import Loading from './loading';
@@ -31,13 +30,6 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
     deleteCookie('uname');
     deleteCookie('uimg');
     checkValidUser(false);
-    setIsValidUser(false);
-  };
-
-  const deleteCookies = () => {
-    deleteCookie('nodeId');
-    deleteCookie('gitId');
-    deleteCookie('avatarUrl');
     setIsValidUser(false);
   };
 
