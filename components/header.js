@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { hasCookie, deleteCookie } from 'cookies-next';
 import Image from 'next/image'
+import { hasCookie, deleteCookie } from 'cookies-next';
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
@@ -12,17 +12,16 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
   const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
-    console.log('change login status?????????', data, status);
-    if(status === "authenticated") {
-      // sendAccessToken(data.accessToken);
-      if(hasCookie('uname')) {
+    // console.log('change login status?????????', data, status, isValidUser);
+    if(status === 'authenticated') {
+      if(hasCookie('gitId')) {
         checkValidUser(true);
         setIsValidUser(true);
       } else {
         sendAccessToken(data.accessToken);
       }
     } else if(status === 'unauthenticated') {
-        deleteCookies();
+      deleteCookies();
     }
   }, [status]);
 
@@ -75,7 +74,7 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
       {
         isValidUser
         ? <div className={styles.myPageBtn} onClick={onClickBtn}>{label}</div>
-        : <div className={styles.loginBtn}  onClick={signIn}>
+        : <div className={styles.loginBtn}  onClick={() => signIn('github')}>
             <Image src="/github.png" alt="github Logo" width={20} height={20} />
             <div className={styles.loginText}>로그인</div>
           </div>

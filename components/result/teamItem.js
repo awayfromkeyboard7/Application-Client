@@ -4,14 +4,14 @@ import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
 export default function TeamResultItem({ teamInfo, startAt, idx }) {
-  const myNickname = getCookie('uname');
+  const myNickname = getCookie('gitId');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
   const [isMyTeam, setIsMyTeam] = useState(false);
 
   useEffect(() => {
     for(let member of teamInfo) {
-      if(member.gitId === getCookie('uname')) {
+      if(member.gitId === getCookie('gitId')) {
         setIsMyTeam(true);
         break;
       }
