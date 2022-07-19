@@ -74,7 +74,7 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
       {
         isValidUser
         ? <div className={styles.myPageBtn} onClick={onClickBtn}>{label}</div>
-        : <div className={styles.loginBtn}  onClick={signIn}>
+        : <div className={styles.loginBtn}  onClick={() => signIn('github')}>
             <Image src="/github.png" alt="github Logo" width={20} height={20} />
             <div className={styles.loginText}>로그인</div>
           </div>
