@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { hasCookie, deleteCookie } from 'cookies-next';
 import Image from 'next/image'
 import { hasCookie, deleteCookie } from 'cookies-next';
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
-export default function Header({ label, onClickBtn }) {
+export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
   const router = useRouter();
   const { data, status } = useSession();
   const [isValidUser, setIsValidUser] = useState(false);
@@ -15,6 +16,7 @@ export default function Header({ label, onClickBtn }) {
     // console.log('change login status?????????', data, status, isValidUser);
     if(status === 'authenticated') {
       if(hasCookie('gitId')) {
+        checkValidUser(true);
         setIsValidUser(true);
       } else {
         sendAccessToken(data.accessToken);
@@ -22,7 +24,15 @@ export default function Header({ label, onClickBtn }) {
     } else if(status === 'unauthenticated') {
       deleteCookies();
     }
-  }, [status])
+  }, [status]);
+
+  const deleteCookies = () => {
+    deleteCookie('uid');
+    deleteCookie('uname');
+    deleteCookie('uimg');
+    checkValidUser(false);
+    setIsValidUser(false);
+  };
 
   const deleteCookies = () => {
     deleteCookie('nodeId');
@@ -48,6 +58,7 @@ export default function Header({ label, onClickBtn }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
+        checkValidUser(true);
         setIsValidUser(true);
       } else {
         deleteCookies();
@@ -65,7 +76,7 @@ export default function Header({ label, onClickBtn }) {
     <>
       { status === 'loading' && <Loading /> }
       <div className={styles.headerRow}>
-        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
+        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: '뚝딱' }`}</div>
       </div>
       <div className={styles.headerRow}>
       {

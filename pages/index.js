@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { getCookie } from 'cookies-next';
+import { getCookie, hasCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
 import Header from '../components/header';
@@ -9,6 +9,7 @@ import LobbyBox from '../components/lobby/box';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
 import Notification from '../components/notification';
+import ChatList from '../components/chat/list';
 
 export default function Home() {
   const router = useRouter();  
@@ -18,6 +19,7 @@ export default function Home() {
   const [isNoti, setIsNoti] = useState(false);
   const [inviteId, setInviteId] = useState(null);
   const [inviteImageUrl, setInviteImageUrl] = useState(null);
+
 
   useEffect(() => {
     // socket.emit('exitWait', getCookie('gitId'));
@@ -32,16 +34,18 @@ export default function Home() {
     }
   }, [router.isReady]);
 
-  useEffect(() => {
-    if(status === 'authenticated') {
-      setIsLogin(true);
-    } else if(status === 'unauthenticated') {
-      setIsLogin(false);
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if(status === 'authenticated' && hasCookie('uname')) {
+  //     console.log('has cookie??????', hasCookie('uname'));
+  //     setIsLogin(true);
+  //   } else if(status === 'unauthenticated') {
+  //     setIsLogin(false);
+  //   }
+  // }, [status]);
 
   useEffect(() => {
     if(isLogin) {
+      console.log('islogin has cookie?????', getCookie('gitId'));
       socket.emit('setGitId', getCookie('gitId'));
       socket.on('comeon', id => {
         setInviteId(id);
@@ -90,7 +94,7 @@ export default function Home() {
 
   return (
     <Layout 
-      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
+    header={<Header label="마이페이지" onClickBtn={goToMyPage} checkValidUser={(isValidUser) => setIsLogin(isValidUser)} />}
       body={
         <>
           <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
