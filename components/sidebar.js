@@ -7,7 +7,7 @@ import { getCookie } from 'cookies-next';
 
 export default function Sidebar({ menu='friends' }) {
   const [sidebarMenu, setSidebarMenu] = useState(menu);
-  const [roomName, setRoomName] = useState('A');
+  const [roomName, setRoomName] = useState('');
 
   const onClickFriend = (friend) => {
     setRoomName(friend);
@@ -24,7 +24,7 @@ export default function Sidebar({ menu='friends' }) {
     <div className={styles.sidebar}>
       <div className={styles.sidebarHeader}>
         <div className={sidebarMenu === 'friends' ? styles.headerTitleActive : styles.headerTitle} onClick={() => setSidebarMenu('friends')}>친구목록</div>
-        <div className={sidebarMenu === 'friends' ? styles.headerTitle : styles.headerTitleActive} onClick={() => setSidebarMenu('chat')}>채팅</div>
+        {/* <div className={sidebarMenu === 'friends' ? styles.headerTitle : styles.headerTitleActive} onClick={() => setSidebarMenu('chat')}>채팅</div> */}
       </div>
       <div className={styles.sidebarBody}>
       {

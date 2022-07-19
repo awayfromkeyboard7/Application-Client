@@ -26,7 +26,9 @@ export default function ChatList({ roomName, onClickBack }) {
 
   useEffect(() => {
     // 나: getCookie('gitId') -> 친구: roomName
-    socket.emit("getChatMessage", getCookie('gitId'), roomName);
+    if(roomName && roomName.length !== 0) {
+      socket.emit("getChatMessage", getCookie('gitId'), roomName);
+    }
   }, [roomName]);
 
   useEffect(() => {
