@@ -142,7 +142,7 @@ export default function MyPage() {
         console.log('[mypage] get user', data);
         setMyRanking(data.UserInfo.ranking);
         setMyTotalScore(data.UserInfo.totalScore);
-        setGameLogs(data.UserInfo.gameLogHistory);
+        setGameLogs(data.UserInfo.gameLogHistory.reverse());
       }
     })
     .catch(error => console.log('error >> ', error));

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
@@ -7,6 +7,7 @@ import styles from '../../styles/components/chat.module.scss';
 
 export default function ChatList({ roomName, onClickBack }) {
   const nickname = getCookie('gitId');
+  const chatListRef = useRef();
   const [text, setText] = useState('');
   const [chatList, setChatList] = useState([]);
 
@@ -27,6 +28,15 @@ export default function ChatList({ roomName, onClickBack }) {
     // 나: getCookie('gitId') -> 친구: roomName
     socket.emit("getChatMessage", getCookie('gitId'), roomName);
   }, [roomName]);
+
+  useEffect(() => {
+    scrollBottom();
+  }, [chatList]);
+
+  const scrollBottom = () => {
+    const {scrollHeight, clientHeight} = chatListRef.current;
+    chatListRef.current.scrollTop = scrollHeight - clientHeight;
+  };
 
   const ChatItem = ({ chat }) => {
     return (
@@ -101,7 +111,7 @@ export default function ChatList({ roomName, onClickBack }) {
           <div className={styles.title}>{roomName}</div>
           <div className={styles.icon}></div>
         </div>
-        <div className={styles.body}>
+        <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
             chat.senderId === nickname
