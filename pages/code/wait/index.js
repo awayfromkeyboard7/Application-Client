@@ -80,11 +80,11 @@ export default function WaitPage() {
     console.log(router?.query?.mode);
     if (router.isReady) {
       if (router?.query?.mode === 'team'){
-        if (router?.query?.roomId === getCookie('uname')) {
-          socket.emit('createTeam', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+        if (router?.query?.roomId === getCookie('gitId')) {
+          socket.emit('createTeam', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') });
         }
         socket.on('timeOut', () => {
-          if(players[0]?.gitId === getCookie('uname') && !isMatching) {
+          if(players[0]?.gitId === getCookie('gitId') && !isMatching) {
             goToMatch();
           }
         });
@@ -122,7 +122,7 @@ export default function WaitPage() {
       } 
       else {
         socket.on('timeOut', () => {
-          if(players[0]?.gitId === getCookie('uname')) {
+          if(players[0]?.gitId === getCookie('gitId')) {
             goToCode();
           }
         });
@@ -132,7 +132,7 @@ export default function WaitPage() {
         socket.on('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
-        socket.emit('waitGame', { gitId: getCookie('uname'), avatarUrl: getCookie('uimg') });
+        socket.emit('waitGame', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') });
       }
     }
   }, [router.isReady]);
@@ -193,16 +193,16 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    console.log('matching players.........',getCookie('uname'), players );
-    socket.emit('goToMachingRoom', getCookie('uname'));
+    console.log('matching players.........',getCookie('gitId'), players );
+    socket.emit('goToMachingRoom', getCookie('gitId'));
   };
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
     } 
     else {
-      socket.emit('exitWait', getCookie('uname'));
+      socket.emit('exitWait', getCookie('gitId'));
       router.push('/');
   }
   };

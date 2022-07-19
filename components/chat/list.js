@@ -1,25 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getCookie } from 'cookies-next';
+import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
+
 export default function ChatList({ roomName, onClickBack }) {
-  const nickname = getCookie('uname');
+  const nickname = getCookie('gitId');
   const [text, setText] = useState('');
-  const [chatList, setChatList] = useState([
-    {
-      senderId: roomName,
-      messageId: '12345',
-      text: '팀전 하실?',
-      sendAt: new Date().getTime()
-    },
-    {
-      senderId: roomName,
-      messageId: '1234533',
-      text: '고고?',
-      sendAt: new Date().getTime()
-    }
-  ]);
+  const [chatList, setChatList] = useState([]);
+
+  useEffect(() => {
+    socket.on('receiveChatMessage', chatLogs => {
+      console.log('receiveChatMessage', chatLogs);
+      setChatList(chatLogs);
+    });
+    socket.on('sendChatMessage', message => {
+      console.log('sendChatMessage', message, message['senderId'], roomName);
+      if (message['senderId'] === roomName) {
+        setChatList(prev => [...prev, message]);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    // 나: getCookie('uname') -> 친구: roomName
+    socket.emit("getChatMessage", getCookie('uname'), roomName);
+  }, [roomName]);
 
   const ChatItem = ({ chat }) => {
     return (
@@ -62,12 +69,14 @@ export default function ChatList({ roomName, onClickBack }) {
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
+    socket.emit('sendChatMessage', getCookie('uname'), roomName, newMessage);
     if(text !== '') {
       setChatList([...chatList, newMessage]);
       setText('');
     }
   };
 
+ 
   const unixToTime = (ts) => {
     const date = new Date(ts);
     const year = date.getFullYear();
@@ -109,3 +118,4 @@ export default function ChatList({ roomName, onClickBack }) {
     </div>
   )
 }
+
