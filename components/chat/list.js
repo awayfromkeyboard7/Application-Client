@@ -16,8 +16,10 @@ export default function ChatList({ roomName, onClickBack }) {
       setChatList(chatLogs);
     });
     socket.on('sendChatMessage', message => {
-      console.log(message)
-      setChatList(prev => [...prev, message]);
+      console.log('sendChatMessage', message, message['senderId'], roomName);
+      if (message['senderId'] === roomName) {
+        setChatList(prev => [...prev, message]);
+      }
     });
   }, []);
 

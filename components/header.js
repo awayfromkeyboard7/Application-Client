@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { hasCookie, deleteCookie } from 'cookies-next';
 import Image from 'next/image'
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
-export default function Header({ label, onClickBtn }) {
+export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
   const router = useRouter();
   const { data, status } = useSession();
   const [isValidUser, setIsValidUser] = useState(false);
@@ -13,9 +14,25 @@ export default function Header({ label, onClickBtn }) {
   useEffect(() => {
     console.log('change login status?????????', data, status);
     if(status === "authenticated") {
-      sendAccessToken(data.accessToken);
+      // sendAccessToken(data.accessToken);
+      if(hasCookie('uname')) {
+        checkValidUser(true);
+        setIsValidUser(true);
+      } else {
+        sendAccessToken(data.accessToken);
+      }
+    } else if(status === 'unauthenticated') {
+        deleteCookies();
     }
-  }, [status])
+  }, [status]);
+
+  const deleteCookies = () => {
+    deleteCookie('uid');
+    deleteCookie('uname');
+    deleteCookie('uimg');
+    checkValidUser(false);
+    setIsValidUser(false);
+  };
 
   const goToLobby = () => {
     router.push('/');
@@ -34,23 +51,25 @@ export default function Header({ label, onClickBtn }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
+        checkValidUser(true);
         setIsValidUser(true);
       } else {
+        deleteCookies();
         signOut();
-        setIsValidUser(false);
       }
     })
     .catch(error => {
       console.log('error >> ', error);
+      deleteCookies();
       signOut();
-      setIsValidUser(false);
     });
   };
 
   return (
     <>
+      { status === 'loading' && <Loading /> }
       <div className={styles.headerRow}>
-        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
+        <div className={styles.headerTitle} onClick={goToLobby}>{`{ CODE: '뚝딱' }`}</div>
       </div>
       <div className={styles.headerRow}>
       {
@@ -62,7 +81,6 @@ export default function Header({ label, onClickBtn }) {
           </div>
       }
       </div>
-      { status === 'loading' && <Loading /> }
     </>
   )
 }
