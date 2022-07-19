@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
-import { getCookie, deleteCookie } from 'cookies-next';
+import { getCookie, hasCookie, deleteCookie } from 'cookies-next';
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import Rank from '../../components/rank/item';
@@ -13,8 +13,7 @@ import styles from '../../styles/pages/mypage.module.scss'
 export default function MyPage() {
   const router = useRouter();
   const { status } = useSession();
-  const [myRanking, setMyRanking] = useState(0);
-  const [myTotalScore, setMyTotalScore] = useState(0);
+  const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
 
   const ranks = [
@@ -115,13 +114,13 @@ export default function MyPage() {
       info: 'swjungle'
     }
   ];
-
+  
   useEffect(() => {
     getUserInfo();
   }, []);
 
   useEffect(() => {
-    if(status !== 'authenticated') {
+    if(status !== 'authenticated' && !hasCookie('gitId')) {
       router.push('/');
     }
   }, [status]);
@@ -140,8 +139,7 @@ export default function MyPage() {
     .then(data => {
       if(data.success) {
         console.log('[mypage] get user', data);
-        setMyRanking(data.UserInfo.ranking);
-        setMyTotalScore(data.UserInfo.totalScore);
+        setMyInfo(data.UserInfo);
         setGameLogs(data.UserInfo.gameLogHistory.reverse());
       }
     })
@@ -178,7 +176,7 @@ export default function MyPage() {
               </div>
               <div className={styles.gameHistoryBody}>
               {
-                gameLogs.map(gameLogId => 
+                gameLogs?.map(gameLogId => 
                   <GameHistory gameLogId={gameLogId} key={gameLogId} />
                 )
               }
@@ -187,17 +185,17 @@ export default function MyPage() {
             <div className={styles.mainCol}>
               <div className={styles.profileBox}>
                 <div className={styles.profileIcon}>
-                  <Image src={getCookie('avatarUrl') ?? '/default_profile.jpg'} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+                  <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                 </div>
-                <div className={styles.nickname}>{getCookie('gitId')}</div>
+                <div className={styles.nickname}>{myInfo?.gitId}</div>
               </div>
               <div className={styles.rankingBox}>
                 <div className={styles.textMenu}>내 랭킹</div>
                 <Rank 
-                  rank={myRanking} 
-                  nickname={getCookie('gitId')} 
-                  info={myTotalScore}
-                  image={getCookie('avatarUrl')} 
+                  rank={myInfo?.ranking} 
+                  nickname={myInfo?.gitId} 
+                  info={myInfo?.totalScore}
+                  image={myInfo?.avatarUrl} 
                 />
                 {/* <div className={styles.textMenu}>전체 랭킹</div> */}
                 {/* {

@@ -155,14 +155,13 @@ const CodeEditor = ({ code, language }) => {
         langMode,
         keymap.of([indentWithTab]),
         materialPalenightTheme,
+        EditorView.contentAttributes.of({ contenteditable: false }),
       ],
-      readOnly: false,
     });
-    EditorView.editable.of(false);
 
     const view = new EditorView({
       state,
-      parent: editorRef.current
+      parent: editorRef.current,
     });
 
     return () => {

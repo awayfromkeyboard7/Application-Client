@@ -106,7 +106,7 @@ export default function FriendList({ onClick }) {
 
   const FollowingList = () => {
     if(!userList || userList?.length === 0) {
-      return <div className={styles.infoText}>팔로우중인 유저가 없습니다.</div>;
+      return <div className={styles.infoText}>현재 온라인 유저가 없습니다.</div>;
     }
     return (
       userList?.map(user => 

@@ -95,7 +95,7 @@ export default function GameHistory({ gameLogId }) {
           <div className={styles.gameHistoryLose}>패배</div>
         </div>
         <div className={styles.gameHistoryInfo}>
-          <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
+          <div className={styles.gameHistoryDate}>{unixToTime(gameInfo?.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
