@@ -50,20 +50,15 @@
 }
 
 .gameHistoryItem {
-  height: 8.125rem;
+  height: 11.25rem;
   // width: 80%;
-  min-height: 8.125rem !important;
+  min-height: 11.25rem !important;
   min-width: 25rem;
   margin: 0.625rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   background-color: $white-dark-color;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $gray-light-color;
-  }
 }
 
 .gameHistoryItemBlue {
@@ -187,9 +182,11 @@
 }
 
 .gameHistoryPlayerItem {
+  height: 2rem;
   margin: 2px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   align-items: center;
 }
 
@@ -202,14 +199,43 @@
   border: $purple-color solid 2px;
 }
 
+.gameHistoryPlayerInfoBox {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.gameHistoryPlayerPassRate,
+.gameHistoryPlayerLanguage,
 .gameHistoryPlayerNickname {
   margin-left: 4px;
+  flex: 1;
   font-size: 0.875rem;
   color: $gray-super-dark-color;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.gameHistoryPlayerPassRate {
+  margin-left: 0.625rem;
+}
+
+.gameHistoryPlayerLanguage {
+  height: 1.5rem;
+  padding: 0.25rem;
+  text-align: center;
+  line-height: 1rem;
+  color: $white-dark-color;
+  background-color: $gray-color;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-dark-color;
+  }
 }
 
 .profileBox {
@@ -253,4 +279,63 @@
   flex-direction: column;
   background-color: $white-dark-color;
   overflow: auto;
+}
+
+.codeBackground {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+}
+
+.codeBox {
+  width: 50vw;
+  height: 70vh;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background-color: $navy-color;
+}
+
+.codeEditor {
+  width: calc(100% - 2.5rem);
+  // flex: 1;
+  color: $white-dark-color;
+  background-color: $navy-color;
+}
+
+.btn {
+  // height: 2.5rem;
+  padding: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  color: $purple-color;
+  background-color: #fff;
+  outline: none;
+  // border: $gray-color solid 2px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $white-dark-color;
+  }
+}
+
+.CodeMirror { 
+  height: calc(100% - 2.5rem) !important;
+  width:100% !important;
 }

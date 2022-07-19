@@ -4,7 +4,7 @@ import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
 export default function SoloResultItem({ info, startAt, idx }) {
-  const myNickname = getCookie('uname');
+  const myNickname = getCookie('gitId');
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { hasCookie, deleteCookie } from 'cookies-next';
 import Image from 'next/image'
+import { hasCookie, deleteCookie } from 'cookies-next';
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
 
@@ -12,17 +13,16 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
   const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
-    console.log('change login status?????????', data, status);
-    if(status === "authenticated") {
-      // sendAccessToken(data.accessToken);
-      if(hasCookie('uname')) {
+    // console.log('change login status?????????', data, status, isValidUser);
+    if(status === 'authenticated') {
+      if(hasCookie('gitId')) {
         checkValidUser(true);
         setIsValidUser(true);
       } else {
         sendAccessToken(data.accessToken);
       }
     } else if(status === 'unauthenticated') {
-        deleteCookies();
+      deleteCookies();
     }
   }, [status]);
 
@@ -31,6 +31,13 @@ export default function Header({ label, onClickBtn, checkValidUser=()=>{} }) {
     deleteCookie('uname');
     deleteCookie('uimg');
     checkValidUser(false);
+    setIsValidUser(false);
+  };
+
+  const deleteCookies = () => {
+    deleteCookie('nodeId');
+    deleteCookie('gitId');
+    deleteCookie('avatarUrl');
     setIsValidUser(false);
   };
 

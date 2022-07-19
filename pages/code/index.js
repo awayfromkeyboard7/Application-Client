@@ -25,7 +25,7 @@ import styles from '../../styles/pages/code.module.scss';
 export default function Code() {
   const router = useRouter();  
   const { status } = useSession();
-  const gitId = getCookie('uname');
+  const gitId = getCookie('gitId');
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
   const [outputs, setOutputs] = useState({});
@@ -162,7 +162,7 @@ export default function Code() {
     if(countdown === 0 && isTimeout === false) {
       if(router.isReady) {
         if(router?.query?.mode === 'team') {
-          if(router?.query?.roomId === getCookie('uname')) {
+          if(router?.query?.roomId === getCookie('gitId')) {
             timeOutJudge();
           }
         } else {

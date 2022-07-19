@@ -22,14 +22,14 @@ export default function Home() {
 
 
   useEffect(() => {
-    // socket.emit('exitWait', getCookie('uname'));
+    // socket.emit('exitWait', getCookie('gitId'));
     if (router.isReady) {
       if (router?.query?.mode === 'team') {
         // 이건 뭐죠...?
-        socket.emit('exitTeamGame', router?.query?.roomId, getCookie('uname'));
+        socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
       } 
       else {
-        socket.emit('exitWait', getCookie('uname'));
+        socket.emit('exitWait', getCookie('gitId'));
       }
     }
   }, [router.isReady]);
@@ -45,8 +45,8 @@ export default function Home() {
 
   useEffect(() => {
     if(isLogin) {
-      console.log('islogin has cookie?????', getCookie('uname'));
-      socket.emit('setGitId', getCookie('uname'));
+      console.log('islogin has cookie?????', getCookie('gitId'));
+      socket.emit('setGitId', getCookie('gitId'));
       socket.on('comeon', id => {
         setInviteId(id);
         setIsNoti(true);
@@ -55,7 +55,7 @@ export default function Home() {
   }, [isLogin]);
 
   const goToWait = (mode) => {
-    const query = mode === 'team' ? { mode, roomId: getCookie('uname') } : { mode }
+    const query = mode === 'team' ? { mode, roomId: getCookie('gitId') } : { mode }
 
     if(isLogin) {
       router.push({
@@ -77,8 +77,8 @@ export default function Home() {
 
   const onClickAccept = () => {
     const myInfo = {
-      gitId: getCookie('uname'),
-      avatarUrl: getCookie('uimg')
+      gitId: getCookie('gitId'),
+      avatarUrl: getCookie('avatarUrl')
     }
     socket.emit('acceptInvite', inviteId, myInfo);
     setIsNoti(false);
