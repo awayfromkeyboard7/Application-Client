@@ -3,13 +3,8 @@ import Link from "next/link";
 import Layout from "../../components/layouts/main";
 import Header from "../../components/header";
 import styles from "../../styles/pages/management.module.scss";
-import axios from "axios";
 import React, { useState } from "react";
-// import "bootstrap/dist/css/bootstrap.css";
 import { useRouter } from "next/router";
-import boxstyles from "../../styles/components/lobby.module.scss";
-
-import MangementBox from "../../components/manage/box";
 
 //bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
