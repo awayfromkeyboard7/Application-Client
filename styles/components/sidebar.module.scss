@@ -46,3 +46,29 @@
   align-self: flex-end;
   justify-self: flex-end;
 }
+
+.header {
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem; /* 24px*/
+  font-weight: bold;
+  line-height: 3rem;
+  color: $white-dark-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import Item from './item';
@@ -9,6 +10,7 @@ export default function FriendList({ onClick }) {
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [searchResultText, setSearchResultText] = useState('');
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export default function FriendList({ onClick }) {
     if(searchText === '') {
       getFriends();
       setIsSearch(false);
+      setSearchResultText('');
     }
   }, [searchText]);
 
@@ -101,12 +104,13 @@ export default function FriendList({ onClick }) {
     if(searchText !== '') {
       findUser();
       setIsSearch(true);
+      setSearchResultText(searchText);
     }
   };
 
   const FollowingList = () => {
     if(!userList || userList?.length === 0) {
-      return <div className={styles.infoText}>현재 온라인 유저가 없습니다.</div>;
+      return <div className={styles.infoText}>현재 접속중인 유저가 없습니다.</div>;
     }
     return (
       userList?.map(user => 
@@ -122,7 +126,7 @@ export default function FriendList({ onClick }) {
 
   const SearchList = () => {
     if(userList?.length === 0) {
-      return <div className={styles.infoText}>{`${searchText} 유저가 없습니다.`}</div>;
+      return <div className={styles.infoText}>{`${searchResultText} 유저가 없습니다.`}</div>;
     }
     return (
       userList?.map(user => 
@@ -132,7 +136,7 @@ export default function FriendList({ onClick }) {
           nodeId={user.nodeId}
           myInfo={myInfo}
           isOnline={false} 
-          onClick={() => onClick(user.gitId)}
+          onClick={() => setSearchText('')}
         />
       )
     )
@@ -141,7 +145,12 @@ export default function FriendList({ onClick }) {
   return (
     <> 
       <form className={styles.form} onSubmit={onSubmit}>
-        <input className={styles.input} type="text" placeholder="아이디를 검색하세요." value={searchText} onChange={onChange} />
+        <div className={styles.inputBox}>
+          <input className={styles.input} type="text" placeholder="아이디를 검색하세요." value={searchText} onChange={onChange} />
+          <div className={styles.closeBtn} onClick={() => setSearchText('')}>
+            <Image src="/close.png" width={20} height={20} alt="delete search friends"/>
+          </div>
+        </div>
         <input className={styles.searchBtn} type="submit" value="검색" />
       </form>
       {

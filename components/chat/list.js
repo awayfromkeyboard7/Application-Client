@@ -5,7 +5,7 @@ import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
 
-export default function ChatList({ roomName, onClickBack }) {
+export default function ChatList({ roomName }) {
   const nickname = getCookie('gitId');
   const chatListRef = useRef();
   const [text, setText] = useState('');
@@ -44,7 +44,7 @@ export default function ChatList({ roomName, onClickBack }) {
     return (
       <div className={styles.chatBox}>
         <div className={styles.profileIcon}>
-          <Image src="/jinny.jpg" className={styles.profileIcon} width={32} height={32} alt="profile" />
+          <Image src="/jinny.jpg" className={styles.profileIcon} width={32} height={32} alt="profile" priority />
         </div>
         <div className={styles.chatCol}>
           <div className={styles.nickname}>{chat.senderId}</div>
@@ -106,13 +106,13 @@ export default function ChatList({ roomName, onClickBack }) {
   return (
     <div className={styles.container}>
       <div className={styles.list}>
-        <div className={styles.header}>
+        {/* <div className={styles.header}>
           <div className={styles.icon} onClick={onClickBack}>
             <Image src="/back.png" width={25} height={25} className={styles.icon} />
           </div>
           <div className={styles.title}>{roomName}</div>
           <div className={styles.icon}></div>
-        </div>
+        </div> */}
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
