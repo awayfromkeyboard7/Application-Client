@@ -1,0 +1,41 @@
+@import "../variables.module.scss";
+
+.textAreaTitle {
+  padding: 0.625rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  color: black;
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: 1px;
+  overflow: hidden auto;
+}
+
+.mainArea {
+  height: 100%;
+  width: 70%;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  margin: 2rem 0rem 0rem 14rem;
+}
+
+.subArea {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 70%;
+}
+
+.testArea {
+  height: 50%;
+}
+
+.postBtn {
+  margin: 0rem 0rem 0rem 17rem;
+}
