@@ -39,6 +39,11 @@ export default function MatchPage() {
         setRoomId(roomId);
       })
     }
+
+    return () => {
+      socket.off('getTeamInfo');
+      socket.off('teamGameStart');
+    };
   }, [router.isReady]);
 
 
@@ -54,6 +59,10 @@ export default function MatchPage() {
       });
     }
 
+    return () => {
+      socket.off('exitTeamGame');
+      socket.off('exitWait');
+    };
   }, [players]);
 
   useEffect(() => {

@@ -48,12 +48,9 @@ export default function Code() {
     socket.on('timeLimitCode', ts => {
       setCountdown(parseInt(ts / 1000));
     });
-
     socket.on('timeOutCode', () => {
       setCountdown(0);
     });
-    
-    // park-hg start
     socket.on('submitCode', (submitInfo) => {
       setPlayerList(submitInfo);
     });
@@ -75,7 +72,15 @@ export default function Code() {
       console.log('shareJudgedCode', data)
       setOutputs(data);
     });
-    // park-hg end
+    
+    return () => {
+      socket.off('timeLimitCode');
+      socket.off('timeOutCode');
+      socket.off('submitCode');
+      socket.off('submitCodeTeam');
+      socket.off('teamGameOver');
+      socket.off('shareJudgedCode');
+    };
   }, []);
 
   useEffect(() => {
