@@ -185,7 +185,7 @@ export default function WaitPage() {
       .then(res => res.json())
       .then(data => {
         if(data.success) {
-          setGameLogId(data.gameLogId);
+          // setGameLogId(data.gameLogId);
           socket.emit('startGame', data.gameLogId);
         }
       })
