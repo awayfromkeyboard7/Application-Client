@@ -68,13 +68,13 @@ export default function GameHistory({ gameLogId }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
             }
             </div>
           </div>
@@ -96,13 +96,13 @@ export default function GameHistory({ gameLogId }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
             }
             </div>
           </div>
