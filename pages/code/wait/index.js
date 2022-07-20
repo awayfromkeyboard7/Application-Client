@@ -63,7 +63,7 @@ export default function WaitPage() {
     },
   ];
   const [gameLogId, setGameLogId] = useState('');
-  const [players, setPlayers] = useState(defaultUsers);
+  const [players, setPlayers] = useState(JSON.parse(JSON.stringify(defaultUsers)));
   const [countdown, setCountdown] = useState(179);
   const [isMatching, setIsMatching] = useState(false);
 
@@ -103,21 +103,7 @@ export default function WaitPage() {
             query: { mode: 'team', roomId: bangjang }
           })
         });
-        
-        socket.on('enterNewUserToTeam', (users) => {
-          addPlayer(users);
-        });
-        socket.on('setUsers', (users) => {
-          addPlayer(users);
-        });
-  
-        // 팀전 대기 중 화면으로 이동
-        socket.on("goToMachingRoom", (bangjang) => {
-          router.push({
-            pathname: '/code/match',
-            query: { mode: 'team', roomId: bangjang }
-          });
-        })
+
         socket.emit('getUsers', router?.query?.roomId);
       } 
       else {
@@ -210,7 +196,7 @@ export default function WaitPage() {
   };
 
   const addPlayer = (users) => {
-    let copyPlayers = [...defaultUsers];
+    let copyPlayers = JSON.parse(JSON.stringify(defaultUsers));
     
     for(let i = 0; i < users?.length; i++) {
       copyPlayers[i].gitId = users[i].gitId;
