@@ -5,23 +5,23 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ gitId, isOnline, onClick }) {
+export default function FriendItem({ user, isOnline, onClick }) {
   const router = useRouter();  
   const [isClick, setIsClick] = useState(false);
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', getCookie('gitId'), gitId);
+      socket.emit('inviteMember', getCookie('gitId'), user.gitId);
       setIsClick(true);
     }
   };
 
   return (
-    <div className={styles.friendElem} key={gitId}>
+    <div className={styles.friendElem} key={user.gitId}>
       <div className={styles.connectInfo}>
         <Image src={isOnline ? '/online.png' : '/offline.png'} alt="online" width={10} height={10} />
       </div>
-      <div className={styles.friendNickname} onClick={() => onClick(gitId)}>{gitId}</div>
+      <div className={styles.friendNickname} onClick={() => onClick(user.gitId)}>{user.gitId}</div>
       {
         router?.asPath === '/'
         ? null

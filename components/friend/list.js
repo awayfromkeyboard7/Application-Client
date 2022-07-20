@@ -122,9 +122,9 @@ export default function FriendList({ onClick }) {
       userList?.map(user => 
         <Item 
           key={user.gitId}
-          gitId={user.gitId} 
+          user={user}
           isOnline={true} 
-          onClick={() => onClick(user.gitId)}
+          onClick={() => onClick(user)}
         />
       )
     )
@@ -138,8 +138,7 @@ export default function FriendList({ onClick }) {
       userList?.map(user => 
         <SearchItem 
           key={user.gitId}
-          gitId={user.gitId} 
-          nodeId={user.nodeId}
+          user={user}
           myInfo={myInfo}
           isOnline={false} 
           refreshMyInfo={getMyInfo}

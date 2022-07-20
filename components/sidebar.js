@@ -8,10 +8,10 @@ import { getCookie } from 'cookies-next';
 
 export default function Sidebar({ menu='friends' }) {
   const [sidebarMenu, setSidebarMenu] = useState(menu);
-  const [roomName, setRoomName] = useState('');
+  const [friend, setFriend] = useState({});
 
   const onClickFriend = (friend) => {
-    setRoomName(friend);
+    setFriend(friend);
     setSidebarMenu('chat');
     console.log(friend);
     socket.emit("getChatMessage", getCookie('gitId'), friend);
@@ -32,7 +32,7 @@ export default function Sidebar({ menu='friends' }) {
               <div className={styles.icon} onClick={onClickBack}>
                 <Image src="/back_white.png" width={25} height={25} className={styles.icon} />
               </div>
-              <div className={styles.title}>{roomName}</div>
+              <div className={styles.title}>{friend.gitId}</div>
               <div className={styles.icon}></div>
             </div>
           </div>
@@ -42,7 +42,7 @@ export default function Sidebar({ menu='friends' }) {
       {
         sidebarMenu === 'friends'
         ? <Friends onClick={friend => onClickFriend(friend)} />
-        : <ChatRoomList roomName={roomName} />
+        : <ChatRoomList friend={friend} />
       }
       </div>
       <div className={styles.sidebarFooter}>

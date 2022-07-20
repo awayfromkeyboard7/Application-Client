@@ -5,7 +5,7 @@ import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
 
-export default function ChatList({ roomName }) {
+export default function ChatList({ friend }) {
   const nickname = getCookie('gitId');
   const chatListRef = useRef();
   const [text, setText] = useState('');
@@ -17,8 +17,8 @@ export default function ChatList({ roomName }) {
       setChatList(chatLogs);
     });
     socket.on('sendChatMessage', message => {
-      console.log('sendChatMessage', message, message['senderId'], roomName);
-      if (message['senderId'] === roomName) {
+      console.log('sendChatMessage', message, message['senderId'], friend.gitId);
+      if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
       }
     });
@@ -31,10 +31,10 @@ export default function ChatList({ roomName }) {
 
   useEffect(() => {
     // 나: getCookie('gitId') -> 친구: roomName
-    if(roomName && roomName.length !== 0) {
-      socket.emit("getChatMessage", getCookie('gitId'), roomName);
+    if(friend.gitId) {
+      socket.emit("getChatMessage", getCookie('gitId'), friend.gitId);
     }
-  }, [roomName]);
+  }, [friend.gitId]);
 
   useEffect(() => {
     scrollBottom();
@@ -49,7 +49,7 @@ export default function ChatList({ roomName }) {
     return (
       <div className={styles.chatBox}>
         <div className={styles.profileIcon}>
-          <Image src="/jinny.jpg" className={styles.profileIcon} width={32} height={32} alt="profile" priority />
+          <Image src={friend?.avatarUrl ?? '/default_profile.jpg'} className={styles.profileIcon} width={32} height={32} alt="profile" priority />
         </div>
         <div className={styles.chatCol}>
           <div className={styles.nickname}>{chat.senderId}</div>
@@ -86,7 +86,7 @@ export default function ChatList({ roomName }) {
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
-    socket.emit('sendChatMessage', getCookie('gitId'), roomName, newMessage);
+    socket.emit('sendChatMessage', getCookie('gitId'), friend.gitId, newMessage);
     if(text !== '') {
       setChatList([...chatList, newMessage]);
       setText('');
@@ -111,13 +111,6 @@ export default function ChatList({ roomName }) {
   return (
     <div className={styles.container}>
       <div className={styles.list}>
-        {/* <div className={styles.header}>
-          <div className={styles.icon} onClick={onClickBack}>
-            <Image src="/back.png" width={25} height={25} className={styles.icon} />
-          </div>
-          <div className={styles.title}>{roomName}</div>
-          <div className={styles.icon}></div>
-        </div> */}
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
