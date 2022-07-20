@@ -14,7 +14,7 @@ export default function FriendItem({ gitId, nodeId, myInfo, isOnline, onClick, r
         setIsFollow(true);
       }
     });
-  }, [nodeId]);
+  }, [myInfo]);
 
   const onClickFollow = () => {
     console.log('onClickFollow >>>>>', getCookie('nodeId'), gitId);
