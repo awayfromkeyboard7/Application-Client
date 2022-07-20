@@ -202,13 +202,7 @@ export default function WaitPage() {
   };
 
   const goToLobby = () => {
-    if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
-    } 
-    else {
-      socket.emit('exitWait', getCookie('gitId'));
-      router.push('/');
-  }
+    router.push('/');
   };
 
   const goToMyPage = () => {

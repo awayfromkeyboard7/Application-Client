@@ -22,6 +22,11 @@ export default function FriendItem({ gitId, nodeId, myInfo, isOnline, onClick })
     setIsFollow(true);
   };
 
+  const onClickUnFollow = () => {
+    socket.emit('unFollowMember', getCookie('nodeId'), gitId);
+    setIsFollow(false);
+  }
+
   return (
     <div className={styles.friendElem} key={gitId}>
       <div className={styles.connectInfo}>
@@ -30,7 +35,7 @@ export default function FriendItem({ gitId, nodeId, myInfo, isOnline, onClick })
       <div className={styles.friendNickname} onClick={() => onClick(gitId)}>{gitId}</div>
       {
         isFollow
-        ? <div className={styles.inviteBtnClicked}>팔로우</div>
+        ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
         : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
       }
     </div>
