@@ -38,6 +38,12 @@ export default function FriendList({ onClick }) {
     });
     getFriends();
     getMyInfo();
+
+    return () => {
+      socket.off('followingUserConnect');
+      socket.off('followingUserDisconnect');
+      socket.off('getFollowingList');
+    };
   }, []);
 
   useEffect(() => {

@@ -52,6 +52,10 @@ export default function Home() {
         setIsNoti(true);
       });
     }
+
+    return () => {
+      socket.off('comeon');
+    };
   }, [isLogin]);
 
   const goToWait = (mode) => {

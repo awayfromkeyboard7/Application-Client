@@ -36,6 +36,11 @@ export default function MatchPage() {
         setRoomId(roomId);
       })
     }
+
+    return () => {
+      socket.off('getTeamInfo');
+      socket.off('teamGameStart');
+    };
   }, [router.isReady]);
 
 
@@ -51,6 +56,10 @@ export default function MatchPage() {
       });
     }
 
+    return () => {
+      socket.off('exitTeamGame');
+      socket.off('exitWait');
+    };
   }, [players]);
 
   useEffect(() => {
@@ -61,30 +70,6 @@ export default function MatchPage() {
       });
     }
   }, [gameLogId]);
-  
-  const startGame = async() => {
-    await fetch(`/server/api/gamelog/createNew`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        players
-      }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setGameLogId(data.gameLogId);
-        socket.emit('startGame', data.gameLogId);
-      }
-    })
-    .catch(error => console.log('error >> ', error));
-  };
-
-  const goToCode = async () => {
-    await startGame();
-  };
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
@@ -107,10 +92,8 @@ export default function MatchPage() {
         <>
           { status !== 'authenticated' && <Loading /> }
           <Match 
-            type={router?.query?.mode} 
             players={players} 
             onClickGoToMain={goToLobby} 
-            onClickPlayAgain={goToCode}
           />
           <Sidebar />
         </>

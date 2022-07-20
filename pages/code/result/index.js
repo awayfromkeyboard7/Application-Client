@@ -37,6 +37,11 @@ export default function ResultPage() {
       });
       socket.emit('getRanking', router?.query?.gameLogId);
     }
+
+    return () => {
+      socket.off('getTeamRanking');
+      socket.off('getRanking');
+    };
   }, []);
 
   const goToWait = () => {

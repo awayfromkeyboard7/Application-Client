@@ -22,6 +22,11 @@ export default function ChatList({ roomName }) {
         setChatList(prev => [...prev, message]);
       }
     });
+
+    return () => {
+      socket.off('receiveChatMessage');
+      socket.off('sendChatMessage');
+    };
   }, []);
 
   useEffect(() => {

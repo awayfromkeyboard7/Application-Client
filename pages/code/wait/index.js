@@ -135,6 +135,16 @@ export default function WaitPage() {
         socket.emit('waitGame', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') });
       }
     }
+
+    return () => {
+      socket.off('timeLimit');
+      socket.off('timeOut');
+      socket.off('enterNewUserToTeam');
+      socket.off('goToMachingRoom');
+      socket.off('setUsers');
+      socket.off('enterNewUser');
+      socket.off('startGame');
+    };
   }, [router.isReady]);
 
 
@@ -149,6 +159,11 @@ export default function WaitPage() {
         addPlayer(users);
       });
     }
+
+    return () => {
+      socket.off('exitTeamGame');
+      socket.off('exitWait');
+    };
   }, [players]);
 
   useEffect(() => {
