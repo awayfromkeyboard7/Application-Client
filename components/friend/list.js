@@ -142,6 +142,7 @@ export default function FriendList({ onClick }) {
           nodeId={user.nodeId}
           myInfo={myInfo}
           isOnline={false} 
+          refreshMyInfo={getMyInfo}
           onClick={() => setSearchText('')}
         />
       )
