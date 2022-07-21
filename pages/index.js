@@ -26,8 +26,8 @@ export default function Home() {
 
   useEffect(() => {
     if(isLogin) {
-      console.log('islogin has cookie?????', getCookie('gitId'));
-      socket.emit('setGitId', getCookie('gitId'));
+      // console.log('islogin has cookie?????', getCookie('gitId'));
+      // socket.emit('setGitId', getCookie('gitId'));
       socket.on('comeon', userInfo => {
         setInviteId(userInfo.gitId);
         setInviteImageUrl(userInfo.avatarUrl);

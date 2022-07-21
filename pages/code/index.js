@@ -12,6 +12,7 @@ import {
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
+import Header from '../../components/header';
 import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
@@ -22,6 +23,7 @@ import Loading from '../../components/loading';
 import CheckValidAccess from '../../components/checkValidAccess';
 import 'react-reflex/styles.css';
 import styles from '../../styles/pages/code.module.scss';
+import Head from 'next/head';
 
 export default function Code() {
   const router = useRouter();  
@@ -301,16 +303,21 @@ export default function Code() {
   return (
     <Layout 
       header={
-      <>
-        <div className={styles.headerRow}>
-          <div className={styles.headerLogo} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
-          <div className={styles.headerTitle}>{` > ${problems.title ?? ''}`}</div>
-        </div>
-        <div className={styles.headerRow}>
-          <div className={styles.timerIcon}>⏳</div>
-          <div className={styles.timer}>{secToTime(countdown)}</div>
-        </div>
-      </>
+        <Header 
+          isCustom 
+          customHeader={
+            <>
+              <div className={styles.headerRow}>
+                <div className={styles.headerLogo} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
+                <div className={styles.headerTitle}>{` > ${problems.title ?? ''}`}</div>
+              </div>
+              <div className={styles.headerRow}>
+                <div className={styles.timerIcon}>⏳</div>
+                <div className={styles.timer}>{secToTime(countdown)}</div>
+              </div>
+            </>
+          } 
+        />
       }
       body={
         <>
