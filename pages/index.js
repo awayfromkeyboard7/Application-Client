@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { getCookie, hasCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
 import Header from '../components/header';
@@ -9,7 +9,6 @@ import LobbyBox from '../components/lobby/box';
 import Sidebar from '../components/sidebar';
 import Popup from '../components/popup';
 import Notification from '../components/notification';
-import ChatList from '../components/chat/list';
 
 export default function Home() {
   const router = useRouter();  
@@ -27,10 +26,11 @@ export default function Home() {
 
   useEffect(() => {
     if(isLogin) {
-      console.log('islogin has cookie?????', getCookie('gitId'));
-      socket.emit('setGitId', getCookie('gitId'));
-      socket.on('comeon', id => {
-        setInviteId(id);
+      // console.log('islogin has cookie?????', getCookie('gitId'));
+      // socket.emit('setGitId', getCookie('gitId'));
+      socket.on('comeon', userInfo => {
+        setInviteId(userInfo.gitId);
+        setInviteImageUrl(userInfo.avatarUrl);
         setIsNoti(true);
       });
     }

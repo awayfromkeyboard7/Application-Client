@@ -5,6 +5,7 @@ import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
 import Result from '../../../components/result/soloBox';
+import TeamResult from '../../../components/result/teamBox';
 import Sidebar from '../../../components/sidebar';
 import Loading from '../../../components/loading';
 
@@ -25,7 +26,8 @@ export default function ResultPage() {
       socket.on('getTeamRanking', (result, startAt) => {
         console.log('get team ranking??????? >>', result, startAt);
         if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
-          setRanks([result[0][0], result[1][0]]);
+          // setRanks([result[0][0], result[1][0]]);
+          setRanks([result[0], result[1]]);
         }
         setGameStartAt(startAt);
       });
@@ -65,13 +67,21 @@ export default function ResultPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <Result 
-            type={router?.query?.mode}
-            ranks={ranks} 
-            startAt={gameStartAt}
-            onClickGoToMain={goToLobby} 
-            onClickPlayAgain={goToWait}
-          />
+          {
+            router?.query?.mode === 'team'
+            ? <TeamResult 
+                ranks={ranks} 
+                startAt={gameStartAt}
+                onClickGoToMain={goToLobby} 
+                onClickPlayAgain={goToWait}
+              />
+            : <Result 
+                ranks={ranks} 
+                startAt={gameStartAt}
+                onClickGoToMain={goToLobby} 
+                onClickPlayAgain={goToWait}
+              />
+          }
           <Sidebar />
         </>
       }

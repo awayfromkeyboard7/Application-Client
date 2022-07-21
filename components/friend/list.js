@@ -153,9 +153,12 @@ export default function FriendList({ onClick }) {
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputBox}>
           <input className={styles.input} type="text" placeholder="아이디를 검색하세요." value={searchText} onChange={onChange} />
-          <div className={styles.closeBtn} onClick={() => setSearchText('')}>
-            <Image src="/close.png" width={20} height={20} alt="delete search friends"/>
-          </div>
+          {
+            searchText !== ''
+            && <div className={styles.closeBtn} onClick={() => setSearchText('')}>
+                <Image src="/close.png" width={20} height={20} alt="delete search friends"/>
+              </div>
+          }
         </div>
         <input className={styles.searchBtn} type="submit" value="검색" />
       </form>

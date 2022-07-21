@@ -12,15 +12,18 @@ import {
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import Layout from '../../components/layouts/main';
+import Header from '../../components/header';
 import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
+import TeamPlayer from '../../components/code/teamPlayer';
 import Output from '../../components/code/output';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Loading from '../../components/loading';
 import CheckValidAccess from '../../components/checkValidAccess';
 import 'react-reflex/styles.css';
 import styles from '../../styles/pages/code.module.scss';
+import Head from 'next/head';
 
 export default function Code() {
   const router = useRouter();  
@@ -31,11 +34,9 @@ export default function Code() {
   const [outputs, setOutputs] = useState({});
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('Python');
-  // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
   const [countdown, setCountdown] = useState(899);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
@@ -56,7 +57,8 @@ export default function Code() {
     });
     socket.on('submitCodeTeam', (result) => {
       console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
-      setPlayerList([result[0][0], result[1][0]]);
+      // setPlayerList([result[0][0], result[1][0]]);
+      setPlayerList([result[0], result[1]]);
     });
     socket.on('teamGameOver', () => {
       console.log('teamGameOver');
@@ -135,7 +137,12 @@ export default function Code() {
         .then(data => {
           if(data.success) {
             setProblems(data.info.problemId);
-            setPlayerList(data.info.userHistory);
+            if(router?.query?.mode === 'team') {
+              // setPlayerList([data.info.teamA[0], data.info.teamB[0]]);
+              setPlayerList([data.info.teamA, data.info.teamB]);
+            } else {
+              setPlayerList(data.info.userHistory);
+            }
           }
         })
         .catch(error => console.log('error >> ', error));
@@ -193,18 +200,12 @@ export default function Code() {
   const onChangeLang = (lang) => {
     switch(lang) {
       case 'JavaScript':
-        // setCodemirrorExt([javascript()]);
-        setCodeText("console.log('hello world');");
         setCodeTitle('solution.js');
         break;
       case 'Python':
-        // setCodemirrorExt([python()]);
-        setCodeText("print('hello world')");
         setCodeTitle('solution.py');
         break;
       case 'C++':
-        // setCodemirrorExt([cpp()]);
-        setCodeText('std::cout << "출력 ";');
         setCodeTitle('solution.cpp');
         break;
     }
@@ -302,16 +303,21 @@ export default function Code() {
   return (
     <Layout 
       header={
-      <>
-        <div className={styles.headerRow}>
-          <div className={styles.headerLogo} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
-          <div className={styles.headerTitle}>{` > ${problems.title ?? ''}`}</div>
-        </div>
-        <div className={styles.headerRow}>
-          <div className={styles.timerIcon}>⏳</div>
-          <div className={styles.timer}>{secToTime(countdown)}</div>
-        </div>
-      </>
+        <Header 
+          isCustom 
+          customHeader={
+            <>
+              <div className={styles.headerRow}>
+                <div className={styles.headerLogo} onClick={goToLobby}>{`{ CODE: ‘뚝딱’ }`}</div>
+                <div className={styles.headerTitle}>{` > ${problems.title ?? ''}`}</div>
+              </div>
+              <div className={styles.headerRow}>
+                <div className={styles.timerIcon}>⏳</div>
+                <div className={styles.timer}>{secToTime(countdown)}</div>
+              </div>
+            </>
+          } 
+        />
       }
       body={
         <>
@@ -327,7 +333,11 @@ export default function Code() {
                     <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
                     <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                       <div className={styles.resultTitle}>플레이어</div>
-                      <Player players={playerList} />
+                      {
+                        router?.query?.mode === 'team'
+                        ? <TeamPlayer teams={playerList} />
+                        : <Player players={playerList} />
+                      }
                     </ReflexElement>
                   </ReflexContainer>
                 </ReflexElement>

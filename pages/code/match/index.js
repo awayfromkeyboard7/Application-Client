@@ -14,7 +14,8 @@ export default function MatchPage() {
   const { status } = useSession();
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
-  const [players, setPlayers] = useState([]);
+  const [teamA, setTeamA] = useState([]);
+  const [teamB, setTeamB] = useState([]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -24,23 +25,26 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (router.isReady) {
-      // socket.on('matchingTimer', time => {
-      //   setMatchingTime(time);
-      // });
+      socket.on('matchingComplete', (teamA, teamB) => {
+        setTeamA(teamA);
+        setTeamB(teamB);
+      });
+
       if (router.query?.roomId === getCookie('gitId')) {
         socket.emit('startMatching', getCookie('gitId'));
       }
       socket.on('getTeamInfo', users => {
-        setPlayers(users);
+        setTeamA(users);
       });
       socket.emit('getTeamInfo', router?.query?.roomId);
       socket.on('teamGameStart', (roomId, gameLogId) => {
         setGameLogId(gameLogId);
         setRoomId(roomId);
-      })
+      });
     }
 
     return () => {
+      socket.off('matchingComplete');
       socket.off('getTeamInfo');
       socket.off('teamGameStart');
     };
@@ -55,7 +59,7 @@ export default function MatchPage() {
     } 
     else {
       socket.on('exitWait', (users) => {
-        setPlayers(users);
+        setTeamA(users);
       });
     }
 
@@ -63,7 +67,7 @@ export default function MatchPage() {
       socket.off('exitTeamGame');
       socket.off('exitWait');
     };
-  }, [players]);
+  }, [teamA]);
 
   useEffect(() => {
     if(gameLogId !== '') {
@@ -95,7 +99,8 @@ export default function MatchPage() {
         <>
           { status !== 'authenticated' && <Loading /> }
           <Match 
-            players={players} 
+            teamA={teamA}
+            teamB={teamB}
             onClickGoToMain={goToLobby} 
           />
           <Sidebar />

@@ -3,28 +3,35 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultItem({ teamInfo, startAt, idx }) {
+export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
   const myNickname = getCookie('gitId');
-  const [rankText, setRankText] = useState(info.ranking);
+  const [rankText, setRankText] = useState(teamInfo[0].ranking);
   const [isEmoji, setIsEmoji] = useState(false);
   const [isMyTeam, setIsMyTeam] = useState(false);
+  const [profileBoxStyle, setProfileBoxStyle] = useState(styles.profileIconBox4);
 
   useEffect(() => {
     for(let member of teamInfo) {
-      if(member.gitId === getCookie('gitId')) {
+      if(member.gitId === myNickname) {
         setIsMyTeam(true);
         break;
       }
     }
   }, [teamInfo]);
 
-  // useEffect(() => {
-  //   setRankText(convertRank(info.ranking));
-  // }, [info.ranking]);
+  useEffect(() => {
+    console.log('max length style change >>>> ', maxLength);
+    switch(maxLength) {
+      case 1: return setProfileBoxStyle(styles.profileIconBox1);
+      case 2: return setProfileBoxStyle(styles.profileIconBox2);
+      case 3: return setProfileBoxStyle(styles.profileIconBox3);
+      case 4: return setProfileBoxStyle(styles.profileIconBox4);
+    }
+  }, [maxLength]);
 
   useEffect(() => {
     setRankText(teamInfo[0].passRate < 0 ? '-' : convertRank(idx + 1));
-  }, [teamInfo[0].passRate]);
+  }, [teamInfo[0].passRate, idx]);
 
   const convertRank = (rank) => {
     let result;
@@ -60,6 +67,10 @@ export default function TeamResultItem({ teamInfo, startAt, idx }) {
     return members.join(', ');
   };
 
+  const changeProfileBox = (maxLength) => {
+    
+  };
+
   const unixToTime = (ts) => {
     const start = new Date(startAt).getTime();
     const end = new Date(ts).getTime();
@@ -73,11 +84,11 @@ export default function TeamResultItem({ teamInfo, startAt, idx }) {
   return (
     <div className={isMyTeam ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
-      <div className={styles.profileIconBox}>
+      <div className={profileBoxStyle}>
         {
           teamInfo?.map(info => 
-            <div className={styles.profileIcon} key={info.gitId}>
-              <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
+            <div className={styles.profileIconOverlap} key={info.gitId}>
+              <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIconOverlap} alt="프로필" />
             </div>
           )
         }
