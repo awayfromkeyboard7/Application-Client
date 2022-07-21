@@ -7,6 +7,7 @@ import styles from '../../styles/components/match.module.scss';
 export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
   const router = useRouter();
   const [countdown, setCountdown] = useState(0);
+  const [isMatching, setIsMatching] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -17,6 +18,12 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
       clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if(teamB.length !== 0) {
+      setIsMatching(true);
+    }
+  }, [teamB]);
 
   const secToTime = (s) => {
     const min = '0' + String(parseInt((s % 3600) / 60));
@@ -30,7 +37,11 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
       <div className={styles.mainHeader}>
         <div className={styles.mainTitle}>팀전</div>
       </div>
-      <div className={styles.countdown}>{secToTime(countdown)}</div>
+      {
+        isMatching
+        ? <div className={styles.countdown}>🤝🏻 팀전 매칭이 완료되었습니다!<div>5초뒤에 게임이 시작됩니다.</div></div>
+        : <div className={styles.countdown}>{secToTime(countdown)}</div>
+      }
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {

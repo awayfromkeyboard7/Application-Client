@@ -52,7 +52,18 @@
   font-size: 1.5rem; /* 24px*/
   // font-weight: bold;
   color: $white-dark-color;
+  white-space: pre-wrap;
 }
+
+.countdown > div {
+  font-size: 1.25rem; /* 24px*/
+  // font-weight: bold;
+  text-align: center;
+  color: $white-dark-color;
+  // color: $error-color;
+  white-space: pre-wrap;
+}
+
 .mainBody {
   width: 100%;
   display: flex;
