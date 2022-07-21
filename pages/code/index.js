@@ -31,11 +31,9 @@ export default function Code() {
   const [outputs, setOutputs] = useState({});
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [codeText, setCodeText] = useState("print('hello world')");
   const [codeTitle, setCodeTitle] = useState('solution.py');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('Python');
-  // const [codemirrorExt, setCodemirrorExt] = useState([python()]);
   const [countdown, setCountdown] = useState(899);
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
@@ -197,18 +195,12 @@ export default function Code() {
   const onChangeLang = (lang) => {
     switch(lang) {
       case 'JavaScript':
-        // setCodemirrorExt([javascript()]);
-        setCodeText("console.log('hello world');");
         setCodeTitle('solution.js');
         break;
       case 'Python':
-        // setCodemirrorExt([python()]);
-        setCodeText("print('hello world')");
         setCodeTitle('solution.py');
         break;
       case 'C++':
-        // setCodemirrorExt([cpp()]);
-        setCodeText('std::cout << "출력 ";');
         setCodeTitle('solution.cpp');
         break;
     }

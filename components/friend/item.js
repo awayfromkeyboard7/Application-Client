@@ -11,7 +11,7 @@ export default function FriendItem({ user, isOnline, onClick }) {
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', getCookie('gitId'), user.gitId);
+      socket.emit('inviteMember', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') }, user.gitId);
       setIsClick(true);
     }
   };
