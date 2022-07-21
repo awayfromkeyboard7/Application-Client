@@ -4,7 +4,7 @@ import { Grid } from 'react-loader-spinner';
 import Item from './item';
 import styles from '../../styles/components/match.module.scss';
 
-export default function MatchBox({ players, onClickGoToMain }) {
+export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
   const router = useRouter();
   const [countdown, setCountdown] = useState(0);
 
@@ -34,21 +34,27 @@ export default function MatchBox({ players, onClickGoToMain }) {
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {
-          players?.map(item => 
+          teamA?.map(item => 
             <Item info={item} key={item.gitId} />
           )
         }
         </div>
         <div className={styles.waitBox}>
-          <div className={styles.loadingBox}>
-            <Grid 
-              height={60} 
-              width={60} 
-              color="#282A35" 
-              ariaLabel="loading" 
-            />
-            <div className={styles.text}>매칭 중..</div>
-          </div>
+          {
+            teamB.length === 0
+            ? <div className={styles.loadingBox}>
+                <Grid 
+                  height={60} 
+                  width={60} 
+                  color="#282A35" 
+                  ariaLabel="loading" 
+                />
+                <div className={styles.text}>매칭 중..</div>
+              </div>
+            : teamB?.map(item => 
+                <Item info={item} key={item.gitId} />
+              )
+          }
         </div>
       </div>
       <div className={styles.mainFooter}>
