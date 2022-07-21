@@ -7,6 +7,16 @@
   flex-direction: column;
   border-left: #000 solid 4px;
   background-color: #f3f3f3;
+  position: relative;
+}
+
+.sidebarClose {
+  width: 0; /* 300px */
+  display: flex;
+  flex-direction: column;
+  border-left: #000 solid 4px;
+  background-color: #f3f3f3;
+  position: relative;
 }
 
 .sidebarHeader {
@@ -71,4 +81,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.collapseTag {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0.625rem;
+  border-bottom-left-radius: 0.625rem;
+  background-color: $white-dark-color;
+  position: absolute;
+  top: 50vh;
+  left: -27px;
 }
