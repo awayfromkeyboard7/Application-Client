@@ -8,10 +8,6 @@ export default function SoloResultItem({ info, startAt, idx }) {
   const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
 
-  // useEffect(() => {
-  //   setRankText(convertRank(info.ranking));
-  // }, [info.ranking]);
-
   useEffect(() => {
     setRankText(info.passRate < 0 ? '-' : convertRank(idx + 1));
   }, [info.passRate, idx]);

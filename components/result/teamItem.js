@@ -31,7 +31,7 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
 
   useEffect(() => {
     setRankText(teamInfo[0].passRate < 0 ? '-' : convertRank(idx + 1));
-  }, [idx]);
+  }, [teamInfo[0].passRate, idx]);
 
   const convertRank = (rank) => {
     let result;
