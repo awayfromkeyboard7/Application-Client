@@ -5,6 +5,7 @@ import Code from './code';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogId, filter }) {
+  const gitId = getCookie('gitId');
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
@@ -29,12 +30,10 @@ export default function GameHistory({ gameLogId, filter }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        if(gameLogId === '62d651067812f91c7e523a15')
-          console.log('[gameHistory] get game info', data.info);
         setGameInfo(data.info);
       }
     })
-    .catch(error => console.log('error >> ', error));
+    .catch(error => console.log('[/components/mypage/gameHistory] getGameLog error >> ', error));
   };
 
   const unixToTime = (ts) => {
@@ -49,10 +48,37 @@ export default function GameHistory({ gameLogId, filter }) {
   };
 
   const onClickPlayer = (player) => {
-    console.log('onClick player >>>', player);
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
+  };
+
+  const checkMyTeam = () => {
+    for(let member of gameInfo?.teamA) {
+      if(member.gitId === gitId) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkFilter = () => {
+    switch(filter) {
+      case 'all': return true;
+      case 'team': return gameInfo?.gameMode === 'team';
+      case 'solo': return gameInfo?.gameMode !== 'team';
+    }
+  };
+
+  const getMyRanking = () => {
+    if(gameInfo?.userHistory) {
+      for(let info of gameInfo.userHistory) {
+        if(info?.gitId === gitId) {
+          return info.ranking;
+        }
+      }
+    }
+    return 0;
   };
 
   const TeamGameWin = () => {
@@ -137,36 +163,6 @@ export default function GameHistory({ gameLogId, filter }) {
         </div>
       </>
     )
-  };
-
-  const getMyRanking = () => {
-    if(gameInfo?.userHistory) {
-      for(let info of gameInfo.userHistory) {
-        if(info?.gitId === getCookie('gitId')) {
-          return info.ranking;
-        }
-      }
-    }
-    return 0;
-  };
-
-  const checkMyTeam = () => {
-    console.log(gameInfo.teamA);
-    for(let member of gameInfo?.teamA) {
-      console.log('checkmyteam ', member);
-      if(member.gitId === getCookie('gitId')) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const checkFilter = () => {
-    switch(filter) {
-      case 'all': return true;
-      case 'team': return gameInfo?.gameMode === 'team';
-      case 'solo': return gameInfo?.gameMode !== 'team';
-    }
   };
 
   return (

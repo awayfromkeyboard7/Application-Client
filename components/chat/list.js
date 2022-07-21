@@ -4,20 +4,17 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
-
 export default function ChatList({ friend }) {
-  const nickname = getCookie('gitId');
+  const gitId = getCookie('gitId');
   const chatListRef = useRef();
   const [text, setText] = useState('');
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
     socket.on('receiveChatMessage', chatLogs => {
-      console.log('receiveChatMessage', chatLogs);
       setChatList(chatLogs);
     });
     socket.on('sendChatMessage', message => {
-      console.log('sendChatMessage', message, message['senderId'], friend.gitId);
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
       }
@@ -30,9 +27,9 @@ export default function ChatList({ friend }) {
   }, []);
 
   useEffect(() => {
-    // 나: getCookie('gitId') -> 친구: roomName
+    // 나: gitId -> 친구: roomName
     if(friend.gitId) {
-      socket.emit("getChatMessage", getCookie('gitId'), friend.gitId);
+      socket.emit('getChatMessage', gitId, friend.gitId);
     }
   }, [friend.gitId]);
 
@@ -43,6 +40,40 @@ export default function ChatList({ friend }) {
   const scrollBottom = () => {
     const {scrollHeight, clientHeight} = chatListRef.current;
     chatListRef.current.scrollTop = scrollHeight - clientHeight;
+  };
+
+  const onChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const newMessage = {
+      text,
+      senderId: gitId,
+      messageId: Math.floor(Math.random() * 10000),
+      sendAt: new Date().getTime()
+    }
+    socket.emit('sendChatMessage', gitId, friend.gitId, newMessage);
+    if(text !== '') {
+      setChatList([...chatList, newMessage]);
+      setText('');
+    }
+  };
+ 
+  const unixToTime = (ts) => {
+    const date = new Date(ts);
+    const year = date.getFullYear();
+    const month = '0' + (date.getMonth()+1);
+    const day = date.getDate();
+    let hour = '0' + date.getHours();
+    const min = '0' + date.getMinutes();
+    const isAM = date.getHours() < 12 ? true : false;
+
+    if(!isAM) hour = '0' + (date.getHours() - 12);
+    
+    return `${isAM ? '오전' : '오후'} ${hour.substr(-2)}:${min.substr(-2)}`;
   };
 
   const ChatItem = ({ chat }) => {
@@ -73,48 +104,13 @@ export default function ChatList({ friend }) {
     )
   };
 
-  const onChange = (e) => {
-    setText(e.target.value);
-  };
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    const newMessage = {
-      text,
-      senderId: nickname,
-      messageId: Math.floor(Math.random() * 10000),
-      sendAt: new Date().getTime()
-    }
-    socket.emit('sendChatMessage', getCookie('gitId'), friend.gitId, newMessage);
-    if(text !== '') {
-      setChatList([...chatList, newMessage]);
-      setText('');
-    }
-  };
-
- 
-  const unixToTime = (ts) => {
-    const date = new Date(ts);
-    const year = date.getFullYear();
-    const month = '0' + (date.getMonth()+1);
-    const day = date.getDate();
-    let hour = '0' + date.getHours();
-    const min = '0' + date.getMinutes();
-    const isAM = date.getHours() < 12 ? true : false;
-
-    if(!isAM) hour = '0' + (date.getHours() - 12);
-    
-    return `${isAM ? '오전' : '오후'} ${hour.substr(-2)}:${min.substr(-2)}`;
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.list}>
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
-            chat.senderId === nickname
+            chat.senderId === gitId
             ? <ChatItemMine chat={chat} key={chat.messageId} />
             : <ChatItem chat={chat} key={chat.messageId} />
           )

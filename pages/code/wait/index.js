@@ -8,10 +8,13 @@ import Header from '../../../components/header';
 import Wait from '../../../components/wait/box';
 import Sidebar from '../../../components/sidebar';
 import Loading from '../../../components/loading';
+import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function WaitPage() {
   const router = useRouter();
   const { status } = useSession();
+  const gitId = getCookie('gitId');
+  const avatarUrl = getCookie('avatarUrl');
   const defaultUsers = [
     {
       id: 1,
@@ -74,17 +77,16 @@ export default function WaitPage() {
   }, [status]);
 
   useEffect(() => {
-    socket.on('timeLimit', ts => {
+    socket.on('timeLimit', (ts) => {
       setCountdown(parseInt(ts / 1000));
     });
-    console.log(router?.query?.mode);
     if (router.isReady) {
       if (router?.query?.mode === 'team'){
-        if (router?.query?.roomId === getCookie('gitId')) {
-          socket.emit('createTeam', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') });
+        if (router?.query?.roomId === gitId) {
+          socket.emit('createTeam', { gitId, avatarUrl });
         }
         socket.on('timeOut', () => {
-          if(players[0]?.gitId === getCookie('gitId') && !isMatching) {
+          if(players[0]?.gitId === gitId && !isMatching) {
             goToMatch();
           }
         });
@@ -96,7 +98,7 @@ export default function WaitPage() {
         });
 
         // 팀전 대기 중 화면으로 이동
-        socket.once("goToMatchingRoom", (bangjang) => {
+        socket.once('goToMatchingRoom', (bangjang) => {
           setIsMatching(true);
           router.push({
             pathname: '/code/match',
@@ -105,10 +107,9 @@ export default function WaitPage() {
         });
 
         socket.emit('getUsers', router?.query?.roomId);
-      } 
-      else {
+      } else {
         socket.on('timeOut', () => {
-          if(players[0]?.gitId === getCookie('gitId')) {
+          if(players[0]?.gitId === gitId) {
             goToCode();
           }
         });
@@ -118,7 +119,7 @@ export default function WaitPage() {
         socket.on('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
-        socket.emit('waitGame', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') });
+        socket.emit('waitGame', { gitId, avatarUrl });
       }
     }
 
@@ -137,11 +138,11 @@ export default function WaitPage() {
     if(countdown === 5) {
       if (router.isReady) {
         if (router?.query?.mode === 'team'){
-          if(players[0]?.gitId === getCookie('gitId') && !isMatching) {
+          if(players[0]?.gitId === gitId && !isMatching) {
             goToMatch();
           }
         } else {
-          if(players[0]?.gitId === getCookie('gitId')) {
+          if(players[0]?.gitId === gitId) {
             goToCode();
           }
         }
@@ -154,8 +155,7 @@ export default function WaitPage() {
       socket.on('exitTeamGame', () => {
         router.push('/');
       });
-    } 
-    else {
+    } else {
       socket.on('exitWait', (users) => {
         addPlayer(users);
       });
@@ -184,8 +184,8 @@ export default function WaitPage() {
       }
     };
     
-    socket.emit("getRoomId")
-    socket.on("getRoomId", async (roomId) => {
+    socket.emit('getRoomId')
+    socket.on('getRoomId', async (roomId) => {
       await fetch(`/server/api/gamelog/createNew`, {
         method: 'POST',
         headers: {
@@ -200,11 +200,10 @@ export default function WaitPage() {
       .then(res => res.json())
       .then(data => {
         if(data.success) {
-          // setGameLogId(data.gameLogId);
           socket.emit('startGame', data.gameLogId);
         }
       })
-      .catch(error => console.log('error >> ', error));
+      .catch(error => console.log('[/pages/code/wait] createNew error >> ', error));
     });
   };
 
@@ -213,8 +212,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    console.log('matching players.........',getCookie('gitId'), players );
-    socket.emit('goToMatchingRoom', getCookie('gitId'));
+    socket.emit('goToMatchingRoom', gitId);
   };
 
   const goToLobby = () => {
@@ -226,14 +224,18 @@ export default function WaitPage() {
   };
 
   const addPlayer = (users) => {
+    console.log('add player >>> ', users);
     let copyPlayers = JSON.parse(JSON.stringify(defaultUsers));
     
+    console.log('copy players >>> ', copyPlayers);
     for(let i = 0; i < users?.length; i++) {
+      console.log('add player for >>. ', i);
       copyPlayers[i].gitId = users[i].gitId;
-      copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/jinny.jpg';
+      copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/default_profile.jpg';
       copyPlayers[i].isPlayer = true;
     }
     
+    console.log('copy players >>> ', copyPlayers);
     setPlayers(copyPlayers);
   }
 
@@ -243,6 +245,7 @@ export default function WaitPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
           <Wait 
             type={router?.query?.mode} 
             players={players} 

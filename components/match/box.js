@@ -22,6 +22,7 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
   useEffect(() => {
     if(teamB.length !== 0) {
       setIsMatching(true);
+      setCountdown(0);
     }
   }, [teamB]);
 
@@ -39,7 +40,7 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
       </div>
       {
         isMatching
-        ? <div className={styles.countdown}>🤝🏻 팀전 매칭이 완료되었습니다!<div>5초뒤에 게임이 시작됩니다.</div></div>
+        ? <div className={styles.countdown}>🤝🏻 팀전 매칭이 완료되었습니다!<div>{`${0 < 5 - countdown ? 5 - countdown : 1}초뒤에 게임이 시작됩니다.`}</div></div>
         : <div className={styles.countdown}>{secToTime(countdown)}</div>
       }
       <div className={styles.mainBody}> 

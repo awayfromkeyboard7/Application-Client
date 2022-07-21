@@ -27,7 +27,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         <div className={styles.waitBox}>
         {
           players.map((item, idx) => 
-            <Item info={item} key={`${item.id}${idx}`} />
+            <Item info={item} key={idx} />
           )
         }
         </div>

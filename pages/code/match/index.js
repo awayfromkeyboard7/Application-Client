@@ -8,10 +8,12 @@ import Header from '../../../components/header';
 import Match from '../../../components/match/box';
 import Sidebar from '../../../components/sidebar';
 import Loading from '../../../components/loading';
+import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function MatchPage() {
   const router = useRouter();  
   const { status } = useSession();
+  const gitId = getCookie('gitId');
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
   const [teamA, setTeamA] = useState([]);
@@ -29,18 +31,17 @@ export default function MatchPage() {
         setTeamA(teamA);
         setTeamB(teamB);
       });
-
-      if (router.query?.roomId === getCookie('gitId')) {
-        socket.emit('startMatching', getCookie('gitId'));
-      }
       socket.on('getTeamInfo', users => {
         setTeamA(users);
       });
-      socket.emit('getTeamInfo', router?.query?.roomId);
       socket.on('teamGameStart', (roomId, gameLogId) => {
         setGameLogId(gameLogId);
         setRoomId(roomId);
       });
+      socket.emit('getTeamInfo', router?.query?.roomId);
+      if (router.query?.roomId === gitId) {
+        socket.emit('startMatching', gitId);
+      }
     }
 
     return () => {
@@ -56,8 +57,7 @@ export default function MatchPage() {
       socket.on('exitTeamGame', () => {
         router.push('/');
       });
-    } 
-    else {
+    } else {
       socket.on('exitWait', (users) => {
         setTeamA(users);
       });
@@ -80,10 +80,9 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
-    } 
-    else {
-      socket.emit('exitWait', getCookie('gitId'));
+      socket.emit('exitTeamGame', router?.query?.roomId, gitId);
+    } else {
+      socket.emit('exitWait', gitId);
       router.push('/');
     }
   };
@@ -98,6 +97,7 @@ export default function MatchPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
           <Match 
             teamA={teamA}
             teamB={teamB}

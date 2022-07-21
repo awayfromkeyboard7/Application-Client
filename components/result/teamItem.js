@@ -20,7 +20,6 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
   }, [teamInfo]);
 
   useEffect(() => {
-    console.log('max length style change >>>> ', maxLength);
     switch(maxLength) {
       case 1: return setProfileBoxStyle(styles.profileIconBox1);
       case 2: return setProfileBoxStyle(styles.profileIconBox2);
@@ -65,10 +64,6 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
       members.push(member.gitId);
     }
     return members.join(', ');
-  };
-
-  const changeProfileBox = (maxLength) => {
-    
   };
 
   const unixToTime = (ts) => {

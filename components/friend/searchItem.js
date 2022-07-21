@@ -4,7 +4,8 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ user, myInfo, isOnline, onClick, refreshMyInfo }) {
+export default function FriendItem({ user, myInfo, isOnline, onClick }) {
+  const nodeId = getCookie('nodeId');
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
@@ -17,17 +18,14 @@ export default function FriendItem({ user, myInfo, isOnline, onClick, refreshMyI
   }, [myInfo]);
 
   const onClickFollow = () => {
-    console.log('onClickFollow >>>>>', getCookie('nodeId'), user.gitId);
-    socket.emit('followMember', getCookie('nodeId'), user.gitId);
-    refreshMyInfo();
+    socket.emit('followMember', nodeId, user.gitId);
     setIsFollow(true);
   };
 
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', getCookie('nodeId'), user.gitId);
-    refreshMyInfo();
+    socket.emit('unFollowMember', nodeId, user.gitId);
     setIsFollow(false);
-  }
+  };
 
   return (
     <div className={styles.friendElem} key={user.gitId}>

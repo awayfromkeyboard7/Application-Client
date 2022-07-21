@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image'
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { hasCookie, getCookie, deleteCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Loading from './loading';
@@ -13,7 +13,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
-    // console.log('change login status?????????', data, status, isValidUser);
     if(status === 'authenticated') {
       if(hasCookie('gitId')) {
         checkValidUser(true);
@@ -60,7 +59,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
       }
     })
     .catch(error => {
-      console.log('error >> ', error);
+      console.log('[/components/header] get-info error >> ', error);
       deleteCookies();
       signOut();
     });

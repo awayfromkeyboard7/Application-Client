@@ -20,7 +20,8 @@ export default function FriendItem({ user, isOnline, onClick }) {
     return () => {
       socket.off('sendChatMessage');
     };
-  })
+  }, []);
+
   const onClickInvite = () => {
     if(isClick === false) {
       socket.emit('inviteMember', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') }, user.gitId);

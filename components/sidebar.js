@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getCookie, setCookie } from 'cookies-next';
 import Friends from './friend/list';
 import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
 import { socket } from '../lib/socket';
-import { getCookie, setCookie } from 'cookies-next';
 
 export default function Sidebar({ menu='friends' }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -20,8 +20,7 @@ export default function Sidebar({ menu='friends' }) {
   const onClickFriend = (friend) => {
     setFriend(friend);
     setSidebarMenu('chat');
-    console.log(friend);
-    socket.emit("getChatMessage", getCookie('gitId'), friend);
+    socket.emit('getChatMessage', getCookie('gitId'), friend);
   };
 
   const onClickBack = () => {

@@ -14,11 +14,9 @@ export default function FriendList({ onClick }) {
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
-    socket.on('followingUserConnect', user => {
-      console.log('following user connect!!!!!', user);
-      // setUserList(prev => [...prev, { gitId: user, avatarUrl: '/default_profile.jpg' }]);
+    socket.on('followingUserConnect', gitId => {
       setUserList(prev => {
-        let newList = [...prev, { gitId: user, avatarUrl: '/default_profile.jpg' }];
+        let newList = [...prev, { gitId, avatarUrl: '/default_profile.jpg' }];
         let mySet = new Set();
         const unique = newList.filter(item => {
           const alreadyHas = mySet.has(item.gitId)
@@ -28,12 +26,10 @@ export default function FriendList({ onClick }) {
         return unique;
       })
     });
-    socket.on('followingUserDisconnect', user => {
-      console.log('following user disconnect!!!!!', user);
-      setUserList(prev => prev.filter((friend) => user !== friend.gitId));
+    socket.on('followingUserDisconnect', gitId => {
+      setUserList(prev => prev.filter(friend => gitId !== friend.gitId));
     });
     socket.on('getFollowingList', users => {
-      console.log('get followingList!!!!!', users);
       setUserList(users);
     });
     getFriends();
@@ -76,7 +72,7 @@ export default function FriendList({ onClick }) {
         setUserList(null);
       }
     })
-    .catch(error => console.log('error >> ', error));
+    .catch(error => console.log('[/components/friend/list] getMyInfo error >> ', error));
   };
 
   const findUser = async() => {
@@ -93,11 +89,12 @@ export default function FriendList({ onClick }) {
     .then(data => {
       if(data.success) {
         setUserList([data.UserInfo]);
+        getMyInfo();
       } else {
         setUserList([]);
       }
     })
-    .catch(error => console.log('error >> ', error));
+    .catch(error => console.log('[/components/friend/list] findUser error >> ', error));
   };
 
   const onChange = (e) => {
@@ -141,12 +138,11 @@ export default function FriendList({ onClick }) {
           user={user}
           myInfo={myInfo}
           isOnline={false} 
-          refreshMyInfo={getMyInfo}
           onClick={() => setSearchText('')}
         />
       )
     )
-  }
+  };
 
   return (
     <> 

@@ -8,6 +8,7 @@ import Result from '../../../components/result/soloBox';
 import TeamResult from '../../../components/result/teamBox';
 import Sidebar from '../../../components/sidebar';
 import Loading from '../../../components/loading';
+import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function ResultPage() {
   const router = useRouter();  
@@ -24,9 +25,7 @@ export default function ResultPage() {
   useEffect(() => {
     if(router?.query?.mode === 'team') {
       socket.on('getTeamRanking', (result, startAt) => {
-        console.log('get team ranking??????? >>', result, startAt);
         if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
-          // setRanks([result[0][0], result[1][0]]);
           setRanks([result[0], result[1]]);
         }
         setGameStartAt(startAt);
@@ -67,6 +66,7 @@ export default function ResultPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
           {
             router?.query?.mode === 'team'
             ? <TeamResult 

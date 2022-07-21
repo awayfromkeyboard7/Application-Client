@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import Image from 'next/image'
 import { useRouter } from 'next/router';
+import Image from 'next/image'
 import { useSession, signOut } from 'next-auth/react';
-import { getCookie, hasCookie, deleteCookie } from 'cookies-next';
+import { getCookie, deleteCookie } from 'cookies-next';
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import Rank from '../../components/rank/item';
@@ -15,114 +15,14 @@ export default function MyPage() {
   const { status } = useSession();
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filter, setFilter] = useState('all');
 
-  const ranks = [
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    },
-    {
-      gitId: 'annie1229',
-      avatarUrl: '/jinny.jpg',
-      ranking: 1,
-      info: 'swjungle'
-    }
-  ];
-  
   useEffect(() => {
     getUserInfo();
   }, []);
 
   useEffect(() => {
-    if(status !== 'authenticated' && !hasCookie('gitId')) {
+    if(status === 'unauthenticated') {
       router.push('/');
     }
   }, [status]);
@@ -140,16 +40,11 @@ export default function MyPage() {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        console.log('[mypage] get user', data);
         setMyInfo(data.UserInfo);
         setGameLogs(data.UserInfo.gameLogHistory.reverse());
       }
     })
-    .catch(error => console.log('error >> ', error));
-  };
-
-  const goToLobby = () => {
-    router.push('/');
+    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const logout = async() => {
@@ -157,8 +52,8 @@ export default function MyPage() {
     deleteCookie('gitId');
     deleteCookie('avatarUrl');
     signOut();
-    goToLobby();
-  }
+    router.push('/');
+  };
 
   return (
     <Layout 
@@ -178,7 +73,6 @@ export default function MyPage() {
                     <div className={filter === 'solo' ? styles.filterBtnActive : styles.filterBtn} onClick={() => setFilter('solo')}>개인전</div>
                     <div className={filter === 'team' ? styles.filterBtnActive : styles.filterBtn} onClick={() => setFilter('team')}>팀전</div>
                   </div>
-                  {/* <div className={styles.toggleBtn} onClick={() => setIsFilterOpen(true)}>필터</div> */}
                 </div>
               </div>
               <div className={styles.gameHistoryBody}>
@@ -219,11 +113,6 @@ export default function MyPage() {
               </div>
             </div>
           </div>
-          {/* <div className={isFilterOpen ? styles.selectList : styles.hidden}>
-            <div className={styles.selectElem} onClick={() => setFilter('all')}>전체</div>
-            <div className={styles.selectElem} onClick={() => setFilter('solo')}>개인전</div>
-            <div className={styles.selectElem} onClick={() => setFilter('team')}>팀전</div>
-          </div> */}
         </>
       }
     />
