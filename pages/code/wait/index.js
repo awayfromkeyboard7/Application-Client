@@ -96,7 +96,7 @@ export default function WaitPage() {
         });
 
         // 팀전 대기 중 화면으로 이동
-        socket.once("goToMachingRoom", (bangjang) => {
+        socket.once("goToMatchingRoom", (bangjang) => {
           setIsMatching(true);
           router.push({
             pathname: '/code/match',
@@ -126,7 +126,7 @@ export default function WaitPage() {
       socket.off('timeLimit');
       socket.off('timeOut');
       socket.off('enterNewUserToTeam');
-      socket.off('goToMachingRoom');
+      socket.off('goToMatchingRoom');
       socket.off('setUsers');
       socket.off('enterNewUser');
       socket.off('startGame');
@@ -214,7 +214,7 @@ export default function WaitPage() {
 
   const goToMatch = () => {
     console.log('matching players.........',getCookie('gitId'), players );
-    socket.emit('goToMachingRoom', getCookie('gitId'));
+    socket.emit('goToMatchingRoom', getCookie('gitId'));
   };
 
   const goToLobby = () => {

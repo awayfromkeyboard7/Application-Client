@@ -15,6 +15,7 @@ import Layout from '../../components/layouts/main';
 import Editor from '../../components/code/editor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
+import TeamPlayer from '../../components/code/teamPlayer';
 import Output from '../../components/code/output';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Loading from '../../components/loading';
@@ -54,7 +55,8 @@ export default function Code() {
     });
     socket.on('submitCodeTeam', (result) => {
       console.log('submitCodeTeam!!!!!!!!!!!!!>>>>>>>>>>', result);
-      setPlayerList([result[0][0], result[1][0]]);
+      // setPlayerList([result[0][0], result[1][0]]);
+      setPlayerList([result[0], result[1]]);
     });
     socket.on('teamGameOver', () => {
       console.log('teamGameOver');
@@ -134,7 +136,8 @@ export default function Code() {
           if(data.success) {
             setProblems(data.info.problemId);
             if(router?.query?.mode === 'team') {
-              setPlayerList([data.info.teamA[0], data.info.teamB[0]]);
+              // setPlayerList([data.info.teamA[0], data.info.teamB[0]]);
+              setPlayerList([data.info.teamA, data.info.teamB]);
             } else {
               setPlayerList(data.info.userHistory);
             }
@@ -323,7 +326,11 @@ export default function Code() {
                     <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
                     <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                       <div className={styles.resultTitle}>플레이어</div>
-                      <Player players={playerList} />
+                      {
+                        router?.query?.mode === 'team'
+                        ? <TeamPlayer teams={playerList} />
+                        : <Player players={playerList} />
+                      }
                     </ReflexElement>
                   </ReflexContainer>
                 </ReflexElement>
