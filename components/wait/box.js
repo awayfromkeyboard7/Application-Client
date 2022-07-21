@@ -18,7 +18,11 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       <div className={styles.mainHeader}>
         <div className={styles.mainTitle}>{`${type === 'team' ? '팀' : '개인'}전`}</div>
       </div>
-      <div className={styles.countdown}>{type === 'team' ? '👫 팀을 구성하고 매칭을 시작하세요! 👬' : secToTime(countdown)}</div>
+      {
+        type === 'team'
+        ? <div className={styles.countdown}>👫 팀을 구성하고 매칭을 시작하세요! 👬</div>
+        : <div className={countdown <= 5 ? `${styles.countdown} ${styles.textRed}` : styles.countdown}>{secToTime(countdown)}</div>
+      }
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {

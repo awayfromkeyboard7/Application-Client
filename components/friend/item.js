@@ -23,11 +23,11 @@ export default function FriendItem({ user, isOnline, onClick }) {
       </div>
       <div className={styles.friendNickname} onClick={() => onClick(user.gitId)}>{user.gitId}</div>
       {
-        router?.asPath === '/'
-        ? null
-        : isOnline
+        router?.route === '/code/wait' && router?.query?.mode === 'team'
+        ? isOnline
           ? <div className={isClick ? styles.inviteBtnClicked : styles.inviteBtn} onClick={onClickInvite}>초대</div>
           : <div className={styles.inviteBtnDisable}>초대</div>
+        : null
       }
     </div>
   )

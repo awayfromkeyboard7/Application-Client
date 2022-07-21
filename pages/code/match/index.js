@@ -24,9 +24,6 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (router.isReady) {
-      // socket.on('matchingTimer', time => {
-      //   setMatchingTime(time);
-      // });
       if (router.query?.roomId === getCookie('gitId')) {
         socket.emit('startMatching', getCookie('gitId'));
       }
@@ -37,7 +34,7 @@ export default function MatchPage() {
       socket.on('teamGameStart', (roomId, gameLogId) => {
         setGameLogId(gameLogId);
         setRoomId(roomId);
-      })
+      });
     }
 
     return () => {

@@ -135,7 +135,11 @@ export default function Code() {
         .then(data => {
           if(data.success) {
             setProblems(data.info.problemId);
-            setPlayerList(data.info.userHistory);
+            if(router?.query?.mode === 'team') {
+              setPlayerList([data.info.teamA[0], data.info.teamB[0]]);
+            } else {
+              setPlayerList(data.info.userHistory);
+            }
           }
         })
         .catch(error => console.log('error >> ', error));

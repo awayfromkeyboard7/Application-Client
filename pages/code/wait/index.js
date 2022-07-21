@@ -133,6 +133,21 @@ export default function WaitPage() {
     };
   }, [router.isReady]);
 
+  useEffect(() => {
+    if(countdown === 5) {
+      if (router.isReady) {
+        if (router?.query?.mode === 'team'){
+          if(players[0]?.gitId === getCookie('gitId') && !isMatching) {
+            goToMatch();
+          }
+        } else {
+          if(players[0]?.gitId === getCookie('gitId')) {
+            goToCode();
+          }
+        }
+      }
+    }
+  }, [countdown]);
 
   useEffect(() => {
     if (router?.query?.mode === 'team') {
