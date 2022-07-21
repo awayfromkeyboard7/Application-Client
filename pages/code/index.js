@@ -269,7 +269,7 @@ export default function Code() {
       }
       setOutputs(data);
       setPassRate(data.passRate);
-      if(submit) {
+      if(submit === true) {
         setIsSubmit(true);
       }
     })
