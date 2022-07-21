@@ -39,7 +39,7 @@ export default function FriendItem({ user, isOnline, onClick }) {
         ? isOnline
           ? <div className={isClick ? styles.inviteBtnClicked : styles.inviteBtn} onClick={onClickInvite}>초대</div>
           : <div className={styles.inviteBtnDisable}>초대</div>
-        : <div className={styles.messageBadge}>{messageCount}</div>
+        : <div className={messageCount ? styles.messageBadge : styles.hidden}>{messageCount}</div>
       }
     </div>
   )
