@@ -4,7 +4,7 @@ import GamePlayer from './gamePlayer';
 import Code from './code';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ gameLogId }) {
+export default function GameHistory({ gameLogId, filter }) {
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
@@ -148,13 +148,32 @@ export default function GameHistory({ gameLogId }) {
       }
     }
     return 0;
-  }
+  };
+
+  const checkMyTeam = () => {
+    console.log(gameInfo.teamA);
+    for(let member of gameInfo?.teamA) {
+      console.log('checkmyteam ', member);
+      if(member.gitId === getCookie('gitId')) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkFilter = () => {
+    switch(filter) {
+      case 'all': return true;
+      case 'team': return gameInfo?.gameMode === 'team';
+      case 'solo': return gameInfo?.gameMode !== 'team';
+    }
+  };
 
   return (
-    <div className={styles.gameHistoryItem}>
+    <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-        ? gameInfo?.teamA[0]?.ranking === 1 
+        ? checkMyTeam()
           ? <TeamGameWin />
           : <TeamGameLose />
         : <SoloGame />

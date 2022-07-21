@@ -15,6 +15,8 @@ export default function MyPage() {
   const { status } = useSession();
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filter, setFilter] = useState('all');
 
   const ranks = [
     {
@@ -171,13 +173,18 @@ export default function MyPage() {
                   <div className={styles.title}>게임 기록</div>
                 </div>
                 <div className={styles.gameHistoryHeaderRight}>
-                  <div className={styles.toggleBtn}>필터</div>
+                  <div className={styles.filterBox}>
+                    <div className={filter === 'all' ? styles.filterBtnActive : styles.filterBtn} onClick={() => setFilter('all')}>전체</div>
+                    <div className={filter === 'solo' ? styles.filterBtnActive : styles.filterBtn} onClick={() => setFilter('solo')}>개인전</div>
+                    <div className={filter === 'team' ? styles.filterBtnActive : styles.filterBtn} onClick={() => setFilter('team')}>팀전</div>
+                  </div>
+                  {/* <div className={styles.toggleBtn} onClick={() => setIsFilterOpen(true)}>필터</div> */}
                 </div>
               </div>
               <div className={styles.gameHistoryBody}>
               {
                 gameLogs?.map(gameLogId => 
-                  <GameHistory gameLogId={gameLogId} key={gameLogId} />
+                  <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} />
                 )
               }
               </div>
@@ -212,6 +219,11 @@ export default function MyPage() {
               </div>
             </div>
           </div>
+          {/* <div className={isFilterOpen ? styles.selectList : styles.hidden}>
+            <div className={styles.selectElem} onClick={() => setFilter('all')}>전체</div>
+            <div className={styles.selectElem} onClick={() => setFilter('solo')}>개인전</div>
+            <div className={styles.selectElem} onClick={() => setFilter('team')}>팀전</div>
+          </div> */}
         </>
       }
     />
