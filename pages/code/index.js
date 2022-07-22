@@ -26,6 +26,7 @@ export default function Code() {
   const gitId = getCookie('gitId');
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
+  const [myTeam, setMyTeam] = useState([]);
   const [outputs, setOutputs] = useState({});
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -179,6 +180,15 @@ export default function Code() {
   const goToResult = async() => {
     await judgeCode(true);
   };
+
+  const checkMyTeam = (team) => {
+    for(let member of team) {
+      if(member.gitId === gitId) {
+        return true;
+      }
+    }
+    return false;
+  };
   
   const getProblem = async() => {
     await fetch(`/server/api/gamelog/getGameLog`, {
@@ -196,6 +206,11 @@ export default function Code() {
       if(data.success) {
         setProblems(data.info.problemId);
         if(router?.query?.mode === 'team') {
+          if(checkMyTeam(data.info.teamA)) {
+            setMyTeam(data.info.teamA);
+          } else {
+            setMyTeam(data.info.teamB);
+          }
           setPlayerList([data.info.teamA, data.info.teamB]);
         } else {
           setPlayerList(data.info.userHistory);
@@ -349,7 +364,7 @@ export default function Code() {
             <div className={styles.footer}>
               {
                 router?.query?.mode === 'team'
-                ? <Voice />
+                ? <Voice team={myTeam} />
                 : <div />
               }
               <div className={styles.footerRight}>

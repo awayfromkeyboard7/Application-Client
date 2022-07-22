@@ -80,7 +80,8 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, gitId);
+      socket.emit('exitWait', gitId);
+      router.push('/');
     } else {
       socket.emit('exitWait', gitId);
       router.push('/');
