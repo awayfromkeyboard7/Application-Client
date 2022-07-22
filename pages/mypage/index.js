@@ -24,16 +24,16 @@ export default function MyPage() {
   }, []);
 
   useEffect(() => {
-    if(status === 'unauthenticated') {
+    if (status === 'unauthenticated') {
       router.push('/');
     }
   }, [status]);
 
   useEffect(() => {
-    console.log("showmeranking!!@!@!@!@!@",ranking)
+    console.log("showmeranking!!@!@!@!@!@", ranking)
   }, [ranking]);
 
-  const getUserInfo = async() => {
+  const getUserInfo = async () => {
     await fetch(`/server/api/user/getUser`, {
       method: 'POST',
       headers: {
@@ -43,17 +43,19 @@ export default function MyPage() {
         gitId: getCookie('gitId')
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setMyInfo(data.UserInfo);
-        setGameLogs(data.UserInfo.gameLogHistory.reverse());
-      }
-    })
-    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setMyInfo(data.UserInfo);
+          setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        }
+      })
+      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
-  const getRanking = async() => {
+  const getRanking = async () => {
+    console.log("111111>>>>>>>>>>>>>>>>")
+    // await fetch(`/server/api/ranking/getRanking`, {
     await fetch(`/server/api/ranking/getRanking`, {
       method: 'GET',
       headers: {
@@ -63,18 +65,19 @@ export default function MyPage() {
       //   gitId: getCookie('gitId')
       // })
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      if(data.success) {
-        setRanking(data.data);
-      }
-    })
-    .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data.success) {
+          console.log("sucesss>>>>>>>", data.data)
+          setRanking(data.data.rank);
+        }
+      })
+      .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
   };
 
 
-  const logout = async() => {
+  const logout = async () => {
     deleteCookie('nodeId');
     deleteCookie('gitId');
     deleteCookie('avatarUrl');
@@ -83,11 +86,11 @@ export default function MyPage() {
   };
 
   return (
-    <Layout 
+    <Layout
       header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
         <>
-          { status !== 'authenticated' && <Loading /> }
+          {status !== 'authenticated' && <Loading />}
           <div className={styles.mainRow}>
             <div className={styles.gameHistoryBox}>
               <div className={styles.gameHistoryHeader}>
@@ -103,11 +106,11 @@ export default function MyPage() {
                 </div>
               </div>
               <div className={styles.gameHistoryBody}>
-              {
-                gameLogs?.map(gameLogId => 
-                  <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} />
-                )
-              }
+                {
+                  gameLogs?.map(gameLogId =>
+                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} />
+                  )
+                }
               </div>
             </div>
             <div className={styles.mainCol}>
@@ -116,7 +119,7 @@ export default function MyPage() {
                   <div className={styles.profileIcon}>
                     <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={0} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                     <div className={styles.myRank}>
-                      <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={1} width={40} height={40} className={styles.profileIcon} alt="프로필이미지" />                  
+                      <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={1} width={40} height={40} className={styles.profileIcon} alt="프로필이미지" />
                     </div>
                   </div>
                 </div>
@@ -124,7 +127,7 @@ export default function MyPage() {
                   <div className={styles.profileInfo}>
                     <div className={styles.nickname}>{myInfo?.gitId}</div>
                     <div className={styles.rankBox}>
-                      <div className={styles.nickname}>{myInfo?.rank}</div>  
+                      <div className={styles.nickname}>{myInfo?.rank}</div>
                       <div className={styles.nickname}>{myInfo?.totalScore}Point</div>
                     </div>
                   </div>
@@ -135,17 +138,17 @@ export default function MyPage() {
                   <div className={styles.infoText}>사용 언어</div>
                   <div className={styles.nickname}>{myInfo?.mostLanguage}</div>
                 </div>
-                <div className={styles.infoBox}>              
+                <div className={styles.infoBox}>
                   <div className={styles.infoText}>평균 통과율</div>
-                  <div className={styles.nickname}>{parseInt(myInfo?.totalPassRate/(myInfo?.totalSolo+myInfo?.totalTeam))}%</div>
+                  <div className={styles.nickname}>{parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam))}%</div>
                 </div>
-                <div className={styles.infoBox}> 
+                <div className={styles.infoBox}>
                   <div className={styles.infoText}>Solo 승률</div>
-                  <div className={styles.nickname}>{parseInt(myInfo?.winSolo/myInfo?.totalSolo*100)}%</div>
+                  <div className={styles.nickname}>{parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100)}%</div>
                 </div>
-                <div className={styles.infoBox}> 
-                  <div className={styles.infoText}>Team 승률</div> 
-                  <div className={styles.nickname}>{parseInt(myInfo?.winTeam/(myInfo?.totalTeam)*100)}%</div>
+                <div className={styles.infoBox}>
+                  <div className={styles.infoText}>Team 승률</div>
+                  <div className={styles.nickname}>{parseInt(myInfo?.winTeam / (myInfo?.totalTeam) * 100)}%</div>
                 </div>
               </div>
               <div className={styles.textMenu}>전체 랭킹</div>
@@ -157,19 +160,19 @@ export default function MyPage() {
                   info={myInfo?.totalScore}
                   image={myInfo?.avatarUrl} 
                 /> */}
-                
+
                 {
-                  ranking.map((elem, idx) => 
-                    <Rank 
+                  ranking?.map((elem, idx) =>
+                    <Rank
                       key={elem.ranking}
-                      rank={elem.ranking} 
-                      nickname={elem.gitId} 
-                      info={elem.info} 
-                      image={elem.avatarUrl} 
+                      rank={elem.ranking}
+                      nickname={elem.gitId}
+                      info={elem.info}
+                      image={elem.avatarUrl}
                     />
                   )
                 }
-                  </div>
+              </div>
               {/* <div className={styles.rankingBox}>
                 {
                   ranking?.map(user => 
@@ -182,7 +185,7 @@ export default function MyPage() {
                   )
                 }
               </div> */}
-                {/* <div className={styles.textMenu}>전체 랭킹</div> */}
+              {/* <div className={styles.textMenu}>전체 랭킹</div> */}
 
             </div>
           </div>
