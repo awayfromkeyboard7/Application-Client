@@ -8,7 +8,7 @@
 
 .gameHistoryBox,
 .mainCol {
-  width: 18.75rem; /* 300px */
+  width: 25rem; /* 300px */
   display: flex;
   flex-direction: column;
 }
@@ -317,8 +317,8 @@
 
 .profileBox {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: center;
   background-color: $white-dark-color;
 }
@@ -329,6 +329,7 @@
   margin: 0.625rem;
   border-radius: 100px;
   border: $purple-color solid 4px;
+  position: relative;
 }
 
 .nickname {
@@ -350,6 +351,15 @@
 }
 
 .rankingBox {
+  padding-bottom: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $white-dark-color;
+  overflow: auto;
+}
+
+.totalRankingBox {
   padding-bottom: 1.25rem;
   flex: 1;
   display: flex;
@@ -419,4 +429,64 @@
 
 .hidden {
   display: none;
+}
+.profileInfo{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.infoBox{
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: baseline;
+}
+.infoText{
+  display: flex;
+  width: 12vw;
+  // height: 70vh;
+  flex: 1;
+  padding: 0.625rem;
+  color: $gray-color;
+  font-size: 1rem;
+  overflow: hidden auto;
+}
+.infoValue{
+  display: flex;
+  max-width: 10rem;
+  padding: 0.625rem;
+  color: $gray-color;
+  font-size: 1rem;
+  font-weight: bold;
+  overflow: hidden auto;
+}
+
+.profileBox2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: $white-dark-color;
+}
+
+.iconBox{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: $white-dark-color;
+}
+.rankBox{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: $white-dark-color;
+}
+
+.myRank{
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  left: -20px;
 }
