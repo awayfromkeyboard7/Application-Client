@@ -41,7 +41,7 @@ export default function Code() {
   const [isTimeout, setIsTimeout] = useState(false);
   let yDoc = new Y.Doc();
 
-  useLeavePageConfirm(true, '게임을 포기하시겠습니까?');
+  // useLeavePageConfirm(false, '게임을 포기하시겠습니까?');
 
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {

@@ -20,7 +20,7 @@ export default function MatchPage() {
   const [teamA, setTeamA] = useState([]);
   const [teamB, setTeamB] = useState([]);
 
-  useLeavePageConfirm(true, '게임을 포기하시겠습니까?');
+  // useLeavePageConfirm(true, '게임을 포기하시겠습니까?');
 
   useEffect(() => {
     if(status === 'unauthenticated') {

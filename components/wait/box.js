@@ -26,9 +26,13 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {
-          players.map((item, idx) => 
-            <Item info={item} key={idx} />
-          )
+          type === 'team'
+          ? players.slice(0, 4).map((item, idx) => 
+              <Item info={item} key={idx} />
+            )
+          : players.map((item, idx) => 
+              <Item info={item} key={idx} />
+            )
         }
         </div>
       </div>
