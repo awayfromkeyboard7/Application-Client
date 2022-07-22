@@ -78,7 +78,6 @@ export default function WaitPage() {
 
   useEffect(() => {
     socket.on('timeLimit', (ts) => {
-      console.log('timeLimit', socket, ts);
       setCountdown(parseInt(ts / 1000));
     });
     if (router.isReady) {
@@ -178,8 +177,8 @@ export default function WaitPage() {
       }
     };
     
-    socket.emit("getRoomId");
-    socket.once("getRoomId", async (roomId, status) => {
+    socket.emit('getRoomId');
+    socket.once('getRoomId', async (roomId, status) => {
       if (status === 'waiting') {
         await fetch(`/server/api/gamelog/createNew`, {
           method: 'POST',

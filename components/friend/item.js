@@ -7,11 +7,12 @@ import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendItem({ user, isOnline, onClick }) {
   const router = useRouter();  
+  const gitId = getCookie('gitId');
   const [isClick, setIsClick] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    socket.emit('getUnreadMessage', user.gitId, getCookie('gitId'));
+    socket.emit('getUnreadMessage', user.gitId, gitId);
 
     socket.on('unreadMessage', message => {
       if (message['senderId'] === user.gitId) {
@@ -27,7 +28,7 @@ export default function FriendItem({ user, isOnline, onClick }) {
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') }, user.gitId);
+      socket.emit('inviteMember', { gitId, avatarUrl: getCookie('avatarUrl') }, user.gitId);
       setIsClick(true);
     }
   };

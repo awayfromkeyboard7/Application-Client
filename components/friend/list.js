@@ -9,6 +9,7 @@ import styles from '../../styles/components/friend.module.scss';
 export default function FriendList({ onClick }) {
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
+  const [searchList, setSearchList] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchResultText, setSearchResultText] = useState('');
   const [isSearch, setIsSearch] = useState(false);
@@ -68,7 +69,7 @@ export default function FriendList({ onClick }) {
       if(data.success) {
         setMyInfo(data.UserInfo);
       } else {
-        setUserList(null);
+        setUserList([]);
       }
     })
     .catch(error => console.log('[/components/friend/list] getMyInfo error >> ', error));
@@ -87,10 +88,10 @@ export default function FriendList({ onClick }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        setUserList([data.UserInfo]);
+        setSearchList([data.UserInfo]);
         getMyInfo();
       } else {
-        setUserList([]);
+        setSearchList([]);
       }
     })
     .catch(error => console.log('[/components/friend/list] findUser error >> ', error));
@@ -127,11 +128,11 @@ export default function FriendList({ onClick }) {
   };
 
   const SearchList = () => {
-    if(userList?.length === 0) {
+    if(searchList?.length === 0) {
       return <div className={styles.infoText}>{`${searchResultText} 유저가 없습니다.`}</div>;
     }
     return (
-      userList?.map(user => 
+      searchList?.map(user => 
         <SearchItem 
           key={user.gitId}
           user={user}
