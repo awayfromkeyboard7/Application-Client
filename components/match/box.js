@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Grid } from 'react-loader-spinner';
 import Item from './item';
 import styles from '../../styles/components/match.module.scss';
 
 export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
-  const router = useRouter();
   const [countdown, setCountdown] = useState(0);
   const [isMatching, setIsMatching] = useState(false);
 

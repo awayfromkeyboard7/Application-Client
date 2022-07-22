@@ -32,7 +32,6 @@ export default function FriendList({ onClick }) {
     socket.on('getFollowingList', users => {
       setUserList(users);
     });
-    getFriends();
     getMyInfo();
 
     return () => {
