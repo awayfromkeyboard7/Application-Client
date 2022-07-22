@@ -20,7 +20,7 @@ export default function Sidebar({ menu='friends' }) {
   const onClickFriend = (friend) => {
     setFriend(friend);
     setSidebarMenu('chat');
-    socket.emit('getChatMessage', getCookie('gitId'), friend);
+    socket.emit('getChatMessage', getCookie('gitId'), friend.gitId);
   };
 
   const onClickBack = () => {
