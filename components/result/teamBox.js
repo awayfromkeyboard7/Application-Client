@@ -1,7 +1,22 @@
+import { useState, useEffect } from 'react';
 import Item from './teamItem';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultBox({ type, ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+  const [maxTeamLength, setMaxTeamLength] = useState(1);
+
+  useEffect(() => {
+    ranks.map(team => {
+      setMaxTeamLength(prev => {
+        if(prev < team.length) {
+          return team.length;
+        } else {
+          return prev;
+        }
+      })
+    })
+  }, [ranks]);
+
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
@@ -11,7 +26,7 @@ export default function TeamResultBox({ type, ranks, startAt, onClickPlayAgain, 
         <div className={styles.resultBox}>
         {
           ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} key={item.gitId} idx={idx} />
+            <Item teamInfo={item} startAt={startAt} maxLength={maxTeamLength} key={item[0].gitId} idx={idx} />
           )
         }
         </div>

@@ -1,11 +1,11 @@
 import Item from './soloItem';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultBox({ type, ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
   return (
     <div className={styles.body}>
       <div className={styles.mainHeader}>
-        <div className={styles.mainTitle}>{`${type === 'team' ? '팀전 결과' : `개인전(${ranks?.length}인) 결과`}`}</div>
+        <div className={styles.mainTitle}>{`개인전(${ranks?.length}인) 결과`}</div>
       </div>
       <div className={styles.mainBody}> 
         <div className={styles.resultBox}>

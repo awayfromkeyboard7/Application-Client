@@ -33,13 +33,90 @@
   flex-direction: row;
 }
 
-.toggleBtn,
 .title {
   padding: 0.625rem;
   color: $white-dark-color;
   font-size: 1rem;
   line-height: 2rem;
   overflow: hidden auto;
+}
+
+.filterBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filterBtnActive,
+.filterBtn {
+  margin-right: 0.25rem;
+  padding: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-weight: bold;
+  border-radius: 4px;
+  background-color: $white-dark-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-light-color;
+  }
+}
+
+.filterBtnActive {
+  color: $purple-color;
+  border: $purple-light-color solid 2px;
+}
+
+.toggleBtn {
+  width: 5rem;
+  height: 1.75rem;
+  display: flex;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #fff;
+  line-height: 1.75rem;
+  justify-content: center;
+  text-align: center;
+  background-color: #424556;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #55596e;
+  }
+}
+
+.selectList {
+  width: 5rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  position: absolute;
+  background-color: #fff;
+  top: 6.25rem;
+  right: 19.6rem;
+  z-index: 100 !important;
+}
+
+.selectElem {
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #000;
+  background-color: #fff;
+
+  &:hover {
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color:  #310175;
+  }
 }
 
 .gameHistoryBody {
@@ -338,4 +415,8 @@
 .CodeMirror { 
   height: calc(100% - 2.5rem) !important;
   width:100% !important;
+}
+
+.hidden {
+  display: none;
 }

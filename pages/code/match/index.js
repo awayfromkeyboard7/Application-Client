@@ -8,13 +8,16 @@ import Header from '../../../components/header';
 import Match from '../../../components/match/box';
 import Sidebar from '../../../components/sidebar';
 import Loading from '../../../components/loading';
+import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function MatchPage() {
   const router = useRouter();  
   const { status } = useSession();
+  const gitId = getCookie('gitId');
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
-  const [players, setPlayers] = useState([]);
+  const [teamA, setTeamA] = useState([]);
+  const [teamB, setTeamB] = useState([]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -24,23 +27,25 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (router.isReady) {
-      // socket.on('matchingTimer', time => {
-      //   setMatchingTime(time);
-      // });
-      if (router.query?.roomId === getCookie('gitId')) {
-        socket.emit('startMatching', getCookie('gitId'));
-      }
-      socket.on('getTeamInfo', users => {
-        setPlayers(users);
+      socket.on('matchingComplete', (teamA, teamB) => {
+        setTeamA(teamA);
+        setTeamB(teamB);
       });
-      socket.emit('getTeamInfo', router?.query?.roomId);
+      socket.on('getTeamInfo', users => {
+        setTeamA(users);
+      });
       socket.on('teamGameStart', (roomId, gameLogId) => {
         setGameLogId(gameLogId);
         setRoomId(roomId);
-      })
+      });
+      socket.emit('getTeamInfo', router?.query?.roomId);
+      if (router.query?.roomId === gitId) {
+        socket.emit('startMatching', gitId);
+      }
     }
 
     return () => {
+      socket.off('matchingComplete');
       socket.off('getTeamInfo');
       socket.off('teamGameStart');
     };
@@ -52,10 +57,9 @@ export default function MatchPage() {
       socket.on('exitTeamGame', () => {
         router.push('/');
       });
-    } 
-    else {
+    } else {
       socket.on('exitWait', (users) => {
-        setPlayers(users);
+        setTeamA(users);
       });
     }
 
@@ -63,7 +67,7 @@ export default function MatchPage() {
       socket.off('exitTeamGame');
       socket.off('exitWait');
     };
-  }, [players]);
+  }, [teamA]);
 
   useEffect(() => {
     if(gameLogId !== '') {
@@ -76,10 +80,10 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, getCookie('gitId'));
-    } 
-    else {
-      socket.emit('exitWait', getCookie('gitId'));
+      socket.emit('exitWait', gitId);
+      router.push('/');
+    } else {
+      socket.emit('exitWait', gitId);
       router.push('/');
     }
   };
@@ -94,8 +98,10 @@ export default function MatchPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
           <Match 
-            players={players} 
+            teamA={teamA}
+            teamB={teamB}
             onClickGoToMain={goToLobby} 
           />
           <Sidebar />

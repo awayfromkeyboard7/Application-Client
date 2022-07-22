@@ -5,12 +5,8 @@ import styles from '../../styles/components/result.module.scss';
 
 export default function SoloResultItem({ info, startAt, idx }) {
   const myNickname = getCookie('gitId');
-  const [rankText, setRankText] = useState(info.ranking);
+  const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
-
-  // useEffect(() => {
-  //   setRankText(convertRank(info.ranking));
-  // }, [info.ranking]);
 
   useEffect(() => {
     setRankText(info.passRate < 0 ? '-' : convertRank(idx + 1));

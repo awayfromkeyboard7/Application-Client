@@ -1,0 +1,49 @@
+@import '../variables.module.scss';
+
+.voiceBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.voiceIconDisable,
+.voiceIcon {
+  height: 2rem;
+  width: 2rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 2rem;
+}
+
+.voiceIconDisable {
+  filter: brightness(50%); 
+}
+
+.voiceBtnDisable,
+.voiceBtn {
+  width: 5rem;
+  height: 1.75rem;
+  margin-right: 0.5rem;
+  display: flex;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #fff;
+  line-height: 1.75rem;
+  justify-content: center;
+  text-align: center;
+  background-color: #424556;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #55596e;
+  }
+}
+
+.voiceBtn {
+  color: $navy-color;
+  background-color: $green-color;
+  &:hover {
+    background-color: $green-light-color;
+  }
+}

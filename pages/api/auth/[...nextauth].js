@@ -10,7 +10,7 @@ export default NextAuth({
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      console.log('redirect callback >>>>> ', url, baseUrl);
+      console.log('[api/auth] redirect callback', url, baseUrl);
       return baseUrl
     },
     async jwt({ token, account }) {
