@@ -6,6 +6,7 @@ import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { getCookie } from 'cookies-next';
+import { useLeavePageConfirm } from "../../hooks/useLeave";
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Layout from '../../components/layouts/main';
@@ -38,8 +39,9 @@ export default function Code() {
   const [provider, setProvider] = useState();
   const [isDoc, setIsDoc] = useState(false);
   const [isTimeout, setIsTimeout] = useState(false);
-
   let yDoc = new Y.Doc();
+
+  useLeavePageConfirm(true, '게임을 포기하시겠습니까?');
 
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {
