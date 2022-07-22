@@ -106,8 +106,8 @@ export default function MatchPage() {
             && <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
           }
           <Match 
-            teamA={teamA}
-            teamB={teamB}
+            teamA={teamA.splice(4)}
+            teamB={teamB.splice(4)}
             onClickGoToMain={goToLobby} 
           />
           <Sidebar />
