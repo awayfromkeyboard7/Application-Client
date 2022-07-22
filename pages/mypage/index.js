@@ -16,9 +16,11 @@ export default function MyPage() {
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [ranking, setRanking] = useState([]);
 
   useEffect(() => {
     getUserInfo();
+    getRanking();
   }, []);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ export default function MyPage() {
       router.push('/');
     }
   }, [status]);
+
+  useEffect(() => {
+    console.log("showmeranking!!@!@!@!@!@",ranking)
+  }, [ranking]);
 
   const getUserInfo = async() => {
     await fetch(`/server/api/user/getUser`, {
@@ -46,6 +52,27 @@ export default function MyPage() {
     })
     .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
+
+  const getRanking = async() => {
+    await fetch(`/server/api/ranking/getRanking`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+      // body: JSON.stringify({
+      //   gitId: getCookie('gitId')
+      // })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.success) {
+        setRanking(data.data);
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
+  };
+
 
   const logout = async() => {
     deleteCookie('nodeId');
@@ -85,22 +112,54 @@ export default function MyPage() {
             </div>
             <div className={styles.mainCol}>
               <div className={styles.profileBox}>
-                <div className={styles.profileIcon}>
-                  <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+                <div className={styles.iconBox}>
+                  <div className={styles.profileIcon}>
+                    <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={0} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+                    <div className={styles.myRank}>
+                      <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={1} width={40} height={40} className={styles.profileIcon} alt="프로필이미지" />                  
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.nickname}>{myInfo?.gitId}</div>
+                <div className={styles.iconBox}>
+                  <div className={styles.profileInfo}>
+                    <div className={styles.nickname}>{myInfo?.gitId}</div>
+                    <div className={styles.rankBox}>
+                      <div className={styles.nickname}>{myInfo?.rank}</div>  
+                      <div className={styles.nickname}>{myInfo?.totalScore}Point</div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div className={styles.profileBox2}>
+                <div className={styles.infoBox}>
+                  <div className={styles.infoText}>사용 언어</div>
+                  <div className={styles.nickname}>{myInfo?.mostLanguage}</div>
+                </div>
+                <div className={styles.infoBox}>              
+                  <div className={styles.infoText}>평균 통과율</div>
+                  <div className={styles.nickname}>{parseInt(myInfo?.totalPassRate/(myInfo?.totalSolo+myInfo?.totalTeam))}%</div>
+                </div>
+                <div className={styles.infoBox}> 
+                  <div className={styles.infoText}>Solo 승률</div>
+                  <div className={styles.nickname}>{parseInt(myInfo?.winSolo/myInfo?.totalSolo*100)}%</div>
+                </div>
+                <div className={styles.infoBox}> 
+                  <div className={styles.infoText}>Team 승률</div> 
+                  <div className={styles.nickname}>{parseInt(myInfo?.winTeam/(myInfo?.totalTeam)*100)}%</div>
+                </div>
+              </div>
+              <div className={styles.textMenu}>전체 랭킹</div>
               <div className={styles.rankingBox}>
-                <div className={styles.textMenu}>내 랭킹</div>
+                {/* <div className={styles.textMenu}>내 랭킹</div>
                 <Rank 
                   rank={myInfo?.ranking} 
                   nickname={myInfo?.gitId} 
                   info={myInfo?.totalScore}
                   image={myInfo?.avatarUrl} 
-                />
-                {/* <div className={styles.textMenu}>전체 랭킹</div> */}
-                {/* {
-                  ranks.map((elem, idx) => 
+                /> */}
+                
+                {
+                  ranking.map((elem, idx) => 
                     <Rank 
                       key={elem.ranking}
                       rank={elem.ranking} 
@@ -109,8 +168,22 @@ export default function MyPage() {
                       image={elem.avatarUrl} 
                     />
                   )
-                } */}
-              </div>
+                }
+                  </div>
+              {/* <div className={styles.rankingBox}>
+                {
+                  ranking?.map(user => 
+                    <Rank 
+                    rank={user?.ranking} 
+                    nickname={user?.gitId} 
+                    info={user?.totalScore}
+                    image={user?.avatarUrl} 
+                    />
+                  )
+                }
+              </div> */}
+                {/* <div className={styles.textMenu}>전체 랭킹</div> */}
+
             </div>
           </div>
         </>
