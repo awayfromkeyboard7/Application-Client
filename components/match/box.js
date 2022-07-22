@@ -72,10 +72,6 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
       <div className={styles.mainFooter}>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
-      {
-        router?.query?.mode === 'team'
-        && <div className={styles.floatingBtn}>🗣</div>
-      }
     </div>
   )
 }

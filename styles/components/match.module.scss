@@ -140,22 +140,3 @@
 .hidden {
   display: none;
 }
-
-.floatingBtn {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 3rem;
-  text-align: center;
-  font-size: 2rem;
-  line-height: 3rem;
-  color: #fff;
-  background-color: $green-color;
-  cursor: pointer;
-  position: absolute;
-  left: 1.5rem;
-  bottom: 1rem;
-}
-
-.floatingBtn:hover {
-  background-color: $green-light-color;
-}
