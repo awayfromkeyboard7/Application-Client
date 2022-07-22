@@ -6,7 +6,7 @@ import Item from './item';
 import SearchItem from './searchItem';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendList({ onClick }) {
+export default function FriendList({ onClick, players=null }) {
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
   const [searchList, setSearchList] = useState([]);
@@ -111,6 +111,17 @@ export default function FriendList({ onClick }) {
     }
   };
 
+  const checkInviteMember = (user) => {
+    if(players && players.length) {
+      for(let player of players) {
+        if(player.gitId === user.gitId) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   const FollowingList = () => {
     if(!userList || userList?.length === 0) {
       return <div className={styles.infoText}>현재 접속중인 유저가 없습니다.</div>;
@@ -121,6 +132,7 @@ export default function FriendList({ onClick }) {
           key={user.gitId}
           user={user}
           isOnline={true} 
+          isInvite={checkInviteMember(user)}
           onClick={() => onClick(user)}
         />
       )

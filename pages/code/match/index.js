@@ -98,7 +98,10 @@ export default function MatchPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
+          }
           <Match 
             teamA={teamA}
             teamB={teamB}

@@ -33,8 +33,16 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={router?.query?.mode === 'team' ? router?.query?.roomId === getCookie('gitId') ? styles.btn : styles.btnInactive : styles.btn} onClick={onClickPlayAgain}>{router?.query?.mode === 'team' ? '팀전 매칭' : '게임 시작'}</div>
-        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
+        {
+          type === 'team'
+          ? <div className={router?.query?.roomId === getCookie('gitId') ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>팀전 매칭</div>
+          : <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
+        }
+        {
+          5 < countdown
+          ? <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
+          : <div className={styles.btnInactive}>메인으로</div>
+        }
       </div>
     </div>
   )

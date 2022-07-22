@@ -66,7 +66,10 @@ export default function ResultPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          }
           {
             router?.query?.mode === 'team'
             ? <TeamResult 

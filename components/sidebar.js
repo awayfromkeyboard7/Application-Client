@@ -6,7 +6,7 @@ import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
 import { socket } from '../lib/socket';
 
-export default function Sidebar({ menu='friends' }) {
+export default function Sidebar({ menu='friends', players=null }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [sidebarMenu, setSidebarMenu] = useState(menu);
   const [friend, setFriend] = useState({});
@@ -60,7 +60,7 @@ export default function Sidebar({ menu='friends' }) {
           <div className={styles.sidebarBody}>
           {
             sidebarMenu === 'friends'
-            ? <Friends onClick={friend => onClickFriend(friend)} />
+            ? <Friends onClick={friend => onClickFriend(friend)} players={players} />
             : <ChatRoomList friend={friend} />
           }
           </div>

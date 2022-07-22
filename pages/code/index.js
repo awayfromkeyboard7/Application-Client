@@ -313,7 +313,10 @@ export default function Code() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          }
           <ReflexContainer>
             <ReflexElement className={styles.body} flex={1}>
               <ReflexContainer orientation='vertical'>

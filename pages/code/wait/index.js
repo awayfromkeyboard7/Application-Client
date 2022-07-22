@@ -237,7 +237,7 @@ export default function WaitPage() {
     
     console.log('copy players >>> ', copyPlayers);
     setPlayers(copyPlayers);
-  }
+  };
 
   return (
     <Layout 
@@ -245,7 +245,10 @@ export default function WaitPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
+          }
           <Wait 
             type={router?.query?.mode} 
             players={players} 
@@ -253,7 +256,7 @@ export default function WaitPage() {
             onClickGoToMain={goToLobby} 
             onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
           />
-          <Sidebar />
+          <Sidebar players={players} />
         </>
       }
     />

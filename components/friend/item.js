@@ -5,10 +5,10 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ user, isOnline, onClick }) {
+export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   const router = useRouter();  
   const gitId = getCookie('gitId');
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(isInvite);
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
