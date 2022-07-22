@@ -14,9 +14,11 @@ export default function ChatList({ friend }) {
     socket.on('receiveChatMessage', chatLogs => {
       setChatList(chatLogs);
     });
+
     socket.on('sendChatMessage', message => {
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
+        socket.emit('resetUnreadCount', friend.gitId, gitId);
       }
     });
 
