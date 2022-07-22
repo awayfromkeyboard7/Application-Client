@@ -12,11 +12,15 @@ export default function ChatList({ friend }) {
 
   useEffect(() => {
     socket.on('receiveChatMessage', chatLogs => {
+      console.log('receiveChatMessage :::: ', chatLogs)
       setChatList(chatLogs);
     });
+
     socket.on('sendChatMessage', message => {
       if (message['senderId'] === friend.gitId) {
+        console.log('resetUnreadCount minus :::: ', friend.gitId, getCookie('gitId'));
         setChatList(prev => [...prev, message]);
+        socket.emit('resetUnreadCount', friend.gitId, getCookie('gitId'));
       }
     });
 
