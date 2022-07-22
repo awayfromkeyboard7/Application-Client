@@ -11,12 +11,10 @@ export default function FriendItem({ user, isOnline, onClick }) {
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    console.log('getUnreadMessage ???', user.gitId, getCookie('gitId'));
     socket.emit('getUnreadMessage', user.gitId, getCookie('gitId'));
 
     socket.on('unreadMessage', message => {
       if (message['senderId'] === user.gitId) {
-        console.log('unreadMessage :::: count', message['count']);
         setMessageCount(message['count']);
       }
     });

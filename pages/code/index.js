@@ -116,7 +116,7 @@ export default function Code() {
 
       if(isDoc === false && router?.query?.gameLogId) {
         const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
-        let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop'] });
+        let yProvider = new WebrtcProvider(url, yDoc);
         setDoc(yDoc);
         setProvider(yProvider);
         setIsDoc(true);
