@@ -1,0 +1,18 @@
+@import '../variables.module.scss';
+
+.userProfile {
+  width: 40%;
+  padding: 0.625rem;
+}
+
+.userRecord {
+  padding: 0.625rem;
+}
+
+.profileIcon {
+  width: 100px;
+  height: 100px;
+  margin: 0.625rem;
+  border-radius: 100px;
+  border: $purple-color solid 4px;
+}
