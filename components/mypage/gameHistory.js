@@ -3,21 +3,38 @@ import { getCookie } from 'cookies-next';
 import GamePlayer from './gamePlayer';
 import Code from './code';
 import styles from '../../styles/pages/mypage.module.scss';
+import Image from 'next/image'
+import UserPopup from '../userPopup'
 
-export default function GameHistory({ gameLogId, filter }) {
+
+export default function GameHistory({ gameLogId, filter, ranking }) {
   const gitId = getCookie('gitId');
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
+  const [winnerImg, setWinnerImg] = useState('/default_profile.jpg')
+  const [winnerTeamImg, setWinnerTeamImg] = useState('/default_profile.jpg')
+
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [isPopup, setIsPopup] = useState(false);
+  const [winnerId, setWinnerId] = useState('')
 
   useEffect(() => {
-    if(gameLogId) {
+    if (gameLogId) {
       getGameInfo();
     }
   }, [gameLogId]);
 
-  const getGameInfo = async() => {
+  useEffect(() => {
+    getWinner()
+  })
+
+  useEffect(() => {
+    getTemaWinner()
+  })
+
+  const getGameInfo = async () => {
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
       headers: {
@@ -27,23 +44,47 @@ export default function GameHistory({ gameLogId, filter }) {
         gameLogId
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setGameInfo(data.info);
-      }
-    })
-    .catch(error => console.log('[/components/mypage/gameHistory] getGameLog error >> ', error));
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setGameInfo(data.info);
+        }
+      })
+      .catch(error => console.log('[/components/mypage/gameHistory] getGameLog error >> ', error));
   };
 
+  const getWinner = () => {
+    if (gameInfo?.userHistory) {
+      for (let info of gameInfo.userHistory) {
+        if (info?.ranking === 1) {
+          setWinnerImg(info.avatarUrl)
+          setWinnerId(info.gitId)
+        }
+      }
+    }
+  }
+
+  const getTemaWinner = () => {
+    if (gameInfo?.gameMode === "team") {
+      if (gameInfo.teamA[0].ranking === 1) {
+        setWinnerTeamImg(gameInfo.teamA[0].avatarUrl)
+        setWinnerId(gameInfo.teamA[0].gitId)
+      } else {
+        setWinnerTeamImg(gameInfo.teamB[0].avatarUrl)
+        setWinnerId(gameInfo.teamB[0].gitId)
+      }
+
+    }
+  }
+
   const unixToTime = (ts) => {
-    const date = new Date(ts); 
+    const date = new Date(ts);
     const year = date.getFullYear();
-    const month = '0' + (date.getMonth()+1);
+    const month = '0' + (date.getMonth() + 1);
     const day = '0' + date.getDate();
     const hour = '0' + date.getHours();
     const min = '0' + date.getMinutes();
-    
+
     return `${year}. ${month.substr(-2)}. ${day.substr(-2)} ${hour.substr(-2)}:${min.substr(-2)}`;
   };
 
@@ -54,8 +95,8 @@ export default function GameHistory({ gameLogId, filter }) {
   };
 
   const checkMyTeam = () => {
-    for(let member of gameInfo?.teamA) {
-      if(member.gitId === gitId) {
+    for (let member of gameInfo?.teamA) {
+      if (member.gitId === gitId) {
         return true;
       }
     }
@@ -63,7 +104,7 @@ export default function GameHistory({ gameLogId, filter }) {
   };
 
   const checkFilter = () => {
-    switch(filter) {
+    switch (filter) {
       case 'all': return true;
       case 'team': return gameInfo?.gameMode === 'team';
       case 'solo': return gameInfo?.gameMode !== 'team';
@@ -71,9 +112,9 @@ export default function GameHistory({ gameLogId, filter }) {
   };
 
   const getMyRanking = () => {
-    if(gameInfo?.userHistory) {
-      for(let info of gameInfo.userHistory) {
-        if(info?.gitId === gitId) {
+    if (gameInfo?.userHistory) {
+      for (let info of gameInfo.userHistory) {
+        if (info?.gitId === gitId) {
           return info.ranking;
         }
       }
@@ -87,21 +128,25 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <Image src={winnerTeamImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryWin}>승리</div>
         </div>
         <div className={styles.gameHistoryInfo}>
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
-            }
+              {
+                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
-            }
+              {
+                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              }
             </div>
           </div>
         </div>
@@ -115,21 +160,27 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <div className={styles.imageBox}>
+              <Image src={winnerTeamImg} width={90} height={85} className={styles.boardProfileIcon} alt="프로필이미지" />
+            </div>
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryLose}>패배</div>
         </div>
         <div className={styles.gameHistoryInfo}>
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo?.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
-            }
+              {
+                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
-            }
+              {
+                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              }
             </div>
           </div>
         </div>
@@ -143,21 +194,27 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>개인전</div>
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <div className={styles.imageBox}>
+              <Image src={winnerImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
+            </div>
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryRank}>{`${getMyRanking()} / ${gameInfo?.userHistory?.length}`}</div>
         </div>
         <div className={styles.gameHistoryInfo}>
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
-            }
+              {
+                gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+              }
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.gameHistoryPlayersCol}>
-            {
-              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
-            }
+              {
+                gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+              }
             </div>
           </div>
         </div>
@@ -169,19 +226,28 @@ export default function GameHistory({ gameLogId, filter }) {
     <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-        ? checkMyTeam()
-          ? <TeamGameWin />
-          : <TeamGameLose />
-        : <SoloGame />
+          ? checkMyTeam()
+            ? <TeamGameWin />
+            : <TeamGameLose />
+          : <SoloGame />
+
       }
       {
         isOpenCode
         && <div className={styles.codeBackground}>
-            <div className={styles.codeBox}>
-              <Code code={playerCode} language={playerLanguage} />
-              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
-            </div>
+          <div className={styles.codeBox}>
+            <Code code={playerCode} language={playerLanguage} />
+            <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
           </div>
+        </div>
+      }
+      {
+        isPopup
+        && <UserPopup
+          targetGitId={winnerId}
+          ranking={ranking}
+          onClick={() => { setIsPopup(false) }}
+        />
       }
     </div>
   )
