@@ -263,8 +263,8 @@
   margin: 2px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   align-items: center;
+  justify-content: center;
 }
 
 .gameHistoryPlayerProfileImage {
@@ -289,6 +289,7 @@
   margin-left: 4px;
   flex: 1;
   font-size: 0.875rem;
+  line-height: 2rem;
   color: $gray-super-dark-color;
   font-weight: bold;
   white-space: nowrap;
@@ -303,6 +304,7 @@
 .gameHistoryPlayerLanguage {
   height: 1.5rem;
   padding: 0.25rem;
+  margin: 0.25rem;
   text-align: center;
   line-height: 1rem;
   color: $white-dark-color;
@@ -318,8 +320,8 @@
 .profileBox {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
   background-color: $white-dark-color;
 }
 
@@ -347,7 +349,7 @@
   color: $white-dark-color;
   font-size: 1rem;
   font-weight: bold;
-  line-height: 2rem;
+  line-height: 1.75rem;
 }
 
 .rankingBox {
@@ -434,12 +436,15 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  justify-items: center;
 }
 .infoBox{
   display: flex;
   flex: 1;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
+  position: relative;
+  justify-content: center;
 }
 .infoText{
   display: flex;
@@ -448,25 +453,32 @@
   flex: 1;
   padding: 0.625rem;
   color: $gray-color;
-  font-size: 1rem;
+  font-size: 0.8rem;
   overflow: hidden auto;
+  position: absolute;
+  left: 1px;
+  top: -15px;
 }
 .infoValue{
   display: flex;
   max-width: 10rem;
-  padding: 0.625rem;
-  color: $gray-color;
+  padding: 3px;
+  color: $purple-color;
   font-size: 1rem;
   font-weight: bold;
+  margin-top: 15px;
   overflow: hidden auto;
+  // position: absolute;
 }
 
 .profileBox2 {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
   background-color: $white-dark-color;
+  border-top:$gray-light-color solid 2px;
+  height: 50px;
 }
 
 .iconBox{
@@ -487,6 +499,45 @@
 .myRank{
   display: flex;
   position: absolute;
-  bottom: 0px;
-  left: -20px;
+  bottom: -5px;
+  left: -30px;
+}
+
+.rankingInfo {
+  padding-left: 0.625rem;
+  // padding-bottom: 0.3rem;
+  background-color: $purple-color;
+  color: $gray-color;
+  font-size: 0.75rem;
+  // font-weight: bold;
+  line-height: 1rem;
+  display: flex;
+  // flex :1;
+  flex-direction: row ; 
+  justify-content: flex-start;
+}
+
+.rankingInfoElem1{
+  margin-left: 3px;
+  margin-right: 7px;
+}
+
+.rankingInfoElem2{
+  margin-left: 14.5px;
+  margin-right: 14.5px;
+}
+
+.rankingInfoElem3{
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.rankingInfoElem4{
+  margin-left: 10px;
+  margin-right: 30px;
+}
+
+.rankingInfoElem5{
+  margin-left: 20px;
+  margin-right: 5px;
 }

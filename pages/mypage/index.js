@@ -29,10 +29,6 @@ export default function MyPage() {
     }
   }, [status]);
 
-  useEffect(() => {
-    console.log("showmeranking!!@!@!@!@!@",ranking)
-  }, [ranking]);
-
   const getUserInfo = async() => {
     await fetch(`/server/api/user/getUser`, {
       method: 'POST',
@@ -82,6 +78,85 @@ export default function MyPage() {
     router.push('/');
   };
 
+  const getRankImg = (rank,ranking) =>{
+    let imgUrl = '/rank/king.png';
+    switch(rank) {
+      case 0: 
+        imgUrl = '/rank/rank0.png';
+        break;
+      case 1:
+        imgUrl = '/rank/rank1.png';
+        break;
+      case 2:
+        imgUrl = '/rank/rank2.png';
+        break;
+      case 3: 
+        imgUrl = '/rank/rank3.png';
+        break;
+      case 4:
+        imgUrl = '/rank/rank4.png';
+        break;
+      case 5:
+        imgUrl = '/rank/rank5.png';
+        break;
+      default:
+        imgUrl = '/jinny.jpg';
+    }
+    if (ranking == 1){
+      imgUrl = '/rank/king.png';
+    }
+    return imgUrl;
+  }
+
+  const getLangImg = (language) =>{
+    let imgUrl = '/default_profile.jpg'
+    switch(language) {
+      case "Python": 
+        imgUrl = '/rank/Python.png';
+        break;
+      case "JavaScript":
+        imgUrl = '/rank/JavaScript.png';
+        break;
+      default:
+        imgUrl = '/default_profile.jpg';
+    }
+    return imgUrl;
+  }
+
+  const getPercent = (rank,total) =>{
+    return parseInt(rank/total*1000)/10
+  }
+
+  const getRankName = (rank,ranking) =>{
+    let myrank = 'Bronze';
+    switch(rank) {
+      case 0: 
+        myrank = 'Bronze';
+        break;
+      case 1:
+        myrank = 'Silver';
+        break;
+      case 2:
+        myrank = 'Gold';
+        break;
+      case 3: 
+        myrank = 'Platinum';
+        break;
+      case 4:
+        myrank = 'Diamond';
+        break;
+      case 5:
+        myrank = 'Master';
+        break;
+      default:
+        myrank = 'Bronze' 
+    }
+    if (ranking == 1){
+      myrank = 'King';
+    }
+    return myrank;
+  }
+
   return (
     <Layout 
       header={<Header label="로그아웃" onClickBtn={logout} />}
@@ -116,7 +191,8 @@ export default function MyPage() {
                   <div className={styles.profileIcon}>
                     <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={0} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                     <div className={styles.myRank}>
-                      <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={1} width={40} height={40} className={styles.profileIcon} alt="프로필이미지" />                  
+                      <Image src={getRankImg(myInfo.rank,myInfo.ranking) ?? '/rank/rank0.png' } z-index={1} width={55} height={55} className={styles.profileIcon} alt="프로필이미지" />                  
+                      {/* <Image src={'/rank/rank0.png'} z-index={1} width={60} height={60} className={styles.profileIcon} alt="프로필이미지" />                   */}
                     </div>
                   </div>
                 </div>
@@ -124,31 +200,48 @@ export default function MyPage() {
                   <div className={styles.profileInfo}>
                     <div className={styles.nickname}>{myInfo?.gitId}</div>
                     <div className={styles.rankBox}>
-                      <div className={styles.nickname}>{myInfo?.rank}</div>  
-                      <div className={styles.nickname}>{myInfo?.totalScore}Point</div>
+                      <div className={styles.nickname}>{getRankName(myInfo?.rank,myInfo?.ranking)}</div>  
+                      <div className={styles.nickname}>{myInfo?.totalScore *5}Point</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className={styles.profileBox2}>
-                <div className={styles.infoBox}>
-                  <div className={styles.infoText}>사용 언어</div>
-                  <div className={styles.nickname}>{myInfo?.mostLanguage}</div>
-                </div>
                 <div className={styles.infoBox}>              
-                  <div className={styles.infoText}>평균 통과율</div>
-                  <div className={styles.nickname}>{parseInt(myInfo?.totalPassRate/(myInfo?.totalSolo+myInfo?.totalTeam))}%</div>
+                  <div className={styles.infoText}>평균 통과율 :</div>
+                  <div className={styles.infoValue}>{parseInt(myInfo?.totalPassRate/(myInfo?.totalSolo+myInfo?.totalTeam))}%</div>
                 </div>
                 <div className={styles.infoBox}> 
-                  <div className={styles.infoText}>Solo 승률</div>
-                  <div className={styles.nickname}>{parseInt(myInfo?.winSolo/myInfo?.totalSolo*100)}%</div>
+                  <div className={styles.infoText}>Solo 승률 :</div>
+                  <div className={styles.infoValue}>{parseInt(myInfo?.winSolo/myInfo?.totalSolo*100)}%</div>
                 </div>
                 <div className={styles.infoBox}> 
-                  <div className={styles.infoText}>Team 승률</div> 
-                  <div className={styles.nickname}>{parseInt(myInfo?.winTeam/(myInfo?.totalTeam)*100)}%</div>
+                  <div className={styles.infoText}>Team 승률 :</div> 
+                  <div className={styles.infoValue}>{parseInt(myInfo?.winTeam/(myInfo?.totalTeam)*100)}%</div>
                 </div>
               </div>
-              <div className={styles.textMenu}>전체 랭킹</div>
+              <div className={styles.profileBox2}>
+                <div className={styles.infoBox}> 
+                  <div className={styles.infoText}>내 랭킹 :</div> 
+                  <div className={styles.infoValue}>전체 {ranking.length}명 중 {myInfo?.ranking}등</div>
+                  <div className={styles.infoValue}>(상위 {getPercent(myInfo?.ranking,ranking.length)}%)</div>
+                </div>
+              </div>
+              <div className={styles.profileBox2}>
+                <div className={styles.infoBox}>
+                  <div className={styles.infoText}>사용 언어 :</div>
+                  <div className={styles.infoValue}>{myInfo?.mostLanguage}</div>
+                </div>
+              </div>
+
+              <div className={styles.textMenu}>전체 랭킹 :</div>
+              <div className={styles.rankingInfo}>
+                <div className={styles.rankingInfoElem1}>순위</div>
+                <div className={styles.rankingInfoElem2}>등급</div> 
+                <div className={styles.rankingInfoElem3}>플레이어</div>
+                <div className={styles.rankingInfoElem4}>승률</div> 
+                <div className={styles.rankingInfoElem5}>언어</div>
+              </div>
               <div className={styles.rankingBox}>
                 {/* <div className={styles.textMenu}>내 랭킹</div>
                 <Rank 
@@ -166,24 +259,13 @@ export default function MyPage() {
                       nickname={elem.gitId} 
                       info={elem.info} 
                       image={elem.avatarUrl} 
+                      rankImg={getRankImg(elem.rank,elem.ranking)}
+                      language={getLangImg(elem.mostLanguage)}
+                      winrate={elem.winRate}
                     />
                   )
                 }
                   </div>
-              {/* <div className={styles.rankingBox}>
-                {
-                  ranking?.map(user => 
-                    <Rank 
-                    rank={user?.ranking} 
-                    nickname={user?.gitId} 
-                    info={user?.totalScore}
-                    image={user?.avatarUrl} 
-                    />
-                  )
-                }
-              </div> */}
-                {/* <div className={styles.textMenu}>전체 랭킹</div> */}
-
             </div>
           </div>
         </>
