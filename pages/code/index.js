@@ -197,6 +197,17 @@ export default function Code() {
     return false;
   };
   
+  const checkValidUser = (userList) => {
+    for(let user of userList) {
+      if(user.gitId === gitId) {
+        if(0 <= user.passRate) {
+          alert('이미 완료된 게임입니다!');
+          router.replace('/');
+        }
+      }
+    }
+  };
+
   const getProblem = async() => {
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
@@ -214,12 +225,15 @@ export default function Code() {
         setProblems(data.info.problemId);
         if(router?.query?.mode === 'team') {
           if(checkMyTeam(data.info.teamA)) {
+            checkValidUser(data.info.teamA);
             setMyTeam(data.info.teamA);
           } else {
+            checkValidUser(data.info.teamB);
             setMyTeam(data.info.teamB);
           }
           setPlayerList([data.info.teamA, data.info.teamB]);
         } else {
+          checkValidUser(data.info.userHistory);
           setPlayerList(data.info.userHistory);
         }
       }
