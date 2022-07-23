@@ -16,6 +16,7 @@
     "@codemirror/text": "^0.19.6",
     "@codemirror/view": "^0.19.42",
     "cookies-next": "^2.1.1",
+    "hark": "^1.2.3",
     "i": "^0.3.7",
     "next": "12.2.0",
     "next-auth": "^4.10.0",
