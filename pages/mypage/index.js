@@ -30,7 +30,7 @@ export default function MyPage() {
   }, [status]);
 
   useEffect(() => {
-    console.log("showmeranking!!@!@!@!@!@", ranking)
+
   }, [ranking]);
 
   const getUserInfo = async () => {
@@ -54,22 +54,16 @@ export default function MyPage() {
   };
 
   const getRanking = async () => {
-    console.log("111111>>>>>>>>>>>>>>>>")
-    // await fetch(`/server/api/ranking/getRanking`, {
     await fetch(`/server/api/ranking/getRanking`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
-      // body: JSON.stringify({
-      //   gitId: getCookie('gitId')
-      // })
     })
       .then(res => res.json())
       .then(data => {
         console.log(data)
         if (data.success) {
-          console.log("sucesss>>>>>>>", data.data)
           setRanking(data.data.rank);
         }
       })
@@ -108,7 +102,7 @@ export default function MyPage() {
               <div className={styles.gameHistoryBody}>
                 {
                   gameLogs?.map(gameLogId =>
-                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} />
+                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} />
                   )
                 }
               </div>

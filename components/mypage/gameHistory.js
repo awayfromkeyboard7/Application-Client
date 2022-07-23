@@ -4,10 +4,10 @@ import GamePlayer from './gamePlayer';
 import Code from './code';
 import styles from '../../styles/pages/mypage.module.scss';
 import Image from 'next/image'
-import userPopup from '../userPopup'
+import UserPopup from '../userPopup'
 
 
-export default function GameHistory({ gameLogId, filter }) {
+export default function GameHistory({ gameLogId, filter, ranking }) {
   const gitId = getCookie('gitId');
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
@@ -18,6 +18,7 @@ export default function GameHistory({ gameLogId, filter }) {
 
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
+  const [winnerId, setWinnerId] = useState('')
 
   useEffect(() => {
     if (gameLogId) {
@@ -57,6 +58,7 @@ export default function GameHistory({ gameLogId, filter }) {
       for (let info of gameInfo.userHistory) {
         if (info?.ranking === 1) {
           setWinnerImg(info.avatarUrl)
+          setWinnerId(info.gitId)
         }
       }
     }
@@ -66,8 +68,10 @@ export default function GameHistory({ gameLogId, filter }) {
     if (gameInfo?.gameMode === "team") {
       if (gameInfo.teamA[0].ranking === 1) {
         setWinnerTeamImg(gameInfo.teamA[0].avatarUrl)
+        setWinnerId(gameInfo.teamA[0].gitId)
       } else {
-        setWinnerTeamImg(gameInfo.teamA[0].avatarUrl)
+        setWinnerTeamImg(gameInfo.teamB[0].avatarUrl)
+        setWinnerId(gameInfo.teamB[0].gitId)
       }
 
     }
@@ -124,7 +128,10 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
-          <Image src={winnerTeamImg} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <Image src={winnerTeamImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryWin}>승리</div>
         </div>
         <div className={styles.gameHistoryInfo}>
@@ -153,7 +160,12 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
-          <Image src={winnerTeamImg} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <div className={styles.imageBox}>
+              <Image src={winnerTeamImg} width={90} height={85} className={styles.boardProfileIcon} alt="프로필이미지" />
+            </div>
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryLose}>패배</div>
         </div>
         <div className={styles.gameHistoryInfo}>
@@ -182,8 +194,12 @@ export default function GameHistory({ gameLogId, filter }) {
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>개인전</div>
-          <div onClick={() => { setIsPopup(true) }}> <Image src={winnerImg} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" /> </div>
-
+          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+            <div className={styles.imageBox}>
+              <Image src={winnerImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
+            </div>
+          </div>
+          {winnerId}
           <div className={styles.gameHistoryRank}>{`${getMyRanking()} / ${gameInfo?.userHistory?.length}`}</div>
         </div>
         <div className={styles.gameHistoryInfo}>
@@ -227,7 +243,11 @@ export default function GameHistory({ gameLogId, filter }) {
       }
       {
         isPopup
-        && <userPopup />
+        && <UserPopup
+          targetGitId={winnerId}
+          ranking={ranking}
+          onClick={() => { setIsPopup(false) }}
+        />
       }
     </div>
   )
