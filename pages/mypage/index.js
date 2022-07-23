@@ -64,7 +64,7 @@ export default function MyPage() {
       .then(data => {
         console.log(data)
         if (data.success) {
-          setRanking(data.data.rank);
+          setRanking(data.data);
         }
       })
       .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));

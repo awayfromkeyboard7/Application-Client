@@ -128,7 +128,7 @@ export default function GameHistory({ gameLogId, filter, ranking }) {
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
-          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+          <div onClick={() => { setIsPopup(true) }}>
             <Image src={winnerTeamImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
           </div>
           {winnerId}
@@ -160,7 +160,7 @@ export default function GameHistory({ gameLogId, filter, ranking }) {
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>팀전</div>
-          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+          <div onClick={() => { setIsPopup(true) }}>
             <div className={styles.imageBox}>
               <Image src={winnerTeamImg} width={90} height={85} className={styles.boardProfileIcon} alt="프로필이미지" />
             </div>
@@ -194,7 +194,7 @@ export default function GameHistory({ gameLogId, filter, ranking }) {
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>개인전</div>
-          <div onClick={() => { setIsPopup(true) }} className={styles.rainbow}>
+          <div onClick={() => { setIsPopup(true) }}>
             <div className={styles.imageBox}>
               <Image src={winnerImg} width={87} height={84} className={styles.profileIcon} alt="프로필이미지" />
             </div>
