@@ -245,9 +245,8 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
         isPopup
         && <UserPopup
           targetGitId={winnerId}
-          ranking={ranking}
           onClick={() => { setIsPopup(false) }}
-          myInfo={myInfo}
+          myInfo = {myInfo}
         />
       }
     </div>

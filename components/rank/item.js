@@ -41,5 +41,7 @@ export default function RankingItem({ rank, nickname, info, image, rankImg, lang
         <Image src={language ?? '/default_profile.jpg'} width={20} height={20} className={styles.rankIcon} alt="프로필" />
       </div>
     </div>
+  
+    
   )
 }

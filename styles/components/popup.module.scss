@@ -14,14 +14,16 @@
 }
 
 .popupBox {
-  width: 32rem;
-  height: 20rem;
+  width: 50vw;
+  height: 70vh;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  overflow: hidden;
   border-radius: 0.625rem;
-  background-color: #fff;
+  background-color: $navy-color;
 }
 
 .popupTitle {

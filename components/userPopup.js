@@ -1,33 +1,24 @@
+import { useState, useEffect } from 'react';
 import styles from '../styles/components/userPopup.module.scss';
 import Image from 'next/image'
-import { useState, useEffect } from 'react';
+import { getCookie } from 'cookies-next';
+import { socket } from '../lib/socket';
 
-export default function UserPopup({ targetGitId, ranking, onClick }) {
+export default function UserPopup({ targetGitId, onClick ,myInfo}) {
 
-    const [userName, setUserName] = useState('닉네임')
-    const [userImg, setUserImg] = useState('/default_profile.jpg')
-    const [userLang, setUserLang] = useState('Python')
-    const [rankingInfo, setRankingInfo] = useState({});
-    const [myInfo, setMyInfo] = useState({});
+    const [info, setInfo] = useState({});
+    const [nodeId, setNodeId] = useState();
+    const [isFollow, setIsFollow] = useState(false);
 
     useEffect(() => {
-        setData()
         getUserInfo()
-        setRankingInfo(ranking)
-    })
-
-    const setData = () => {
-
-        let leng = Object.keys(rankingInfo).length;
-
-        for (let i = 0; i < leng; i++) {
-            if (targetGitId === rankingInfo[i].gitId) {
-                setUserName(rankingInfo[i].gitId);
-                setUserImg(rankingInfo[i].avatarUrl);
-                setUserLang(rankingInfo[i].mostLanguage);
+        setNodeId(getCookie('nodeId'))
+        myInfo?.following?.map(userNodeId => {
+            if(userNodeId === info.nodeId) {
+              setIsFollow(true);
             }
-        }
-    }
+        });
+    })
 
     const getUserInfo = async () => {
         await fetch(`/server/api/user/getUser`, {
@@ -42,40 +33,64 @@ export default function UserPopup({ targetGitId, ranking, onClick }) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    setMyInfo(data.UserInfo);
+                    setInfo(data.UserInfo);
+                    // console.log("showmedata!@!@!@!#!@#!@#!@",data.UserInfo)
                 }
             })
             .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
-    };
+        };
+
+    const onClickFollow = () => {
+        socket.emit('followMember', nodeId, info.gitId);
+        setIsFollow(true);
+        };
+    
+    const onClickUnFollow = () => {
+        socket.emit('unFollowMember', nodeId, info.gitId);
+        setIsFollow(false);
+        };
 
     return (
-        <div className={styles.popupBackground} onClick={onClick}>
+        <div className={styles.popupBackground}>
             <div className={styles.popupBox}>
                 <div className={styles.userProfile}>
                     <div className={styles.image}>
-                        <Image src={userImg} width={250} height={250} className={styles.profileIcon} alt="프로필이미지" />
+                        <Image src={info.avatarUrl??'/default_profile.jpg'} width={250} height={250} className={styles.profileIcon} alt="프로필이미지" />
                     </div>
                     <div className={styles.popupText}>
-                        닉네임 : {userName}
+                        닉네임 : {info.gitId}
                     </div>
                     <div className={styles.popupText}>
-                        티어 : 티어어어엉어어어어
+                        등급 : {info.rank}
                     </div>
                 </div>
                 <div className={styles.userRecord}>
                     <div className={styles.popupText}>
-                        사용언어 : {userLang}
+                        사용언어 : {info.mostLanguage}
                     </div>
                     <div className={styles.popupText}>
-                        평균 통과율 : {parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam))}
+                        평균 통과율 : {parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam))}%
                     </div>
                     <div className={styles.popupText}>
-                        Solo 승률 : {parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100)}%
+                        Solo 승률 : {parseInt(info?.winSolo / info?.totalSolo * 100)}%
                     </div>
                     <div className={styles.popupText}>
-                        Team 승률 : {parseInt(myInfo?.winTeam / (myInfo?.totalTeam) * 100)}%
+                        Team 승률 : {parseInt(info?.winTeam / (info?.totalTeam) * 100)}%
+                    </div>
+                    <div className={styles.popupText}>
+                        전체 랭킹 : 
+                        {/* {ranking.length}명 중 {info?.ranking}등
+                        상위 {getPercent(info?.ranking, ranking.length)}% */}
                     </div>
                 </div>
+                    {       
+                        isFollow
+                        ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
+                        : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
+                    }
+                    {/* <div className={styles.popupBtn} onClick={onClick}>{label}</div> */}
+                    
+                    <div className={styles.btn} onClick={onClick}>닫기</div>
             </div>
         </div>
     )
