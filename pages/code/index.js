@@ -7,7 +7,6 @@ import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { getCookie } from 'cookies-next';
 import { useBeforeunload } from 'react-beforeunload';
-// import { useBeforeUnload } from 'react-use';
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Layout from '../../components/layouts/main';
@@ -92,31 +91,6 @@ export default function Code() {
   }, [status]);
 
   useEffect(() => {
-    const submitResult = async() => {
-      if (router?.query?.mode === 'team'){
-        await submitCodeTeam();
-        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
-      }
-      else {
-        await submitCode();
-        socket.emit('submitCode', router?.query?.gameLogId);
-      };
-      router.replace({
-        pathname: '/code/result',
-        query: { 
-          gameLogId: router?.query?.gameLogId,
-          mode: router?.query?.mode 
-        }
-      });
-    };
-
-    if(isSubmit) {
-      submitResult();
-      // setIsSubmit(false);
-    }
-  }, [isSubmit]);
-
-  useEffect(() => {
     if(router.isReady) {
       if(router?.query?.gameLogId && router.query.gameLogId !== '') {
         getProblem();
@@ -155,6 +129,31 @@ export default function Code() {
     }
   }, [countdown, router.isReady]);
   
+  useEffect(() => {
+    const submitResult = async() => {
+      if (router?.query?.mode === 'team'){
+        await submitCodeTeam();
+        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+      }
+      else {
+        await submitCode();
+        socket.emit('submitCode', router?.query?.gameLogId);
+      };
+      router.replace({
+        pathname: '/code/result',
+        query: { 
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode 
+        }
+      });
+    };
+
+    if(isSubmit) {
+      submitResult();
+      // setIsSubmit(false);
+    }
+  }, [isSubmit]);
+
   useEffect(() => {
     onChangeLang(selectedLang);
     setIsSelectOpen(false);

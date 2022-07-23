@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
-import { useLeavePageConfirm } from "../../../hooks/useLeave";
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
@@ -19,8 +18,6 @@ export default function MatchPage() {
   const [roomId, setRoomId] = useState('');
   const [teamA, setTeamA] = useState([]);
   const [teamB, setTeamB] = useState([]);
-
-  // useLeavePageConfirm(true, '게임을 포기하시겠습니까?');
 
   useEffect(() => {
     if(status === 'unauthenticated') {
