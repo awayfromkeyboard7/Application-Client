@@ -35,7 +35,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const sendAccessToken = async(accessToken) => {

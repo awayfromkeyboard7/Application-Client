@@ -8,7 +8,6 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { getCookie } from 'cookies-next';
 import { useBeforeunload } from 'react-beforeunload';
 // import { useBeforeUnload } from 'react-use';
-import { useLeavePageConfirm } from "../../hooks/useLeave";
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Layout from '../../components/layouts/main';
@@ -42,8 +41,6 @@ export default function Code() {
   const [isDoc, setIsDoc] = useState(false);
   const [isTimeout, setIsTimeout] = useState(false);
   let yDoc = new Y.Doc();
-  
-  // useLeavePageConfirm(false, '게임을 포기하시겠습니까?');
 
   useBeforeunload((event) => {
     if (!isSubmit) {
@@ -66,7 +63,7 @@ export default function Code() {
       setPlayerList([result[0], result[1]]);
     });
     socket.on('teamGameOver', () => {
-      router.push({
+      router.replace({
         pathname: '/code/result',
         query: { 
           gameLogId: router?.query?.gameLogId,
@@ -90,7 +87,7 @@ export default function Code() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -104,7 +101,7 @@ export default function Code() {
         await submitCode();
         socket.emit('submitCode', router?.query?.gameLogId);
       };
-      router.push({
+      router.replace({
         pathname: '/code/result',
         query: { 
           gameLogId: router?.query?.gameLogId,
@@ -185,7 +182,7 @@ export default function Code() {
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const goToResult = async() => {

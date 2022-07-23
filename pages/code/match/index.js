@@ -24,7 +24,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -58,7 +58,7 @@ export default function MatchPage() {
   useEffect(() => {
     if (router?.query?.mode === 'team') {
       socket.on('exitTeamGame', () => {
-        router.push('/');
+        router.replace('/');
       });
     } else {
       socket.on('exitWait', (users) => {
@@ -74,7 +74,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if(gameLogId !== '') {
-      router.push({
+      router.replace({
         pathname: '/code',
         query: { mode: 'team', gameLogId, roomId }
       });
@@ -84,15 +84,15 @@ export default function MatchPage() {
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
       socket.emit('exitWait', gitId);
-      router.push('/');
+      router.replace('/');
     } else {
       socket.emit('exitWait', gitId);
-      router.push('/');
+      router.replace('/');
     }
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   return (

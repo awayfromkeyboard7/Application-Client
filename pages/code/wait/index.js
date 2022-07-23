@@ -72,7 +72,7 @@ export default function WaitPage() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -95,7 +95,7 @@ export default function WaitPage() {
         // 팀전 대기 중 화면으로 이동
         socket.once('goToMatchingRoom', (bangjang) => {
           setIsMatching(true);
-          router.push({
+          router.replace({
             pathname: '/code/match',
             query: { mode: 'team', roomId: bangjang }
           })
@@ -144,7 +144,7 @@ export default function WaitPage() {
     if (router.isReady) {
       if (router?.query?.mode === 'team') {
         socket.on('exitTeamGame', () => {
-          router.push('/');
+          router.replace('/');
         });
       } else {
         socket.on('exitWait', (users) => {
@@ -162,7 +162,7 @@ export default function WaitPage() {
 
   useEffect(() => {
     if(gameLogId !== '') {
-      router.push({
+      router.replace({
         pathname: '/code',
         query: { gameLogId, mode: router?.query?.mode }
       });
@@ -216,11 +216,11 @@ export default function WaitPage() {
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   const addPlayer = (users) => {

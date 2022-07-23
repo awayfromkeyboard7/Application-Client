@@ -18,7 +18,7 @@ export default function ResultPage() {
   
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -46,18 +46,18 @@ export default function ResultPage() {
   }, []);
 
   const goToWait = () => {
-    router.push({
+    router.replace({
       pathname: '/code/wait',
       query: { mode: router?.query?.mode }
     });
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   return (

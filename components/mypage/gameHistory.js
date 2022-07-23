@@ -169,7 +169,7 @@ export default function GameHistory({ gameLogId, filter }) {
     <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-        ? checkMyTeam()
+        ? gameInfo?.teamA[0].ranking < gameInfo?.teamB[0].ranking
           ? <TeamGameWin />
           : <TeamGameLose />
         : <SoloGame />

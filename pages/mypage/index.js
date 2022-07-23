@@ -23,7 +23,7 @@ export default function MyPage() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -52,7 +52,7 @@ export default function MyPage() {
     deleteCookie('gitId');
     deleteCookie('avatarUrl');
     signOut();
-    router.push('/');
+    router.replace('/');
   };
 
   return (

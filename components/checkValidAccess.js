@@ -17,7 +17,7 @@ export default function CheckValidAccess({ check, message }) {
   }, [check, isInvalid]);
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   return (

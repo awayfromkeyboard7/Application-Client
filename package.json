@@ -29,7 +29,6 @@
     "react-reflex": "^4.0.9",
     "react-use": "^17.4.0",
     "sass": "^1.53.0",
-    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.5.1",
     "y-codemirror.next": "^0.1.1",
     "y-webrtc": "^10.2.2",
