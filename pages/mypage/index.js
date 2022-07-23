@@ -79,10 +79,10 @@ export default function MyPage() {
     router.push('/');
   };
 
-  const getRankImg = (rank,ranking) =>{
+  const getRankImg = (rank, ranking) => {
     let imgUrl = '/rank/king.png';
-    switch(rank) {
-      case 0: 
+    switch (rank) {
+      case 0:
         imgUrl = '/rank/rank0.png';
         break;
       case 1:
@@ -91,7 +91,7 @@ export default function MyPage() {
       case 2:
         imgUrl = '/rank/rank2.png';
         break;
-      case 3: 
+      case 3:
         imgUrl = '/rank/rank3.png';
         break;
       case 4:
@@ -103,16 +103,16 @@ export default function MyPage() {
       default:
         imgUrl = '/jinny.jpg';
     }
-    if (ranking == 1){
+    if (ranking == 1) {
       imgUrl = '/rank/king.png';
     }
     return imgUrl;
   }
 
-  const getLangImg = (language) =>{
+  const getLangImg = (language) => {
     let imgUrl = '/default_profile.jpg'
-    switch(language) {
-      case "Python": 
+    switch (language) {
+      case "Python":
         imgUrl = '/rank/Python.png';
         break;
       case "JavaScript":
@@ -124,14 +124,14 @@ export default function MyPage() {
     return imgUrl;
   }
 
-  const getPercent = (rank,total) =>{
-    return parseInt(rank/total*1000)/10
+  const getPercent = (rank, total) => {
+    return parseInt(rank / total * 1000) / 10
   }
 
-  const getRankName = (rank,ranking) =>{
+  const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
-    switch(rank) {
-      case 0: 
+    switch (rank) {
+      case 0:
         myrank = 'Bronze';
         break;
       case 1:
@@ -140,7 +140,7 @@ export default function MyPage() {
       case 2:
         myrank = 'Gold';
         break;
-      case 3: 
+      case 3:
         myrank = 'Platinum';
         break;
       case 4:
@@ -150,9 +150,9 @@ export default function MyPage() {
         myrank = 'Master';
         break;
       default:
-        myrank = 'Bronze' 
+        myrank = 'Bronze'
     }
-    if (ranking == 1){
+    if (ranking == 1) {
       myrank = 'King';
     }
     return myrank;
@@ -181,7 +181,7 @@ export default function MyPage() {
               <div className={styles.gameHistoryBody}>
                 {
                   gameLogs?.map(gameLogId =>
-                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} />
+                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
                   )
                 }
               </div>
@@ -192,7 +192,7 @@ export default function MyPage() {
                   <div className={styles.profileIcon}>
                     <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={0} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                     <div className={styles.myRank}>
-                      <Image src={getRankImg(myInfo.rank,myInfo.ranking) ?? '/rank/rank0.png' } z-index={1} width={55} height={55} className={styles.profileIcon} alt="프로필이미지" />                  
+                      <Image src={getRankImg(myInfo.rank, myInfo.ranking) ?? '/rank/rank0.png'} z-index={1} width={55} height={55} className={styles.profileIcon} alt="프로필이미지" />
                       {/* <Image src={'/rank/rank0.png'} z-index={1} width={60} height={60} className={styles.profileIcon} alt="프로필이미지" />                   
                       */}
                     </div>
@@ -202,31 +202,31 @@ export default function MyPage() {
                   <div className={styles.profileInfo}>
                     <div className={styles.nickname}>{myInfo?.gitId}</div>
                     <div className={styles.rankBox}>
-                      <div className={styles.nickname}>{getRankName(myInfo?.rank,myInfo?.ranking)}</div>  
-                      <div className={styles.nickname}>{myInfo?.totalScore *5}Point</div>
+                      <div className={styles.nickname}>{getRankName(myInfo?.rank, myInfo?.ranking)}</div>
+                      <div className={styles.nickname}>{myInfo?.totalScore * 5}Point</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className={styles.profileBox2}>
-                <div className={styles.infoBox}>              
+                <div className={styles.infoBox}>
                   <div className={styles.infoText}>평균 통과율 :</div>
-                  <div className={styles.infoValue}>{parseInt(myInfo?.totalPassRate/(myInfo?.totalSolo+myInfo?.totalTeam))}%</div>
+                  <div className={styles.infoValue}>{parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam))}%</div>
                 </div>
-                <div className={styles.infoBox}> 
+                <div className={styles.infoBox}>
                   <div className={styles.infoText}>Solo 승률 :</div>
-                  <div className={styles.infoValue}>{parseInt(myInfo?.winSolo/myInfo?.totalSolo*100)}%</div>
+                  <div className={styles.infoValue}>{parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100)}%</div>
                 </div>
-                <div className={styles.infoBox}> 
-                  <div className={styles.infoText}>Team 승률 :</div> 
-                  <div className={styles.infoValue}>{parseInt(myInfo?.winTeam/(myInfo?.totalTeam)*100)}%</div>
+                <div className={styles.infoBox}>
+                  <div className={styles.infoText}>Team 승률 :</div>
+                  <div className={styles.infoValue}>{parseInt(myInfo?.winTeam / (myInfo?.totalTeam) * 100)}%</div>
                 </div>
               </div>
               <div className={styles.profileBox2}>
-                <div className={styles.infoBox}> 
-                  <div className={styles.infoText}>내 랭킹 :</div> 
+                <div className={styles.infoBox}>
+                  <div className={styles.infoText}>내 랭킹 :</div>
                   <div className={styles.infoValue}>전체 {ranking.length}명 중 {myInfo?.ranking}등</div>
-                  <div className={styles.infoValue}>(상위 {getPercent(myInfo?.ranking,ranking.length)}%)</div>
+                  <div className={styles.infoValue}>(상위 {getPercent(myInfo?.ranking, ranking.length)}%)</div>
                 </div>
               </div>
               <div className={styles.profileBox2}>
@@ -239,9 +239,9 @@ export default function MyPage() {
               <div className={styles.textMenu}>전체 랭킹 :</div>
               <div className={styles.rankingInfo}>
                 <div className={styles.rankingInfoElem1}>순위</div>
-                <div className={styles.rankingInfoElem2}>등급</div> 
+                <div className={styles.rankingInfoElem2}>등급</div>
                 <div className={styles.rankingInfoElem3}>플레이어</div>
-                <div className={styles.rankingInfoElem4}>승률</div> 
+                <div className={styles.rankingInfoElem4}>승률</div>
                 <div className={styles.rankingInfoElem5}>언어</div>
               </div>
               <div className={styles.rankingBox}>
@@ -257,17 +257,17 @@ export default function MyPage() {
                   ranking?.map((elem, idx) =>
                     <Rank
                       key={elem.ranking}
-                      rank={elem.ranking} 
-                      nickname={elem.gitId} 
-                      info={elem.info} 
-                      image={elem.avatarUrl} 
-                      rankImg={getRankImg(elem.rank,elem.ranking)}
+                      rank={elem.ranking}
+                      nickname={elem.gitId}
+                      info={elem.info}
+                      image={elem.avatarUrl}
+                      rankImg={getRankImg(elem.rank, elem.ranking)}
                       language={getLangImg(elem.mostLanguage)}
                       winrate={elem.winRate}
                     />
                   )
                 }
-                  </div>
+              </div>
             </div>
           </div>
         </>

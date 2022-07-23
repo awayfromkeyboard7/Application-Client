@@ -7,7 +7,7 @@ import Image from 'next/image'
 import UserPopup from '../userPopup'
 
 
-export default function GameHistory({ gameLogId, filter, ranking }) {
+export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
   const gitId = getCookie('gitId');
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
@@ -247,6 +247,7 @@ export default function GameHistory({ gameLogId, filter, ranking }) {
           targetGitId={winnerId}
           ranking={ranking}
           onClick={() => { setIsPopup(false) }}
+          myInfo={myInfo}
         />
       }
     </div>
