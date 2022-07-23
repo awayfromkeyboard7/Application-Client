@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -43,10 +43,27 @@ export default function Code() {
 
   useBeforeunload((event) => {
     if (!isSubmit) {
+      goToResult();
       event.preventDefault();
-      console.log('before unload code????????', socket);
     }
   });
+
+  const routeChangeStart = useCallback(url => {
+    if(!isSubmit) {
+      // if(confirm('게임을 종료하시기 전에 코드를 제출하시겠습니까?')) {
+        goToResult();
+        router.events.emit('routeChangeError');
+        throw 'Abort route change. Please ignore this error.';
+      // }
+    }
+  }, [router.asPath, router.events, isSubmit, problems]);
+
+  useEffect(() => {
+    router.events.on('routeChangeStart', routeChangeStart);
+    return () => {
+      router.events.off('routeChangeStart', routeChangeStart);
+    }
+  }, [routeChangeStart, router.events]);
 
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {
