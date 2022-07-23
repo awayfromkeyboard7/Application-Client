@@ -52,6 +52,7 @@
 }
 
 .rankingElem {
+  justify-content: space-evenly;
   height: 3rem;
   padding: 0.625rem;
   width: 100%;
@@ -100,6 +101,14 @@
 }
 
 .nickname {
+  flex : 1;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: bold;
+}
+
+.winRate{
+  width: 4rem;
   font-size: 1rem;
   line-height: 1.25rem;
   font-weight: bold;
@@ -109,4 +118,15 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: $gray-super-dark-color;
+}
+
+.rankIcon{
+  width: 35px;
+  height: 35px;
+  margin-left: 0.625rem;
+  margin-right: 0.625rem;
+  display: flex;
+  align-items: center;
+  // margin: 2rem;
+  // position: relative;
 }
