@@ -2,15 +2,17 @@ import styles from '../styles/components/userPopup.module.scss';
 import Image from 'next/image'
 import { useState, useEffect } from 'react';
 
-export default function UserPopup({ targetGitId, ranking, onClick, myInfo }) {
+export default function UserPopup({ targetGitId, ranking, onClick }) {
 
     const [userName, setUserName] = useState('닉네임')
     const [userImg, setUserImg] = useState('/default_profile.jpg')
     const [userLang, setUserLang] = useState('Python')
     const [rankingInfo, setRankingInfo] = useState({});
+    const [myInfo, setMyInfo] = useState({});
 
     useEffect(() => {
         setData()
+        getUserInfo()
         setRankingInfo(ranking)
     })
 
@@ -18,7 +20,6 @@ export default function UserPopup({ targetGitId, ranking, onClick, myInfo }) {
 
         let leng = Object.keys(rankingInfo).length;
 
-        console.log("targetID >>>>>>>>>", targetGitId)
         for (let i = 0; i < leng; i++) {
             if (targetGitId === rankingInfo[i].gitId) {
                 setUserName(rankingInfo[i].gitId);
@@ -26,9 +27,26 @@ export default function UserPopup({ targetGitId, ranking, onClick, myInfo }) {
                 setUserLang(rankingInfo[i].mostLanguage);
             }
         }
-
     }
 
+    const getUserInfo = async () => {
+        await fetch(`/server/api/user/getUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gitId: targetGitId
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setMyInfo(data.UserInfo);
+                }
+            })
+            .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+    };
 
     return (
         <div className={styles.popupBackground} onClick={onClick}>
@@ -40,9 +58,9 @@ export default function UserPopup({ targetGitId, ranking, onClick, myInfo }) {
                     <div className={styles.popupText}>
                         닉네임 : {userName}
                     </div>
-                    {/* <div className={styles.popupText}>
-                        티어 : {userTier}
-                    </div> */}
+                    <div className={styles.popupText}>
+                        티어 : 티어어어엉어어어어
+                    </div>
                 </div>
                 <div className={styles.userRecord}>
                     <div className={styles.popupText}>
