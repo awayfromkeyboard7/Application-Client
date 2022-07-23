@@ -73,7 +73,7 @@ export default function ResultPage() {
           {
             router?.query?.mode === 'team'
             ? <TeamResult 
-                ranks={ranks} 
+                ranks={ranks.splice(4)} 
                 startAt={gameStartAt}
                 onClickGoToMain={goToLobby} 
                 onClickPlayAgain={goToWait}

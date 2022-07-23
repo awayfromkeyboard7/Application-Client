@@ -6,6 +6,8 @@ import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { getCookie } from 'cookies-next';
+import { useBeforeunload } from 'react-beforeunload';
+// import { useBeforeUnload } from 'react-use';
 import { useLeavePageConfirm } from "../../hooks/useLeave";
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
@@ -40,8 +42,15 @@ export default function Code() {
   const [isDoc, setIsDoc] = useState(false);
   const [isTimeout, setIsTimeout] = useState(false);
   let yDoc = new Y.Doc();
-
+  
   // useLeavePageConfirm(false, '게임을 포기하시겠습니까?');
+
+  useBeforeunload((event) => {
+    if (!isSubmit) {
+      event.preventDefault();
+      console.log('before unload code????????', socket);
+    }
+  });
 
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {
@@ -106,7 +115,7 @@ export default function Code() {
 
     if(isSubmit) {
       submitResult();
-      setIsSubmit(false);
+      // setIsSubmit(false);
     }
   }, [isSubmit]);
 
