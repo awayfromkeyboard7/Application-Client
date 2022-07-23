@@ -24,12 +24,16 @@ export default function MyPage() {
   }, []);
 
   useEffect(() => {
-    if(status === 'unauthenticated') {
+    if (status === 'unauthenticated') {
       router.push('/');
     }
   }, [status]);
 
-  const getUserInfo = async() => {
+  useEffect(() => {
+
+  }, [ranking]);
+
+  const getUserInfo = async () => {
     await fetch(`/server/api/user/getUser`, {
       method: 'POST',
       headers: {
@@ -39,38 +43,35 @@ export default function MyPage() {
         gitId: getCookie('gitId')
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setMyInfo(data.UserInfo);
-        setGameLogs(data.UserInfo.gameLogHistory.reverse());
-      }
-    })
-    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setMyInfo(data.UserInfo);
+          setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        }
+      })
+      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
-  const getRanking = async() => {
+  const getRanking = async () => {
     await fetch(`/server/api/ranking/getRanking`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
-      // body: JSON.stringify({
-      //   gitId: getCookie('gitId')
-      // })
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      if(data.success) {
-        setRanking(data.data);
-      }
-    })
-    .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data.success) {
+          setRanking(data.data.rank);
+        }
+      })
+      .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
   };
 
 
-  const logout = async() => {
+  const logout = async () => {
     deleteCookie('nodeId');
     deleteCookie('gitId');
     deleteCookie('avatarUrl');
@@ -158,11 +159,11 @@ export default function MyPage() {
   }
 
   return (
-    <Layout 
+    <Layout
       header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
         <>
-          { status !== 'authenticated' && <Loading /> }
+          {status !== 'authenticated' && <Loading />}
           <div className={styles.mainRow}>
             <div className={styles.gameHistoryBox}>
               <div className={styles.gameHistoryHeader}>
@@ -178,11 +179,11 @@ export default function MyPage() {
                 </div>
               </div>
               <div className={styles.gameHistoryBody}>
-              {
-                gameLogs?.map(gameLogId => 
-                  <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} />
-                )
-              }
+                {
+                  gameLogs?.map(gameLogId =>
+                    <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} />
+                  )
+                }
               </div>
             </div>
             <div className={styles.mainCol}>
@@ -192,7 +193,8 @@ export default function MyPage() {
                     <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} z-index={0} width={100} height={100} className={styles.profileIcon} alt="프로필이미지" />
                     <div className={styles.myRank}>
                       <Image src={getRankImg(myInfo.rank,myInfo.ranking) ?? '/rank/rank0.png' } z-index={1} width={55} height={55} className={styles.profileIcon} alt="프로필이미지" />                  
-                      {/* <Image src={'/rank/rank0.png'} z-index={1} width={60} height={60} className={styles.profileIcon} alt="프로필이미지" />                   */}
+                      {/* <Image src={'/rank/rank0.png'} z-index={1} width={60} height={60} className={styles.profileIcon} alt="프로필이미지" />                   
+                      */}
                     </div>
                   </div>
                 </div>
@@ -250,10 +252,10 @@ export default function MyPage() {
                   info={myInfo?.totalScore}
                   image={myInfo?.avatarUrl} 
                 /> */}
-                
+
                 {
-                  ranking.map((elem, idx) => 
-                    <Rank 
+                  ranking?.map((elem, idx) =>
+                    <Rank
                       key={elem.ranking}
                       rank={elem.ranking} 
                       nickname={elem.gitId} 
