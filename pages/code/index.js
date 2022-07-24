@@ -71,8 +71,6 @@ export default function Code() {
   // }, [routeChangeStart, router.events]);
   // TO HERE
 
-
-
   useEffect(() => {
     if(router.isReady) {
       socket.on('timeLimitCode', (ts) => {
@@ -99,7 +97,21 @@ export default function Code() {
       socket.on('shareJudgedCode', (data) => {
         setOutputs(data);
       });
+    }
+    
+    return () => {
+      socket.off('timeLimitCode');
+      socket.off('timeOutCode');
+      socket.off('submitCode');
+      socket.off('submitCodeTeam');
+      socket.off('teamGameOver');
+      socket.off('shareJudgedCode');
+      socket.off('get-mode-before-disconnecting');
+    };
+  }, [router.isReady]);
 
+  useEffect(() => {
+    if(router.isReady) {
       if(router?.query?.gameLogId && router.query.gameLogId !== '') {
         getProblem();
       }
@@ -116,17 +128,7 @@ export default function Code() {
         }
       }
     }
-    
-    return () => {
-      socket.off('timeLimitCode');
-      socket.off('timeOutCode');
-      socket.off('submitCode');
-      socket.off('submitCodeTeam');
-      socket.off('teamGameOver');
-      socket.off('shareJudgedCode');
-      socket.off('get-mode-before-disconnecting');
-    };
-  }, [router.isReady]);
+  }, [router]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
