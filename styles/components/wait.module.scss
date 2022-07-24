@@ -88,7 +88,7 @@
 
 .waitBox {
   width: 90vmin;
-  max-width: 40rem;
+  max-width: 35rem;
   // min-width: 35rem;
   padding: 1rem;
   display: flex;
@@ -104,20 +104,20 @@
   margin: 0.625rem;
   display: flex;
   flex-direction: column;
-  flex: 1 0 21%;
+  flex: 1;
   align-items: center;
   justify-content: center;
 }
 
 .profileIcon {
-  width: 10vmin;
-  height: 10vmin;
+  width: 11vmin;
+  height: 11vmin;
   position: relative;
 }
 
 .nickname {
   width: 5rem;
-  max-width: 10vmin;
+  max-width: 12vmin;
   margin-top: 1vmin;
   color: $white-dark-color;
   font-size: 1.75vmin;
