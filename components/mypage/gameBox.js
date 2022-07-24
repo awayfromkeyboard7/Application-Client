@@ -36,7 +36,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
           setGameInfo(data.info);
         }
       })
-      .catch(error => console.log('[/components/mypage/gameHistory] getGameLog error >> ', error));
+      .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
   };
 
   const unixToTime = (ts) => {
@@ -54,6 +54,32 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
+  };
+
+  const checkTeamGameWin = () => {
+    console.log('check team game win??', checkMyTeam(), unixToTime(gameInfo.startAt));
+    console.log('teamAAAAA', gameInfo?.teamA[0].ranking, gameInfo?.teamA[0].passRate);
+    console.log('teamBBBBB', gameInfo?.teamB[0].ranking, gameInfo?.teamB[0].passRate);
+    if(checkMyTeam()) {
+      if(gameInfo?.teamA[0].ranking < gameInfo?.teamB[0].ranking) {
+        console.log('case 1', gameInfo?.teamA[0].ranking, gameInfo?.teamB[0].ranking);
+        return true;
+      }
+      if(gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) {
+        console.log('case 2', gameInfo?.teamA[0].passRate, gameInfo?.teamB[0].passRate);
+        return false;
+      }
+    } else {
+      if(gameInfo?.teamB[0].ranking < gameInfo?.teamA[0].ranking) {
+        console.log('case 3', gameInfo?.teamB[0].ranking, gameInfo?.teamA[0].ranking);
+        return true;
+      }
+      if(gameInfo?.teamB[0].passRate < gameInfo?.teamA[0].passRate) {
+        console.log('case 4', gameInfo?.teamB[0].passRate, gameInfo?.teamA[0].passRate);
+        return false;
+      }
+    }
+    return true;
   };
 
   const checkMyTeam = () => {
@@ -172,11 +198,11 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
     <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-          ? (gameInfo?.teamA[0].ranking < gameInfo?.teamB[0].ranking) ^ checkMyTeam()
-            ? <TeamGameLose />
-            : <TeamGameWin />
+          ? checkTeamGameWin()
+            ? <TeamGameWin />
+            : <TeamGameLose />
           : <SoloGame />
-}
+      }
       {
         isOpenCode
         && <div className={styles.codeBackground}>

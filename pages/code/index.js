@@ -74,50 +74,32 @@ export default function Code() {
 
 
   useEffect(() => {
-    socket.on('timeLimitCode', (ts) => {
-      setCountdown(parseInt(ts / 1000));
-    });
-    socket.on('timeOutCode', () => {
-      setCountdown(0);
-    });
-    socket.on('submitCode', (submitInfo) => {
-      setPlayerList(submitInfo);
-    });
-    socket.on('submitCodeTeam', (result) => {
-      setPlayerList([result[0], result[1]]);
-    });
-    socket.on('teamGameOver', () => {
-      router.replace({
-        pathname: '/code/result',
-        query: { 
-          gameLogId: router?.query?.gameLogId,
-          mode: router?.query?.mode 
-        }
-      });
-    });
-    socket.on('shareJudgedCode', (data) => {
-      setOutputs(data);
-    });
-    
-    return () => {
-      socket.off('timeLimitCode');
-      socket.off('timeOutCode');
-      socket.off('submitCode');
-      socket.off('submitCodeTeam');
-      socket.off('teamGameOver');
-      socket.off('shareJudgedCode');
-      socket.off('get-mode-before-disconnecting');
-    };
-  }, []);
-
-  useEffect(() => {
-    if(status === 'unauthenticated') {
-      router.replace('/');
-    }
-  }, [status]);
-
-  useEffect(() => {
     if(router.isReady) {
+      socket.on('timeLimitCode', (ts) => {
+        setCountdown(parseInt(ts / 1000));
+      });
+      socket.on('timeOutCode', () => {
+        setCountdown(0);
+      });
+      socket.on('submitCode', (submitInfo) => {
+        setPlayerList(submitInfo);
+      });
+      socket.on('submitCodeTeam', (result) => {
+        setPlayerList([result[0], result[1]]);
+      });
+      socket.on('teamGameOver', () => {
+        router.replace({
+          pathname: '/code/result',
+          query: { 
+            gameLogId: router?.query?.gameLogId,
+            mode: router?.query?.mode 
+          }
+        });
+      });
+      socket.on('shareJudgedCode', (data) => {
+        setOutputs(data);
+      });
+
       if(router?.query?.gameLogId && router.query.gameLogId !== '') {
         getProblem();
       }
@@ -134,7 +116,23 @@ export default function Code() {
         }
       }
     }
-  }, [router]);
+    
+    return () => {
+      socket.off('timeLimitCode');
+      socket.off('timeOutCode');
+      socket.off('submitCode');
+      socket.off('submitCodeTeam');
+      socket.off('teamGameOver');
+      socket.off('shareJudgedCode');
+      socket.off('get-mode-before-disconnecting');
+    };
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if(status === 'unauthenticated') {
+      router.replace('/');
+    }
+  }, [status]);
 
   useEffect(() => {
     const timeOutJudge = async() => {
@@ -157,28 +155,30 @@ export default function Code() {
   
   useEffect(() => {
     const submitResult = async() => {
-      if (router?.query?.mode === 'team'){
-        await submitCodeTeam();
-        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
-      }
-      else {
-        await submitCode();
-        socket.emit('submitCode', router?.query?.gameLogId);
-      };
-      router.replace({
-        pathname: '/code/result',
-        query: { 
-          gameLogId: router?.query?.gameLogId,
-          mode: router?.query?.mode 
+      if(router.isReady) {
+        if (router?.query?.mode === 'team'){
+          await submitCodeTeam();
+          socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
         }
-      });
+        else {
+          await submitCode();
+          socket.emit('submitCode', router?.query?.gameLogId);
+        };
+        router.replace({
+          pathname: '/code/result',
+          query: { 
+            gameLogId: router?.query?.gameLogId,
+            mode: router?.query?.mode 
+          }
+        });
+      }
     };
 
     if(isSubmit) {
       submitResult();
       // setIsSubmit(false);
     }
-  }, [isSubmit]);
+  }, [isSubmit, router.isReady]);
 
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -396,7 +396,7 @@ export default function Code() {
                 <div className={styles.footer}>
                   {
                     router?.query?.mode === 'team'
-                    ? <Voice />
+                    ? <Voice team={myTeam}/>
                     : <div />
                   }
                   <div className={styles.footerRight}>
@@ -455,7 +455,7 @@ export default function Code() {
                 <div className={styles.footer}>
                   {
                     router?.query?.mode === 'team'
-                    ? <Voice />
+                    ? <Voice team={myTeam}/>
                     : <div />
                   }
                   <div className={styles.footerRight}>
