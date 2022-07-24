@@ -88,7 +88,7 @@ export default function WaitPage() {
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
         });
-        socket.once('setUsers', (users) => {
+        socket.on('setUsers', (users) => {
           addPlayer(users);
         });
 
@@ -101,31 +101,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.once('getRoomId', async (roomId, status) => {
-          if (status === 'waiting') {
-            await fetch(`/server/api/gamelog/createNew`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ 
-                players: sendPlayers,
-                totalUsers: sendPlayers.length,
-                roomId : roomId
-              }),
-            })
-            .then(res => res.json())
-            .then(data => {
-              if(data.success) {
-                // setGameLogId(data.gameLogId);
-                socket.emit('startGame', data.gameLogId);
-              }
-            })
-            .catch(error => console.log('error >> ', error));
-          }
-        });
-
-        socket.emit('getUsers', router?.query?.roomId, getCookie('gitId'), getCookie('avatarUrl'));
+        socket.emit('getUsers', router?.query?.roomId);
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);
@@ -142,7 +118,6 @@ export default function WaitPage() {
       socket.off('timeOut');
       socket.off('enterNewUserToTeam');
       socket.off('goToMatchingRoom');
-      socket.off('getRoomId');
       socket.off('setUsers');
       socket.off('enterNewUser');
       socket.off('startGame');
@@ -203,6 +178,33 @@ export default function WaitPage() {
     };
     
     socket.emit('getRoomId');
+    socket.once('getRoomId', async (roomId, status) => {
+      if (status === 'waiting') {
+        await fetch(`/server/api/gamelog/createNew`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            players: sendPlayers,
+            totalUsers: sendPlayers.length,
+            roomId : roomId
+          }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            // setGameLogId(data.gameLogId);
+            socket.emit('startGame', data.gameLogId);
+          }
+        })
+        .catch(error => console.log('error >> ', error));
+      }
+    });
+
+    return () => {
+      socket.off('getRoomId');
+    }
   };
 
   const goToCode = async () => {
