@@ -114,8 +114,8 @@ export default function ChatList({ friend }) {
         {
           chatList?.map(chat => 
             chat.senderId === gitId
-            ? <ChatItemMine chat={chat} key={chat.messageId} />
-            : <ChatItem chat={chat} key={chat.messageId} />
+            ? <ChatItemMine chat={chat} key={chat.senderId} />
+            : <ChatItem chat={chat} key={chat.senderId} />
           )
         }
         </div>
