@@ -6,8 +6,8 @@ export default function LobbyBox({ mode, onClick }) {
     <div className={styles.box} onClick={onClick}>
       <div>
         <Image 
-          src={mode === 'team' ? '/team.png' : '/personal.png'} 
-          alt={mode === 'team' ? 'teamGame' : 'personalGame'} 
+          src={mode === 'team' ? '/team.png' : '/solo.png'} 
+          alt={mode === 'team' ? 'teamGame' : 'soloGame'} 
           width={150} 
           height={150} 
         />

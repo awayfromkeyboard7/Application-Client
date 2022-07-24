@@ -44,29 +44,34 @@ export default function Code() {
 
   let yDoc = new Y.Doc();
 
-  useBeforeunload((event) => {
-    if (!isSubmit) {
-      goToResult();
-      event.preventDefault();
-    }
-  });
 
-  const routeChangeStart = useCallback(url => {
-    if(!isSubmit) {
-      // if(confirm('게임을 종료하시기 전에 코드를 제출하시겠습니까?')) {
-        goToResult();
-        router.events.emit('routeChangeError');
-        throw 'Abort route change. Please ignore this error.';
-      // }
-    }
-  }, [router.asPath, router.events, isSubmit, problems]);
+  // ADDED FROM HERE
+  // useBeforeunload((event) => {
+  //   if (!isSubmit) {
+  //     // goToResult();
+  //     event.preventDefault();
+  //   }
+  // });
 
-  useEffect(() => {
-    router.events.on('routeChangeStart', routeChangeStart);
-    return () => {
-      router.events.off('routeChangeStart', routeChangeStart);
-    }
-  }, [routeChangeStart, router.events]);
+  // const routeChangeStart = useCallback(url => {
+  //   if(!isSubmit) {
+  //     // if(confirm('게임을 종료하시기 전에 코드를 제출하시겠습니까?')) {
+  //       goToResult();
+  //       router.events.emit('routeChangeError');
+  //       throw 'Abort route change. Please ignore this error.';
+  //     // }
+  //   }
+  // }, [router.asPath, router.events, isSubmit, problems]);
+
+  // useEffect(() => {
+  //   router.events.on('routeChangeStart', routeChangeStart);
+  //   return () => {
+  //     router.events.off('routeChangeStart', routeChangeStart);
+  //   }
+  // }, [routeChangeStart, router.events]);
+  // TO HERE
+
+
 
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {
@@ -101,6 +106,7 @@ export default function Code() {
       socket.off('submitCodeTeam');
       socket.off('teamGameOver');
       socket.off('shareJudgedCode');
+      socket.off('get-mode-before-disconnecting');
     };
   }, []);
 

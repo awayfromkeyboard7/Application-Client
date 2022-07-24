@@ -82,7 +82,7 @@ export default function Home() {
       }
       body={
         <>
-          <LobbyBox mode="personal" onClick={() => goToWait('personal')}/>
+          <LobbyBox mode="solo" onClick={() => goToWait('solo')}/>
           <LobbyBox mode="team" onClick={() => goToWait('team')}/>
           { isLogin && <Sidebar />}
           {

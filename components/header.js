@@ -17,14 +17,17 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
       if(hasCookie('gitId')) {
         checkValidUser(true);
         setIsValidUser(true);
-        socket.emit('setGitId', getCookie('gitId'));
+        if (router.isReady) {
+          socket.emit('setGitId', getCookie('gitId'), getCookie('avatarUrl'), router?.query?.mode, router?.query?.roomId);
+          // socket.emit('setGitId', getCookie('gitId'));
+        }
       } else {
         sendAccessToken(data.accessToken);
       }
     } else if(status === 'unauthenticated') {
       deleteCookies();
     }
-  }, [status]);
+  }, [status, router.isReady]);
 
   const deleteCookies = () => {
     deleteCookie('nodeId');
@@ -53,7 +56,11 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
       if(data.success) {
         checkValidUser(true);
         setIsValidUser(true);
-        socket.emit('setGitId', getCookie('gitId'));
+        if (router.isReady) {
+          socket.emit('setGitId', getCookie('gitId'), router?.query?.mode, router?.query?.roomId);
+          // socket.emit('setGitId', getCookie('gitId'), router?.query?.mode);
+          // socket.emit('setGitId', getCookie('gitId'));
+        }
       } else {
         deleteCookies();
         signOut();
