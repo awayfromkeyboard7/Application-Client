@@ -24,7 +24,6 @@ export default function ResultPage() {
 
   useEffect(() => {
     if (router.isReady) {
-      console.log("refresh at team code", router?.query);
       if(router?.query?.mode === 'team') {
         socket.on('getTeamRanking', (result, startAt) => {
           if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {

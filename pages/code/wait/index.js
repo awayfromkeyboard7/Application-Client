@@ -101,7 +101,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.emit('getUsers', router?.query?.roomId);
+        socket.emit('getUsers', router?.query?.roomId, gitId, avatarUrl);
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);

@@ -57,7 +57,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         checkValidUser(true);
         setIsValidUser(true);
         if (router.isReady) {
-          socket.emit('setGitId', getCookie('gitId'), router?.query?.mode, router?.query?.roomId);
+          socket.emit('setGitId', getCookie('gitId'), getCookie('avatarUrl'), router?.query?.mode, router?.query?.roomId);
           // socket.emit('setGitId', getCookie('gitId'), router?.query?.mode);
           // socket.emit('setGitId', getCookie('gitId'));
         }
