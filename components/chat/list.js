@@ -16,6 +16,7 @@ export default function ChatList({ friend }) {
     });
 
     socket.on('sendChatMessage', message => {
+      console.log("sendChatMessage message :::: ", message);
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
         socket.emit('resetUnreadCount', friend.gitId, gitId);
@@ -57,8 +58,8 @@ export default function ChatList({ friend }) {
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
-    socket.emit('sendChatMessage', gitId, friend.gitId, newMessage);
     if(text !== '') {
+      socket.emit('sendChatMessage', gitId, friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
       setText('');
     }
