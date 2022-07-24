@@ -92,7 +92,7 @@ export default function MyInfo({ myInfo, ranking }) {
             <div className={styles.myInfoRow}>
               <div className={styles.myInfoCol}>
                 <div className={styles.fieldTitle}>내 랭킹</div>
-                <div className={styles.percentText}>{`${myInfo?.ranking}등 (상위 ${getPercent(myInfo?.ranking, ranking.length)}%)`}</div>
+                <div className={styles.percentText}>{`${myInfo?.ranking}등 (상위 ${getPercent(myInfo?.ranking, ranking?.length)}%)`}</div>
               </div>
               <div className={styles.splitterVertical} />
               <div className={styles.myInfoCol}>
