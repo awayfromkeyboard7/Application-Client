@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import Popup from './popup';
 
 export default function CheckValidAccess({ check, message }) {
-  const router = useRouter();  
+  const router = useRouter();
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    if(!check || check === '') {
+    if (!check || check === '') {
       setIsInvalid(true);
-      if(isInvalid) {
+      if (isInvalid) {
         setIsPopup(true);
       }
     }

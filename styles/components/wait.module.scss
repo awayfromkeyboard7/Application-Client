@@ -35,13 +35,14 @@
 
 .body {
   height: 100%;
-  min-width: 35rem;
+  width: 100%;
+  // min-width: 35rem;
   padding: 1.5rem;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  // justify-content: flex-start;
   background-color: $navy-color;
   overflow: auto;
   position: relative;
@@ -68,7 +69,10 @@
   color: $white-dark-color;
 }
 .mainBody {
+  width: 100%;
+  max-width: 50rem;
   display: flex;
+  flex-direction: column;
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -83,12 +87,13 @@
 }
 
 .waitBox {
-  width: 60%;
-  min-width: 35rem;
+  width: 90vmin;
+  max-width: 40rem;
+  // min-width: 35rem;
   padding: 1rem;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   // background-color: $white-dark-color;
@@ -105,17 +110,18 @@
 }
 
 .profileIcon {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
+  width: 10vmin;
+  height: 10vmin;
+  position: relative;
 }
 
 .nickname {
   width: 5rem;
-  margin-top: 1rem;
+  max-width: 10vmin;
+  margin-top: 1vmin;
   color: $white-dark-color;
-  font-size: 1rem;
-  line-height: 1.25rem;
+  font-size: 1.75vmin;
+  line-height: 2vmin;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;

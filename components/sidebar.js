@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useMediaQuery } from 'react-responsive';
 import { getCookie, setCookie } from 'cookies-next';
 import Friends from './friend/list';
 import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
 import { socket } from '../lib/socket';
 
-export default function Sidebar({ menu='friends', players=null }) {
+export default function Sidebar({ menu='friends', players=null, hide=false }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [sidebarMenu, setSidebarMenu] = useState(menu);
   const [friend, setFriend] = useState({});
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   useEffect(() => {
-    if(getCookie('sidebar') === false) {
+    if(getCookie('sidebar') === false || isMobile || hide) {
       setIsSidebarOpen(false);
     }
   }, []);
@@ -41,7 +43,7 @@ export default function Sidebar({ menu='friends', players=null }) {
     <>
     {
       isSidebarOpen
-      ? <div className={styles.sidebar}>
+      ? <div className={(isMobile || hide) ? styles.sidebarMobile : styles.sidebar}>
           <div className={styles.sidebarHeader}>
           {
             sidebarMenu === 'friends'

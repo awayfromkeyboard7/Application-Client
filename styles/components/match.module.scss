@@ -21,13 +21,14 @@
 
 .body {
   height: 100%;
-  min-width: 35rem;
+  width: 100%;
+  // min-width: 35rem;
   padding: 1.5rem;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  // justify-content: flex-start;
   background-color: $navy-color;
   overflow: auto;
   position: relative;
@@ -66,10 +67,12 @@
 
 .mainBody {
   width: 100%;
+  max-width: 50rem;
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  overflow: auto;
 }
 
 .mainFooter {
@@ -80,12 +83,11 @@
   justify-content: space-between;
 }
 
-.waitBox {
-  height: 25rem;
-  width: 25rem;
-  margin: 2rem;
+.matchBox {
+  height: 40vmin;
+  width: 40vmin;
+  // margin: 1rem;
   padding: 1rem;
-  margin: 0.625rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -95,7 +97,7 @@
   border-radius: 0.625rem;
 }
 
-.waitItem {
+.matchItem {
   margin: 0.625rem;
   display: flex;
   flex-direction: column;
@@ -105,31 +107,34 @@
 }
 
 .loadingBox {
-  padding-top:1.25rem;
+  padding-top: 1.25rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .text {
-  margin-top: 1.25rem;
-  font-size: 1rem;
+  margin-top: 1vmin;
+  font-size: 1.75vmin;
+  line-height: 2vmin;
   font-weight: bold;
   text-align: center;
   color: $navy-color;
 }
+
 .profileIcon {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
+  width: 10vmin;
+  height: 10vmin;
+  position: relative;
 }
 
 .nickname {
   width: 5rem;
-  margin-top: 1rem;
+  max-width: 10vmin;
+  margin-top: 1vmin;
   color: $navy-color;
-  font-size: 1rem;
-  line-height: 1.25rem;
+  font-size: 1.75vmin;
+  line-height: 2vmin;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;

@@ -1,21 +1,275 @@
 @import '../variables.module.scss';
 
-.mainRow {
+.mainBox {
+  width: 100vw;
+  padding: 0.625rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
   display: flex;
-  flex: 1;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
-.gameHistoryBox,
 .mainCol {
-  width: 18.75rem; /* 300px */
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.infoTab {
   display: flex;
   flex-direction: column;
 }
 
-.gameHistoryBox {
+.historyTab,
+.rankTab,
+.myProfileBox {
+  width: 22rem;
+  margin-left: 0.625rem;
+  margin-right: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  background-color: $navy-dark-color;
+  border-radius: 10px;
+}
+
+.gameHistoryHeader,
+.rankTabHeader,
+.myProfileHeader {
+  // height: 2rem;
+  padding: 0.875rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  // align-items: center;
+  border-bottom: $navy-color solid 2px;
+}
+
+.rankTabTitle,
+.myProfileTitle {
+  color: $white-dark-color;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: bold;
+}
+
+.myProfileBody {
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+}
+
+.myProfileIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 60px;
+  border: $purple-color solid 4px;
+  position: relative;
+}
+
+.rankIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.myRank{
+  position: absolute;
+  bottom: -5px;
+  left: -5px;
+  z-index: 1;
+}
+
+.myInfoRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.myInfoCol {
+  display: flex;
   flex: 1;
-  border-right: #000 solid 4px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.splitterHorizontal {
+  height: 2px;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+  background-color: $navy-color;
+}
+
+.splitterVertical {
+  height: 100% !important;
+  width: 2px;
+  margin-left: 0.625rem;
+  margin-right: 0.625rem;
+  background-color: $navy-color;
+}
+
+.fieldTitle,
+.percentText,
+.pointText,
+.nickname {
+  max-width: 10rem;
+  padding: 0.625rem;
+  color: $white-dark-color;
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: bold;
+  overflow: hidden auto;
+}
+
+.nickname {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+.percentText,
+.pointText {
+  font-size: 0.875rem;
+  color: $gray-light-color;
+}
+
+.fieldTitle,
+.percentText {
+  text-align: center;
+}
+
+.rankBox{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.rankingBox {
+  padding-top: 0.25rem;
+  padding-bottom: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $navy-dark-color;
+  overflow: auto;
+}
+
+.rankingHeader {
+  padding: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.rankingBody {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.rankingBody::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.rankingBody::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: #4a02af71;
+  /* background-color: #282a35a0; */
+}
+
+.rankingElem {
+  justify-content: space-evenly;
+  height: 3rem;
+  padding: 0.625rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.rankingElem:hover {
+  background-color: #f3f3f3;
+}
+
+.rank {
+  width: 1.75rem;
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+  font-weight: bold;
+  color: $gray-super-dark-color;
+  text-align: center;
+}
+
+.rankEmoji {
+  width: 1.75rem;
+  font-size: 1.75rem;
+  line-height: 2.5rem;
+  font-weight: bold;
+  color: $gray-super-dark-color;
+  text-align: center;
+}
+
+.profileIcon {
+  margin: 0.625rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2rem;
+  border: $purple-color solid 2px;
+}
+
+.profileInfo {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  /* flex: 1; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.winRate{
+  width: 4rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: bold;
+}
+
+.info {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $gray-super-dark-color;
+}
+
+.rankIcon{
+  width: 35px;
+  height: 35px;
+  margin-left: 0.625rem;
+  margin-right: 0.625rem;
+  display: flex;
+  align-items: center;
+  // margin: 2rem;
+  // position: relative;
+}
+
+.rankTab {
+  height: 50%;
+  min-height: 40vh;
+  margin-top: 0.25rem;
+  overflow: auto;
+  background-color: $navy-dark-color;
+}
+
+.historyTab {
+  height: 90%;
+  width: max-content;
+  min-width: 25rem;
+  max-width: 45rem;
+  display: flex;
+  flex-direction: column;
+  background-color: $navy-dark-color;
 }
 
 .gameHistoryHeader {
@@ -37,6 +291,7 @@
   padding: 0.625rem;
   color: $white-dark-color;
   font-size: 1rem;
+  font-weight: bold;
   line-height: 2rem;
   overflow: hidden auto;
 }
@@ -54,72 +309,21 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-weight: bold;
+  color: $white-dark-color;
   border-radius: 4px;
-  background-color: $white-dark-color;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-light-color;
+    background-color: $navy-light-color;
   }
 }
 
 .filterBtnActive {
-  color: $purple-color;
-  border: $purple-light-color solid 2px;
-}
-
-.toggleBtn {
-  width: 5rem;
-  height: 1.75rem;
-  display: flex;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  color: #fff;
-  line-height: 1.75rem;
-  justify-content: center;
-  text-align: center;
-  background-color: #424556;
-  position: relative;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #55596e;
-  }
-}
-
-.selectList {
-  width: 5rem;
-  padding: 0.625rem;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  position: absolute;
-  background-color: #fff;
-  top: 6.25rem;
-  right: 19.6rem;
-  z-index: 100 !important;
-}
-
-.selectElem {
-  height: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  color: #000;
-  background-color: #fff;
-
-  &:hover {
-    height: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color:  #310175;
-  }
+  background-color: $navy-light-color;
 }
 
 .gameHistoryBody {
+  height: 100%;
   padding: 0.625rem;
   display: flex;
   flex-direction: column;
@@ -128,14 +332,14 @@
 
 .gameHistoryItem {
   height: 11.25rem;
-  // width: 80%;
+  width: 38rem;
   min-height: 11.25rem !important;
-  min-width: fit-content;
+  min-width: 38rem;
   margin: 0.625rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  background-color: $white-dark-color;
+  background-color: $navy-light-color;
 }
 
 .gameHistoryItemBlue {
@@ -171,8 +375,9 @@
 }
 
 .gameHistoryMain {
-  width: 5rem;
-  min-width: 5rem;
+  width: 4rem;
+  // width: 15rem;
+  min-width: 4rem;
   padding: 0.625rem;
   display: flex;
   flex-direction: column;
@@ -187,8 +392,8 @@
   font-size: 0.875rem;
   font-weight: bold;
   line-height: 1.5rem;
-  color: #000;
-  background-color: $gray-color;
+  color: $white-dark-color;
+  background-color: $navy-light-color;
   border-radius: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -201,7 +406,7 @@
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.5rem;
-  color: #000;
+  color: $white-dark-color;
 }
 
 .gameHistoryWin {
@@ -226,7 +431,7 @@
   font-weight: bold;
   line-height: 1rem;
   text-align: right;
-  color: $gray-dark-color;
+  color: $gray-light-color;
 }
 
 .gameHistoryEtc {
@@ -263,8 +468,8 @@
   margin: 2px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   align-items: center;
+  justify-content: center;
 }
 
 .gameHistoryPlayerProfileImage {
@@ -289,7 +494,8 @@
   margin-left: 4px;
   flex: 1;
   font-size: 0.875rem;
-  color: $gray-super-dark-color;
+  line-height: 2rem;
+  color: $white-dark-color;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -321,60 +527,19 @@
 .gameHistoryPlayerLanguage {
   height: 1.5rem;
   padding: 0.25rem;
+  margin: 0.25rem;
   text-align: center;
   line-height: 1rem;
   color: $white-dark-color;
-  background-color: $gray-color;
+  background-color: $navy-light-color;
   border-radius: 4px;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-dark-color;
+    background-color: $navy-color;
   }
 }
 
-.profileBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: $white-dark-color;
-}
-
-.profileIcon {
-  width: 100px;
-  height: 100px;
-  margin: 0.625rem;
-  border-radius: 100px;
-  border: $purple-color solid 4px;
-}
-
-.nickname {
-  max-width: 10rem;
-  padding: 0.625rem;
-  color: $purple-color;
-  font-size: 1.25rem;
-  font-weight: bold;
-  overflow: hidden auto;
-}
-
-.textMenu {
-  padding-left: 0.625rem;
-  background-color: $purple-color;
-  color: $white-dark-color;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 2rem;
-}
-
-.rankingBox {
-  padding-bottom: 1.25rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: $white-dark-color;
-  overflow: auto;
-}
 
 .codeBackground {
   width: 100vw;
@@ -434,6 +599,7 @@
   height: calc(100% - 2.5rem) !important;
   width:100% !important;
 }
+
 
 .hidden {
   display: none;

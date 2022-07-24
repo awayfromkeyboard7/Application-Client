@@ -107,7 +107,7 @@ export default function MatchPage() {
             teamB={teamB.slice(0, 4)}
             onClickGoToMain={goToLobby} 
           />
-          <Sidebar />
+          <Sidebar hide />
         </>
       }
     />

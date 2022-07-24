@@ -42,20 +42,20 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
         : <div className={styles.countdown}>{secToTime(countdown)}</div>
       }
       <div className={styles.mainBody}> 
-        <div className={styles.waitBox}>
+        <div className={styles.matchBox}>
         {
           teamA?.map(item => 
             <Item info={item} key={item.gitId} />
           )
         }
         </div>
-        <div className={styles.waitBox}>
+        <div className={styles.matchBox}>
           {
             teamB.length === 0
             ? <div className={styles.loadingBox}>
                 <Grid 
-                  height={60} 
-                  width={60} 
+                  height="8vmin"
+                  width="8vmin"
                   color="#282A35" 
                   ariaLabel="loading" 
                 />

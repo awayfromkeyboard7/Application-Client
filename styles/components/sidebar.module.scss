@@ -1,8 +1,9 @@
 @import '../variables.module.scss';
 
+.sidebarMobile,
 .sidebar {
   height: calc(100vh - 3.75rem);
-  width: 18.75rem; /* 300px */
+  width: 18.75rem !important; /* 300px */
   display: flex;
   flex-direction: column;
   border-left: #000 solid 4px;
@@ -10,11 +11,16 @@
   position: relative;
 }
 
+.sidebarMobile {
+  margin-left: -18.75rem;
+  // border-left: none;
+}
+
 .sidebarClose {
   width: 0; /* 300px */
   display: flex;
   flex-direction: column;
-  border-left: #000 solid 4px;
+  // border-left: #000 solid 4px;
   background-color: #f3f3f3;
   position: relative;
 }
@@ -89,10 +95,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: $navy-color solid 2px;
+  border-right: none;
   border-top-left-radius: 0.625rem;
   border-bottom-left-radius: 0.625rem;
   background-color: $white-dark-color;
   position: absolute;
   top: 50vh;
-  left: -27px;
+  left: -32px;
 }
