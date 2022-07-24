@@ -88,7 +88,7 @@ export default function WaitPage() {
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
         });
-        socket.on('setUsers', (users) => {
+        socket.once('setUsers', (users) => {
           addPlayer(users);
         });
 
@@ -101,7 +101,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.emit('getUsers', router?.query?.roomId);
+        socket.emit('getUsers', router?.query?.roomId, getCookie('gitId'), getCookie('avatarUrl'));
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);

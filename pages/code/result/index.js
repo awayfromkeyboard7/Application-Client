@@ -23,27 +23,30 @@ export default function ResultPage() {
   }, [status]);
 
   useEffect(() => {
-    if(router?.query?.mode === 'team') {
-      socket.on('getTeamRanking', (result, startAt) => {
-        if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
-          setRanks([result[0], result[1]]);
-        }
-        setGameStartAt(startAt);
-      });
-      socket.emit('getTeamRanking', router?.query?.gameLogId);
-    } else {
-      socket.on('getRanking', (ranking, startAt) => {
-        setRanks(ranking);
-        setGameStartAt(startAt);
-      });
-      socket.emit('getRanking', router?.query?.gameLogId);
+    if (router.isReady) {
+      console.log("refresh at team code", router?.query);
+      if(router?.query?.mode === 'team') {
+        socket.on('getTeamRanking', (result, startAt) => {
+          if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
+            setRanks([result[0], result[1]]);
+          }
+          setGameStartAt(startAt);
+        });
+        socket.emit('getTeamRanking', router?.query?.gameLogId);
+      } else {
+        socket.on('getRanking', (ranking, startAt) => {
+          setRanks(ranking);
+          setGameStartAt(startAt);
+        });
+        socket.emit('getRanking', router?.query?.gameLogId);
+      }
     }
 
     return () => {
       socket.off('getTeamRanking');
       socket.off('getRanking');
     };
-  }, []);
+  }, [router.isReady]);
 
   const goToWait = () => {
     router.replace({
