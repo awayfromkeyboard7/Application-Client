@@ -8,15 +8,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
+  overflow: auto;
 }
 
 .mainCol {
   height: 90%;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
+
 .infoTab {
   display: flex;
   flex-direction: column;
@@ -151,7 +153,6 @@
 .rankingBox {
   padding-top: 0.25rem;
   padding-bottom: 1.25rem;
-  flex: 1;
   display: flex;
   flex-direction: column;
   background-color: $navy-dark-color;
@@ -255,18 +256,16 @@
 }
 
 .rankTab {
-  height: 50%;
-  min-height: 40vh;
-  margin-top: 0.25rem;
+  height: 100%;
+  margin-top: 0.675rem;
   overflow: auto;
   background-color: $navy-dark-color;
 }
 
 .historyTab {
   height: 90%;
-  width: max-content;
-  min-width: 25rem;
-  max-width: 45rem;
+  width: 41.2rem;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   background-color: $navy-dark-color;
@@ -334,7 +333,6 @@
   height: 11.25rem;
   width: 38rem;
   min-height: 11.25rem !important;
-  min-width: 38rem;
   margin: 0.625rem;
   display: flex;
   justify-content: flex-start;
@@ -375,9 +373,9 @@
 }
 
 .gameHistoryMain {
-  width: 4rem;
+  width: 3.5rem;
   // width: 15rem;
-  min-width: 4rem;
+  min-width: 3.5rem;
   padding: 0.625rem;
   display: flex;
   flex-direction: column;
@@ -387,13 +385,13 @@
 }
 
 .gameHistoryMode {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   font-size: 0.875rem;
   font-weight: bold;
   line-height: 1.5rem;
   color: $white-dark-color;
-  background-color: $navy-light-color;
+  background-color: $navy-color;
   border-radius: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -531,12 +529,12 @@
   text-align: center;
   line-height: 1rem;
   color: $white-dark-color;
-  background-color: $navy-light-color;
+  background-color: $navy-color;
   border-radius: 4px;
   cursor: pointer;
 
   &:hover {
-    background-color: $navy-color;
+    background-color: $navy-dark-color;
   }
 }
 
