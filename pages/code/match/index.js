@@ -103,7 +103,7 @@ export default function MatchPage() {
             teamB={teamB}
             onClickGoToMain={goToLobby} 
           />
-          <Sidebar />
+          <Sidebar hide />
         </>
       }
     />

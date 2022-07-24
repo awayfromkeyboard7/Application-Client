@@ -125,13 +125,13 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
               {
-                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
               }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
               {
-                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
               }
             </div>
           </div>
@@ -172,11 +172,11 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
     <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-          ? checkMyTeam()
-            ? <TeamGameWin />
-            : <TeamGameLose />
+          ? (gameInfo?.teamA[0].ranking < gameInfo?.teamB[0].ranking) ^ checkMyTeam()
+            ? <TeamGameLose />
+            : <TeamGameWin />
           : <SoloGame />
-      }
+}
       {
         isOpenCode
         && <div className={styles.codeBackground}>
