@@ -6,9 +6,10 @@ import Item from './item';
 import SearchItem from './searchItem';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendList({ onClick }) {
+export default function FriendList({ onClick, players=null }) {
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
+  const [searchList, setSearchList] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchResultText, setSearchResultText] = useState('');
   const [isSearch, setIsSearch] = useState(false);
@@ -32,7 +33,6 @@ export default function FriendList({ onClick }) {
     socket.on('getFollowingList', users => {
       setUserList(users);
     });
-    getFriends();
     getMyInfo();
 
     return () => {
@@ -69,7 +69,7 @@ export default function FriendList({ onClick }) {
       if(data.success) {
         setMyInfo(data.UserInfo);
       } else {
-        setUserList(null);
+        setUserList([]);
       }
     })
     .catch(error => console.log('[/components/friend/list] getMyInfo error >> ', error));
@@ -88,10 +88,10 @@ export default function FriendList({ onClick }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        setUserList([data.UserInfo]);
+        setSearchList([data.UserInfo]);
         getMyInfo();
       } else {
-        setUserList([]);
+        setSearchList([]);
       }
     })
     .catch(error => console.log('[/components/friend/list] findUser error >> ', error));
@@ -111,6 +111,17 @@ export default function FriendList({ onClick }) {
     }
   };
 
+  const checkInviteMember = (user) => {
+    if(players && players.length) {
+      for(let player of players) {
+        if(player.gitId === user.gitId) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   const FollowingList = () => {
     if(!userList || userList?.length === 0) {
       return <div className={styles.infoText}>현재 접속중인 유저가 없습니다.</div>;
@@ -121,6 +132,7 @@ export default function FriendList({ onClick }) {
           key={user.gitId}
           user={user}
           isOnline={true} 
+          isInvite={checkInviteMember(user)}
           onClick={() => onClick(user)}
         />
       )
@@ -128,11 +140,11 @@ export default function FriendList({ onClick }) {
   };
 
   const SearchList = () => {
-    if(userList?.length === 0) {
+    if(searchList?.length === 0) {
       return <div className={styles.infoText}>{`${searchResultText} 유저가 없습니다.`}</div>;
     }
     return (
-      userList?.map(user => 
+      searchList?.map(user => 
         <SearchItem 
           key={user.gitId}
           user={user}

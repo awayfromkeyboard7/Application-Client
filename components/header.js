@@ -35,7 +35,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const sendAccessToken = async(accessToken) => {
@@ -53,6 +53,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
       if(data.success) {
         checkValidUser(true);
         setIsValidUser(true);
+        socket.emit('setGitId', getCookie('gitId'));
       } else {
         deleteCookies();
         signOut();

@@ -72,7 +72,7 @@ export default function WaitPage() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -85,11 +85,6 @@ export default function WaitPage() {
         if (router?.query?.roomId === gitId) {
           socket.emit('createTeam', { gitId, avatarUrl });
         }
-        socket.on('timeOut', () => {
-          if(players[0]?.gitId === gitId && !isMatching) {
-            goToMatch();
-          }
-        });
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
         });
@@ -100,7 +95,7 @@ export default function WaitPage() {
         // 팀전 대기 중 화면으로 이동
         socket.once('goToMatchingRoom', (bangjang) => {
           setIsMatching(true);
-          router.push({
+          router.replace({
             pathname: '/code/match',
             query: { mode: 'team', roomId: bangjang }
           })
@@ -108,15 +103,10 @@ export default function WaitPage() {
 
         socket.emit('getUsers', router?.query?.roomId);
       } else {
-        socket.on('timeOut', () => {
-          if(players[0]?.gitId === gitId) {
-            goToCode();
-          }
-        });
         socket.on('enterNewUser', (users) => {
           addPlayer(users);
         });
-        socket.on('startGame', (gameLogId) => {
+        socket.once('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
         socket.emit('waitGame', { gitId, avatarUrl });
@@ -148,28 +138,31 @@ export default function WaitPage() {
         }
       }
     }
-  }, [countdown]);
+  }, [countdown, router.isReady]);
 
   useEffect(() => {
-    if (router?.query?.mode === 'team') {
-      socket.on('exitTeamGame', () => {
-        router.push('/');
-      });
-    } else {
-      socket.on('exitWait', (users) => {
-        addPlayer(users);
-      });
+    if (router.isReady) {
+      if (router?.query?.mode === 'team') {
+        socket.on('exitTeamGame', () => {
+          router.replace('/');
+        });
+      } else {
+        socket.on('exitWait', (users) => {
+          addPlayer(users);
+        });
+      }
+  
+      return () => {
+        socket.off('exitTeamGame');
+        socket.off('exitWait');
+      };
     }
 
-    return () => {
-      socket.off('exitTeamGame');
-      socket.off('exitWait');
-    };
-  }, [players]);
+  }, [players, router.isReady]);
 
   useEffect(() => {
     if(gameLogId !== '') {
-      router.push({
+      router.replace({
         pathname: '/code',
         query: { gameLogId, mode: router?.query?.mode }
       });
@@ -184,27 +177,34 @@ export default function WaitPage() {
       }
     };
     
-    socket.emit('getRoomId')
-    socket.on('getRoomId', async (roomId) => {
-      await fetch(`/server/api/gamelog/createNew`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          players: sendPlayers,
-          totalUsers: sendPlayers.length,
-          roomId : roomId
-        }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          socket.emit('startGame', data.gameLogId);
-        }
-      })
-      .catch(error => console.log('[/pages/code/wait] createNew error >> ', error));
+    socket.emit('getRoomId');
+    socket.once('getRoomId', async (roomId, status) => {
+      if (status === 'waiting') {
+        await fetch(`/server/api/gamelog/createNew`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            players: sendPlayers,
+            totalUsers: sendPlayers.length,
+            roomId : roomId
+          }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            // setGameLogId(data.gameLogId);
+            socket.emit('startGame', data.gameLogId);
+          }
+        })
+        .catch(error => console.log('error >> ', error));
+      }
     });
+
+    return () => {
+      socket.off('getRoomId');
+    }
   };
 
   const goToCode = async () => {
@@ -216,11 +216,11 @@ export default function WaitPage() {
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   const addPlayer = (users) => {
@@ -237,7 +237,7 @@ export default function WaitPage() {
     
     console.log('copy players >>> ', copyPlayers);
     setPlayers(copyPlayers);
-  }
+  };
 
   return (
     <Layout 
@@ -245,7 +245,10 @@ export default function WaitPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
+          }
           <Wait 
             type={router?.query?.mode} 
             players={players} 
@@ -253,7 +256,7 @@ export default function WaitPage() {
             onClickGoToMain={goToLobby} 
             onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
           />
-          <Sidebar />
+          <Sidebar players={players} />
         </>
       }
     />

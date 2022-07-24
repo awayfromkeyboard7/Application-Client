@@ -7,7 +7,7 @@ import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
 import { socket } from '../lib/socket';
 
-export default function Sidebar({ menu='friends', hide=false }) {
+export default function Sidebar({ menu='friends', players=null, hide=false }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [sidebarMenu, setSidebarMenu] = useState(menu);
   const [friend, setFriend] = useState({});
@@ -22,7 +22,7 @@ export default function Sidebar({ menu='friends', hide=false }) {
   const onClickFriend = (friend) => {
     setFriend(friend);
     setSidebarMenu('chat');
-    socket.emit('getChatMessage', getCookie('gitId'), friend);
+    socket.emit('getChatMessage', getCookie('gitId'), friend.gitId);
   };
 
   const onClickBack = () => {
@@ -62,7 +62,7 @@ export default function Sidebar({ menu='friends', hide=false }) {
           <div className={styles.sidebarBody}>
           {
             sidebarMenu === 'friends'
-            ? <Friends onClick={friend => onClickFriend(friend)} />
+            ? <Friends onClick={friend => onClickFriend(friend)} players={players} />
             : <ChatRoomList friend={friend} />
           }
           </div>

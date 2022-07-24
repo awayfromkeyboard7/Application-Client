@@ -21,7 +21,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -55,7 +55,7 @@ export default function MatchPage() {
   useEffect(() => {
     if (router?.query?.mode === 'team') {
       socket.on('exitTeamGame', () => {
-        router.push('/');
+        router.replace('/');
       });
     } else {
       socket.on('exitWait', (users) => {
@@ -71,7 +71,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if(gameLogId !== '') {
-      router.push({
+      router.replace({
         pathname: '/code',
         query: { mode: 'team', gameLogId, roomId }
       });
@@ -80,15 +80,16 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitTeamGame', router?.query?.roomId, gitId);
+      socket.emit('exitWait', gitId);
+      router.replace('/');
     } else {
       socket.emit('exitWait', gitId);
-      router.push('/');
+      router.replace('/');
     }
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   return (
@@ -97,10 +98,13 @@ export default function MatchPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
+          }
           <Match 
-            teamA={teamA}
-            teamB={teamB}
+            teamA={teamA.slice(0, 4)}
+            teamB={teamB.slice(0, 4)}
             onClickGoToMain={goToLobby} 
           />
           <Sidebar hide />

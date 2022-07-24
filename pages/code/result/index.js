@@ -18,7 +18,7 @@ export default function ResultPage() {
   
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
 
@@ -46,18 +46,18 @@ export default function ResultPage() {
   }, []);
 
   const goToWait = () => {
-    router.push({
+    router.replace({
       pathname: '/code/wait',
       query: { mode: router?.query?.mode }
     });
   };
 
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.replace('/mypage');
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   return (
@@ -66,11 +66,14 @@ export default function ResultPage() {
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          { 
+            router.isReady
+            && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
+          }
           {
             router?.query?.mode === 'team'
             ? <TeamResult 
-                ranks={ranks} 
+                ranks={ranks.slice(0, 4)} 
                 startAt={gameStartAt}
                 onClickGoToMain={goToLobby} 
                 onClickPlayAgain={goToWait}

@@ -5,26 +5,30 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ user, isOnline, onClick }) {
+export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   const router = useRouter();  
-  const [isClick, setIsClick] = useState(false);
+  const gitId = getCookie('gitId');
+  const [isClick, setIsClick] = useState(isInvite);
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    socket.on('sendChatMessage', message => {
+    socket.emit('getUnreadMessage', user.gitId, gitId);
+
+    socket.on('unreadMessage', message => {
       if (message['senderId'] === user.gitId) {
-        setMessageCount(prev => prev + 1);
+        setMessageCount(message['count']);
       }
     });
 
     return () => {
-      socket.off('sendChatMessage');
+      socket.off('unreadMessage');
+      socket.off('getUnreadMessage');
     };
   }, []);
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', { gitId: getCookie('gitId'), avatarUrl: getCookie('avatarUrl') }, user.gitId);
+      socket.emit('inviteMember', { gitId, avatarUrl: getCookie('avatarUrl') }, user.gitId);
       setIsClick(true);
     }
   };

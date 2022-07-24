@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -7,6 +7,7 @@ import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { getCookie } from 'cookies-next';
+import { useBeforeunload } from 'react-beforeunload';
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
 import Layout from '../../components/layouts/main';
@@ -27,6 +28,7 @@ export default function Code() {
   const gitId = getCookie('gitId');
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
+  const [myTeam, setMyTeam] = useState([]);
   const [outputs, setOutputs] = useState({});
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -42,6 +44,30 @@ export default function Code() {
 
   let yDoc = new Y.Doc();
 
+  useBeforeunload((event) => {
+    if (!isSubmit) {
+      goToResult();
+      event.preventDefault();
+    }
+  });
+
+  const routeChangeStart = useCallback(url => {
+    if(!isSubmit) {
+      // if(confirm('게임을 종료하시기 전에 코드를 제출하시겠습니까?')) {
+        goToResult();
+        router.events.emit('routeChangeError');
+        throw 'Abort route change. Please ignore this error.';
+      // }
+    }
+  }, [router.asPath, router.events, isSubmit, problems]);
+
+  useEffect(() => {
+    router.events.on('routeChangeStart', routeChangeStart);
+    return () => {
+      router.events.off('routeChangeStart', routeChangeStart);
+    }
+  }, [routeChangeStart, router.events]);
+
   useEffect(() => {
     socket.on('timeLimitCode', (ts) => {
       setCountdown(parseInt(ts / 1000));
@@ -56,7 +82,7 @@ export default function Code() {
       setPlayerList([result[0], result[1]]);
     });
     socket.on('teamGameOver', () => {
-      router.push({
+      router.replace({
         pathname: '/code/result',
         query: { 
           gameLogId: router?.query?.gameLogId,
@@ -80,34 +106,9 @@ export default function Code() {
 
   useEffect(() => {
     if(status === 'unauthenticated') {
-      router.push('/');
+      router.replace('/');
     }
   }, [status]);
-
-  useEffect(() => {
-    const submitResult = async() => {
-      if (router?.query?.mode === 'team'){
-        await submitCodeTeam();
-        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
-      }
-      else {
-        await submitCode();
-        socket.emit('submitCode', router?.query?.gameLogId);
-      };
-      router.push({
-        pathname: '/code/result',
-        query: { 
-          gameLogId: router?.query?.gameLogId,
-          mode: router?.query?.mode 
-        }
-      });
-    };
-
-    if(isSubmit) {
-      submitResult();
-      setIsSubmit(false);
-    }
-  }, [isSubmit]);
 
   useEffect(() => {
     if(router.isReady) {
@@ -149,6 +150,31 @@ export default function Code() {
   }, [countdown, router.isReady]);
   
   useEffect(() => {
+    const submitResult = async() => {
+      if (router?.query?.mode === 'team'){
+        await submitCodeTeam();
+        socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
+      }
+      else {
+        await submitCode();
+        socket.emit('submitCode', router?.query?.gameLogId);
+      };
+      router.replace({
+        pathname: '/code/result',
+        query: { 
+          gameLogId: router?.query?.gameLogId,
+          mode: router?.query?.mode 
+        }
+      });
+    };
+
+    if(isSubmit) {
+      submitResult();
+      // setIsSubmit(false);
+    }
+  }, [isSubmit]);
+
+  useEffect(() => {
     onChangeLang(selectedLang);
     setIsSelectOpen(false);
   }, [selectedLang]);
@@ -175,13 +201,33 @@ export default function Code() {
   };
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   const goToResult = async() => {
     await judgeCode(true);
   };
+
+  const checkMyTeam = (team) => {
+    for(let member of team) {
+      if(member.gitId === gitId) {
+        return true;
+      }
+    }
+    return false;
+  };
   
+  const checkValidUser = (userList) => {
+    for(let user of userList) {
+      if(user.gitId === gitId) {
+        if(0 <= user.passRate) {
+          alert('이미 완료된 게임입니다!');
+          router.replace('/');
+        }
+      }
+    }
+  };
+
   const getProblem = async() => {
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
@@ -198,8 +244,16 @@ export default function Code() {
       if(data.success) {
         setProblems(data.info.problemId);
         if(router?.query?.mode === 'team') {
+          if(checkMyTeam(data.info.teamA)) {
+            checkValidUser(data.info.teamA);
+            setMyTeam(data.info.teamA);
+          } else {
+            checkValidUser(data.info.teamB);
+            setMyTeam(data.info.teamB);
+          }
           setPlayerList([data.info.teamA, data.info.teamB]);
         } else {
+          checkValidUser(data.info.userHistory);
           setPlayerList(data.info.userHistory);
         }
       }
@@ -402,7 +456,6 @@ export default function Code() {
                 </div>
               </ReflexContainer>
           }
-          
           <div className={isSelectOpen ? isMobile ? styles.selectListMobile : styles.selectList : styles.hidden}>
             <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div>
             <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>

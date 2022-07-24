@@ -17,20 +17,20 @@ export default function CheckValidAccess({ check, message }) {
   }, [check, isInvalid]);
 
   const goToLobby = () => {
-    router.push('/');
+    router.replace('/');
   };
 
   return (
-    <>
-      {
-        isPopup
-        && <Popup
+    <> 
+    {
+      isPopup
+      && <Popup 
           title="⛔️잘못된 접근입니다.⛔️"
           content={message}
           label="메인으로"
-          onClick={goToLobby}
+          onClick={goToLobby} 
         />
-      }
+    } 
     </>
   )
 }

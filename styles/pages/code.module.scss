@@ -243,7 +243,6 @@
   flex-direction: row;
 }
 
-.voiceBtn,
 .btn {
   width: 5rem;
   height: 1.75rem;
@@ -259,14 +258,6 @@
   
   &:hover {
     background-color: #55596e;
-  }
-}
-
-.voiceBtn {
-  color: $navy-color;
-  background-color: $green-color;
-  &:hover {
-    background-color: $green-light-color;
   }
 }
 
