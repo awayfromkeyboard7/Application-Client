@@ -180,7 +180,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
       {
         gameInfo?.gameMode === 'team'
           ? checkTeamGameWin()
-            ? <TeamGameWinLose />
+            ? <TeamGameWin />
             : <TeamGameLose />
           : <SoloGame />
 }
