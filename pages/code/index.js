@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -43,7 +43,6 @@ export default function Code() {
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   let yDoc = new Y.Doc();
-
 
   // ADDED FROM HERE
   // useBeforeunload((event) => {
@@ -118,7 +117,7 @@ export default function Code() {
 
       if(isDoc === false && router?.query?.gameLogId) {
         const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
-        let yProvider = new WebrtcProvider(url, yDoc,{ signaling: ['wss://hjannie.shop/yjs'] });
+        let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop/yjs'] });
         setDoc(yDoc);
         setProvider(yProvider);
         setIsDoc(true);
