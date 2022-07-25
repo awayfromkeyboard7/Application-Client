@@ -34,7 +34,7 @@ export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   };
 
   return (
-    <div className={styles.friendElem} key={user.gitId}>
+    <div className={styles.friendElem}>
       <div className={styles.connectInfo}>
         <Image src={isOnline ? '/online.png' : '/offline.png'} alt="online" width={10} height={10} />
       </div>

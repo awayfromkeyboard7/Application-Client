@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
@@ -7,6 +8,7 @@ import SearchItem from './searchItem';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendList({ onClick, players=null }) {
+  const router = useRouter();
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
   const [searchList, setSearchList] = useState([]);
@@ -112,48 +114,16 @@ export default function FriendList({ onClick, players=null }) {
   };
 
   const checkInviteMember = (user) => {
-    if(players && players.length) {
-      for(let player of players) {
-        if(player.gitId === user.gitId) {
-          return true;
+    if(router?.pathname === '/code/wait' && router?.query?.mode === 'team') {
+      if(players && players.length) {
+        for(let player of players) {
+          if(player.gitId === user.gitId) {
+            return true;
+          }
         }
       }
     }
     return false;
-  };
-
-  const FollowingList = () => {
-    if(!userList || userList?.length === 0) {
-      return <div className={styles.infoText}>현재 접속중인 유저가 없습니다.</div>;
-    }
-    return (
-      userList?.map(user => 
-        <Item 
-          key={user.gitId}
-          user={user}
-          isOnline={true} 
-          isInvite={checkInviteMember(user)}
-          onClick={() => onClick(user)}
-        />
-      )
-    )
-  };
-
-  const SearchList = () => {
-    if(searchList?.length === 0) {
-      return <div className={styles.infoText}>{`${searchResultText} 유저가 없습니다.`}</div>;
-    }
-    return (
-      searchList?.map(user => 
-        <SearchItem 
-          key={user.gitId}
-          user={user}
-          myInfo={myInfo}
-          isOnline={false} 
-          onClick={() => setSearchText('')}
-        />
-      )
-    )
   };
 
   return (
@@ -172,9 +142,45 @@ export default function FriendList({ onClick, players=null }) {
       </form>
       {
         isSearch
-        ? <SearchList />
-        : <FollowingList />
-      }
+        ? <>
+          {
+            searchList?.length === 0
+            ? <div className={styles.infoText}>{`${searchResultText} 유저가 없습니다.`}</div>
+            : <>
+              {
+                searchList?.map(user => 
+                  <SearchItem 
+                    key={user.gitId}
+                    user={user}
+                    myInfo={myInfo}
+                    isOnline={false} 
+                    onClick={() => setSearchText('')}
+                  />
+                )
+              }
+              </>
+          }
+          </>
+        : <>
+          {
+            !userList || userList?.length === 0
+            ? <div className={styles.infoText}>현재 접속중인 유저가 없습니다.</div>
+            : <>
+              {
+                userList?.map(user => 
+                  <Item 
+                    key={user.gitId}
+                    user={user}
+                    isOnline={true} 
+                    isInvite={checkInviteMember(user)}
+                    onClick={() => onClick(user)}
+                  />
+                )
+              }
+              </>
+          }
+          </>
+        }
     </>
   )
 }

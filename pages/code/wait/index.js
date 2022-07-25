@@ -207,41 +207,7 @@ export default function WaitPage() {
   }, [players]);
   
   const startGame = async() => {
-    // let sendPlayers = [];
-    // for(let player of players) {
-    //   if(player.isPlayer) {
-    //     sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl})
-    //   }
-    // };
-    
     socket.emit('getRoomId');
-    // socket.once('getRoomId', async (roomId, status) => {
-    //   if (status === 'waiting') {
-    //     await fetch(`/server/api/gamelog/createNew`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({ 
-    //         players: sendPlayers,
-    //         totalUsers: sendPlayers.length,
-    //         roomId : roomId
-    //       }),
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //       if(data.success) {
-    //         // setGameLogId(data.gameLogId);
-    //         socket.emit('startGame', data.gameLogId);
-    //       }
-    //     })
-    //     .catch(error => console.log('error >> ', error));
-    //   }
-    // });
-
-    // return () => {
-    //   socket.off('getRoomId');
-    // }
   };
 
   const goToCode = async () => {
