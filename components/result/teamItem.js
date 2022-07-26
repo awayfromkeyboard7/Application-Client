@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
 export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
-  const myNickname = getCookie('gitId');
+  const { data } = useSession();
   const [rankText, setRankText] = useState(teamInfo[0].ranking);
   const [isEmoji, setIsEmoji] = useState(false);
   const [isMyTeam, setIsMyTeam] = useState(false);
@@ -12,7 +12,7 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
 
   useEffect(() => {
     for(let member of teamInfo) {
-      if(member.gitId === myNickname) {
+      if(member.gitId === data.gitId) {
         setIsMyTeam(true);
         break;
       }

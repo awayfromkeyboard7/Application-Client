@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
 import Code from './code';
 import UserPopup from '../userPopup'
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
-  const gitId = getCookie('gitId');
+  const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
@@ -57,6 +57,15 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
   };
 
   const checkTeamGameWin = () => {
+    if(gameInfo?.teamA[0].ranking === 0 || gameInfo?.teamB[0].ranking === 0) {
+      if(0 < gameInfo?.teamA[0].ranking) {
+        return checkMyTeam();
+      }
+      if(0 < gameInfo?.teamB[0].ranking) {
+        return !checkMyTeam();
+      }
+      return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
+    }
     if (gameInfo?.teamA[0].ranking === gameInfo?.teamB[0].ranking) {
       return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
     }
@@ -65,7 +74,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
 
   const checkMyTeam = () => {
     for (let member of gameInfo?.teamA) {
-      if (member.gitId === gitId) {
+      if (member.gitId === data.gitId) {
         return true;
       }
     }
@@ -83,7 +92,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
   const getMyRanking = () => {
     if (gameInfo?.userHistory) {
       for (let info of gameInfo.userHistory) {
-        if (info?.gitId === gitId) {
+        if (info?.gitId === data.gitId) {
           return info.ranking;
         }
       }

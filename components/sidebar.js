@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import { useMediaQuery } from 'react-responsive';
 import { getCookie, setCookie } from 'cookies-next';
 import Friends from './friend/list';
@@ -8,6 +9,7 @@ import styles from '../styles/components/sidebar.module.scss';
 import { socket } from '../lib/socket';
 
 export default function Sidebar({ menu='friends', players=null, hide=false }) {
+  const { data } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [sidebarMenu, setSidebarMenu] = useState(menu);
   const [friend, setFriend] = useState({});
@@ -22,7 +24,7 @@ export default function Sidebar({ menu='friends', players=null, hide=false }) {
   const onClickFriend = (friend) => {
     setFriend(friend);
     setSidebarMenu('chat');
-    socket.emit('getChatMessage', getCookie('gitId'), friend.gitId);
+    socket.emit('getChatMessage', data.gitId, friend.gitId);
   };
 
   const onClickBack = () => {

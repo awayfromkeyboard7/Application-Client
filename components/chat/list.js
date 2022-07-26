@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
 export default function ChatList({ friend }) {
-  const gitId = getCookie('gitId');
+  const { data } = useSession();
   const chatListRef = useRef();
   const [text, setText] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -19,7 +19,7 @@ export default function ChatList({ friend }) {
       console.log("sendChatMessage message :::: ", message);
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
-        socket.emit('resetUnreadCount', friend.gitId, gitId);
+        socket.emit('resetUnreadCount', friend.gitId, data.gitId);
       }
     });
 
@@ -32,7 +32,7 @@ export default function ChatList({ friend }) {
   useEffect(() => {
     // 나: gitId -> 친구: roomName
     if(friend.gitId) {
-      socket.emit('getChatMessage', gitId, friend.gitId);
+      socket.emit('getChatMessage', data.gitId, friend.gitId);
     }
   }, [friend.gitId]);
 
@@ -54,12 +54,12 @@ export default function ChatList({ friend }) {
 
     const newMessage = {
       text,
-      senderId: gitId,
+      senderId: data.gitId,
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
     if(text !== '') {
-      socket.emit('sendChatMessage', gitId, friend.gitId, newMessage);
+      socket.emit('sendChatMessage', data.gitId, friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
       setText('');
     }
@@ -113,7 +113,7 @@ export default function ChatList({ friend }) {
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
-            chat.senderId === gitId
+            chat.senderId === data.gitId
             ? <ChatItemMine chat={chat} key={chat.senderId} />
             : <ChatItem chat={chat} key={chat.senderId} />
           )

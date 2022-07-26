@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
-import { getCookie, deleteCookie } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import MyInfoBox from '../../components/mypage/myInfo';
@@ -12,7 +12,7 @@ import styles from '../../styles/pages/mypage.module.scss'
 
 export default function MyPage() {
   const router = useRouter();
-  const { status } = useSession();
+  const { data, status } = useSession();
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
   const [ranking, setRanking] = useState([]);
@@ -35,7 +35,7 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        gitId: getCookie('gitId')
+        gitId: data.gitId
       })
     })
       .then(res => res.json())

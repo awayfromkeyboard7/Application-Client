@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   const router = useRouter();  
-  const gitId = getCookie('gitId');
+  const { data } = useSession();
   const [isClick, setIsClick] = useState(isInvite);
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    socket.emit('getUnreadMessage', user.gitId, gitId);
+    socket.emit('getUnreadMessage', user.gitId, data.gitId);
 
     socket.on('unreadMessage', message => {
       if (message['senderId'] === user.gitId) {
@@ -28,7 +28,7 @@ export default function FriendItem({ user, isOnline, onClick, isInvite }) {
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', { gitId, avatarUrl: getCookie('avatarUrl') }, user.gitId);
+      socket.emit('inviteMember', { gitId: data.gitId, avatarUrl: data.avatarUrl }, user.gitId);
       setIsClick(true);
     }
   };
