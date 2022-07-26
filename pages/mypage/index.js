@@ -18,9 +18,11 @@ export default function MyPage() {
   const [ranking, setRanking] = useState([]);
 
   useEffect(() => {
-    getUserInfo();
-    getRanking();
-  }, []);
+    if(data) {
+      getUserInfo();
+      getRanking();
+    }
+  }, [data]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
