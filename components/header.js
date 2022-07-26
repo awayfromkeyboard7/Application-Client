@@ -19,7 +19,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         checkValidUser(true);
         setIsValidUser(true);
         if (router.isReady) {
-          socket.emit('setGitId', data.gitId, data.avatarUrl, router?.query?.mode, router?.query?.roomId);
+          socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
         }
       } else {
         if(data.accessToken) {
@@ -60,7 +60,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         checkValidUser(true);
         setIsValidUser(true);
         if (router.isReady) {
-          socket.emit('setGitId', data.gitId, data.avatarUrl, router?.query?.mode, router?.query?.roomId);
+          socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
         }
       } else {
         deleteCookies();

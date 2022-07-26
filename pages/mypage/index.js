@@ -35,7 +35,7 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        gitId: data.gitId
+        gitId: data?.gitId
       })
     })
       .then(res => res.json())

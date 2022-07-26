@@ -114,7 +114,7 @@ export default function Code() {
       }
 
       if(isDoc === false && router?.query?.gameLogId) {
-        const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${data.gitId}_${router?.query?.gameLogId}`
+        const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${data?.gitId}_${router?.query?.gameLogId}`
         let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop/yjs'] });
         setDoc(yDoc);
         setProvider(yProvider);
@@ -141,7 +141,7 @@ export default function Code() {
     if(countdown === 0 && isTimeout === false) {
       if(router.isReady) {
         if(router?.query?.mode === 'team') {
-          if(router?.query?.roomId === data.gitId) {
+          if(router?.query?.roomId === data?.gitId) {
             timeOutJudge();
           }
         } else {
@@ -215,7 +215,7 @@ export default function Code() {
 
   const checkMyTeam = (team) => {
     for(let member of team) {
-      if(member.gitId === data.gitId) {
+      if(member.gitId === data?.gitId) {
         return true;
       }
     }
@@ -224,7 +224,7 @@ export default function Code() {
   
   const checkValidUser = (userList) => {
     for(let user of userList) {
-      if(user.gitId === data.gitId) {
+      if(user.gitId === data?.gitId) {
         if(0 <= user.passRate) {
           alert('이미 완료된 게임입니다!');
           router.replace('/');
@@ -276,7 +276,7 @@ export default function Code() {
       },
       body: JSON.stringify({ 
         gameId: router.query.gameLogId,
-        gitId: data.gitId,
+        gitId: data?.gitId,
         code,
         language: selectedLang,
         ranking: 0,
@@ -297,7 +297,7 @@ export default function Code() {
       },
       body: JSON.stringify({ 
         gameId: router.query.gameLogId,
-        gitId: data.gitId,
+        gitId: data?.gitId,
         code,
         language: selectedLang,
         ranking: 0,
@@ -317,7 +317,7 @@ export default function Code() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        gitId: data.gitId,
+        gitId: data?.gitId,
         code: code ?? '',
         problemId: problems?._id ?? '',
         language: selectedLang
@@ -380,7 +380,7 @@ export default function Code() {
                   <Editor 
                     doc={doc} 
                     provider={provider} 
-                    gitId={data.gitId} 
+                    gitId={data?.gitId} 
                     selectedLang={selectedLang}
                   />
                 </div>
@@ -437,7 +437,7 @@ export default function Code() {
                             <Editor 
                               doc={doc} 
                               provider={provider} 
-                              gitId={data.gitId} 
+                              gitId={data?.gitId} 
                               selectedLang={selectedLang}
                             />
                           </div>

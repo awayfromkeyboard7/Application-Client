@@ -15,7 +15,7 @@ export default function Main({ header, body }) {
 
   useEffect(() => {
     if(status === 'authenticated') {
-      if(router.pathname === '/' || router.pathname === '/mypage') {
+      if(router.pathname === '/' || router.pathname === '/mypage' || router.pathname === '/code/result') {
         socket.on('comeon', userInfo => {
           setSender(userInfo);
           setIsNoti(true);
@@ -30,12 +30,12 @@ export default function Main({ header, body }) {
 
   const onClickAccept = () => {
     const myInfo = {
-      gitId: data.gitId,
-      avatarUrl: data.avatarUrl
+      gitId: data?.gitId,
+      avatarUrl: data?.avatarUrl
     };
     socket.emit('acceptInvite', sender.gitId, myInfo);
     setIsNoti(false);
-    router.push({
+    router.replace({
       pathname: '/code/wait',
       query: { mode: 'team', roomId: sender.gitId }
     });

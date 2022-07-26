@@ -74,7 +74,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
 
   const checkMyTeam = () => {
     for (let member of gameInfo?.teamA) {
-      if (member.gitId === data.gitId) {
+      if (member.gitId === data?.gitId) {
         return true;
       }
     }
@@ -92,7 +92,7 @@ export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
   const getMyRanking = () => {
     if (gameInfo?.userHistory) {
       for (let info of gameInfo.userHistory) {
-        if (info?.gitId === data.gitId) {
+        if (info?.gitId === data?.gitId) {
           return info.ranking;
         }
       }

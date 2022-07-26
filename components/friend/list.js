@@ -37,7 +37,6 @@ export default function FriendList({ onClick, players=null }) {
     socket.on('getFollowingList', users => {
       setUserList(users);
     });
-    getMyInfo();
 
     return () => {
       socket.off('followingUserConnect');
@@ -45,6 +44,12 @@ export default function FriendList({ onClick, players=null }) {
       socket.off('getFollowingList');
     };
   }, []);
+
+  useEffect(() => {
+    if(data) {
+      getMyInfo();
+    }
+  }, [data]);
 
   useEffect(() => {
     if(searchText === '') {
@@ -67,7 +72,7 @@ export default function FriendList({ onClick, players=null }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        gitId: data.gitId
+        gitId: data?.gitId
       }),
     })
     .then(res => res.json())

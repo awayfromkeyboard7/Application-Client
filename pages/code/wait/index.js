@@ -79,8 +79,8 @@ export default function WaitPage() {
     });
     if (router.isReady) {
       if (router?.query?.mode === 'team'){
-        if (router?.query?.roomId === data.gitId) {
-          socket.emit('createTeam', { gitId: data.gitId, avatarUrl: data.avatarUrl });
+        if (router?.query?.roomId === data?.gitId) {
+          socket.emit('createTeam', { gitId: data?.gitId, avatarUrl: data?.avatarUrl });
         }
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
@@ -98,7 +98,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.emit('getUsers', router?.query?.roomId, data.gitId, data.avatarUrl);
+        socket.emit('getUsers', router?.query?.roomId, data?.gitId, data?.avatarUrl);
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);
@@ -106,7 +106,7 @@ export default function WaitPage() {
         socket.once('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
-        socket.emit('waitGame', { gitId: data.gitId, avatarUrl: data.avatarUrl });
+        socket.emit('waitGame', { gitId: data?.gitId, avatarUrl: data?.avatarUrl });
       }
     }
 
@@ -125,11 +125,11 @@ export default function WaitPage() {
     if(countdown === 5) {
       if (router.isReady) {
         if (router?.query?.mode === 'team'){
-          if(players[0]?.gitId === data.gitId && !isMatching) {
+          if(players[0]?.gitId === data?.gitId && !isMatching) {
             goToMatch();
           }
         } else {
-          if(players[0]?.gitId === data.gitId) {
+          if(players[0]?.gitId === data?.gitId) {
             goToCode();
           }
         }
@@ -212,7 +212,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    socket.emit('goToMatchingRoom', data.gitId);
+    socket.emit('goToMatchingRoom', data?.gitId);
   };
 
   const goToLobby = () => {

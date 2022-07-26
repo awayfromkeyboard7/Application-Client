@@ -11,30 +11,32 @@ export default function ChatList({ friend }) {
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    socket.on('receiveChatMessage', chatLogs => {
-      setChatList(chatLogs);
-    });
+    if(data) {
+      socket.on('receiveChatMessage', chatLogs => {
+        setChatList(chatLogs);
+      });
 
-    socket.on('sendChatMessage', message => {
-      console.log("sendChatMessage message :::: ", message);
-      if (message['senderId'] === friend.gitId) {
-        setChatList(prev => [...prev, message]);
-        socket.emit('resetUnreadCount', friend.gitId, data.gitId);
-      }
-    });
+      socket.on('sendChatMessage', message => {
+        console.log("sendChatMessage message :::: ", message);
+        if (message['senderId'] === friend.gitId) {
+          setChatList(prev => [...prev, message]);
+          socket.emit('resetUnreadCount', friend.gitId, data?.gitId);
+        }
+      });
+    }
 
     return () => {
       socket.off('receiveChatMessage');
       socket.off('sendChatMessage');
     };
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     // 나: gitId -> 친구: roomName
-    if(friend.gitId) {
-      socket.emit('getChatMessage', data.gitId, friend.gitId);
+    if(data && friend.gitId) {
+      socket.emit('getChatMessage', data?.gitId, friend.gitId);
     }
-  }, [friend.gitId]);
+  }, [data, friend.gitId]);
 
   useEffect(() => {
     scrollBottom();
@@ -54,12 +56,12 @@ export default function ChatList({ friend }) {
 
     const newMessage = {
       text,
-      senderId: data.gitId,
+      senderId: data?.gitId,
       messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
     if(text !== '') {
-      socket.emit('sendChatMessage', data.gitId, friend.gitId, newMessage);
+      socket.emit('sendChatMessage', data?.gitId, friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
       setText('');
     }
@@ -113,7 +115,7 @@ export default function ChatList({ friend }) {
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
-            chat.senderId === data.gitId
+            chat.senderId === data?.gitId
             ? <ChatItemMine chat={chat} key={chat.senderId} />
             : <ChatItem chat={chat} key={chat.senderId} />
           )

@@ -52,7 +52,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       <div className={styles.mainFooter}>
         {
           type === 'team'
-          ? <div className={router?.query?.roomId === data.gitId ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>팀전 매칭</div>
+          ? <div className={router?.query?.roomId === data?.gitId ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>팀전 매칭</div>
           : <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
         }
         {

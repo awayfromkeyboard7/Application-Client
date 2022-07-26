@@ -18,8 +18,8 @@ export default function Home() {
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    if(data && data.gitId) {
-      socket.emit('exitWait', data.gitId);
+    if(data && data?.gitId) {
+      socket.emit('exitWait', data?.gitId);
     }
   }, [data]);
 
@@ -37,7 +37,7 @@ export default function Home() {
   }, [isLogin]);
 
   const goToWait = (mode) => {
-    const query = mode === 'team' ? { mode, roomId: data.gitId } : { mode };
+    const query = mode === 'team' ? { mode, roomId: data?.gitId } : { mode };
 
     if(isLogin) {
       router.push({
@@ -59,8 +59,8 @@ export default function Home() {
 
   const onClickAccept = () => {
     const myInfo = {
-      gitId: data.gitId,
-      avatarUrl: data.avatarUrl
+      gitId: data?.gitId,
+      avatarUrl: data?.avatarUrl
     }
     socket.emit('acceptInvite', sender.gitId, myInfo);
     setIsNoti(false);

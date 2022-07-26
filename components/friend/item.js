@@ -12,7 +12,7 @@ export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    socket.emit('getUnreadMessage', user.gitId, data.gitId);
+    socket.emit('getUnreadMessage', user.gitId, data?.gitId);
 
     socket.on('unreadMessage', message => {
       if (message['senderId'] === user.gitId) {
@@ -28,7 +28,7 @@ export default function FriendItem({ user, isOnline, onClick, isInvite }) {
 
   const onClickInvite = () => {
     if(isClick === false) {
-      socket.emit('inviteMember', { gitId: data.gitId, avatarUrl: data.avatarUrl }, user.gitId);
+      socket.emit('inviteMember', { gitId: data?.gitId, avatarUrl: data?.avatarUrl }, user.gitId);
       setIsClick(true);
     }
   };

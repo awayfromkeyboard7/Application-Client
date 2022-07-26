@@ -49,7 +49,7 @@ export default function SoloResultItem({ info, startAt, idx }) {
   };
 
   return (
-    <div className={data.gitId === info.gitId ? styles.resultItemMine : styles.resultItem}>
+    <div className={data?.gitId === info.gitId ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
         <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />

@@ -12,7 +12,7 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
 
   useEffect(() => {
     for(let member of teamInfo) {
-      if(member.gitId === data.gitId) {
+      if(member.gitId === data?.gitId) {
         setIsMyTeam(true);
         break;
       }
