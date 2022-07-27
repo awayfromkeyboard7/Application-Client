@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GameHistory from './gameBox';
+import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogs, ranking, myInfo }) {
@@ -22,7 +22,7 @@ export default function GameHistory({ gameLogs, ranking, myInfo }) {
       <div className={styles.gameHistoryBody}>
       {
         gameLogs?.map(gameLogId =>
-          <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
+          <GameBox gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
         )
       }
       </div>
