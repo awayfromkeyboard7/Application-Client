@@ -49,6 +49,7 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
           )
         }
         </div>
+        <div style={{ width: '3rem' }}/>
         <div className={styles.matchBox}>
           {
             teamB.length === 0
