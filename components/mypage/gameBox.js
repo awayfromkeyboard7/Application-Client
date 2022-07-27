@@ -153,7 +153,7 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
           <div className={styles.gameHistoryMode}>개인전</div>
-          <div className={styles.gameHistoryRank}>{`${getMyRanking()} / ${gameInfo?.userHistory?.length}`}</div>
+          <div className={styles.gameHistoryRank}>{`${getMyRanking()} / ${gameInfo?.userHistory?.length ?? 0}`}</div>
         </div>
         <div className={styles.gameHistoryInfo}>
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
