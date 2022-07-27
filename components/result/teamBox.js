@@ -32,7 +32,7 @@ export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClic
         </div>
       </div>
       <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickPlayAgain}>한번 더 하기</div>
+        {/* <div className={styles.btn} onClick={onClickPlayAgain}>한번 더 하기</div> */}
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
     </div>
