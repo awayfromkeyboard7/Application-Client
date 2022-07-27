@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultItem({ info, startAt, idx }) {
+export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
   const myNickname = getCookie('gitId');
   const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -62,7 +62,7 @@ export default function SoloResultItem({ info, startAt, idx }) {
           : <div className={styles.resultInfos}>
               <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${info.passRate}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(info.submitAt) ?? 'Clashing...'}</div>
-              <div className={styles.text}>💻 {info.language}</div>
+              <div className={styles.codeBtn} onClick={onClickPlayer}>💻 {info.language}</div>
             </div>
         }
       </div>

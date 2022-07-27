@@ -183,7 +183,7 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
             ? <TeamGameWin />
             : <TeamGameLose />
           : <SoloGame />
-}
+      }
       {
         isOpenCode
         && <div className={styles.codeBackground}>

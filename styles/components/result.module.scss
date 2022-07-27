@@ -6,6 +6,7 @@
   flex: 1;
   flex-direction: column;
   background-color: $navy-color;
+  position: relative;
 }
 
 .mainHeader {
@@ -134,13 +135,15 @@
 }
 
 .resultInfos {
+  height: 1.5rem;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .nickname {
   font-size: 1rem;
-  line-height: 1.25rem;
+  line-height: 1.5rem;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -152,12 +155,94 @@
   flex: 1;
   font-size: 1rem;
   font-weight: bold;
-  line-height: 1.25rem;
+  line-height: 1.5rem;
   color: $gray-super-dark-color;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.codeBtn {
+  height: 2rem;
+  padding: 0.25rem;
+  margin: 0;
+  text-align: center;
+  line-height: 1.5rem;
+  color: $white-dark-color;
+  background-color: $gray-dark-color;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-super-dark-color;
+  }
+}
+
+
+.codeBackground {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+}
+
+.codeBox {
+  width: 50vw;
+  height: 70vh;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background-color: $navy-color;
+}
+
+.codeEditor {
+  width: calc(100% - 2.5rem);
+  // flex: 1;
+  color: $white-dark-color;
+  background-color: $navy-color;
+}
+
+// .btn {
+//   // height: 2.5rem;
+//   padding: 0.5rem;
+//   flex-direction: row;
+//   align-items: center;
+//   font-size: 1rem;
+//   font-weight: bold;
+//   line-height: 1rem;
+//   text-align: center;
+//   border-radius: 5px;
+//   color: $purple-color;
+//   background-color: #fff;
+//   outline: none;
+//   // border: $gray-color solid 2px;
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: $white-dark-color;
+//   }
+// }
+
+.CodeMirror { 
+  height: calc(100% - 2.5rem) !important;
+  width:100% !important;
+}
+
+
+.hidden {
+  display: none;
+}
+
 
 .btn {
   height: 2rem;

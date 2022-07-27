@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getCookie } from 'cookies-next';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
+export default function TeamResultItem({ teamInfo, startAt, onClickPlayer, maxLength, idx }) {
   const myNickname = getCookie('gitId');
   const [rankText, setRankText] = useState(teamInfo[0].ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -96,7 +96,7 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
           : <div className={styles.resultInfos}>
               <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${teamInfo[0].passRate}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(teamInfo[0].submitAt) ?? 'Clashing...'}</div>
-              <div className={styles.text}>💻 {teamInfo[0].language}</div>
+              <div className={styles.codeBtn} onClick={onClickPlayer}>💻 {teamInfo[0].language}</div>
             </div>
         }
       </div>
