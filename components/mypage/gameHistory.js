@@ -2,7 +2,7 @@ import { useState } from 'react';
 import GameHistory from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function RankingBox({ gameLogs, ranking, myInfo }) {
+export default function GameHistory({ gameLogs, ranking, myInfo }) {
   const [filter, setFilter] = useState('all');
   
   return (

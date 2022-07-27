@@ -5,7 +5,7 @@ import Code from './code';
 import UserPopup from '../userPopup'
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ gameLogId, filter, ranking, myInfo }) {
+export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
   const gitId = getCookie('gitId');
   const [gameInfo, setGameInfo] = useState({});
   const [isOpenCode, setIsOpenCode] = useState(false);

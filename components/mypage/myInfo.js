@@ -33,7 +33,7 @@ export default function MyInfo({ myInfo, ranking }) {
   };
 
   const getRankImg = (rank, ranking) => {
-    let imgUrl = '/rank/king.png';
+    let imgUrl = '/rank/rank0.png';
     switch (rank) {
       case 0:
         imgUrl = '/rank/rank0.png';
@@ -54,7 +54,7 @@ export default function MyInfo({ myInfo, ranking }) {
         imgUrl = '/rank/rank5.png';
         break;
       default:
-        imgUrl = '/jinny.jpg';
+        imgUrl = '/rank/rank0.png';
     }
     if (ranking == 1) {
       imgUrl = '/rank/king.png';
