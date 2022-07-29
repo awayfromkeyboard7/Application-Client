@@ -70,9 +70,8 @@ export default function MyPage() {
   };
 
   const logout = async () => {
-    deleteCookie('nodeId');
-    deleteCookie('gitId');
-    deleteCookie('avatarUrl');
+    deleteCookie('jwt');
+    deleteCookie('sidebar');
     signOut();
     router.replace('/');
   };
