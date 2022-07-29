@@ -16,10 +16,10 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     if(status === 'authenticated') {
       console.log('data', data);
       if(hasCookie('nodeId')) {
-        checkValidUser(true);
-        setIsValidUser(true);
-        if (router.isReady) {
+        if (router.isReady && data) {
           socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
+          checkValidUser(true);
+          setIsValidUser(true);
         }
       } else {
         if(data.accessToken) {
@@ -57,10 +57,10 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        checkValidUser(true);
-        setIsValidUser(true);
         if (router.isReady) {
           socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
+          checkValidUser(true);
+          setIsValidUser(true);
         }
       } else {
         deleteCookies();

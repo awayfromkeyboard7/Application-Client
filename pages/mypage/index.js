@@ -13,6 +13,7 @@ import styles from '../../styles/pages/mypage.module.scss'
 export default function MyPage() {
   const router = useRouter();
   const { data, status } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
   const [ranking, setRanking] = useState([]);
@@ -45,6 +46,7 @@ export default function MyPage() {
         if (data.success) {
           setMyInfo(data.UserInfo);
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
+          setIsLoading(false);
         }
       })
       .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
@@ -80,7 +82,7 @@ export default function MyPage() {
       header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
         <>
-          {status !== 'authenticated' && <Loading />}
+          {status !== 'authenticated' && isLoading && <Loading />}
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
               <MyInfoBox myInfo={myInfo} ranking={ranking} />

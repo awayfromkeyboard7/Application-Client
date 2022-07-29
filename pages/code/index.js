@@ -199,9 +199,9 @@ export default function Code() {
       case 'Python':
         setCodeTitle('solution.py');
         break;
-      case 'C++':
-        setCodeTitle('solution.cpp');
-        break;
+      // case 'C++':
+      //   setCodeTitle('solution.cpp');
+      //   break;
     }
   };
 
@@ -465,7 +465,7 @@ export default function Code() {
               </ReflexContainer>
           }
           <div className={isSelectOpen ? isMobile ? styles.selectListMobile : styles.selectList : styles.hidden}>
-            <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div>
+            {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
             <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
             <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
           </div>

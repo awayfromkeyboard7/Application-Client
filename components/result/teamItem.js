@@ -94,7 +94,7 @@ export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
           teamInfo[0].passRate < 0
           ? <div className={styles.text}>Clashing...</div>
           : <div className={styles.resultInfos}>
-              <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${teamInfo[0].passRate}%`}</div>
+              <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${parseInt(teamInfo[0].passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(teamInfo[0].submitAt) ?? 'Clashing...'}</div>
               <div className={styles.text}>💻 {teamInfo[0].language}</div>
             </div>

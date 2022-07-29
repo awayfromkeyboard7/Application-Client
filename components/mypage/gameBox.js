@@ -18,6 +18,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
 
   useEffect(() => {
     if (idx < gameLogIdx && !isGetGameInfo) {
+    // if(!isGetGameInfo) {
       getGameInfo();
     }
   }, [gameLogIdx, idx, isGetGameInfo]);

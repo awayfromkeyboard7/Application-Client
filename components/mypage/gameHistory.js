@@ -5,6 +5,7 @@ import styles from '../../styles/pages/mypage.module.scss';
 export default function GameHistory({ gameLogs, ranking, myInfo }) {
   const listRef = useRef();
   const [gameLogIdx, setGameLogIdx] = useState(10);
+  // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
   const [filter, setFilter] = useState('all');
 
   const onScroll = (e) => {

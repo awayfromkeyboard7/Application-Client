@@ -60,7 +60,7 @@ export default function SoloResultItem({ info, startAt, idx }) {
           info.passRate < 0
           ? <div className={styles.text}>Clashing...</div>
           : <div className={styles.resultInfos}>
-              <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${info.passRate}%`}</div>
+              <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${parseInt(info.passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(info.submitAt) ?? 'Clashing...'}</div>
               <div className={styles.text}>💻 {info.language}</div>
             </div>

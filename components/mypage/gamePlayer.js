@@ -34,7 +34,7 @@ export default function GamePlayer({ info, onClickPlayer, myInfo=null }) {
       </div>
       <div className={styles.gameHistoryPlayerInfoBox}>
         <div className={styles.gameHistoryPlayerNickname}>{myInfo ? myInfo.gitId : info.gitId}</div>
-        <div className={styles.gameHistoryPlayerPassRate}>{`✅ ${info.passRate}%`}</div>
+        <div className={styles.gameHistoryPlayerPassRate}>{`✅ ${parseInt(info.passRate)}%`}</div>
         <div className={styles.gameHistoryPlayerLanguage} onClick={onClickPlayer}>{info.language}</div>
       </div>
     </div>
