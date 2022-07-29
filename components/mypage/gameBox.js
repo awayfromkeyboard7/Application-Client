@@ -12,8 +12,10 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
+  
+  const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
-  const [winnerId, setWinnerId] = useState('');
+  
   const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
@@ -59,6 +61,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
+  };
+
+  const onClickId = (player) => {
+    setTatgetId(player.gitId);
+    setIsPopup(true);
   };
 
   const checkTeamGameWin = () => {
@@ -118,13 +125,13 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
           </div>
@@ -146,13 +153,13 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
           </div>
@@ -174,13 +181,13 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.gameHistoryPlayersCol}>
             {
-              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
           </div>
@@ -210,8 +217,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
       {
         isPopup
         && <UserPopup
-          targetGitId={winnerId}
-          ranking={ranking}
+          targetGitId={targetId}
           onClick={() => { setIsPopup(false) }}
           myInfo={myInfo}
         />
