@@ -33,10 +33,10 @@ export default function ChatList({ friend }) {
 
   useEffect(() => {
     // 나: gitId -> 친구: roomName
-    if(data && friend.gitId) {
+    if(data?.gitId && friend.gitId) {
       socket.emit('getChatMessage', data?.gitId, friend.gitId);
     }
-  }, [data, friend.gitId]);
+  }, [data?.gitId, friend.gitId]);
 
   useEffect(() => {
     scrollBottom();
