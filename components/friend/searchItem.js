@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 

@@ -33,9 +33,8 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   }, [status, router.isReady]);
 
   const deleteCookies = () => {
-    deleteCookie('nodeId');
-    deleteCookie('gitId');
-    deleteCookie('avatarUrl');
+    deleteCookie('jwt');
+    deleteCookie('sidebar');
     checkValidUser(false);
     setIsValidUser(false);
   };
