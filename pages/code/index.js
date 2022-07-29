@@ -125,7 +125,7 @@ export default function Code() {
         }
       }
     }
-  }, [router]);
+  }, [router.isReady, data?.gitId]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
