@@ -29,7 +29,7 @@ export default function ChatList({ friend }) {
       socket.off('receiveChatMessage');
       socket.off('sendChatMessage');
     };
-  }, [data]);
+  }, [data?.gitId]);
 
   useEffect(() => {
     // 나: gitId -> 친구: roomName

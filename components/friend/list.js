@@ -49,7 +49,7 @@ export default function FriendList({ onClick, players=null }) {
     if(data) {
       getMyInfo();
     }
-  }, [data]);
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(searchText === '') {

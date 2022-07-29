@@ -30,7 +30,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     } else if(status === 'unauthenticated') {
       deleteCookies();
     }
-  }, [status, data, router.isReady]);
+  }, [status, data?.gitId, router.isReady]);
 
   const deleteCookies = () => {
     deleteCookie('nodeId');

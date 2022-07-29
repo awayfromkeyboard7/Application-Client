@@ -18,10 +18,10 @@ export default function Home() {
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    if(data && data?.gitId) {
+    if(data && data.gitId) {
       socket.emit('exitWait', data?.gitId);
     }
-  }, [data]);
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(isLogin) {

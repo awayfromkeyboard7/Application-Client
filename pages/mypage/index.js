@@ -23,7 +23,7 @@ export default function MyPage() {
       getUserInfo();
       getRanking();
     }
-  }, [data]);
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
