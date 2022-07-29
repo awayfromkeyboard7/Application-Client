@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultItem({ info, startAt, idx }) {
+export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
   const { data } = useSession();
   const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
