@@ -20,7 +20,7 @@ export default function ChatList({ friend }) {
         console.log("sendChatMessage message :::: ", message);
         if (message['senderId'] === friend.gitId) {
           setChatList(prev => [...prev, message]);
-          socket.emit('resetUnreadCount', friend.gitId, data?.gitId);
+          socket.emit('resetUnreadCount', friend.gitId);
         }
       });
     }
@@ -34,7 +34,7 @@ export default function ChatList({ friend }) {
   useEffect(() => {
     // 나: gitId -> 친구: roomName
     if(data?.gitId && friend.gitId) {
-      socket.emit('getChatMessage', data?.gitId, friend.gitId);
+      socket.emit('getChatMessage', friend.gitId);
     }
   }, [data?.gitId, friend.gitId]);
 
@@ -61,7 +61,7 @@ export default function ChatList({ friend }) {
       sendAt: new Date().getTime()
     }
     if(text !== '') {
-      socket.emit('sendChatMessage', data?.gitId, friend.gitId, newMessage);
+      socket.emit('sendChatMessage', friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
       setText('');
     }

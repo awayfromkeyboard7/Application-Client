@@ -19,7 +19,7 @@ export default function Home() {
 
   useEffect(() => {
     if(data && data.gitId) {
-      socket.emit('exitWait', data?.gitId);
+      socket.emit('exitWait');
     }
   }, [data?.gitId]);
 

@@ -29,11 +29,7 @@ export default function Main({ header, body }) {
   }, [status, router]);
 
   const onClickAccept = () => {
-    const myInfo = {
-      gitId: data?.gitId,
-      avatarUrl: data?.avatarUrl
-    };
-    socket.emit('acceptInvite', sender.gitId, myInfo);
+    socket.emit('acceptInvite', sender.gitId);
     setIsNoti(false);
     router.replace({
       pathname: '/code/wait',

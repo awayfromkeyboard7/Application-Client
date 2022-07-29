@@ -38,7 +38,7 @@ export default function MatchPage() {
       });
       socket.emit('getTeamInfo', router?.query?.roomId);
       if (router.query?.roomId === data?.gitId) {
-        socket.emit('startMatching', data?.gitId);
+        socket.emit('startMatching');
       }
     }
 
@@ -78,10 +78,10 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitWait', data?.gitId);
+      socket.emit('exitWait');
       router.replace('/');
     } else {
-      socket.emit('exitWait', data?.gitId);
+      socket.emit('exitWait');
       router.replace('/');
     }
   };

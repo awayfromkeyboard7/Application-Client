@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { hasCookie, deleteCookie } from 'cookies-next';
+import { hasCookie, getCookie, deleteCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import Loading from './loading';
 import styles from '../styles/components/header.module.scss';
@@ -15,9 +15,9 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   useEffect(() => {
     if(status === 'authenticated') {
       console.log('data', data);
-      if(hasCookie('nodeId')) {
-        if (router.isReady && data) {
-          socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
+      if(hasCookie('jwt')) {
+        if (router.isReady) {
+          socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
           checkValidUser(true);
           setIsValidUser(true);
         }
@@ -30,7 +30,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     } else if(status === 'unauthenticated') {
       deleteCookies();
     }
-  }, [status, data?.gitId, router.isReady]);
+  }, [status, router.isReady]);
 
   const deleteCookies = () => {
     deleteCookie('nodeId');
@@ -58,7 +58,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     .then(data => {
       if(data.success) {
         if (router.isReady) {
-          socket.emit('setGitId', data?.gitId, data?.avatarUrl, router?.query?.mode, router?.query?.roomId);
+          socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
           checkValidUser(true);
           setIsValidUser(true);
         }

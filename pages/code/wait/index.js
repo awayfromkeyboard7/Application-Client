@@ -80,7 +80,7 @@ export default function WaitPage() {
     if (router.isReady) {
       if (router?.query?.mode === 'team'){
         if (router?.query?.roomId === data?.gitId) {
-          socket.emit('createTeam', { gitId: data?.gitId, avatarUrl: data?.avatarUrl });
+          socket.emit('createTeam');
         }
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
@@ -98,7 +98,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.emit('getUsers', router?.query?.roomId, data?.gitId, data?.avatarUrl);
+        socket.emit('getUsers', router?.query?.roomId);
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);
@@ -106,7 +106,7 @@ export default function WaitPage() {
         socket.once('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
-        socket.emit('waitGame', { gitId: data?.gitId, avatarUrl: data?.avatarUrl });
+        socket.emit('waitGame');
       }
     }
 
@@ -212,7 +212,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    socket.emit('goToMatchingRoom', data?.gitId);
+    socket.emit('goToMatchingRoom');
   };
 
   const goToLobby = () => {
