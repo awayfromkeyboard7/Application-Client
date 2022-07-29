@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
-  const myNickname = getCookie('gitId');
+export default function SoloResultItem({ info, startAt, idx }) {
+  const { data } = useSession();
   const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
 
@@ -49,7 +49,7 @@ export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
   };
 
   return (
-    <div className={myNickname === info.gitId ? styles.resultItemMine : styles.resultItem}>
+    <div className={data?.gitId === info.gitId ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={styles.profileIcon}>
         <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
@@ -60,7 +60,7 @@ export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
           info.passRate < 0
           ? <div className={styles.text}>Clashing...</div>
           : <div className={styles.resultInfos}>
-              <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${info.passRate}%`}</div>
+              <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${parseInt(info.passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(info.submitAt) ?? 'Clashing...'}</div>
               <div className={styles.codeBtn} onClick={onClickPlayer}>💻 {info.language}</div>
             </div>

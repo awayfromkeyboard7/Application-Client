@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultItem({ teamInfo, startAt, onClickPlayer, maxLength, idx }) {
-  const myNickname = getCookie('gitId');
+export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
+  const { data } = useSession();
   const [rankText, setRankText] = useState(teamInfo[0].ranking);
   const [isEmoji, setIsEmoji] = useState(false);
   const [isMyTeam, setIsMyTeam] = useState(false);
@@ -12,7 +12,7 @@ export default function TeamResultItem({ teamInfo, startAt, onClickPlayer, maxLe
 
   useEffect(() => {
     for(let member of teamInfo) {
-      if(member.gitId === myNickname) {
+      if(member.gitId === data?.gitId) {
         setIsMyTeam(true);
         break;
       }
@@ -94,7 +94,7 @@ export default function TeamResultItem({ teamInfo, startAt, onClickPlayer, maxLe
           teamInfo[0].passRate < 0
           ? <div className={styles.text}>Clashing...</div>
           : <div className={styles.resultInfos}>
-              <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${teamInfo[0].passRate}%`}</div>
+              <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${parseInt(teamInfo[0].passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(teamInfo[0].submitAt) ?? 'Clashing...'}</div>
               <div className={styles.codeBtn} onClick={onClickPlayer}>💻 {teamInfo[0].language}</div>
             </div>

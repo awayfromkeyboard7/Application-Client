@@ -6,7 +6,6 @@ import { useMediaQuery } from 'react-responsive';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-import { getCookie } from 'cookies-next';
 import { useBeforeunload } from 'react-beforeunload';
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../lib/peer'));
@@ -24,8 +23,7 @@ import styles from '../../styles/pages/code.module.scss';
 
 export default function Code() {
   const router = useRouter();  
-  const { status } = useSession();
-  const gitId = getCookie('gitId');
+  const { data, status } = useSession();
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
@@ -116,7 +114,7 @@ export default function Code() {
       }
 
       if(isDoc === false && router?.query?.gameLogId) {
-        const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${gitId}_${router?.query?.gameLogId}`
+        const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${data?.gitId}_${router?.query?.gameLogId}`
         let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop/yjs'] });
         setDoc(yDoc);
         setProvider(yProvider);
@@ -143,7 +141,7 @@ export default function Code() {
     if(countdown === 0 && isTimeout === false) {
       if(router.isReady) {
         if(router?.query?.mode === 'team') {
-          if(router?.query?.roomId === gitId) {
+          if(router?.query?.roomId === data?.gitId) {
             timeOutJudge();
           }
         } else {
@@ -201,9 +199,9 @@ export default function Code() {
       case 'Python':
         setCodeTitle('solution.py');
         break;
-      case 'C++':
-        setCodeTitle('solution.cpp');
-        break;
+      // case 'C++':
+      //   setCodeTitle('solution.cpp');
+      //   break;
     }
   };
 
@@ -217,7 +215,7 @@ export default function Code() {
 
   const checkMyTeam = (team) => {
     for(let member of team) {
-      if(member.gitId === gitId) {
+      if(member.gitId === data?.gitId) {
         return true;
       }
     }
@@ -226,7 +224,7 @@ export default function Code() {
   
   const checkValidUser = (userList) => {
     for(let user of userList) {
-      if(user.gitId === gitId) {
+      if(user.gitId === data?.gitId) {
         if(0 <= user.passRate) {
           alert('이미 완료된 게임입니다!');
           router.replace('/');
@@ -278,7 +276,7 @@ export default function Code() {
       },
       body: JSON.stringify({ 
         gameId: router.query.gameLogId,
-        gitId,
+        gitId: data?.gitId,
         code,
         language: selectedLang,
         ranking: 0,
@@ -299,7 +297,7 @@ export default function Code() {
       },
       body: JSON.stringify({ 
         gameId: router.query.gameLogId,
-        gitId,
+        gitId: data?.gitId,
         code,
         language: selectedLang,
         ranking: 0,
@@ -319,7 +317,7 @@ export default function Code() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        gitId,
+        gitId: data?.gitId,
         code: code ?? '',
         problemId: problems?._id ?? '',
         language: selectedLang
@@ -382,7 +380,7 @@ export default function Code() {
                   <Editor 
                     doc={doc} 
                     provider={provider} 
-                    gitId={gitId} 
+                    gitId={data?.gitId} 
                     selectedLang={selectedLang}
                   />
                 </div>
@@ -439,7 +437,7 @@ export default function Code() {
                             <Editor 
                               doc={doc} 
                               provider={provider} 
-                              gitId={gitId} 
+                              gitId={data?.gitId} 
                               selectedLang={selectedLang}
                             />
                           </div>
@@ -467,7 +465,7 @@ export default function Code() {
               </ReflexContainer>
           }
           <div className={isSelectOpen ? isMobile ? styles.selectListMobile : styles.selectList : styles.hidden}>
-            <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div>
+            {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
             <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
             <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import Item from './item';
@@ -9,6 +10,7 @@ import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendList({ onClick, players=null }) {
   const router = useRouter();
+  const { data } = useSession();
   const [myInfo, setMyInfo] = useState([]);
   const [userList, setUserList] = useState([]);
   const [searchList, setSearchList] = useState([]);
@@ -35,7 +37,6 @@ export default function FriendList({ onClick, players=null }) {
     socket.on('getFollowingList', users => {
       setUserList(users);
     });
-    getMyInfo();
 
     return () => {
       socket.off('followingUserConnect');
@@ -43,6 +44,12 @@ export default function FriendList({ onClick, players=null }) {
       socket.off('getFollowingList');
     };
   }, []);
+
+  useEffect(() => {
+    if(data) {
+      getMyInfo();
+    }
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(searchText === '') {
@@ -53,7 +60,9 @@ export default function FriendList({ onClick, players=null }) {
   }, [searchText]);
 
   const getFriends = async() => {
-    socket.emit('getFollowingList', getCookie('nodeId'));
+    if(getCookie('jwt')) {
+      socket.emit('getFollowingList');
+    }
   };
 
   const getMyInfo = async() => {
@@ -63,7 +72,7 @@ export default function FriendList({ onClick, players=null }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        gitId: getCookie('gitId')
+        gitId: data?.gitId
       }),
     })
     .then(res => res.json())

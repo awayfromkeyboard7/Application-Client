@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
@@ -12,8 +11,7 @@ import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function MatchPage() {
   const router = useRouter();  
-  const { status } = useSession();
-  const gitId = getCookie('gitId');
+  const { data, status } = useSession();
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
   const [teamA, setTeamA] = useState([]);
@@ -39,8 +37,8 @@ export default function MatchPage() {
         setRoomId(roomId);
       });
       socket.emit('getTeamInfo', router?.query?.roomId);
-      if (router.query?.roomId === gitId) {
-        socket.emit('startMatching', gitId);
+      if (router.query?.roomId === data?.gitId) {
+        socket.emit('startMatching');
       }
     }
 
@@ -80,10 +78,10 @@ export default function MatchPage() {
 
   const goToLobby = () => {
     if (router?.query?.mode === 'team') {
-      socket.emit('exitWait', gitId);
+      socket.emit('exitWait');
       router.replace('/');
     } else {
-      socket.emit('exitWait', gitId);
+      socket.emit('exitWait');
       router.replace('/');
     }
   };

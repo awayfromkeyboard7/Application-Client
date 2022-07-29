@@ -14,15 +14,18 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
 
   useEffect(() => {
     if(status === 'authenticated') {
-      if(hasCookie('gitId')) {
-        checkValidUser(true);
-        setIsValidUser(true);
+      console.log('data', data);
+      if(hasCookie('jwt')) {
         if (router.isReady) {
-          socket.emit('setGitId', getCookie('gitId'), getCookie('avatarUrl'), router?.query?.mode, router?.query?.roomId);
-          // socket.emit('setGitId', getCookie('gitId'));
+          socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
+          checkValidUser(true);
+          setIsValidUser(true);
         }
       } else {
-        sendAccessToken(data.accessToken);
+        if(data.accessToken) {
+          console.log('data accesstoken header', data.accessToken);
+          sendAccessToken(data.accessToken);
+        }
       }
     } else if(status === 'unauthenticated') {
       deleteCookies();
@@ -30,9 +33,8 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   }, [status, router.isReady]);
 
   const deleteCookies = () => {
-    deleteCookie('nodeId');
-    deleteCookie('gitId');
-    deleteCookie('avatarUrl');
+    deleteCookie('jwt');
+    deleteCookie('sidebar');
     checkValidUser(false);
     setIsValidUser(false);
   };
@@ -54,12 +56,10 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        checkValidUser(true);
-        setIsValidUser(true);
         if (router.isReady) {
-          socket.emit('setGitId', getCookie('gitId'), getCookie('avatarUrl'), router?.query?.mode, router?.query?.roomId);
-          // socket.emit('setGitId', getCookie('gitId'), router?.query?.mode);
-          // socket.emit('setGitId', getCookie('gitId'));
+          socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
+          checkValidUser(true);
+          setIsValidUser(true);
         }
       } else {
         deleteCookies();

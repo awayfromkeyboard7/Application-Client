@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import { socket } from '../lib/socket';
 import Layout from '../components/layouts/main';
 import Header from '../components/header';
@@ -11,14 +11,17 @@ import Notification from '../components/notification';
 
 export default function Home() {
   const router = useRouter();  
+  const { data } = useSession();
   const [isLogin, setIsLogin] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    socket.emit('exitWait', getCookie('gitId'));
-  }, []);
+    if(data && data.gitId) {
+      socket.emit('exitWait');
+    }
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(isLogin) {
@@ -34,7 +37,7 @@ export default function Home() {
   }, [isLogin]);
 
   const goToWait = (mode) => {
-    const query = mode === 'team' ? { mode, roomId: getCookie('gitId') } : { mode };
+    const query = mode === 'team' ? { mode, roomId: data?.gitId } : { mode };
 
     if(isLogin) {
       router.push({
@@ -55,11 +58,7 @@ export default function Home() {
   };
 
   const onClickAccept = () => {
-    const myInfo = {
-      gitId: getCookie('gitId'),
-      avatarUrl: getCookie('avatarUrl')
-    }
-    socket.emit('acceptInvite', sender.gitId, myInfo);
+    socket.emit('acceptInvite', sender.gitId);
     setIsNoti(false);
     router.push({
       pathname: '/code/wait',

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import Item from './item';
 import styles from '../../styles/components/wait.module.scss';
 
 export default function WaitBox({ type, players, countdown, onClickPlayAgain, onClickGoToMain }) {
   const router = useRouter();
+  const { data } = useSession();
   const [userLine1, setUserLine1] = useState([]);
   const [userLine2, setUserLine2] = useState([]);
 
@@ -51,7 +52,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       <div className={styles.mainFooter}>
         {
           type === 'team'
-          ? <div className={router?.query?.roomId === getCookie('gitId') ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>팀전 매칭</div>
+          ? <div className={router?.query?.roomId === data?.gitId ? styles.btn : styles.btnInactive} onClick={onClickPlayAgain}>팀전 매칭</div>
           : <div className={styles.btn} onClick={onClickPlayAgain}>게임 시작</div>
         }
         {

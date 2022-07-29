@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendItem({ user, myInfo, isOnline, onClick }) {
-  const nodeId = getCookie('nodeId');
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
@@ -18,12 +16,12 @@ export default function FriendItem({ user, myInfo, isOnline, onClick }) {
   }, [myInfo]);
 
   const onClickFollow = () => {
-    socket.emit('followMember', nodeId, user.gitId);
+    socket.emit('followMember', user.gitId);
     setIsFollow(true);
   };
 
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', nodeId, user.gitId);
+    socket.emit('unFollowMember', user.gitId);
     setIsFollow(false);
   };
 

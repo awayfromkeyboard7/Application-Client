@@ -1,26 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
-import { getCookie, deleteCookie } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import MyInfoBox from '../../components/mypage/myInfo';
 import RankingBox from '../../components/mypage/ranking';
-import GameHistoryBox from '../../components/mypage/gameHistory';
+import GameHistory from '../../components/mypage/gameHistory';
 import Loading from '../../components/loading';
 import styles from '../../styles/pages/mypage.module.scss'
 
 export default function MyPage() {
   const router = useRouter();
-  const { status } = useSession();
+  const { data, status } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
   const [ranking, setRanking] = useState([]);
 
   useEffect(() => {
-    getUserInfo();
-    getRanking();
-  }, []);
+    if(data) {
+      getUserInfo();
+      getRanking();
+    }
+  }, [data?.gitId]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -35,7 +38,7 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        gitId: getCookie('gitId')
+        gitId: data?.gitId
       })
     })
       .then(res => res.json())
@@ -43,6 +46,7 @@ export default function MyPage() {
         if (data.success) {
           setMyInfo(data.UserInfo);
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
+          setIsLoading(false);
         }
       })
       .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
@@ -66,9 +70,8 @@ export default function MyPage() {
   };
 
   const logout = async () => {
-    deleteCookie('nodeId');
-    deleteCookie('gitId');
-    deleteCookie('avatarUrl');
+    deleteCookie('jwt');
+    deleteCookie('sidebar');
     signOut();
     router.replace('/');
   };
@@ -78,13 +81,13 @@ export default function MyPage() {
       header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
         <>
-          {status !== 'authenticated' && <Loading />}
+          {status !== 'authenticated' && isLoading && <Loading />}
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
               <MyInfoBox myInfo={myInfo} ranking={ranking} />
               <RankingBox ranking={ranking}/>
             </div>
-            <GameHistoryBox gameLogs={gameLogs} ranking={ranking} myInfo={myInfo} />
+            <GameHistory gameLogs={gameLogs} ranking={ranking} myInfo={myInfo} />
           </div>
         </>
       }

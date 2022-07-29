@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { getCookie } from 'cookies-next';
 import { socket } from '../../../lib/socket';
 import Layout from '../../../components/layouts/main';
 import Header from '../../../components/header';
@@ -12,9 +11,7 @@ import CheckValidAccess from '../../../components/checkValidAccess';
 
 export default function WaitPage() {
   const router = useRouter();
-  const { status } = useSession();
-  const gitId = getCookie('gitId');
-  const avatarUrl = getCookie('avatarUrl');
+  const { data, status } = useSession();
   const defaultUsers = [
     {
       id: 1,
@@ -82,8 +79,8 @@ export default function WaitPage() {
     });
     if (router.isReady) {
       if (router?.query?.mode === 'team'){
-        if (router?.query?.roomId === gitId) {
-          socket.emit('createTeam', { gitId, avatarUrl });
+        if (router?.query?.roomId === data?.gitId) {
+          socket.emit('createTeam');
         }
         socket.on('enterNewUserToTeam', (users) => {
           addPlayer(users);
@@ -101,7 +98,7 @@ export default function WaitPage() {
           })
         });
 
-        socket.emit('getUsers', router?.query?.roomId, gitId, avatarUrl);
+        socket.emit('getUsers', router?.query?.roomId);
       } else {
         socket.on('enterNewUser', (users) => {
           addPlayer(users);
@@ -109,7 +106,7 @@ export default function WaitPage() {
         socket.once('startGame', (gameLogId) => {
           setGameLogId(gameLogId);
         });
-        socket.emit('waitGame', { gitId, avatarUrl });
+        socket.emit('waitGame');
       }
     }
 
@@ -128,11 +125,11 @@ export default function WaitPage() {
     if(countdown === 5) {
       if (router.isReady) {
         if (router?.query?.mode === 'team'){
-          if(players[0]?.gitId === gitId && !isMatching) {
+          if(players[0]?.gitId === data?.gitId && !isMatching) {
             goToMatch();
           }
         } else {
-          if(players[0]?.gitId === gitId) {
+          if(players[0]?.gitId === data?.gitId) {
             goToCode();
           }
         }
@@ -215,7 +212,7 @@ export default function WaitPage() {
   };
 
   const goToMatch = () => {
-    socket.emit('goToMatchingRoom', gitId);
+    socket.emit('goToMatchingRoom');
   };
 
   const goToLobby = () => {

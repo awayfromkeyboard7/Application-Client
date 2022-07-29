@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { getCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/chat.module.scss';
 
 export default function ChatList({ friend }) {
-  const gitId = getCookie('gitId');
+  const { data } = useSession();
   const chatListRef = useRef();
   const [text, setText] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -19,7 +19,7 @@ export default function ChatList({ friend }) {
       console.log("sendChatMessage message :::: ", message);
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
-        socket.emit('resetUnreadCount', friend.gitId, gitId);
+        socket.emit('resetUnreadCount', friend.gitId);
       }
     });
 
@@ -32,7 +32,7 @@ export default function ChatList({ friend }) {
   useEffect(() => {
     // 나: gitId -> 친구: roomName
     if(friend.gitId) {
-      socket.emit('getChatMessage', gitId, friend.gitId);
+      socket.emit('getChatMessage', friend.gitId);
     }
   }, [friend.gitId]);
 
@@ -41,7 +41,7 @@ export default function ChatList({ friend }) {
   }, [chatList]);
 
   const scrollBottom = () => {
-    const {scrollHeight, clientHeight} = chatListRef.current;
+    const { scrollHeight, clientHeight } = chatListRef.current;
     chatListRef.current.scrollTop = scrollHeight - clientHeight;
   };
 
@@ -54,12 +54,11 @@ export default function ChatList({ friend }) {
 
     const newMessage = {
       text,
-      senderId: gitId,
-      messageId: Math.floor(Math.random() * 10000),
+      senderId: data?.gitId,
       sendAt: new Date().getTime()
     }
     if(text !== '') {
-      socket.emit('sendChatMessage', gitId, friend.gitId, newMessage);
+      socket.emit('sendChatMessage', friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
       setText('');
     }
@@ -113,9 +112,9 @@ export default function ChatList({ friend }) {
         <div className={styles.body} ref={chatListRef}>
         {
           chatList?.map(chat => 
-            chat.senderId === gitId
-            ? <ChatItemMine chat={chat} key={chat.senderId} />
-            : <ChatItem chat={chat} key={chat.senderId} />
+            chat.senderId === data?.gitId
+            ? <ChatItemMine chat={chat} key={`${chat.text}_${chat.sendAt}`} />
+            : <ChatItem chat={chat} key={`${chat.text}_${chat.sendAt}`} />
           )
         }
         </div>
