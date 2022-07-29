@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultItem({ teamInfo, startAt, maxLength, idx }) {
+export default function TeamResultItem({ teamInfo, startAt, onClickPlayer, maxLength, idx }) {
   const { data } = useSession();
   const [rankText, setRankText] = useState(teamInfo[0].ranking);
   const [isEmoji, setIsEmoji] = useState(false);
