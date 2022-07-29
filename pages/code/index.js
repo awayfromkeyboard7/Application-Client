@@ -108,7 +108,7 @@ export default function Code() {
   }, [router.isReady]);
 
   useEffect(() => {
-    if(router.isReady) {
+    if(router.isReady && data?.gitId) {
       if(router?.query?.gameLogId && router.query.gameLogId !== '') {
         getProblem();
       }
