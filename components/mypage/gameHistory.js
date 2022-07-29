@@ -1,12 +1,25 @@
-import { useState } from 'react';
-import { FixedSizeList as List } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
-import GameHistory from './gameBox';
+import { useState, useEffect, useRef } from 'react';
+import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogs, ranking, myInfo }) {
+  const listRef = useRef();
+  const [gameLogIdx, setGameLogIdx] = useState(10);
   const [filter, setFilter] = useState('all');
-  
+
+  const onScroll = (e) => {
+    const { scrollHeight, clientHeight, scrollTop } = e.target;
+    // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
+    if((scrollHeight - scrollTop) < clientHeight + 180) {
+      setGameLogIdx(prev => {
+        if(prev + 5 < gameLogs.length) {
+          return prev + 5;
+        }
+        return gameLogs.length;
+      });
+    }
+  };
+
   return (
     <div className={styles.historyTab}>
       <div className={styles.gameHistoryHeader}>
@@ -21,10 +34,10 @@ export default function GameHistory({ gameLogs, ranking, myInfo }) {
           </div>
         </div>
       </div>
-      <div className={styles.gameHistoryBody}>
+      <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
       {
-        gameLogs?.map(gameLogId =>
-          <GameHistory gameLogId={gameLogId} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
+        gameLogs?.map((gameLogId, idx) => 
+          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
         )
       }
       </div>

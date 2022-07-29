@@ -1,38 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GamePlayer({ info, onClickPlayer, myInfo=null }) {
-  const [rankText, setRankText] = useState(info.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
+  const ranking = useMemo(() => convertRank(), [info.ranking]);
 
-  useEffect(() => {
+  function convertRank() {
     switch(info.ranking) {
       case 0:
-        setRankText('-');
         setIsEmoji(false);
-        break;
+        return '-';
       case 1:
-        setRankText('🥇');
         setIsEmoji(true);
-        break;
+        return '🥇';
       case 2:
-        setRankText('🥈');
         setIsEmoji(true);
-        break;
+        return '🥈';
       case 3:
-        setRankText('🥉');
         setIsEmoji(true);
-        break;
+        return '🥉'
       default:
-        setRankText(info.ranking);
-        break;
+        setIsEmoji(false);
+        return info.ranking;
     }
-  }, [info.ranking]);
+  };
 
   return (
     <div className={styles.gameHistoryPlayerItem}>
-      <div className={isEmoji ? styles.rankEmoji : styles.gameHistoryPlayerRanking}>{rankText}</div>
+      <div className={isEmoji ? styles.rankEmoji : styles.gameHistoryPlayerRanking}>{ranking}</div>
       <div className={styles.gameHistoryPlayerProfileImage}>
         <Image src={myInfo ? myInfo.avatarUrl : info.avatarUrl} width={20} height={20} alt="profile" className={styles.gameHistoryPlayerProfileImage} />
       </div>

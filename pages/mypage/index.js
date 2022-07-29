@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { deleteCookie } from 'cookies-next';
@@ -6,7 +6,7 @@ import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import MyInfoBox from '../../components/mypage/myInfo';
 import RankingBox from '../../components/mypage/ranking';
-import GameHistoryBox from '../../components/mypage/gameHistory';
+import GameHistory from '../../components/mypage/gameHistory';
 import Loading from '../../components/loading';
 import styles from '../../styles/pages/mypage.module.scss'
 
@@ -86,7 +86,7 @@ export default function MyPage() {
               <MyInfoBox myInfo={myInfo} ranking={ranking} />
               <RankingBox ranking={ranking}/>
             </div>
-            <GameHistoryBox gameLogs={gameLogs} ranking={ranking} myInfo={myInfo} />
+            <GameHistory gameLogs={gameLogs} ranking={ranking} myInfo={myInfo} />
           </div>
         </>
       }

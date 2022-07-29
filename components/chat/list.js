@@ -43,7 +43,7 @@ export default function ChatList({ friend }) {
   }, [chatList]);
 
   const scrollBottom = () => {
-    const {scrollHeight, clientHeight} = chatListRef.current;
+    const { scrollHeight, clientHeight } = chatListRef.current;
     chatListRef.current.scrollTop = scrollHeight - clientHeight;
   };
 

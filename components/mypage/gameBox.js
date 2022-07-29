@@ -1,26 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
 import Code from './code';
 import UserPopup from '../userPopup'
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
+export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, myInfo }) {
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
+  const [isGetGameInfo, setIsGetGameInfo] = useState(false);
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
   const [isPopup, setIsPopup] = useState(false);
   const [winnerId, setWinnerId] = useState('');
+  const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
-    if (gameLogId) {
+    if (idx < gameLogIdx && !isGetGameInfo) {
       getGameInfo();
     }
-  }, [gameLogId]);
+  }, [gameLogIdx, idx, isGetGameInfo]);
   
   const getGameInfo = async () => {
+    console.log('get game ingo ????? ', idx, gameLogIdx);
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
       headers: {
@@ -34,6 +37,7 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
       .then(data => {
         if (data.success) {
           setGameInfo(data.info);
+          setIsGetGameInfo(true);
         }
       })
       .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
@@ -81,7 +85,7 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
     return false;
   };
 
-  const checkFilter = () => {
+  function checkFilter() {
     switch (filter) {
       case 'all': return true;
       case 'team': return gameInfo?.gameMode === 'team';
@@ -112,15 +116,15 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -140,15 +144,15 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo?.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamA[0])} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickPlayer={() => onClickPlayer(gameInfo?.teamB[0])} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -168,15 +172,15 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickPlayer={() => onClickPlayer(player)} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -185,14 +189,14 @@ export default function GameBox({ gameLogId, filter, ranking, myInfo }) {
   };
 
   return (
-    <div className={checkFilter() ? styles.gameHistoryItem : styles.hidden}>
+    <div className={isFilter && isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
           ? checkTeamGameWin()
             ? <TeamGameWin />
             : <TeamGameLose />
           : <SoloGame />
-}
+      }
       {
         isOpenCode
         && <div className={styles.codeBackground}>
