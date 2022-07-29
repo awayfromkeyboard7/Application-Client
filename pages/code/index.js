@@ -103,13 +103,12 @@ export default function Code() {
       socket.off('submitCodeTeam');
       socket.off('teamGameOver');
       socket.off('shareJudgedCode');
-      socket.off('get-mode-before-disconnecting');
     };
   }, [router.isReady]);
 
   useEffect(() => {
     if(router.isReady && data?.gitId) {
-      if(router?.query?.gameLogId && router.query.gameLogId !== '') {
+      if(router?.query?.gameLogId && router.query.gameLogId !== '' && playerList.length === 0) {
         getProblem();
       }
 
@@ -120,13 +119,13 @@ export default function Code() {
         setDoc(yDoc);
         setProvider(yProvider);
         setIsDoc(true);
-
-        return () => {
-          yProvider.destroy();
-        }
       }
     }
-  }, [router.isReady, data?.gitId]);
+
+    return () => {
+      provider?.destroy();
+    }
+  }, [router.isReady, data?.gitId, provider]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
