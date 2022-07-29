@@ -9,7 +9,7 @@ import styles from '../../styles/layouts/main.module.scss';
 
 export default function Main({ header, body }) {
   const router = useRouter();
-  const { data, status } = useSession();
+  const { status } = useSession();
   const [isNoti, setIsNoti] = useState(false);
   const [sender, setSender] = useState(null);
 

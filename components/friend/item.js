@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendItem({ user, isOnline, onClick, isInvite }) {
   const router = useRouter();  
-  const { data } = useSession();
   const [isClick, setIsClick] = useState(isInvite);
   const [messageCount, setMessageCount] = useState(0);
 

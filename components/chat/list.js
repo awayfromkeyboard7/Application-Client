@@ -11,32 +11,30 @@ export default function ChatList({ friend }) {
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    if(data) {
-      socket.on('receiveChatMessage', chatLogs => {
-        setChatList(chatLogs);
-      });
+    socket.on('receiveChatMessage', chatLogs => {
+      setChatList(chatLogs);
+    });
 
-      socket.on('sendChatMessage', message => {
-        console.log("sendChatMessage message :::: ", message);
-        if (message['senderId'] === friend.gitId) {
-          setChatList(prev => [...prev, message]);
-          socket.emit('resetUnreadCount', friend.gitId);
-        }
-      });
-    }
+    socket.on('sendChatMessage', message => {
+      console.log("sendChatMessage message :::: ", message);
+      if (message['senderId'] === friend.gitId) {
+        setChatList(prev => [...prev, message]);
+        socket.emit('resetUnreadCount', friend.gitId);
+      }
+    });
 
     return () => {
       socket.off('receiveChatMessage');
       socket.off('sendChatMessage');
     };
-  }, [data?.gitId]);
+  }, []);
 
   useEffect(() => {
     // 나: gitId -> 친구: roomName
-    if(data?.gitId && friend.gitId) {
+    if(friend.gitId) {
       socket.emit('getChatMessage', friend.gitId);
     }
-  }, [data?.gitId, friend.gitId]);
+  }, [friend.gitId]);
 
   useEffect(() => {
     scrollBottom();
@@ -57,7 +55,6 @@ export default function ChatList({ friend }) {
     const newMessage = {
       text,
       senderId: data?.gitId,
-      messageId: Math.floor(Math.random() * 10000),
       sendAt: new Date().getTime()
     }
     if(text !== '') {
@@ -116,8 +113,8 @@ export default function ChatList({ friend }) {
         {
           chatList?.map(chat => 
             chat.senderId === data?.gitId
-            ? <ChatItemMine chat={chat} key={chat.senderId} />
-            : <ChatItem chat={chat} key={chat.senderId} />
+            ? <ChatItemMine chat={chat} key={`${chat.text}_${chat.sendAt}`} />
+            : <ChatItem chat={chat} key={`${chat.text}_${chat.sendAt}`} />
           )
         }
         </div>
