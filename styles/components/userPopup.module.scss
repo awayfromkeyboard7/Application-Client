@@ -92,6 +92,7 @@
 
 .btn {
   // height: 2.5rem;
+  width: 3rem;
   padding: 0.5rem;
   flex-direction: row;
   align-items: center;
@@ -255,4 +256,20 @@
   margin-left: 0.625rem;
   margin-right: 0.625rem;
   background-color: $navy-color;
+}
+
+.gameHistoryHeader {
+  height: 3rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sorryannie {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }

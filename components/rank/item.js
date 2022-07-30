@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/components/ranking.module.scss';
 
-export default function RankingItem({ rank, nickname, image, rankImg, language, winrate}) {
+export default function RankingItem({ rank, nickname, image, rankImg, language, winrate, onClickId}) {
   const [rankText, setRankText] = useState(rank);
   const [isEmoji, setIsEmoji] = useState(false);
 
@@ -35,7 +35,7 @@ export default function RankingItem({ rank, nickname, image, rankImg, language, 
       {/* <div className={styles.profileIcon}>
         <Image src={image ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div> */}
-        <div className={styles.nickname}>{nickname}</div>
+        <div className={styles.nickname} onClick={onClickId}>{nickname}</div>
         <div className={styles.winRate}>{winrate}%</div>
       <div className={styles.rankIcon}>
         <Image src={language ?? '/default_profile.jpg'} width={20} height={20} className={styles.rankIcon} alt="프로필" />

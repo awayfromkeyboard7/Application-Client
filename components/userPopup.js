@@ -24,6 +24,10 @@ export default function UserPopup({ targetGitId, onClick ,myInfo}) {
       });
     },[info])
 
+    useEffect(()=> {
+      socket.emit('getFollowingList');
+    },[isFollow])
+
     // const setFollow = (() => {
     //   myInfo?.following?.map(userNodeId => {
     //     console.log(userNodeId,info.nodeId,info)
@@ -114,14 +118,15 @@ export default function UserPopup({ targetGitId, onClick ,myInfo}) {
         };
 
     const onClickFollow = () => {
-        console.log("emit follow")
         socket.emit('followMember', info.gitId);
+        myInfo.following.push(info.nodeId)
         setIsFollow(true);
         };
     
     const onClickUnFollow = () => {
-        console.log("emit unfollow")
         socket.emit('unFollowMember', info.gitId);
+        const idx = myInfo.following.indexOf(info.nodeId)
+        myInfo.following.splice(idx,1)
         setIsFollow(false);
         };
 
@@ -130,7 +135,8 @@ export default function UserPopup({ targetGitId, onClick ,myInfo}) {
             {/* <div className={styles.popupBox}> */}
                 <div className={styles.infoTab}>
                     <div className={styles.myProfileBox}>
-                      <div className={styles.myProfileHeader}>
+                      <div className={styles.gameHistoryHeader}>
+                      {/* <div className={styles.myProfileHeader}> */}
                         <div className={styles.myProfileTitle}>내 정보</div>
                         {       
                           isFollow
@@ -157,7 +163,7 @@ export default function UserPopup({ targetGitId, onClick ,myInfo}) {
                         <div className={styles.splitterHorizontal} />
                         <div className={styles.myInfoRow}>
                           <div className={styles.myInfoCol}>
-                            <div className={styles.fieldTitle}>내 랭킹</div>
+                            <div className={styles.fieldTitle}>랭킹</div>
                             <div className={styles.percentText}>{`${info?.ranking ?? 0}등 (상위 ${info?.rankingPercent}%)`}</div>
                           </div>
                           <div className={styles.splitterVertical} />
@@ -185,7 +191,9 @@ export default function UserPopup({ targetGitId, onClick ,myInfo}) {
                       </div>
                     </div>
                   </div>
-                  <div className={styles.btn} onClick={onClick}>닫기</div>
+                  <div className={styles.sorryannie}>
+                    <div className={styles.btn} onClick={onClick}>닫기</div>
+                  </div>
                 </div>
                 {/* <div className={styles.popupBtn} onClick={onClick}>{label}</div> */}
             </div>
