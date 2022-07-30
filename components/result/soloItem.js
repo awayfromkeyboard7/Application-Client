@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultItem({ info, startAt, onClickPlayer, onClickId, idx }) {
+export default function SoloResultItem({ info, startAt, onClickCode, onClickId, idx }) {
   const { data } = useSession();
   const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -62,7 +62,7 @@ export default function SoloResultItem({ info, startAt, onClickPlayer, onClickId
           : <div className={styles.resultInfos}>
               <div className={styles.text}>✅ {info.passRate < 0 ? 'N/A' : `${parseInt(info.passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(info.submitAt) ?? 'Clashing...'}</div>
-              <div className={styles.codeBtn} onClick={onClickPlayer}>💻 {info.language}</div>
+              <div className={styles.codeBtn} onClick={onClickCode}>💻 {info.language}</div>
             </div>
         }
       </div>

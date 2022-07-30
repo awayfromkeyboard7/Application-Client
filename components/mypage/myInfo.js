@@ -143,7 +143,7 @@ export function MyInfoBox({ myInfo, ranking }) {
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>Team 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam / (myInfo?.totalTeam) * 100) ?? 0}%`}</div>
+              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) ?? 0}%`}</div>
             </div>
           </div>
         </div>

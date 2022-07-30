@@ -14,7 +14,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
 
   useEffect(() => {
     if(status === 'authenticated') {
-      console.log('data', data);
+      // console.log('data', data);
       if(hasCookie('jwt')) {
         if (router.isReady) {
           socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
@@ -23,7 +23,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         }
       } else {
         if(data.accessToken) {
-          console.log('data accesstoken header', data.accessToken);
           sendAccessToken(data.accessToken);
         }
       }

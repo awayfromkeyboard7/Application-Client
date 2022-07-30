@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Item from './soloItem';
 import Code from '../mypage/code';
-import UserPopup from '../userPopup'
+import UserPopup from '../userPopup';
 import styles from '../../styles/components/result.module.scss';
 
 export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
@@ -11,7 +11,7 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
 
-  const onClickPlayer = (player) => {
+  const onClickCode = (player) => {
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
@@ -31,7 +31,7 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
         <div className={styles.resultBox}>
         {
           ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickPlayer={() => onClickPlayer(item)} onClickId={() => onClickId(item.gitId)} key={item.gitId} idx={idx} />
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.gitId)} key={item.gitId} idx={idx} />
           )
         }
         </div>

@@ -25,7 +25,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   }, [gameLogIdx, idx, isGetGameInfo]);
   
   const getGameInfo = async () => {
-    console.log('get game ingo ????? ', idx, gameLogIdx);
+    // console.log('get game info ????? ', idx, gameLogIdx);
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
       headers: {

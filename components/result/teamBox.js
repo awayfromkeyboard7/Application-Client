@@ -9,7 +9,7 @@ export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClic
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
 
-  const onClickPlayer = (player) => {
+  const onClickCode = (player) => {
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
@@ -36,7 +36,7 @@ export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClic
         <div className={styles.resultBox}>
         {
           ranks?.map((item, idx) => 
-            <Item teamInfo={item} startAt={startAt} onClickPlayer={() => onClickPlayer(item[0])} maxLength={maxTeamLength} key={item[0].gitId} idx={idx} />
+            <Item teamInfo={item} startAt={startAt} onClickCode={() => onClickCode(item[0])} maxLength={maxTeamLength} key={item[0].gitId} idx={idx} />
           )
         }
         </div>
