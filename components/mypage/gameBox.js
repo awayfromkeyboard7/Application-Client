@@ -2,17 +2,16 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
 import Code from './code';
-import UserPopup from '../userPopup'
+import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, myInfo }) {
+export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
   const [isGetGameInfo, setIsGetGameInfo] = useState(false);
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
-  
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
   
@@ -217,10 +216,9 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, ranking, m
       {
         isPopup
         && <UserPopup
-          targetGitId={targetId}
-          onClick={() => { setIsPopup(false) }}
-          myInfo={myInfo}
-        />
+            targetGitId={targetId}
+            onClick={() => setIsPopup(false)}
+          />
       }
     </div>
   )

@@ -1,17 +1,25 @@
 import { useState } from 'react';
 import Item from './soloItem';
 import Code from '../mypage/code';
+import UserPopup from '../userPopup'
 import styles from '../../styles/components/result.module.scss';
 
 export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
+  const [targetId, setTatgetId] = useState('');
+  const [isPopup, setIsPopup] = useState(false);
 
   const onClickPlayer = (player) => {
     setPlayerCode(player.code);
     setPlayerLanguage(player.language);
     setIsOpenCode(true);
+  };
+
+  const onClickId = (gitId) => {
+    setTatgetId(gitId);
+    setIsPopup(true);
   };
 
   return (
@@ -23,7 +31,7 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
         <div className={styles.resultBox}>
         {
           ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickPlayer={() => onClickPlayer(item)} key={item.gitId} idx={idx} />
+            <Item info={item} startAt={startAt} onClickPlayer={() => onClickPlayer(item)} onClickId={() => onClickId(item.gitId)} key={item.gitId} idx={idx} />
           )
         }
         </div>
@@ -40,6 +48,13 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
             <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
           </div>
         </div>
+      }
+      {
+        isPopup
+        && <UserPopup
+            targetGitId={targetId}
+            onClick={() => setIsPopup(false)}
+          />
       }
     </div>
   )

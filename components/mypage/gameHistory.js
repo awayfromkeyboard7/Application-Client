@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ gameLogs, ranking, myInfo }) {
+export default function GameHistory({ gameLogs }) {
   const listRef = useRef();
   const [gameLogIdx, setGameLogIdx] = useState(10);
   // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
@@ -39,7 +39,7 @@ export default function GameHistory({ gameLogs, ranking, myInfo }) {
       <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
       {
         gameLogs?.map((gameLogId, idx) => 
-          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} ranking={ranking} myInfo={myInfo} />
+          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} />
         )
       }
       </div>

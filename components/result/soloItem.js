@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
+export default function SoloResultItem({ info, startAt, onClickPlayer, onClickId, idx }) {
   const { data } = useSession();
   const [rankText, setRankText] = useState(info?.ranking);
   const [isEmoji, setIsEmoji] = useState(false);
@@ -51,11 +51,11 @@ export default function SoloResultItem({ info, startAt, onClickPlayer, idx }) {
   return (
     <div className={data?.gitId === info.gitId ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
-      <div className={styles.profileIcon}>
+      <div className={styles.profileIcon} onClick={onClickId}>
         <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div>
       <div className={styles.resultInfoBox}>
-        <div className={styles.nickname}>{info.gitId}</div>
+        <div className={styles.nickname} onClick={onClickId}>{info.gitId}</div>
         {
           info.passRate < 0
           ? <div className={styles.text}>Clashing...</div>

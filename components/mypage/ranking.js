@@ -1,13 +1,13 @@
+import { useState } from 'react';
 import Rank from '../rank/item';
+import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
-import { useState} from 'react';
-import UserPopup from '../userPopup'
 
-export default function RankingBox({ ranking,myInfo }) {
+export default function RankingBox({ ranking }) {
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
   const getRankImg = (rank, ranking) => {
-    let imgUrl = '/rank/king.png';
+    let imgUrl = '/rank/rank0.png';
     switch (rank) {
       case 0:
         imgUrl = '/rank/rank0.png';
@@ -28,17 +28,12 @@ export default function RankingBox({ ranking,myInfo }) {
         imgUrl = '/rank/rank5.png';
         break;
       default:
-        imgUrl = '/jinny.jpg';
+        imgUrl = '/rank/rank0.png';
     }
     if (ranking == 1) {
       imgUrl = '/rank/king.png';
     }
     return imgUrl;
-  };
-
-  const onClickId = (gitId) => {
-    setTatgetId(gitId);
-    setIsPopup(true);
   };
 
   const getLangImg = (language) => {
@@ -54,6 +49,11 @@ export default function RankingBox({ ranking,myInfo }) {
         imgUrl = '/default_profile.jpg';
     }
     return imgUrl;
+  };
+
+  const onClickId = (gitId) => {
+    setTatgetId(gitId);
+    setIsPopup(true);
   };
 
   return (
@@ -81,10 +81,9 @@ export default function RankingBox({ ranking,myInfo }) {
       {
         isPopup
         && <UserPopup
-          targetGitId={targetId}
-          onClick={() => { setIsPopup(false) }}
-          myInfo={myInfo}
-        />
+            targetGitId={targetId}
+            onClick={() => setIsPopup(false)}
+          />
       }
     </div>
   )
