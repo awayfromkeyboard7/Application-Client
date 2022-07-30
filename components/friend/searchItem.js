@@ -9,13 +9,6 @@ export default function SearchItem({ user, myInfo, isOnline }) {
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
-    if(myInfo?.following?.length) {
-      setCookie('following', JSON.stringify(myInfo?.following));
-      setMyFollowing(myInfo?.following)
-    }
-  }, [myInfo?.following]);
-
-  useEffect(() => {
     if(myFollowing.length) {
       setCookie('following', JSON.stringify(myFollowing));
     }
@@ -24,19 +17,21 @@ export default function SearchItem({ user, myInfo, isOnline }) {
   useEffect(() => {
     // 이미 팔로우중인 사용자인지 확인하고 isFollow state 변경
     myFollowing?.map(userId => {
-      if(userId === user.userId) {
+      if(userId === user._id) {
         setIsFollow(true);
       }
     });
   }, [myFollowing, user]);
 
   const onClickFollow = () => {
+    console.log('onclick follow!!!!', user._id);
     socket.emit('followMember', user._id);
     setMyFollowing(prev => [...prev, user._id]);
     setIsFollow(true);
   };
   
   const onClickUnFollow = () => {
+    console.log('onclick unfollow!!!!', user._id);
     socket.emit('unFollowMember', user._id);
     setMyFollowing(prev => prev.filter(userId => userId !== user._id));
     setIsFollow(false);

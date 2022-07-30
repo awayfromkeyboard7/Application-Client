@@ -34,7 +34,7 @@ export default function UserPopup({ userId, onClick }) {
   
   useEffect(() => {
     myFollowing?.map(userId => {
-      if(userId === info.userId) {
+      if(userId === info._id) {
         setIsFollow(true);
       }
     });
