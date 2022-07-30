@@ -9,6 +9,13 @@ export default function SearchItem({ user, myInfo, isOnline }) {
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
+    if(myInfo?.following?.length) {
+      setCookie('following', JSON.stringify(myInfo?.following));
+      setMyFollowing(myInfo?.following)
+    }
+  }, [myInfo?.following]);
+
+  useEffect(() => {
     if(myFollowing.length) {
       setCookie('following', JSON.stringify(myFollowing));
     }
@@ -24,14 +31,14 @@ export default function SearchItem({ user, myInfo, isOnline }) {
   }, [myFollowing, user]);
 
   const onClickFollow = () => {
-    socket.emit('followMember', user.userId);
-    setMyFollowing(prev => [...prev, user.userId]);
+    socket.emit('followMember', user._id);
+    setMyFollowing(prev => [...prev, user._id]);
     setIsFollow(true);
   };
   
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', user.userId);
-    setMyFollowing(prev => prev.filter(userId => userId !== user.userId));
+    socket.emit('unFollowMember', user._id);
+    setMyFollowing(prev => prev.filter(userId => userId !== user._id));
     setIsFollow(false);
   };
 

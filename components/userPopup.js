@@ -139,14 +139,14 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const onClickFollow = () => {
-    socket.emit('followMember', info.userId);
-    setMyFollowing(prev => [...prev, info.userId]);
+    socket.emit('followMember', info._id);
+    setMyFollowing(prev => [...prev, info._id]);
     setIsFollow(true);
   };
   
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', info.userId);
-    setMyFollowing(prev => prev.filter(userId => userId !== info.userId));
+    socket.emit('unFollowMember', info._id);
+    setMyFollowing(prev => prev.filter(userId => userId !== info._id));
     setIsFollow(false);
   };
 
