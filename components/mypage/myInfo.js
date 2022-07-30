@@ -86,7 +86,7 @@ export function MyInfoMini({ myInfo }) {
         </div>
         <div className={styles.myInfoMiniRow}>
           <div className={styles.fieldTitleDark}>내 랭킹</div>
-          <div className={styles.fieldTitleDark}>{`${myInfo?.ranking ?? 0}등`}</div>
+          <div className={styles.pointTextDark}>{`${myInfo?.ranking ?? 0}등`}</div>
         </div>
       </div>
     </div>
