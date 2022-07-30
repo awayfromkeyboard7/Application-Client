@@ -85,7 +85,7 @@ export default function MyPage() {
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
               <MyInfoBox myInfo={myInfo} ranking={ranking} />
-              <RankingBox ranking={ranking}/>
+              <RankingBox ranking={ranking} myInfo={myInfo}/>
             </div>
             <GameHistory gameLogs={gameLogs} ranking={ranking} myInfo={myInfo} />
           </div>

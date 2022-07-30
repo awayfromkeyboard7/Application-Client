@@ -1,68 +1,202 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import styles from '../styles/components/userPopup.module.scss';
+import Image from 'next/image'
+import { getCookie } from 'cookies-next';
+import { socket } from '../lib/socket';
 
-export default function UserPopup({ targetGitId, ranking, onClick }) {
-  const [userName, setUserName] = useState('닉네임');
-  const [userImg, setUserImg] = useState('/default_profile.jpg');
-  const [userLang, setUserLang] = useState('Python');
-  const [rankingInfo, setRankingInfo] = useState({});
-  const [myInfo, setMyInfo] = useState({});
+export default function UserPopup({ targetGitId, onClick ,myInfo}) {
 
-  useEffect(() => {
-    setData();
-    getUserInfo();
-    setRankingInfo(ranking);
-  }, []);
+    const [info, setInfo] = useState({});
+    const [nodeId, setNodeId] = useState();
+    const [isFollow, setIsFollow] = useState(false);
 
-  const setData = () => {
-    let leng = Object.keys(rankingInfo).length;
+    useEffect(() => {
+        getUserInfo()
+        setNodeId(getCookie('nodeId'))
+        // setFollow()
+      },[])
+    
+    useEffect(() => {
+      myInfo?.following?.map(userNodeId => {
+        if(userNodeId === info.nodeId) {
+          setIsFollow(true);
+        }
+      });
+    },[info])
 
-    for (let i = 0; i < leng; i++) {
-      if (targetGitId === rankingInfo[i].gitId) {
-        setUserName(rankingInfo[i].gitId);
-        setUserImg(rankingInfo[i].avatarUrl);
-        setUserLang(rankingInfo[i].mostLanguage);
+    useEffect(()=> {
+      socket.emit('getFollowingList');
+    },[isFollow])
+
+    // const setFollow = (() => {
+    //   myInfo?.following?.map(userNodeId => {
+    //     console.log(userNodeId,info.nodeId,info)
+    //     if(userNodeId === info.nodeId) {
+    //       setIsFollow(true);
+    //     }
+    //   });
+    // })
+
+    const getRankName = (rank, ranking) => {
+      let myrank = 'Bronze';
+      switch (rank) {
+        case 0:
+          myrank = 'Bronze';
+          break;
+        case 1:
+          myrank = 'Silver';
+          break;
+        case 2:
+          myrank = 'Gold';
+          break;
+        case 3:
+          myrank = 'Platinum';
+          break;
+        case 4:
+          myrank = 'Diamond';
+          break;
+        case 5:
+          myrank = 'Master';
+          break;
+        default:
+          myrank = 'Bronze'
       }
-    }
-  };
-
-  const getUserInfo = async () => {
-    await fetch(`/server/api/user/getUser`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        gitId: targetGitId
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success) {
-        setMyInfo(data.UserInfo);
+      if (ranking === 1) {
+        myrank = 'King';
       }
-    })
-    .catch(error => console.log('[/components/userPopup] getUserInfo error >> ', error));
-  };
+      return myrank;
+    };
+  
+    const getRankImg = (rank, ranking) => {
+      let imgUrl = '/rank/rank0.png';
+      switch (rank) {
+        case 0:
+          imgUrl = '/rank/rank0.png';
+          break;
+        case 1:
+          imgUrl = '/rank/rank1.png';
+          break;
+        case 2:
+          imgUrl = '/rank/rank2.png';
+          break;
+        case 3:
+          imgUrl = '/rank/rank3.png';
+          break;
+        case 4:
+          imgUrl = '/rank/rank4.png';
+          break;
+        case 5:
+          imgUrl = '/rank/rank5.png';
+          break;
+        default:
+          imgUrl = '/rank/rank0.png';
+      }
+      if (ranking == 1) {
+        imgUrl = '/rank/king.png';
+      }
+      return imgUrl;
+    };
 
-  return (
-    <div className={styles.popupBackground} onClick={onClick}>
-      <div className={styles.popupBox}>
-        <div className={styles.userProfile}>
-          <div className={styles.image}>
-            <Image src={userImg} width={250} height={250} className={styles.profileIcon} alt="프로필이미지" />
-          </div>
-          <div className={styles.popupText}>{`닉네임 : ${userName}`}</div>
-          <div className={styles.popupText}>{`티어 : 티어어어엉어어어어`}</div>
-        </div>
-        <div className={styles.userRecord}>
-          <div className={styles.popupText}>{`사용언어 : ${userLang}`}</div>
-          <div className={styles.popupText}>{`평균 통과율 : ${parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam))}`}</div>
-          <div className={styles.popupText}>{`Solo 승률 : ${parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100)}%`}</div>
-          <div className={styles.popupText}>{`Team 승률 : ${parseInt(myInfo?.winTeam / (myInfo?.totalTeam) * 100)}%`}</div>
-        </div>
-      </div>
-    </div>
-  )
+    const getUserInfo = async () => {
+        await fetch(`/server/api/user/getUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gitId: targetGitId
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setInfo(data.UserInfo);
+                    // console.log("showmedata!@!@!@!#!@#!@#!@",data.UserInfo)
+                }
+            })
+            .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+        };
+
+    const onClickFollow = () => {
+        socket.emit('followMember', info.gitId);
+        myInfo.following.push(info.nodeId)
+        setIsFollow(true);
+        };
+    
+    const onClickUnFollow = () => {
+        socket.emit('unFollowMember', info.gitId);
+        const idx = myInfo.following.indexOf(info.nodeId)
+        myInfo.following.splice(idx,1)
+        setIsFollow(false);
+        };
+
+    return (
+        <div className={styles.popupBackground}>
+            {/* <div className={styles.popupBox}> */}
+                <div className={styles.infoTab}>
+                    <div className={styles.myProfileBox}>
+                      <div className={styles.gameHistoryHeader}>
+                      {/* <div className={styles.myProfileHeader}> */}
+                        <div className={styles.myProfileTitle}>내 정보</div>
+                        {       
+                          isFollow
+                          ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
+                          : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
+                        }
+                      </div>
+                      <div className={styles.myProfileBody}>
+                        <div className={styles.myInfoRow}>
+                          <div className={styles.myProfileIcon}>
+                            <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
+                            <div className={styles.myRank}>
+                              <Image src={getRankImg(info.rank, info.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+                            </div>
+                          </div>
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.nickname}>{info?.gitId}</div>
+                            <div className={styles.rankBox}>
+                              <div className={styles.fieldTitle}>{getRankName(info?.rank, info?.ranking) ?? 0}</div>
+                              <div className={styles.pointText}>{`${info?.totalScore ?? 0 * 5} Point`}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.splitterHorizontal} />
+                        <div className={styles.myInfoRow}>
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.fieldTitle}>랭킹</div>
+                            <div className={styles.percentText}>{`${info?.ranking ?? 0}등 (상위 ${info?.rankingPercent}%)`}</div>
+                          </div>
+                          <div className={styles.splitterVertical} />
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.fieldTitle}>사용 언어</div>
+                            <div className={styles.percentText}>{info?.mostLanguage ?? ''}</div>
+                          </div>
+                        </div>
+                        <div className={styles.splitterHorizontal} />
+                        <div className={styles.myInfoRow}>
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.fieldTitle}>평균 통과율</div>
+                            <div className={styles.percentText}>{`${parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) ?? 0}%`}</div>
+                          </div>
+                          <div className={styles.splitterVertical} />
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.fieldTitle}>Solo 승률</div>
+                            <div className={styles.percentText}>{`${parseInt(info?.winSolo / info?.totalSolo * 100) ?? 0}%`}</div>
+                          </div>
+                          <div className={styles.splitterVertical} />
+                          <div className={styles.myInfoCol}>
+                            <div className={styles.fieldTitle}>Team 승률</div>
+                            <div className={styles.percentText}>{`${parseInt(info?.winTeam / (info?.totalTeam) * 100) ?? 0}%`}</div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.sorryannie}>
+                    <div className={styles.btn} onClick={onClick}>닫기</div>
+                  </div>
+                </div>
+                {/* <div className={styles.popupBtn} onClick={onClick}>{label}</div> */}
+            </div>
+        // </div>
+    )
 }
