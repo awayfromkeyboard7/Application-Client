@@ -96,7 +96,9 @@ export default function TeamResultItem({ teamInfo, startAt, onClickCode, maxLeng
           : <div className={styles.resultInfos}>
               <div className={styles.text}>✅ {teamInfo[0].passRate < 0 ? 'N/A' : `${parseInt(teamInfo[0].passRate)}%`}</div>
               <div className={styles.text}>⏳ {unixToTime(teamInfo[0].submitAt) ?? 'Clashing...'}</div>
-              <div className={styles.codeBtn} onClick={onClickCode}>💻 {teamInfo[0].language}</div>
+              <div className={styles.language}>
+                <div className={styles.codeBtn} onClick={onClickCode}>💻 {teamInfo[0].language}</div>
+              </div>
             </div>
         }
       </div>

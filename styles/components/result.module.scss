@@ -162,8 +162,17 @@
   text-overflow: ellipsis;
 }
 
+.language {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .codeBtn {
   height: 2rem;
+  width: fit-content;
   padding: 0.25rem;
   margin: 0;
   text-align: center;
