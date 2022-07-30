@@ -210,7 +210,9 @@ export default function Code() {
   };
 
   const goToResult = async() => {
-    await judgeCode(true);
+    if(!isSubmit) {
+      await judgeCode(true);
+    }
   };
 
   const checkMyTeam = (team) => {
