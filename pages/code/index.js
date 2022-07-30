@@ -236,7 +236,7 @@ export default function Code() {
   };
 
   const getProblem = async() => {
-    await fetch(`/server/api/gamelog/getGameLog`, {
+    await fetch(`/server/api/gamelog/getProblem`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

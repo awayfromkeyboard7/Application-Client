@@ -17,8 +17,8 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
     setIsOpenCode(true);
   };
 
-  const onClickId = (gitId) => {
-    setTatgetId(gitId);
+  const onClickId = (userId) => {
+    setTatgetId(userId);
     setIsPopup(true);
   };
 
@@ -31,7 +31,7 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
         <div className={styles.resultBox}>
         {
           ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.gitId)} key={item.gitId} idx={idx} />
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
           )
         }
         </div>
@@ -52,7 +52,7 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
       {
         isPopup
         && <UserPopup
-            targetGitId={targetId}
+            userId={targetId}
             onClick={() => setIsPopup(false)}
           />
       }

@@ -32,14 +32,11 @@ export default function MyPage() {
   }, [status]);
 
   const getUserInfo = async () => {
-    await fetch(`/server/api/user/getUser`, {
-      method: 'POST',
+    await fetch(`/server/api/user/getMyInfo`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        gitId: data?.gitId
-      })
+      }
     })
       .then(res => res.json())
       .then(data => {

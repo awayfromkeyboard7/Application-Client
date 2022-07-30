@@ -63,7 +63,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   };
 
   const onClickId = (player) => {
-    setTatgetId(player.gitId);
+    setTatgetId(player.userId);
     setIsPopup(true);
   };
 
@@ -216,7 +216,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
       {
         isPopup
         && <UserPopup
-            targetGitId={targetId}
+            userId={targetId}
             onClick={() => setIsPopup(false)}
           />
       }

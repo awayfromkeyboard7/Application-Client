@@ -51,8 +51,8 @@ export default function RankingBox({ ranking }) {
     return imgUrl;
   };
 
-  const onClickId = (gitId) => {
-    setTatgetId(gitId);
+  const onClickId = (userId) => {
+    setTatgetId(userId);
     setIsPopup(true);
   };
 
@@ -73,7 +73,7 @@ export default function RankingBox({ ranking }) {
             rankImg={getRankImg(elem.rank, elem.ranking)}
             language={getLangImg(elem.mostLanguage)}
             winrate={elem.winRate}
-            onClickId={() => onClickId(elem.gitId)}
+            onClickId={() => onClickId(elem._id)}
           />
         )
       }
@@ -81,7 +81,7 @@ export default function RankingBox({ ranking }) {
       {
         isPopup
         && <UserPopup
-            targetGitId={targetId}
+            userId={targetId}
             onClick={() => setIsPopup(false)}
           />
       }

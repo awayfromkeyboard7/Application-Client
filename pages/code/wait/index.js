@@ -17,48 +17,56 @@ export default function WaitPage() {
       id: 1,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 2,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 3,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 4,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 5,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 6,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 7,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
     {
       id: 8,
       gitId: 'waiting...',
       avatarUrl: '/default_profile.jpg',
+      userId: '',
       isPlayer: false
     },
   ];
@@ -170,7 +178,7 @@ export default function WaitPage() {
     let sendPlayers = [];
     for(let player of players) {
       if(player.isPlayer) {
-        sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl})
+        sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl, userId: player.userId })
       }
     };
     
@@ -232,6 +240,7 @@ export default function WaitPage() {
       console.log('add player for >>. ', i);
       copyPlayers[i].gitId = users[i].gitId;
       copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/default_profile.jpg';
+      copyPlayers[i].userId = users[i].userId;
       copyPlayers[i].isPlayer = true;
     }
     

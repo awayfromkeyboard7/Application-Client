@@ -4,17 +4,17 @@ import { useSession } from 'next-auth/react';
 import { socket } from '../lib/socket';
 import styles from '../styles/components/userPopup.module.scss';
 
-export default function UserPopup({ targetGitId, onClick }) {
+export default function UserPopup({ userId, onClick }) {
   const { data } = useSession();
   const [myInfo, setMyInfo] = useState({});
   const [info, setInfo] = useState({});
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
-    if(targetGitId) {
+    if(userId) {
       getUserInfo();
     }
-  }, [targetGitId]);
+  }, [userId]);
 
   useEffect(() => {
     if(data?.gitId) {
@@ -94,23 +94,34 @@ export default function UserPopup({ targetGitId, onClick }) {
     return imgUrl;
   };
 
-  const getUserInfo = async (isMine=false) => {
-    await fetch(`/server/api/user/getUser`, {
+  const getMyInfo = async () => {
+    await fetch(`/server/api/user/getMyInfo`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          setMyInfo(data.UserInfo);
+        }
+      })
+      .catch(error => console.log('[/component/userPopup] getMyInfo error >> ', error));
+  };
+
+  const getUserInfo = async () => {
+    await fetch(`/server/api/user/getUserInfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        gitId: isMine ? data?.gitId : targetGitId
+        userId
       })
     }).then(res => res.json())
       .then(data => {
         if(data.success) {
-          if(isMine) {
-            setMyInfo(data.UserInfo);
-          } else {
-            setInfo(data.UserInfo);
-          }
+          setInfo(data.UserInfo);
         }
       })
       .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));

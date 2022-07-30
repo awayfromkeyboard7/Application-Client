@@ -14,6 +14,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
+    console.log('players?????, user id????', players);
     setUserLine1(players.slice(0, 4));
     setUserLine2(players.slice(4));
   }, [players]);
@@ -25,8 +26,8 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
     return `⏳ ${min.substr(-2)}분 ${sec.substr(-2)}초 후 게임이 시작됩니다!`;
   };
   
-  const onClickId = (gitId) => {
-    setTatgetId(gitId);
+  const onClickId = (userId) => {
+    setTatgetId(userId);
     setIsPopup(true);
   };
 
@@ -44,7 +45,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         <div className={styles.waitBox}>
         {
           userLine1?.map((item, idx) => 
-            <Item info={item} key={idx} onClickId={() => onClickId(item.gitId)} />
+            <Item info={item} key={idx} onClickId={() => onClickId(item.userId)} />
           )
         }
         </div>
@@ -52,7 +53,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         {
           type !== 'team'
           && userLine2?.map((item, idx) => 
-            <Item info={item} key={idx} onClickId={() => onClickId(item.gitId)}/>
+            <Item info={item} key={idx} onClickId={() => onClickId(item.userId)}/>
           )
         }
         </div>
@@ -72,7 +73,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       {
         isPopup
         && <UserPopup
-            targetGitId={targetId}
+            userId={targetId}
             onClick={() => setIsPopup(false)}
           />
       }
