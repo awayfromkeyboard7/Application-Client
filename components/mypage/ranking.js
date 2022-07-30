@@ -23,7 +23,7 @@ export default function RankingBox() {
   }, [isLoading, isEnd]);
 
   const pagingRanking = async () => {
-    await fetch(`/server/api/ranking/paging`, {
+    await fetch(`/server/api/user/paging`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,7 +121,8 @@ export default function RankingBox() {
             image={elem.avatarUrl}
             rankImg={getRankImg(elem.rank, elem.ranking)}
             language={getLangImg(elem.mostLanguage)}
-            winrate={elem.winRate}
+            // winrate={elem.winRate}
+            winrate={parseInt(100 * (elem.winSolo + elem.winTeam) / (elem.totalSolo + elem.totalTeam))}
             onClickId={() => onClickId(elem._id)}
           />
         )

@@ -25,10 +25,16 @@ export default function UserPopup({ userId, onClick }) {
       setMyFollowing(JSON.parse(getCookie('following')));
     }
   },[]);
+
+  useEffect(() => {
+    if(myFollowing.length) {
+      setCookie('following', JSON.stringify(myFollowing));
+    }
+  }, [myFollowing]);
   
   useEffect(() => {
-    myFollowing?.map(userNodeId => {
-      if(userNodeId === info.nodeId) {
+    myFollowing?.map(userId => {
+      if(userId === info.userId) {
         setIsFollow(true);
       }
     });
@@ -133,12 +139,14 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const onClickFollow = () => {
-    socket.emit('followMember', info.gitId);
+    socket.emit('followMember', info.userId);
+    setMyFollowing(prev => [...prev, info.userId]);
     setIsFollow(true);
   };
   
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', info.gitId);
+    socket.emit('unFollowMember', info.userId);
+    setMyFollowing(prev => prev.filter(userId => userId !== info.userId));
     setIsFollow(false);
   };
 
