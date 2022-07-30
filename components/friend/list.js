@@ -6,6 +6,7 @@ import { getCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import Item from './item';
 import SearchItem from './searchItem';
+import { MyInfoMini } from '../mypage/myInfo';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function FriendList({ onClick, players=null }) {
@@ -46,13 +47,14 @@ export default function FriendList({ onClick, players=null }) {
   }, []);
 
   useEffect(() => {
-    if(data) {
+    if(data?.gitId) {
       getMyInfo();
     }
   }, [data?.gitId]);
 
   useEffect(() => {
     if(searchText === '') {
+      getMyInfo();
       getFriends();
       setIsSearch(false);
       setSearchResultText('');
@@ -100,7 +102,6 @@ export default function FriendList({ onClick, players=null }) {
     .then(data => {
       if(data.success) {
         setSearchList([data.UserInfo]);
-        getMyInfo();
       } else {
         setSearchList([]);
       }
@@ -137,6 +138,8 @@ export default function FriendList({ onClick, players=null }) {
 
   return (
     <> 
+      <MyInfoMini myInfo={myInfo} />
+      <div className={styles.headerTitleActive}>친구목록</div>
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputBox}>
           <input className={styles.input} type="text" placeholder="아이디를 검색하세요." value={searchText} onChange={onChange} />
@@ -163,7 +166,6 @@ export default function FriendList({ onClick, players=null }) {
                     user={user}
                     myInfo={myInfo}
                     isOnline={false} 
-                    onClick={() => setSearchText('')}
                   />
                 )
               }

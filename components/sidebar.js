@@ -47,7 +47,7 @@ export default function Sidebar({ menu='friends', players=null, hide=false }) {
           <div className={styles.sidebarHeader}>
           {
             sidebarMenu === 'friends'
-            ? <div className={styles.headerTitleActive} onClick={() => setSidebarMenu('friends')}>친구목록</div>
+            ? <div className={styles.headerTitleActive}>내 정보</div>
             : <div className={styles.headerTitleActive}>
                 <div className={styles.header}>
                   <div className={styles.icon} onClick={onClickBack}>

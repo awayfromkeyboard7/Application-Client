@@ -1,5 +1,16 @@
 @import '../variables.module.scss';
 
+.headerTitleActive {
+  height: 3rem;
+  flex: 1;
+  font-size: 1.25rem; /* 24px*/
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+  color: #fff;
+  background-color: $purple-color;
+}
+
 .friendElem {
   height: 2.5rem;
   padding-left: 0.625rem;

@@ -12,6 +12,24 @@
   overflow: auto;
 }
 
+.myInfoMini {
+  padding: 0.25rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
+.myInfoMiniCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.myInfoMiniRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
 .mainCol {
   height: 90%;
   margin-left: auto;
@@ -114,6 +132,10 @@
   background-color: $navy-color;
 }
 
+.fieldTitleDark,
+.percentTextDark,
+.pointTextDark,
+.nicknameDark,
 .fieldTitle,
 .percentText,
 .pointText,
@@ -127,20 +149,38 @@
   overflow: hidden auto;
 }
 
+.nicknameDark,
 .nickname {
   font-size: 1.25rem;
   line-height: 2rem;
 }
 
+.percentTextDark,
+.pointTextDark,
 .percentText,
 .pointText {
   font-size: 0.875rem;
   color: $gray-light-color;
 }
 
+.fieldTitleDark,
+.percentTextDark,
 .fieldTitle,
 .percentText {
   text-align: center;
+}
+
+.fieldTitleDark {
+  width: 4.5rem;
+  text-align: left;
+}
+
+.fieldTitleDark,
+.percentTextDark,
+.pointTextDark,
+.nicknameDark {
+  padding: 0.5rem;
+  color: $navy-dark-color;
 }
 
 .rankBox{

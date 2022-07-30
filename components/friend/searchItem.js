@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
-export default function FriendItem({ user, myInfo, isOnline, onClick }) {
+export default function SearchItem({ user, myInfo, isOnline }) {
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function FriendItem({ user, myInfo, isOnline, onClick }) {
         setIsFollow(true);
       }
     });
-  }, [myInfo]);
+  }, [myInfo, user]);
 
   const onClickFollow = () => {
     socket.emit('followMember', user.gitId);
