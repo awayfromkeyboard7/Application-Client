@@ -1,11 +1,52 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Rank from '../rank/item';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function RankingBox({ ranking }) {
+export default function RankingBox() {
+  const listRef = useRef();
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
+  const [ranking, setRanking] = useState([]);
+  const [start, setStart] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
+
+  useEffect(() => {
+    pagingRanking();
+  }, []);
+
+  useEffect(() => {
+    if(isLoading && !isEnd) {
+      pagingRanking();
+    }
+  }, [isLoading, isEnd]);
+
+  const pagingRanking = async () => {
+    await fetch(`/server/api/ranking/paging`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        start,
+        count: 20
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setStart(prev => prev + 20);
+          setRanking(prev => [...prev, ...data.ranking]);
+          setIsLoading(false);
+          if(data.ranking.length === 0) {
+            setIsEnd(true);
+          }
+        }
+      })
+      .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
+  };
+
   const getRankImg = (rank, ranking) => {
     let imgUrl = '/rank/rank0.png';
     switch (rank) {
@@ -56,13 +97,21 @@ export default function RankingBox({ ranking }) {
     setIsPopup(true);
   };
 
+  const onScroll = (e) => {
+    const { scrollHeight, clientHeight, scrollTop } = e.target;
+    // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
+    if((scrollHeight - scrollTop) < clientHeight + 360) {
+      setIsLoading(true);
+    }
+  };
+
   return (
     <div className={styles.rankTab}>
       <div className={styles.rankTabHeader}>
         <div className={styles.rankTabTitle}>전체 랭킹</div>
       </div>
       <div className={styles.rankTabMenu}></div>
-      <div className={styles.rankingBox}>
+      <div className={styles.rankingBox} ref={listRef} onScroll={onScroll}>
       {
         ranking?.map(elem =>
           <Rank

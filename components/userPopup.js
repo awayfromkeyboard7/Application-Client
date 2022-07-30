@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
+import { hasCookie, getCookie, setCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import styles from '../styles/components/userPopup.module.scss';
 
 export default function UserPopup({ userId, onClick }) {
   const { data } = useSession();
-  const [myInfo, setMyInfo] = useState({});
+  // const [myInfo, setMyInfo] = useState({});
   const [info, setInfo] = useState({});
+  const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
@@ -17,18 +19,20 @@ export default function UserPopup({ userId, onClick }) {
   }, [userId]);
 
   useEffect(() => {
-    if(data?.gitId) {
-      getUserInfo(true);
+    if(!hasCookie('following')) {
+      getMyInfo();
+    } else {
+      setMyFollowing(JSON.parse(getCookie('following')));
     }
-  },[data?.gitId]);
+  },[]);
   
   useEffect(() => {
-    myInfo?.following?.map(userNodeId => {
+    myFollowing?.map(userNodeId => {
       if(userNodeId === info.nodeId) {
         setIsFollow(true);
       }
     });
-  },[myInfo, info]);
+  },[myFollowing, info]);
 
   useEffect(()=> {
     socket.emit('getFollowingList');
@@ -103,7 +107,8 @@ export default function UserPopup({ userId, onClick }) {
     }).then(res => res.json())
       .then(data => {
         if(data.success) {
-          setMyInfo(data.UserInfo);
+          setCookie('following', JSON.stringify(data.UserInfo.following));
+          setMyFollowing(data.UserInfo.following);
         }
       })
       .catch(error => console.log('[/component/userPopup] getMyInfo error >> ', error));

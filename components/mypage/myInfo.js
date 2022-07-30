@@ -94,7 +94,7 @@ export function MyInfoMini({ myInfo }) {
  )
 }
 
-export function MyInfoBox({ myInfo, ranking }) {
+export function MyInfoBox({ myInfo, totalUser=0 }) {
   return (
     <div className={styles.infoTab}>
       <div className={styles.myProfileBox}>
@@ -121,7 +121,7 @@ export function MyInfoBox({ myInfo, ranking }) {
           <div className={styles.myInfoRow}>
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>내 랭킹</div>
-              <div className={styles.percentText}>{`${myInfo?.ranking ?? 0}등 (상위 ${getPercent(myInfo?.ranking, ranking?.length)}%)`}</div>
+              <div className={styles.percentText}>{`${myInfo?.ranking ?? 0}등 (상위 ${getPercent(myInfo?.ranking, totalUser)}%)`}</div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
