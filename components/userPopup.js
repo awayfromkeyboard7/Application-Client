@@ -162,6 +162,8 @@ export default function UserPopup({ userId, onClick }) {
 
   // Chart
 
+  const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
+
   const userRankLog = async () => {
     await fetch(`/server/api/gamelog/userRankLog`, {
       method: 'POST',
@@ -198,6 +200,8 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const Chart = ({ data, PieColors }) => {
+    const dataLeng = Object.keys(data).length
+    const colorsLeng = Object.keys(COLORS).length
     return (
       <>
         <ResponsiveContainer width="31%" height="140%">
@@ -208,13 +212,13 @@ export default function UserPopup({ userId, onClick }) {
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              innerRadius={50}
-              outerRadius={60}
+              innerRadius={40}
+              outerRadius={55}
               fill="#8884d8"
               dataKey="value"
             >
-              {data.product?.map((index) => (
-                <Cell key={`cell-${index}`} fill={PieColors[index % PieColors.length]} />
+              {data && data?.map((entry, index) => (
+                < Cell key={`cell-${index}`} fill={dataLeng > colorsLeng ? '#8884d8' : COLORS[index % COLORS.length]} />
               ))}
             </Pie>
           </PieChart>
@@ -228,7 +232,7 @@ export default function UserPopup({ userId, onClick }) {
   const BarChart = ({ data }) => {
     return (
       <LineChart
-        width={300}
+        width={550}
         height={213}
         data={data}
         margin={{
