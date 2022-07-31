@@ -62,36 +62,36 @@ const getRankImg = (rank, ranking) => {
 };
 
 const getPercent = (rank, total) => {
-  if(rank && total) {
+  if (rank && total) {
     return (parseInt(rank / total * 1000) / 10);
   }
   return 100;
 };
 
 export function MyInfoMini({ myInfo }) {
- return (
-   <div className={styles.myInfoMini}>
-    <div className={styles.myInfoRow}>
-      <div className={styles.myProfileIcon}>
-        <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
-        <div className={styles.myRank}>
-          <Image src={getRankImg(myInfo.rank, myInfo.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+  return (
+    <div className={styles.myInfoMini}>
+      <div className={styles.myInfoRow}>
+        <div className={styles.myProfileIcon}>
+          <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
+          <div className={styles.myRank}>
+            <Image src={getRankImg(myInfo.rank, myInfo.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+          </div>
         </div>
-      </div>
-      <div className={styles.myInfoCol}>
-        <div className={styles.nicknameDark}>{myInfo?.gitId}</div>
-        <div className={styles.myInfoMiniRow}>
-          <div className={styles.fieldTitleDark}>{getRankName(myInfo?.rank, myInfo?.ranking) ?? 0}</div>
-          <div className={styles.pointTextDark}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
-        </div>
-        <div className={styles.myInfoMiniRow}>
-          <div className={styles.fieldTitleDark}>내 랭킹</div>
-          <div className={styles.pointTextDark}>{`${myInfo?.ranking ?? 0}등`}</div>
+        <div className={styles.myInfoCol}>
+          <div className={styles.nicknameDark}>{myInfo?.gitId}</div>
+          <div className={styles.myInfoMiniRow}>
+            <div className={styles.fieldTitleDark}>{getRankName(myInfo?.rank, myInfo?.ranking) ?? 0}</div>
+            <div className={styles.pointTextDark}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
+          </div>
+          <div className={styles.myInfoMiniRow}>
+            <div className={styles.fieldTitleDark}>내 랭킹</div>
+            <div className={styles.pointTextDark}>{`${myInfo?.ranking ?? 0}등`}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
- )
+  )
 }
 
 export function MyInfoBox({ myInfo, ranking }) {
@@ -133,17 +133,19 @@ export function MyInfoBox({ myInfo, ranking }) {
           <div className={styles.myInfoRow}>
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>평균 통과율</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam)) ?? 0}%`}</div>
+              <div className={styles.percentText}>
+                {myInfo?.totalPassRate === 0 ? "전적 없음" : `${parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam)) ?? 0}%`}
+              </div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>Solo 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100) ?? 0}%`}</div>
+              <div className={styles.percentText}>{myInfo?.winSolo === 0 ? "전적 없음" : `${parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100) ?? 0}%`}</div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>Team 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) ?? 0}%`}</div>
+              <div className={styles.percentText}>{myInfo?.winTeam === 0 ? "전적 없음" : `${parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) ?? 0}%`}</div>
             </div>
           </div>
         </div>

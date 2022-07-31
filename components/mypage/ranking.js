@@ -37,7 +37,7 @@ export default function RankingBox({ ranking }) {
   };
 
   const getLangImg = (language) => {
-    let imgUrl = '/default_profile.jpg'
+    let imgUrl = '/rank/defaultcode.png'
     switch (language) {
       case 'Python':
         imgUrl = '/rank/Python.png';
@@ -46,7 +46,7 @@ export default function RankingBox({ ranking }) {
         imgUrl = '/rank/JavaScript.png';
         break;
       default:
-        imgUrl = '/default_profile.jpg';
+        imgUrl = '/rank/defaultcode.png';
     }
     return imgUrl;
   };
@@ -63,27 +63,27 @@ export default function RankingBox({ ranking }) {
       </div>
       <div className={styles.rankTabMenu}></div>
       <div className={styles.rankingBox}>
-      {
-        ranking?.map(elem =>
-          <Rank
-            key={elem.gitId}
-            rank={elem.ranking}
-            nickname={elem.gitId}
-            image={elem.avatarUrl}
-            rankImg={getRankImg(elem.rank, elem.ranking)}
-            language={getLangImg(elem.mostLanguage)}
-            winrate={elem.winRate}
-            onClickId={() => onClickId(elem._id)}
-          />
-        )
-      }
+        {
+          ranking?.map(elem =>
+            <Rank
+              key={elem.gitId}
+              rank={elem.ranking}
+              nickname={elem.gitId}
+              image={elem.avatarUrl}
+              rankImg={getRankImg(elem.rank, elem.ranking)}
+              language={getLangImg(elem.mostLanguage)}
+              winrate={elem.winRate}
+              onClickId={() => onClickId(elem._id)}
+            />
+          )
+        }
       </div>
       {
         isPopup
         && <UserPopup
-            userId={targetId}
-            onClick={() => setIsPopup(false)}
-          />
+          userId={targetId}
+          onClick={() => setIsPopup(false)}
+        />
       }
     </div>
   )
