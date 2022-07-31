@@ -80,6 +80,7 @@ export function MyInfoMini({ myInfo }) {
         </div>
       </div>
     </div>
+  </div>
   )
 }
 

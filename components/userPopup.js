@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { hasCookie, getCookie, setCookie } from 'cookies-next';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { socket } from '../lib/socket';
 import styles from '../styles/components/userPopup.module.scss';
-import { PieChart, Pie, LineChart, Line, Cell, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function UserPopup({ userId, onClick }) {
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
-  const [userGameLog, setUserGameLog] = useState('');
   const [userLangData, setUserLangData] = useState('');
   const LangArr = []
 
@@ -159,32 +158,27 @@ export default function UserPopup({ userId, onClick }) {
     setIsFollow(false);
   };
 
-
-
-  // Chart
-
   const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
-
   const RADIAN = Math.PI / 180;
+  
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor={'middle'} dominantBaseline="central">
-        {percent === 0 ? null : `${userLangData[index]["name"]} ${(percent * 100).toFixed(0)}%`
-        }
+      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
+      {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
       </text >
     );
   };
 
   const Chart = ({ data }) => {
-    const dataLeng = Object.keys(data).length
-    const colorsLeng = Object.keys(COLORS).length
+    const dataLeng = Object.keys(data).length;
+    const colorsLeng = Object.keys(COLORS).length;
     return (
       <>
-        <ResponsiveContainer width="31%" height="140%">
+        <ResponsiveContainer width="30%">
           <PieChart>
             <Pie
               data={data}
@@ -192,22 +186,22 @@ export default function UserPopup({ userId, onClick }) {
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              innerRadius={40}
-              outerRadius={55}
+              innerRadius={20}
+              outerRadius={40}
               fill="#8884d8"
               dataKey="value"
             >
-              {data && data?.map((entry, index) => (
+            {
+              data?.map((entry, index) => (
                 < Cell key={`cell-${index}`} fill={dataLeng > colorsLeng ? '#8884d8' : COLORS[index % COLORS.length]} />
-              ))}
+              ))
+            }
             </Pie>
           </PieChart>
         </ResponsiveContainer>
       </>
     )
-  }
-
-  // Chart
+  };
 
   return (
     <div className={styles.popupBackground}>
@@ -223,6 +217,7 @@ export default function UserPopup({ userId, onClick }) {
                 : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
               }
             </div>
+            <div className={styles.splitterHorizontalNoMargin} />
             <div className={styles.myProfileBody}>
               <div className={styles.myInfoRow}>
                 <div className={styles.myProfileIcon}>

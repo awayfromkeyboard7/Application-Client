@@ -41,25 +41,11 @@
   flex-direction: column;
 }
 
-//원본 보존
-// .historyTab,
-// .rankTab,
-// .myProfileBox {
-//   width: 22rem;
-//   margin-left: 0.625rem;
-//   margin-right: 0.625rem;
-//   display: flex;
-//   flex-direction: column;
-//   background-color: $navy-dark-color;
-//   border-radius: 10px;
-// }
-
-.historyTab,
-.rankTab,
 .myProfileBox {
-  width: 40rem;
+  width: 30rem;
   margin-left: 0.625rem;
   margin-right: 0.625rem;
+  padding: 0.625rem;
   display: flex;
   flex-direction: column;
   background-color: $navy-dark-color;
@@ -68,7 +54,7 @@
 
 .myProfileHeader {
   // height: 2rem;
-  padding: 0.875rem;
+  // padding: 0.875rem;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   display: flex;
@@ -114,7 +100,6 @@
   z-index: 1;
 }
 
-.splitterVerticalGray,
 .splitterVertical {
   margin-right: 0.625rem;
   margin-left: 0.625rem;
@@ -157,13 +142,6 @@
   justify-content: center;
 }
 
-.splitterHorizontal {
-  height: 2px;
-  margin-top: 0.625rem;
-  margin-bottom: 0.625rem;
-  background-color: $navy-color;
-}
-
 .rankBox{
   display: flex;
   flex-direction: row;
@@ -171,20 +149,23 @@
   justify-content: flex-start;
 }
 
-.splitterVerticalGray,
-.splitterVertical {
-  margin-right: 0.625rem;
-  margin-left: 0.625rem;
-  width: 1px;
+.splitterHorizontalNoMargin,
+.splitterHorizontal {
+  height: 2px;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+  background-color: $navy-color;
 }
 
-.splitterVerticalGray {
-  background-color: $navy-trans-color;
+.splitterHorizontalNoMargin {
+  margin: 0;
 }
 
 .splitterVertical {
   height: 100% !important;
   width: 2px;
+  margin-right: 0.625rem;
+  margin-left: 0.625rem;
   margin-left: 0.625rem;
   margin-right: 0.625rem;
   background-color: $navy-color;
