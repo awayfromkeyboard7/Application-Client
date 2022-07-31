@@ -201,17 +201,17 @@ export default function UserPopup({ userId, onClick }) {
               <div className={styles.myInfoRow}>
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>평균 통과율</div>
-                  <div className={styles.percentText}>{`${info?.totalPassRate ? parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) : 0}%`}</div>
+                  <div className={styles.percentText}>{`${(info?.totalSolo + info?.totalTeam) ? parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) : 0}%`}</div>
                 </div>
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Solo 승률</div>
-                  <div className={styles.percentText}>{`${info?.winSolo ? parseInt(info?.winSolo / info?.totalSolo * 100) : 0}%`}</div>
+                  <div className={styles.percentText}>{`${info?.totalSolo ? parseInt(info?.winSolo / info?.totalSolo * 100) : 0}%`}</div>
                 </div>
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Team 승률</div>
-                  <div className={styles.percentText}>{`${info?.winTeam ? parseInt(info?.winTeam / info?.totalTeam * 100) : 0}%`}</div>
+                  <div className={styles.percentText}>{`${info?.totalTeam ? parseInt(info?.winTeam / info?.totalTeam * 100) : 0}%`}</div>
                 </div>
               </div>
               <div className={styles.splitterHorizontal} />

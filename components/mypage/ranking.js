@@ -118,8 +118,7 @@ export default function RankingBox() {
             image={elem.avatarUrl}
             rankImg={getRankImg(elem.rank, elem.ranking)}
             language={getLangImg(elem.mostLanguage)}
-            // winrate={elem.winRate}
-            winrate={parseInt(100 * (elem.winSolo + elem.winTeam) ?? 0 / (elem.totalSolo + elem.totalTeam))}
+            winrate={(elem.totalSolo + elem.totalTeam) ? parseInt(100 * (elem.winSolo + elem.winTeam) / (elem.totalSolo + elem.totalTeam)) : 0}
             onClickId={() => onClickId(elem._id)}
           />
         )

@@ -49,8 +49,8 @@ export default function Chart({ data }) {
           cy="50%"
           labelLine={false}
           label={renderCustomizedLabel}
-          innerRadius={20}
-          outerRadius={40}
+          innerRadius="50%"
+          outerRadius="100%"
           fill="#8884d8"
           dataKey="value"
         >

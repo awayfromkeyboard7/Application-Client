@@ -137,17 +137,17 @@ export function MyInfoBox({ myInfo }) {
                 <div className={styles.myInfoRow}>
                   <div className={styles.myInfoCol}>
                     <div className={styles.fieldTitle}>평균 통과율</div>
-                    <div className={styles.percentText}>{`${myInfo?.totalPassRate ? parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam)) : 0}%`}</div>
+                    <div className={styles.percentText}>{`${(myInfo?.totalSolo + myInfo?.totalTeam) ? parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam)) : 0}%`}</div>
                   </div>
                   <div className={styles.splitterVertical} />
                   <div className={styles.myInfoCol}>
                     <div className={styles.fieldTitle}>Solo 승률</div>
-                    <div className={styles.percentText}>{`${myInfo?.winSolo ? parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100) : 0}%`}</div>
+                    <div className={styles.percentText}>{`${myInfo?.totalSolo ? parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100) : 0}%`}</div>
                   </div>
                   <div className={styles.splitterVertical} />
                   <div className={styles.myInfoCol}>
                     <div className={styles.fieldTitle}>Team 승률</div>
-                    <div className={styles.percentText}>{`${myInfo?.winTeam ? parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) : 0}%`}</div>
+                    <div className={styles.percentText}>{`${myInfo?.totalTeam ? parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) : 0}%`}</div>
                   </div>
                   </div>
                 </>
