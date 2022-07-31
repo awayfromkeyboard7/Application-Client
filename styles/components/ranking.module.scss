@@ -1,24 +1,5 @@
 @import '../variables.module.scss';
 
-.rankingBody {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  background-color: $navy-dark-color;
-}
-
-.rankingBody::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background-color: $navy-dark-color;
-}
-
-.rankingBody::-webkit-scrollbar-thumb {
-  border-radius: 100px;
-  background-color: #4a02af71;
-  /* background-color: #282a35a0; */
-}
-
 .rankingElem {
   justify-content: space-evenly;
   height: 3rem;
@@ -91,22 +72,17 @@
   font-weight: bold;
 }
 
-.winRate{
+.winRate {
   margin-left: 0.25rem;
   width: 3rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
   // font-weight: bold;
+  text-align: center;
   color: $white-dark-color;
 }
 
-.info {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: $gray-super-dark-color;
-}
-
-.rankIcon{
+.rankIcon {
   width: 25px;
   height: 25px;
   margin-left: 0.25rem;

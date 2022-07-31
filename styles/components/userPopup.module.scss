@@ -53,14 +53,12 @@
 }
 
 .myProfileHeader {
-  // height: 2rem;
-  // padding: 0.875rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  height: 3rem;
+  padding: 0.625rem;
   display: flex;
   flex-direction: row;
-  // align-items: center;
-  border-bottom: $navy-color solid 2px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .myProfileTitle {
@@ -98,12 +96,6 @@
   bottom: -5px;
   left: -5px;
   z-index: 1;
-}
-
-.splitterVertical {
-  margin-right: 0.625rem;
-  margin-left: 0.625rem;
-  width: 1px;
 }
 
 .fieldTitle,
@@ -176,16 +168,6 @@
   margin-right: 0.625rem;
   background-color: $navy-color;
 }
-
-.gameHistoryHeader {
-  height: 3rem;
-  padding: 0.625rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .myInfoFooter {
   display: flex;
   flex-direction: row;

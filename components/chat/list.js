@@ -118,7 +118,7 @@ export default function ChatList({ friend }) {
       </div>
       <form className={styles.form} onSubmit={onSubmit}>
         <input className={styles.input} type="text" placeholder="내용을 입력하세요." value={text} onChange={onChange} />
-        <input className={styles.myPageBtn} type="submit" value="전송" />
+        <input className={styles.btn} type="submit" value="전송" />
       </form>
     </div>
   )

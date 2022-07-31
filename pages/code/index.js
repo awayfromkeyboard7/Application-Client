@@ -8,7 +8,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { useBeforeunload } from 'react-beforeunload';
 import { socket } from '../../lib/socket';
-const Voice = dynamic(() => import('../../lib/peer'));
+const Voice = dynamic(() => import('../../components/voice'));
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import Editor from '../../components/code/editor';

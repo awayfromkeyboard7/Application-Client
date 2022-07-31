@@ -68,6 +68,12 @@
   // font-weight: bold;
   color: $white-dark-color;
 }
+
+.textRed {
+  color: $error-color;
+  font-weight: bold;
+}
+
 .mainBody {
   width: 100%;
   max-width: 50rem;
@@ -131,9 +137,4 @@
 
 .hidden {
   display: none;
-}
-
-.textRed {
-  color: $error-color;
-  font-weight: bold;
 }

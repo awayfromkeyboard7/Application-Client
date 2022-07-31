@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import hark from 'hark';
-import { socket } from './socket';
+import { socket } from '../lib/socket';
 import styles from '../styles/components/voice.module.scss';
 
 export default function Voice({ team }) {

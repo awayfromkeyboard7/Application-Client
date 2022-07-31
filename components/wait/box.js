@@ -67,7 +67,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         5 < countdown
         ? <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
         : <div className={styles.btnInactive}>메인으로</div>
-        }
+      }
       </div>
       {
         isPopup

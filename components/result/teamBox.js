@@ -59,11 +59,11 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
       {
         isOpenCode
         && <div className={styles.codeBackground}>
-          <div className={styles.codeBox}>
-            <Code code={playerCode} language={playerLanguage} />
-            <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
+            <div className={styles.codeBox}>
+              <Code code={playerCode} language={playerLanguage} />
+              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
+            </div>
           </div>
-        </div>
       }
     </div>
   )

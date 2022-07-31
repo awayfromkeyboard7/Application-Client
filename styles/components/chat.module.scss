@@ -17,33 +17,6 @@
   overflow: auto;
 }
 
-.header {
-  height: 2.75rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: $navy-color solid 2px;
-}
-
-.title {
-  font-size: 1rem; /* 24px*/
-  font-weight: bold;
-  line-height: 1rem;
-  color: #000;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .body {
   padding: 0.625rem;
   display: flex;
@@ -150,7 +123,7 @@
   }
 }
 
-.myPageBtn {
+.btn {
   height: 2.5rem;
   padding: 0.5rem;
   flex-direction: row;

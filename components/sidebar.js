@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useMediaQuery } from 'react-responsive';
 import { getCookie, setCookie } from 'cookies-next';
+import { socket } from '../lib/socket';
 import Friends from './friend/list';
 import ChatRoomList from './chat/list';
 import styles from '../styles/components/sidebar.module.scss';
-import { socket } from '../lib/socket';
 
 export default function Sidebar({ menu='friends', players=null, hide=false }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -65,9 +65,7 @@ export default function Sidebar({ menu='friends', players=null, hide=false }) {
             ? <Friends onClick={friend => onClickFriend(friend)} players={players} />
             : <ChatRoomList friend={friend} />
           }
-          </div>
-          <div className={styles.sidebarFooter}>
-          </div>     
+          </div> 
           <div className={styles.collapseTag} onClick={closeSidebar}>
             <Image src="/collapse.png" width={30} height={30} className={styles.collapseTag} alt="close sidebar" />
           </div> 

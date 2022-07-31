@@ -35,19 +35,13 @@
   line-height: 3rem;
 }
 
-.headerTitleActive,
-.headerTitle {
+.headerTitleActive {
   height: 3rem;
   flex: 1;
   font-size: 1.25rem; /* 24px*/
   font-weight: bold;
   text-align: center;
   line-height: 3rem;
-  color: $purple-color;
-  background-color: #fff;
-}
-
-.headerTitleActive {
   color: #fff;
   background-color: $purple-color;
 }
@@ -56,11 +50,6 @@
   flex: 1;
   border-top: $purple-color solid 2px;
   overflow: auto;
-}
-
-.sidebarFooter {
-  align-self: flex-end;
-  justify-self: flex-end;
 }
 
 .header {

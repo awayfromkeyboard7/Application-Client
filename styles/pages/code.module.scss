@@ -37,12 +37,6 @@
   font-weight: normal;
 }
 
-.headerNotice {
-  font-size: 1rem;
-  line-height: 1.75rem;
-  color: #fff;
-}
-
 .headerRow {
   display: flex;
   flex-direction: row;
@@ -86,7 +80,6 @@
 
 .selectListMobile {
   right: 1.25rem;
-
 }
 
 .selectElem {
@@ -119,18 +112,6 @@
 .text {
   margin-right: 2rem;
   padding: 0.625rem;
-  color: $white-dark-color;
-  font-size: 1rem;
-  line-height: 2rem;
-  letter-spacing: 1px;
-  overflow: hidden auto;
-}
-
-.textArea {
-  padding: 0.625rem;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
   color: $white-dark-color;
   font-size: 1rem;
   line-height: 2rem;

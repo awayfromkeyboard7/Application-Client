@@ -154,7 +154,7 @@ export default function UserPopup({ userId, onClick }) {
       info.gitId
       && <div className={styles.infoTab}>
           <div className={styles.myProfileBox}>
-            <div className={styles.gameHistoryHeader}>
+            <div className={styles.myProfileHeader}>
               <div className={styles.myProfileTitle}>내 정보</div>
               {  
                 data?.gitId === info.gitId  
