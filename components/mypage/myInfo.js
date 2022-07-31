@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
+import Chart from '../../components/chart';
 import styles from '../../styles/pages/mypage.module.scss';
 
 const getRankName = (rank, ranking) => {
@@ -120,12 +121,16 @@ export function MyInfoBox({ myInfo }) {
                 <div className={styles.myInfoRow}>
                   <div className={styles.myInfoCol}>
                     <div className={styles.fieldTitle}>내 랭킹</div>
-                    <div className={styles.percentText}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`} (상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
+                    <div className={styles.percentText} style={{ paddingTop: '0.25rem', paddingBottom: 0, overflow: 'hidden' }}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}\n(상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
                   </div>
                   <div className={styles.splitterVertical} />
                   <div className={styles.myInfoCol}>
                     <div className={styles.fieldTitle}>사용 언어</div>
                     <div className={styles.percentText}>{myInfo?.mostLanguage ? myInfo?.mostLanguage : '-'}</div>
+                  </div>
+                  <div className={styles.splitterVertical} />
+                  <div className={styles.chartBox}>
+                    <Chart data={myInfo?.language} />
                   </div>
                 </div>
                 <div className={styles.splitterHorizontal} />

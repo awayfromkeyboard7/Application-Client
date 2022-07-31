@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
 import { hasCookie, getCookie, setCookie } from 'cookies-next';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { socket } from '../lib/socket';
+import Chart from '../components/chart';
 import styles from '../styles/components/userPopup.module.scss';
 
 export default function UserPopup({ userId, onClick }) {
+  const { data } = useSession();
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
-  const [userLangData, setUserLangData] = useState('');
-  const LangArr = []
 
   useEffect(() => {
     if (userId) {
@@ -130,17 +130,7 @@ export default function UserPopup({ userId, onClick }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        const langInfo = data.UserInfo.language
-          const langLength = Object.keys(langInfo).length
-          const langKey = Object.keys(langInfo)
-          const langValue = Object.values(langInfo)
-
-          setInfo(data.UserInfo);
-          for (let i = 0; i < langLength; i++) {
-            LangArr.push({ name: langKey[i], value: langValue[i] })
-          }
-
-          setUserLangData(LangArr)
+        setInfo(data.UserInfo);
       }
     })
     .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
@@ -158,51 +148,6 @@ export default function UserPopup({ userId, onClick }) {
     setIsFollow(false);
   };
 
-  const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
-  const RADIAN = Math.PI / 180;
-  
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
-      {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
-      </text >
-    );
-  };
-
-  const Chart = ({ data }) => {
-    const dataLeng = Object.keys(data).length;
-    const colorsLeng = Object.keys(COLORS).length;
-    return (
-      <>
-        <ResponsiveContainer width="30%">
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={renderCustomizedLabel}
-              innerRadius={20}
-              outerRadius={40}
-              fill="#8884d8"
-              dataKey="value"
-            >
-            {
-              data?.map((entry, index) => (
-                < Cell key={`cell-${index}`} fill={dataLeng > colorsLeng ? '#8884d8' : COLORS[index % COLORS.length]} />
-              ))
-            }
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
-      </>
-    )
-  };
-
   return (
     <div className={styles.popupBackground}>
     {
@@ -211,10 +156,12 @@ export default function UserPopup({ userId, onClick }) {
           <div className={styles.myProfileBox}>
             <div className={styles.gameHistoryHeader}>
               <div className={styles.myProfileTitle}>내 정보</div>
-              {       
-                isFollow
-                ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
-                : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
+              {  
+                data?.gitId === info.gitId  
+                ? null
+                : isFollow
+                  ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
+                  : <div className={styles.inviteBtn} onClick={onClickFollow}>팔로우</div>
               }
             </div>
             <div className={styles.splitterHorizontalNoMargin} />
@@ -238,7 +185,7 @@ export default function UserPopup({ userId, onClick }) {
               <div className={styles.myInfoRow}>
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>랭킹</div>
-                  <div className={styles.percentText}>{`${info?.ranking ?? 0}등 (상위 ${info?.rankingPercent ?? 100}%)`}</div>
+                  <div className={styles.percentText} style={{ paddingTop: '0.25rem', paddingBottom: 0, overflow: 'hidden' }}>{`${info?.ranking ?? 0}등\n(상위 ${info?.rankingPercent ?? 100}%)`}</div>
                 </div>
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
@@ -246,7 +193,9 @@ export default function UserPopup({ userId, onClick }) {
                   <div className={styles.percentText}>{info?.mostLanguage ? info?.mostLanguage : '-'}</div>
                 </div>
                 <div className={styles.splitterVertical} />
-                <Chart data={userLangData} />
+                <div className={styles.chartBox}>
+                  <Chart data={info?.language} />
+                </div>
               </div>
               <div className={styles.splitterHorizontal} />
               <div className={styles.myInfoRow}>
