@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
+import { hasCookie, getCookie, setCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import styles from '../styles/components/userPopup.module.scss';
-import { PieChart, BarChart, Bar, Pie, LineChart, Line, Cell, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, LineChart, Line, Cell, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function UserPopup({ userId, onClick }) {
   const { data } = useSession();
-  const [myInfo, setMyInfo] = useState({});
+  // const [myInfo, setMyInfo] = useState({});
   const [info, setInfo] = useState({});
+  const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
   const [userGameLog, setUserGameLog] = useState('');
   const [userLangData, setUserLangData] = useState('');
@@ -21,18 +23,26 @@ export default function UserPopup({ userId, onClick }) {
   }, [userId]);
 
   useEffect(() => {
-    if (data?.gitId) {
-      getUserInfo(true);
+    if (!hasCookie('following')) {
+      getMyInfo();
+    } else {
+      setMyFollowing(JSON.parse(getCookie('following')));
     }
-  }, [data?.gitId]);
+  }, []);
 
   useEffect(() => {
-    myInfo?.following?.map(userNodeId => {
-      if (userNodeId === info.nodeId) {
+    if (myFollowing.length) {
+      setCookie('following', JSON.stringify(myFollowing));
+    }
+  }, [myFollowing]);
+
+  useEffect(() => {
+    myFollowing?.map(userId => {
+      if (userId === info._id) {
         setIsFollow(true);
       }
     });
-  }, [myInfo, info]);
+  }, [myFollowing, info]);
 
   useEffect(() => {
     socket.emit('getFollowingList');
@@ -111,7 +121,8 @@ export default function UserPopup({ userId, onClick }) {
     }).then(res => res.json())
       .then(data => {
         if (data.success) {
-          setMyInfo(data.UserInfo);
+          setCookie('following', JSON.stringify(data.UserInfo.following));
+          setMyFollowing(data.UserInfo.following);
         }
       })
       .catch(error => console.log('[/component/userPopup] getMyInfo error >> ', error));
@@ -136,12 +147,14 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const onClickFollow = () => {
-    socket.emit('followMember', info.gitId);
+    socket.emit('followMember', info._id);
+    setMyFollowing(prev => [...prev, info._id]);
     setIsFollow(true);
   };
 
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', info.gitId);
+    socket.emit('unFollowMember', info._id);
+    setMyFollowing(prev => prev.filter(userId => userId !== info._id));
     setIsFollow(false);
   };
 
@@ -187,7 +200,7 @@ export default function UserPopup({ userId, onClick }) {
   const Chart = ({ data, PieColors }) => {
     return (
       <>
-        <ResponsiveContainer width="31%" height="110%">
+        <ResponsiveContainer width="31%" height="140%">
           <PieChart>
             <Pie
               data={data}
@@ -210,20 +223,22 @@ export default function UserPopup({ userId, onClick }) {
     )
   }
 
+
+
   const BarChart = ({ data }) => {
     return (
       <LineChart
         width={300}
-        height={236}
+        height={213}
         data={data}
         margin={{
-          top: 20,
+          top: 0,
           right: 10,
           left: 10,
           bottom: 20
         }}
       >
-        {/* <XAxis dataKey="date" tick={{ fill: 'white' }} /> */}
+        <XAxis dataKey="date" tick={{ fill: 'white' }} hide={true} />
         <YAxis reversed="true" tick={{ fill: 'white' }} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} domain={[0, 1]} />
         <Line
           type="monotone"
@@ -288,7 +303,7 @@ export default function UserPopup({ userId, onClick }) {
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>평균 통과율</div>
                   <div className={styles.percentText}>
-                    {info?.totalPassRate === 0 ? "전적 없음" : `${parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) ?? 0}%`}
+                    {info?.totalPassRate === 0 ? "0%" : `${parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam))}%`}
                   </div>
                 </div>
                 <div className={styles.splitterVertical} />
@@ -296,7 +311,7 @@ export default function UserPopup({ userId, onClick }) {
                   <div className={styles.fieldTitle}>Solo 승률</div>
                   <div className={styles.percentText}>
                     {/* {`${parseInt(info?.winSolo / info?.totalSolo * 100) ?? 0}%`} */}
-                    {info?.winSolo === 0 ? "전적 없음" : `${parseInt(info?.winSolo / info?.totalSolo * 100) ?? 0}%`}
+                    {info?.winSolo === 0 ? "0%" : `${parseInt(info?.winSolo / info?.totalSolo * 100)}%`}
                   </div>
                 </div>
                 <div className={styles.splitterVertical} />
@@ -304,12 +319,12 @@ export default function UserPopup({ userId, onClick }) {
                   <div className={styles.fieldTitle}>Team 승률</div>
                   <div className={styles.percentText}>
                     {/* {`${parseInt(info?.winTeam / info?.totalTeam * 100) ?? 0}%`} */}
-                    {info?.winTeam === 0 ? "전적 없음" : `${parseInt(info?.winTeam / info?.totalTeam * 100) ?? 0}%`}
+                    {info?.winTeam === 0 ? "0%" : `${parseInt(info?.winTeam / info?.totalTeam * 100)}%`}
                   </div>
                 </div>
               </div>
               <div className={styles.splitterHorizontal} />
-              <div>
+              <div className={styles.rowchartArea}>
                 <BarChart data={userGameLog} />
               </div>
               <div className={styles.splitterHorizontal} />

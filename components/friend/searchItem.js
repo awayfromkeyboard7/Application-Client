@@ -1,27 +1,39 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { setCookie } from 'cookies-next';
 import { socket } from '../../lib/socket';
 import styles from '../../styles/components/friend.module.scss';
 
 export default function SearchItem({ user, myInfo, isOnline }) {
+  const [myFollowing, setMyFollowing] = useState(myInfo.following);
   const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
+    if(myFollowing.length) {
+      setCookie('following', JSON.stringify(myFollowing));
+    }
+  }, [myFollowing]);
+
+  useEffect(() => {
     // 이미 팔로우중인 사용자인지 확인하고 isFollow state 변경
-    myInfo?.following?.map(userNodeId => {
-      if(userNodeId === user.nodeId) {
+    myFollowing?.map(userId => {
+      if(userId === user._id) {
         setIsFollow(true);
       }
     });
-  }, [myInfo, user]);
+  }, [myFollowing, user]);
 
   const onClickFollow = () => {
-    socket.emit('followMember', user.gitId);
+    console.log('onclick follow!!!!', user._id);
+    socket.emit('followMember', user._id);
+    setMyFollowing(prev => [...prev, user._id]);
     setIsFollow(true);
   };
-
+  
   const onClickUnFollow = () => {
-    socket.emit('unFollowMember', user.gitId);
+    console.log('onclick unfollow!!!!', user._id);
+    socket.emit('unFollowMember', user._id);
+    setMyFollowing(prev => prev.filter(userId => userId !== user._id));
     setIsFollow(false);
   };
 

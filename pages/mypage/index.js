@@ -12,18 +12,16 @@ import styles from '../../styles/pages/mypage.module.scss'
 
 export default function MyPage() {
   const router = useRouter();
-  const { data, status } = useSession();
+  const { status } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
-  const [ranking, setRanking] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    if(data) {
-      getUserInfo();
-      getRanking();
-    }
-  }, [data?.gitId]);
+    getUserInfo();
+    getUserCount();
+  }, []);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -49,8 +47,8 @@ export default function MyPage() {
       .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
-  const getRanking = async () => {
-    await fetch(`/server/api/ranking/getRanking`, {
+  const getUserCount = async () => {
+    await fetch(`/server/api/user/count`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -58,12 +56,11 @@ export default function MyPage() {
     })
       .then(res => res.json())
       .then(data => {
-        // console.log(data)
         if (data.success) {
-          setRanking(data.data);
+          setTotalCount(data.count);
         }
       })
-      .catch(error => console.log('[/pages/mypage] getRanking error >> ', error));
+      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const logout = async () => {
@@ -81,8 +78,8 @@ export default function MyPage() {
           {status !== 'authenticated' && isLoading && <Loading />}
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
-              <MyInfoBox myInfo={myInfo} ranking={ranking} />
-              <RankingBox ranking={ranking} />
+              <MyInfoBox myInfo={myInfo} totalUser={totalCount} />
+              <RankingBox />
             </div>
             <GameHistory gameLogs={gameLogs} />
           </div>
@@ -91,3 +88,18 @@ export default function MyPage() {
     />
   )
 }
+
+// export const getServerSideProps = async () => {
+//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/ranking/getRanking`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       }
+//     });
+  
+//   const data = await res.json();
+
+//   return {
+//     props: { ranking: data.data },
+//   };
+// };

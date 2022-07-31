@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/components/ranking.module.scss';
 
-export default function RankingItem({ rank, nickname, image, rankImg, language, winrate, onClickId}) {
+export default function RankingItem({ rank, nickname, image, rankImg, language, winrate, onClickId }) {
   const [rankText, setRankText] = useState(rank);
   const [isEmoji, setIsEmoji] = useState(false);
 

@@ -232,19 +232,15 @@ export default function WaitPage() {
   };
 
   const addPlayer = (users) => {
-    console.log('add player >>> ', users);
     let copyPlayers = JSON.parse(JSON.stringify(defaultUsers));
     
-    console.log('copy players >>> ', copyPlayers);
     for(let i = 0; i < users?.length; i++) {
-      console.log('add player for >>. ', i);
       copyPlayers[i].gitId = users[i].gitId;
       copyPlayers[i].avatarUrl = users[i].avatarUrl ?? '/default_profile.jpg';
       copyPlayers[i].userId = users[i].userId;
       copyPlayers[i].isPlayer = true;
     }
     
-    console.log('copy players >>> ', copyPlayers);
     setPlayers(copyPlayers);
   };
 

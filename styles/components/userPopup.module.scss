@@ -180,7 +180,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 7rem;
+  height: 6.8rem;
 }
 
 .myProfileIcon {
@@ -293,4 +293,9 @@
 .rechartsFontSize {    
     font-size: 0.8rem;
     text-align: center;
+}
+
+.rowchartArea {
+  display: flex;
+  height: 12.3rem;
 }
