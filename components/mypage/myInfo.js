@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -84,6 +85,8 @@ export function MyInfoMini({ myInfo }) {
 }
 
 export function MyInfoBox({ myInfo }) {
+  const [isDetail, setIsDetail] = useState(false);
+
   return (
     <div className={styles.infoTab}>
       <div className={styles.myProfileBox}>
@@ -107,34 +110,43 @@ export function MyInfoBox({ myInfo }) {
             </div>
           </div>
           <div className={styles.splitterHorizontal} />
-          <div className={styles.myInfoRow}>
-            <div className={styles.myInfoCol}>
-              <div className={styles.fieldTitle}>내 랭킹</div>
-              <div className={styles.percentText}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`} (상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
-            </div>
-            <div className={styles.splitterVertical} />
-            <div className={styles.myInfoCol}>
-              <div className={styles.fieldTitle}>사용 언어</div>
-              <div className={styles.percentText}>{myInfo?.mostLanguage ? myInfo?.mostLanguage : '-'}</div>
-            </div>
+          <div className={styles.myInfoRow} style={{ margin: '-0.25rem' }}onClick={() => setIsDetail(prev => !prev)}>
+            <Image src={isDetail ? '/arrow_up.png' : '/arrow_down.png'} width={20} height={20} alt="load more.." />
           </div>
-          <div className={styles.splitterHorizontal} />
-          <div className={styles.myInfoRow}>
-            <div className={styles.myInfoCol}>
-              <div className={styles.fieldTitle}>평균 통과율</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.totalPassRate ?? 0 / (myInfo?.totalSolo + myInfo?.totalTeam))}%`}</div>
-            </div>
-            <div className={styles.splitterVertical} />
-            <div className={styles.myInfoCol}>
-              <div className={styles.fieldTitle}>Solo 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winSolo ?? 0 / myInfo?.totalSolo * 100)}%`}</div>
-            </div>
-            <div className={styles.splitterVertical} />
-            <div className={styles.myInfoCol}>
-              <div className={styles.fieldTitle}>Team 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam ?? 0 / myInfo?.totalTeam * 100)}%`}</div>
-            </div>
-          </div>
+          {
+            isDetail
+            && <>
+                <div className={styles.splitterHorizontal} />
+                <div className={styles.myInfoRow}>
+                  <div className={styles.myInfoCol}>
+                    <div className={styles.fieldTitle}>내 랭킹</div>
+                    <div className={styles.percentText}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`} (상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
+                  </div>
+                  <div className={styles.splitterVertical} />
+                  <div className={styles.myInfoCol}>
+                    <div className={styles.fieldTitle}>사용 언어</div>
+                    <div className={styles.percentText}>{myInfo?.mostLanguage ? myInfo?.mostLanguage : '-'}</div>
+                  </div>
+                </div>
+                <div className={styles.splitterHorizontal} />
+                <div className={styles.myInfoRow}>
+                  <div className={styles.myInfoCol}>
+                    <div className={styles.fieldTitle}>평균 통과율</div>
+                    <div className={styles.percentText}>{`${parseInt(myInfo?.totalPassRate ?? 0 / (myInfo?.totalSolo + myInfo?.totalTeam))}%`}</div>
+                  </div>
+                  <div className={styles.splitterVertical} />
+                  <div className={styles.myInfoCol}>
+                    <div className={styles.fieldTitle}>Solo 승률</div>
+                    <div className={styles.percentText}>{`${parseInt(myInfo?.winSolo ?? 0 / myInfo?.totalSolo * 100)}%`}</div>
+                  </div>
+                  <div className={styles.splitterVertical} />
+                  <div className={styles.myInfoCol}>
+                    <div className={styles.fieldTitle}>Team 승률</div>
+                    <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam ?? 0 / myInfo?.totalTeam * 100)}%`}</div>
+                  </div>
+                  </div>
+                </>
+          }
         </div>
       </div>
     </div>
