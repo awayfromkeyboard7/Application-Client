@@ -14,7 +14,7 @@ export default function UserPopup({ userId, onClick }) {
   const [isFollow, setIsFollow] = useState(false);
   const [userGameLog, setUserGameLog] = useState('');
   const [userLangData, setUserLangData] = useState('');
-  const PieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const LangArr = []
 
   useEffect(() => {
     if (userId) {
@@ -47,10 +47,6 @@ export default function UserPopup({ userId, onClick }) {
   useEffect(() => {
     socket.emit('getFollowingList');
   }, [isFollow]);
-
-  useEffect(() => {
-    userRankLog()
-  }, [])
 
   const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
@@ -140,8 +136,20 @@ export default function UserPopup({ userId, onClick }) {
     }).then(res => res.json())
       .then(data => {
         if (data.success) {
+          const langInfo = data.UserInfo.language
+          const langLength = Object.keys(langInfo).length
+          const langKey = Object.keys(langInfo)
+          const langValue = Object.values(langInfo)
+
           setInfo(data.UserInfo);
+          for (let i = 0; i < langLength; i++) {
+            LangArr.push({ name: langKey[i], value: langValue[i] })
+          }
+
+          setUserLangData(LangArr)
+
         }
+
       })
       .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
   };
@@ -164,27 +172,6 @@ export default function UserPopup({ userId, onClick }) {
 
   const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
 
-  const userRankLog = async () => {
-    await fetch(`/server/api/gamelog/userRankLog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // gitId: targetGitId
-        userId
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setUserGameLog(data.RankLogArr);
-          setUserLangData(data.LangArr)
-        }
-      })
-      .catch(error => console.log('[/components/userPopup] getUserInfo error >> ', error));
-  };
-
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -199,7 +186,7 @@ export default function UserPopup({ userId, onClick }) {
     );
   };
 
-  const Chart = ({ data, PieColors }) => {
+  const Chart = ({ data }) => {
     const dataLeng = Object.keys(data).length
     const colorsLeng = Object.keys(COLORS).length
     return (
@@ -225,35 +212,6 @@ export default function UserPopup({ userId, onClick }) {
         </ResponsiveContainer>
       </>
     )
-  }
-
-
-
-  const BarChart = ({ data }) => {
-    return (
-      <LineChart
-        width={550}
-        height={213}
-        data={data}
-        margin={{
-          top: 0,
-          right: 10,
-          left: 10,
-          bottom: 20
-        }}
-      >
-        <XAxis dataKey="date" tick={{ fill: 'white' }} hide={true} />
-        <YAxis reversed="true" tick={{ fill: 'white' }} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} domain={[0, 1]} />
-        <Line
-          type="monotone"
-          dataKey="rank"
-          stroke="#8884d8"
-          strokeWidth={5}
-          dot={{ stroke: 'black', strokeWidth: 1, r: 5, strokeDasharray: '' }}
-        />
-        <Tooltip />
-      </LineChart>
-    );
   }
 
   // Chart
@@ -300,7 +258,7 @@ export default function UserPopup({ userId, onClick }) {
                   <div className={styles.percentText}>{info?.mostLanguage ?? ''}</div>
                 </div>
                 <div className={styles.splitterVertical} />
-                <Chart data={userLangData} PieColors={PieColors} />
+                <Chart data={userLangData} />
               </div>
               <div className={styles.splitterHorizontal} />
               <div className={styles.myInfoRow}>
@@ -314,7 +272,6 @@ export default function UserPopup({ userId, onClick }) {
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Solo 승률</div>
                   <div className={styles.percentText}>
-                    {/* {`${parseInt(info?.winSolo / info?.totalSolo * 100) ?? 0}%`} */}
                     {info?.winSolo === 0 ? "0%" : `${parseInt(info?.winSolo / info?.totalSolo * 100)}%`}
                   </div>
                 </div>
@@ -322,15 +279,10 @@ export default function UserPopup({ userId, onClick }) {
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Team 승률</div>
                   <div className={styles.percentText}>
-                    {/* {`${parseInt(info?.winTeam / info?.totalTeam * 100) ?? 0}%`} */}
                     {info?.winTeam === 0 ? "0%" : `${parseInt(info?.winTeam / info?.totalTeam * 100)}%`}
                   </div>
                 </div>
               </div>
-              {/* <div className={styles.splitterHorizontal} />
-              <div className={styles.rowchartArea}>
-                <BarChart data={userGameLog} />
-              </div> */}
               <div className={styles.splitterHorizontal} />
               <div className={styles.sorryannie}>
                 <div className={styles.btn} onClick={onClick}>닫기</div>
