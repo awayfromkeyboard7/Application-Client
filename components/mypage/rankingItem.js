@@ -53,7 +53,7 @@ export default function RankingItem({ ranking, nickname, image, rankImg, languag
         <div className={styles.nickname} onClick={onClickId}>{nickname}</div>
         <div className={styles.winRate}>{`${winrate}%`}</div>
       <div className={styles.rankIcon}>
-        <Image src={language ?? '/default_profile.jpg'} width={20} height={20} className={styles.rankIcon} alt="프로필" />
+        { language && <Image src={language} width={20} height={20} className={styles.rankIcon} alt="프로필" />}
       </div>
     </div>
   )

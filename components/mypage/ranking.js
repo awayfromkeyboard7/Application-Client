@@ -78,7 +78,7 @@ export default function RankingBox() {
   };
 
   const getLangImg = (language) => {
-    let imgUrl = '/default_profile.jpg'
+    let imgUrl = null;
     switch (language) {
       case 'Python':
         imgUrl = '/rank/Python.png';
@@ -86,8 +86,6 @@ export default function RankingBox() {
       case 'JavaScript':
         imgUrl = '/rank/JavaScript.png';
         break;
-      default:
-        imgUrl = '/default_profile.jpg';
     }
     return imgUrl;
   };
@@ -122,7 +120,7 @@ export default function RankingBox() {
             rankImg={getRankImg(elem.rank, elem.ranking)}
             language={getLangImg(elem.mostLanguage)}
             // winrate={elem.winRate}
-            winrate={parseInt(100 * (elem.winSolo + elem.winTeam) / (elem.totalSolo + elem.totalTeam))}
+            winrate={parseInt(100 * (elem.winSolo + elem.winTeam) ?? 0 / (elem.totalSolo + elem.totalTeam))}
             onClickId={() => onClickId(elem._id)}
           />
         )
