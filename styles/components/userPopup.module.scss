@@ -13,53 +13,7 @@
   z-index: 101;
 }
 
-.popupBox {
-  width: 32rem;
-  height: 20rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.625rem;
-  background-color: #fff;
-}
-
-.popupTitle {
-  margin-bottom: 3rem;
-  color: #000;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: center;
-}
-
-.popupText {
-  margin-bottom: 3rem;
-  color: #000;
-  font-size: 1.25rem;
-  text-align: center;
-  line-height: 2rem;
-  white-space: pre-wrap;
-}
-
-.popupBtn {
-  height:3rem;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 0.625rem;
-  color: #fff;
-  background-color: $purple-color;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $purple-dark-color;
-  }
-}
-
 // 팔로우 버튼
-.inviteBtnDisable,
 .inviteBtnClicked,
 .inviteBtn {
   height: 2rem;
@@ -77,51 +31,16 @@
 }
 
 .inviteBtn {
-  padding: calc(0.5rem - 2px);
   background-color: $white-dark-color;
   color: $purple-color;
-  border: $purple-color solid 2px;
 }
-
-.inviteBtnDisable {
-  background-color: $gray-color;
-  color: $white-dark-color;
-}
-
-//닫기 버튼
-
-.btn {
-  // height: 2.5rem;
-  width: 3rem;
-  padding: 0.5rem;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1rem;
-  text-align: center;
-  border-radius: 5px;
-  color: $purple-color;
-  background-color: #fff;
-  outline: none;
-  // border: $gray-color solid 2px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $white-dark-color;
-  }
-}
-
 
 //from mypage
-
 .infoTab {
   display: flex;
   flex-direction: column;
 }
 
-.historyTab,
-.rankTab,
 .myProfileBox {
   width: 22rem;
   margin-left: 0.625rem;
@@ -132,8 +51,6 @@
   border-radius: 10px;
 }
 
-.gameHistoryHeader,
-.rankTabHeader,
 .myProfileHeader {
   // height: 2rem;
   padding: 0.875rem;
@@ -145,7 +62,6 @@
   border-bottom: $navy-color solid 2px;
 }
 
-.rankTabTitle,
 .myProfileTitle {
   color: $white-dark-color;
   font-size: 1rem;
@@ -267,7 +183,7 @@
   justify-content: space-between;
 }
 
-.sorryannie {
+.myInfoFooter {
   display: flex;
   flex-direction: row;
   align-items: center;

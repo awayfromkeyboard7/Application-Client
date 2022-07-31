@@ -62,8 +62,6 @@ export default function UserPopup({ userId, onClick }) {
       case 5:
         myrank = 'Master';
         break;
-      default:
-        myrank = 'Bronze'
     }
     if (ranking === 1) {
       myrank = 'King';
@@ -92,8 +90,6 @@ export default function UserPopup({ userId, onClick }) {
       case 5:
         imgUrl = '/rank/rank5.png';
         break;
-      default:
-        imgUrl = '/rank/rank0.png';
     }
     if (ranking == 1) {
       imgUrl = '/rank/king.png';
@@ -168,13 +164,13 @@ export default function UserPopup({ userId, onClick }) {
                 <div className={styles.myProfileIcon}>
                   <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
                   <div className={styles.myRank}>
-                    <Image src={getRankImg(info.rank, info.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+                    <Image src={getRankImg(info.rank, info.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
                   </div>
                 </div>
                 <div className={styles.myInfoCol}>
                   <div className={styles.nickname}>{info?.gitId ?? ''}</div>
                   <div className={styles.rankBox}>
-                    <div className={styles.fieldTitle}>{getRankName(info?.rank, info?.ranking) ?? 0}</div>
+                    <div className={styles.fieldTitle}>{getRankName(info?.rank, info?.ranking)}</div>
                     <div className={styles.pointText}>{`${info?.totalScore ?? 0 * 5} Point`}</div>
                   </div>
                 </div>
@@ -188,29 +184,29 @@ export default function UserPopup({ userId, onClick }) {
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>사용 언어</div>
-                  <div className={styles.percentText}>{info?.mostLanguage ?? ''}</div>
+                  <div className={styles.percentText}>{info?.mostLanguage ? info?.mostLanguage : '-'}</div>
                 </div>
               </div>
               <div className={styles.splitterHorizontal} />
               <div className={styles.myInfoRow}>
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>평균 통과율</div>
-                  <div className={styles.percentText}>{`${parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) ?? 0}%`}</div>
+                  <div className={styles.percentText}>{`${info?.totalPassRate ? parseInt(info?.totalPassRate / (info?.totalSolo + info?.totalTeam)) : 0}%`}</div>
                 </div>
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Solo 승률</div>
-                  <div className={styles.percentText}>{`${parseInt(info?.winSolo / info?.totalSolo * 100) ?? 0}%`}</div>
+                  <div className={styles.percentText}>{`${info?.winSolo ? parseInt(info?.winSolo / info?.totalSolo * 100) : 0}%`}</div>
                 </div>
                 <div className={styles.splitterVertical} />
                 <div className={styles.myInfoCol}>
                   <div className={styles.fieldTitle}>Team 승률</div>
-                  <div className={styles.percentText}>{`${parseInt(info?.winTeam / info?.totalTeam * 100) ?? 0}%`}</div>
+                  <div className={styles.percentText}>{`${info?.winTeam ? parseInt(info?.winTeam / info?.totalTeam * 100) : 0}%`}</div>
                 </div>
               </div>
               <div className={styles.splitterHorizontal} />
-              <div className={styles.sorryannie}>
-                <div className={styles.btn} onClick={onClick}>닫기</div>
+              <div className={styles.myInfoFooter}>
+                <div className={styles.inviteBtn} onClick={onClick}>닫기</div>
               </div>
             </div>
           </div>
