@@ -3,43 +3,47 @@ import Image from 'next/image'
 import { hasCookie, getCookie, setCookie } from 'cookies-next';
 import { socket } from '../lib/socket';
 import styles from '../styles/components/userPopup.module.scss';
+import { PieChart, Pie, LineChart, Line, Cell, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function UserPopup({ userId, onClick }) {
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
+  const [userGameLog, setUserGameLog] = useState('');
+  const [userLangData, setUserLangData] = useState('');
+  const LangArr = []
 
   useEffect(() => {
-    if(userId) {
+    if (userId) {
       getUserInfo();
     }
   }, [userId]);
 
   useEffect(() => {
-    if(!hasCookie('following')) {
+    if (!hasCookie('following')) {
       getMyInfo();
     } else {
       setMyFollowing(JSON.parse(getCookie('following')));
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-    if(myFollowing.length) {
+    if (myFollowing.length) {
       setCookie('following', JSON.stringify(myFollowing));
     }
   }, [myFollowing]);
-  
+
   useEffect(() => {
     myFollowing?.map(userId => {
-      if(userId === info._id) {
+      if (userId === info._id) {
         setIsFollow(true);
       }
     });
-  },[myFollowing, info]);
+  }, [myFollowing, info]);
 
-  useEffect(()=> {
+  useEffect(() => {
     socket.emit('getFollowingList');
-  },[isFollow]);
+  }, [isFollow]);
 
   const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
@@ -127,7 +131,17 @@ export default function UserPopup({ userId, onClick }) {
     .then(res => res.json())
     .then(data => {
       if(data.success) {
-        setInfo(data.UserInfo);
+        const langInfo = data.UserInfo.language
+          const langLength = Object.keys(langInfo).length
+          const langKey = Object.keys(langInfo)
+          const langValue = Object.values(langInfo)
+
+          setInfo(data.UserInfo);
+          for (let i = 0; i < langLength; i++) {
+            LangArr.push({ name: langKey[i], value: langValue[i] })
+          }
+
+          setUserLangData(LangArr)
       }
     })
     .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
@@ -138,12 +152,62 @@ export default function UserPopup({ userId, onClick }) {
     setMyFollowing(prev => [...prev, info._id]);
     setIsFollow(true);
   };
-  
+
   const onClickUnFollow = () => {
     socket.emit('unFollowMember', info._id);
     setMyFollowing(prev => prev.filter(userId => userId !== info._id));
     setIsFollow(false);
   };
+
+
+
+  // Chart
+
+  const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor={'middle'} dominantBaseline="central">
+        {percent === 0 ? null : `${userLangData[index]["name"]} ${(percent * 100).toFixed(0)}%`
+        }
+      </text >
+    );
+  };
+
+  const Chart = ({ data }) => {
+    const dataLeng = Object.keys(data).length
+    const colorsLeng = Object.keys(COLORS).length
+    return (
+      <>
+        <ResponsiveContainer width="31%" height="140%">
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              innerRadius={40}
+              outerRadius={55}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {data && data?.map((entry, index) => (
+                < Cell key={`cell-${index}`} fill={dataLeng > colorsLeng ? '#8884d8' : COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </>
+    )
+  }
+
+  // Chart
 
   return (
     <div className={styles.popupBackground}>
@@ -186,6 +250,8 @@ export default function UserPopup({ userId, onClick }) {
                   <div className={styles.fieldTitle}>사용 언어</div>
                   <div className={styles.percentText}>{info?.mostLanguage ? info?.mostLanguage : '-'}</div>
                 </div>
+                <div className={styles.splitterVertical} />
+                <Chart data={userLangData} />
               </div>
               <div className={styles.splitterHorizontal} />
               <div className={styles.myInfoRow}>

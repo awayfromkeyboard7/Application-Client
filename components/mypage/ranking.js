@@ -17,7 +17,7 @@ export default function RankingBox() {
   }, []);
 
   useEffect(() => {
-    if(isLoading && !isEnd) {
+    if (isLoading && !isEnd) {
       pagingRanking();
     }
   }, [isLoading, isEnd]);
@@ -97,8 +97,7 @@ export default function RankingBox() {
 
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
-    // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
-    if((scrollHeight - scrollTop) < clientHeight + 360) {
+    if ((scrollHeight - scrollTop) < clientHeight + 360) {
       setIsLoading(true);
     }
   };
@@ -129,9 +128,9 @@ export default function RankingBox() {
       {
         isPopup
         && <UserPopup
-            userId={targetId}
-            onClick={() => setIsPopup(false)}
-          />
+          userId={targetId}
+          onClick={() => setIsPopup(false)}
+        />
       }
     </div>
   )

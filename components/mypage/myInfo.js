@@ -80,8 +80,7 @@ export function MyInfoMini({ myInfo }) {
         </div>
       </div>
     </div>
-  </div>
- )
+  )
 }
 
 export function MyInfoBox({ myInfo }) {

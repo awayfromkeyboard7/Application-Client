@@ -41,8 +41,23 @@
   flex-direction: column;
 }
 
+//원본 보존
+// .historyTab,
+// .rankTab,
+// .myProfileBox {
+//   width: 22rem;
+//   margin-left: 0.625rem;
+//   margin-right: 0.625rem;
+//   display: flex;
+//   flex-direction: column;
+//   background-color: $navy-dark-color;
+//   border-radius: 10px;
+// }
+
+.historyTab,
+.rankTab,
 .myProfileBox {
-  width: 22rem;
+  width: 40rem;
   margin-left: 0.625rem;
   margin-right: 0.625rem;
   display: flex;
@@ -81,6 +96,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  height: 6.8rem;
 }
 
 .myProfileIcon {
@@ -188,4 +204,15 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.rechartsFontSize {    
+    font-size: 0.8rem;
+    text-align: center;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.rowchartArea {
+  display: flex;
+  height: 12.3rem;
 }
