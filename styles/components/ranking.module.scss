@@ -34,8 +34,11 @@
     background-color: $navy-super-dark-color;
   }
 }
-
-.rank {
+.ranking10000,
+.ranking1000,
+.ranking100,
+.rankEmoji,
+.ranking {
   width: 1.75rem;
   font-size: 1.25rem;
   line-height: 2.5rem;
@@ -45,12 +48,23 @@
 }
 
 .rankEmoji {
-  width: 1.75rem;
   font-size: 1.75rem;
-  line-height: 2.5rem;
-  font-weight: bold;
-  color: $gray-light-color;
-  text-align: center;
+}
+
+.ranking100 {
+  font-size: 1rem;
+}
+
+.ranking1000 {
+  font-size: 0.75rem;
+}
+
+.ranking10000 {
+  font-size: 0.5rem;
+}
+
+.ranking100000 {
+  font-size: 0.125rem;
 }
 
 .profileIcon {

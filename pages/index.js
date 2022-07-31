@@ -18,7 +18,7 @@ export default function Home() {
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    if(data && data.gitId) {
+    if(data?.gitId) {
       socket.emit('exitWait');
     }
   }, [data?.gitId]);

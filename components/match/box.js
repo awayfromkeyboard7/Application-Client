@@ -44,28 +44,24 @@ export default function MatchBox({ teamA, teamB, onClickGoToMain }) {
       <div className={styles.mainBody}> 
         <div className={styles.matchBox}>
         {
-          teamA?.map(item => 
-            <Item info={item} key={item.gitId} />
-          )
+          teamA?.map(item => <Item info={item} key={item.gitId} />)
         }
         </div>
         <div style={{ width: '3rem' }}/>
         <div className={styles.matchBox}>
-          {
-            teamB.length === 0
-            ? <div className={styles.loadingBox}>
-                <Grid 
-                  height="8vmin"
-                  width="8vmin"
-                  color="#282A35" 
-                  ariaLabel="loading" 
-                />
-                <div className={styles.text}>매칭 중..</div>
-              </div>
-            : teamB?.map(item => 
-                <Item info={item} key={item.gitId} />
-              )
-          }
+        {
+          teamB.length === 0
+          ? <div className={styles.loadingBox}>
+              <Grid 
+                height="8vmin"
+                width="8vmin"
+                color="#282A35" 
+                ariaLabel="loading" 
+              />
+              <div className={styles.text}>매칭 중..</div>
+            </div>
+          : teamB?.map(item => <Item info={item} key={item.gitId} />)
+        }
         </div>
       </div>
       <div className={styles.mainFooter}>

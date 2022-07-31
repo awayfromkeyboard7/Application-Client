@@ -16,11 +16,9 @@ export default function MyPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     getUserInfo();
-    getUserCount();
   }, []);
 
   useEffect(() => {
@@ -36,31 +34,15 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setMyInfo(data.UserInfo);
-          setGameLogs(data.UserInfo.gameLogHistory.reverse());
-          setIsLoading(false);
-        }
-      })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
-  };
-
-  const getUserCount = async () => {
-    await fetch(`/server/api/user/count`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setMyInfo(data.UserInfo);
+        setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        setIsLoading(false);
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setTotalCount(data.count);
-        }
-      })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const logout = async () => {
@@ -78,7 +60,7 @@ export default function MyPage() {
           {status !== 'authenticated' && isLoading && <Loading />}
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
-              <MyInfoBox myInfo={myInfo} totalUser={totalCount} />
+              <MyInfoBox myInfo={myInfo} />
               <RankingBox />
             </div>
             <GameHistory gameLogs={gameLogs} />
@@ -88,18 +70,3 @@ export default function MyPage() {
     />
   )
 }
-
-// export const getServerSideProps = async () => {
-//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROVIDER}/api/ranking/getRanking`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       }
-//     });
-  
-//   const data = await res.json();
-
-//   return {
-//     props: { ranking: data.data },
-//   };
-// };

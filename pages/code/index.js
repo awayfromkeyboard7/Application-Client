@@ -284,7 +284,7 @@ export default function Code() {
         ranking: 0,
         passRate,
         submitAt: new Date()
-      }),
+      })
     })
     .catch(error => console.log('[/pages/code] submitCode error >> ', error));
   };
@@ -306,7 +306,7 @@ export default function Code() {
         passRate,
         moderater: router?.query?.roomId,
         submitAt: new Date()
-      }),
+      })
     })
     .catch(error => console.log('[/pages/code] submitCodeTeam error >> ', error));
   }
@@ -323,7 +323,7 @@ export default function Code() {
         code: code ?? '',
         problemId: problems?._id ?? '',
         language: selectedLang
-      }),
+      })
     })
     .then(res => res.json())
     .then(data => {
@@ -395,11 +395,11 @@ export default function Code() {
                   : <Player players={playerList} />
                 }
                 <div className={styles.footer}>
-                  {
-                    router?.query?.mode === 'team'
-                    ? <Voice team={myTeam}/>
-                    : <div />
-                  }
+                {
+                  router?.query?.mode === 'team'
+                  ? <Voice team={myTeam}/>
+                  : <div />
+                }
                   <div className={styles.footerRight}>
                     <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
                     <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
@@ -454,11 +454,11 @@ export default function Code() {
                   </ReflexContainer>
                 </ReflexElement>
                 <div className={styles.footer}>
-                  {
-                    router?.query?.mode === 'team'
-                    ? <Voice team={myTeam}/>
-                    : <div />
-                  }
+                {
+                  router?.query?.mode === 'team'
+                  ? <Voice team={myTeam}/>
+                  : <div />
+                }
                   <div className={styles.footerRight}>
                     <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
                     <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>

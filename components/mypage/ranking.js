@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import Rank from '../rank/item';
+import Rank from './rankingItem';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -33,18 +33,18 @@ export default function RankingBox() {
         count: 20
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setStart(prev => prev + 20);
-          setRanking(prev => [...prev, ...data.ranking]);
-          setIsLoading(false);
-          if (data.ranking.length === 0) {
-            setIsEnd(true);
-          }
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        setStart(prev => prev + 20);
+        setRanking(prev => [...prev, ...data.ranking]);
+        setIsLoading(false);
+        if(data.ranking.length === 0) {
+          setIsEnd(true);
         }
-      })
-      .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
   };
 
   const getRankImg = (rank, ranking) => {
@@ -78,7 +78,7 @@ export default function RankingBox() {
   };
 
   const getLangImg = (language) => {
-    let imgUrl = '/rank/defaultcode.png'
+    let imgUrl = null;
     switch (language) {
       case 'Python':
         imgUrl = '/rank/Python.png';
@@ -86,8 +86,6 @@ export default function RankingBox() {
       case 'JavaScript':
         imgUrl = '/rank/JavaScript.png';
         break;
-      default:
-        imgUrl = '/rank/defaultcode.png';
     }
     return imgUrl;
   };
@@ -111,20 +109,21 @@ export default function RankingBox() {
       </div>
       <div className={styles.rankTabMenu}></div>
       <div className={styles.rankingBox} ref={listRef} onScroll={onScroll}>
-        {
-          ranking?.map(elem =>
-            <Rank
-              key={elem._id}
-              rank={elem.ranking === 9999999999 ? "-" : elem.ranking}
-              nickname={elem.gitId}
-              image={elem.avatarUrl}
-              rankImg={getRankImg(elem.rank, elem.ranking)}
-              language={getLangImg(elem.mostLanguage)}
-              winrate={elem.winSolo === 0 && elem.winTeam == 0 ? "0" : parseInt(100 * (elem.winSolo + elem.winTeam) / (elem.totalSolo + elem.totalTeam))}
-              onClickId={() => onClickId(elem._id)}
-            />
-          )
-        }
+      {
+        ranking?.map(elem =>
+          <Rank
+            key={elem._id}
+            ranking={elem.ranking}
+            nickname={elem.gitId}
+            image={elem.avatarUrl}
+            rankImg={getRankImg(elem.rank, elem.ranking)}
+            language={getLangImg(elem.mostLanguage)}
+            // winrate={elem.winRate}
+            winrate={parseInt(100 * (elem.winSolo + elem.winTeam) ?? 0 / (elem.totalSolo + elem.totalTeam))}
+            onClickId={() => onClickId(elem._id)}
+          />
+        )
+      }
       </div>
       {
         isPopup

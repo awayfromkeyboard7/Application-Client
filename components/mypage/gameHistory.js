@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -13,12 +13,7 @@ export default function GameHistory({ gameLogs }) {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
     // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
     if((scrollHeight - scrollTop) < clientHeight + 180) {
-      setGameLogIdx(prev => {
-        if(prev + 5 < gameLogs.length) {
-          return prev + 5;
-        }
-        return gameLogs.length;
-      });
+      setGameLogIdx(prev => prev + 5 < gameLogs.length ? prev + 5 : gameLogs.length);
     }
   };
 

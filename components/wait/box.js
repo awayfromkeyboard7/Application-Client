@@ -14,7 +14,6 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    console.log('players?????, user id????', players);
     setUserLine1(players.slice(0, 4));
     setUserLine2(players.slice(4));
   }, [players]);

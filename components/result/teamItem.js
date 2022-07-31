@@ -33,7 +33,7 @@ export default function TeamResultItem({ teamInfo, startAt, onClickCode, maxLeng
   }, [teamInfo[0].passRate, idx]);
 
   const convertRank = (rank) => {
-    let result;
+    let result = rank;
     switch(rank) {
       case 1:
         result = '🥇';
@@ -50,9 +50,6 @@ export default function TeamResultItem({ teamInfo, startAt, onClickCode, maxLeng
       case 0:
         result = '-';
         setIsEmoji(false);
-        break;
-      default:
-        result = rank;
         break;
     }
     return result;
@@ -80,13 +77,13 @@ export default function TeamResultItem({ teamInfo, startAt, onClickCode, maxLeng
     <div className={isMyTeam ? styles.resultItemMine : styles.resultItem}>
       <div className={isEmoji ? styles.rankEmoji : styles.rank}>{rankText}</div>
       <div className={profileBoxStyle}>
-        {
-          teamInfo?.map(info => 
-            <div className={styles.profileIconOverlap} key={info.gitId}>
-              <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIconOverlap} alt="프로필" />
-            </div>
-          )
-        }
+      {
+        teamInfo?.map(info => 
+          <div className={styles.profileIconOverlap} key={info.gitId}>
+            <Image src={info.avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIconOverlap} alt="프로필" />
+          </div>
+        )
+      }
       </div>
       <div className={styles.resultInfoBox}>
         <div className={styles.nickname}>{getTeamMemberGitId()}</div>

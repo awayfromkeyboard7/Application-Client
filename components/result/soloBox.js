@@ -4,7 +4,7 @@ import Code from '../mypage/code';
 import UserPopup from '../userPopup';
 import styles from '../../styles/components/result.module.scss';
 
-export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
@@ -37,7 +37,6 @@ export default function SoloResultBox({ ranks, startAt, onClickPlayAgain, onClic
         </div>
       </div>
       <div className={styles.mainFooter}>
-        {/* <div className={styles.btn} onClick={onClickPlayAgain}>한번 더 하기</div> */}
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {

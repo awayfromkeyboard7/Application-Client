@@ -8,9 +8,9 @@ export default function CheckValidAccess({ check, message }) {
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect(() => {
-    if (!check || check === '') {
+    if(!check || check === '') {
       setIsInvalid(true);
-      if (isInvalid) {
+      if(isInvalid) {
         setIsPopup(true);
       }
     }

@@ -38,17 +38,17 @@ export default function TeamPlayer({ teams }) {
 
   return (
     <div className={styles.container}>
-      {
-        teams?.map(team => 
-          <div className={styles.playerBox} key={team[0]._id}>
-          {
-            team[0].passRate < 0
-            ? <InactivePlayer team={team} />
-            : <ActivePlayer team={team} />
-          }
-          </div>
-        )
-      }
+    {
+      teams?.map(team => 
+        <div className={styles.playerBox} key={team[0]._id}>
+        {
+          team[0].passRate < 0
+          ? <InactivePlayer team={team} />
+          : <ActivePlayer team={team} />
+        }
+        </div>
+      )
+    }
     </div>
   )
 }

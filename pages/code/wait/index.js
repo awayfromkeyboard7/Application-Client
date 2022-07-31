@@ -97,7 +97,6 @@ export default function WaitPage() {
           addPlayer(users);
         });
 
-        // 팀전 대기 중 화면으로 이동
         socket.once('goToMatchingRoom', (bangjang) => {
           setIsMatching(true);
           router.replace({
@@ -193,12 +192,11 @@ export default function WaitPage() {
             players: sendPlayers,
             totalUsers: sendPlayers.length,
             roomId : roomId
-          }),
+          })
         })
         .then(res => res.json())
         .then(data => {
           if(data.success) {
-            // setGameLogId(data.gameLogId);
             socket.emit('startGame', data.gameLogId);
           }
         })

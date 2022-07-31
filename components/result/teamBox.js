@@ -3,7 +3,7 @@ import Item from './teamItem';
 import Code from '../mypage/code';
 import styles from '../../styles/components/result.module.scss';
 
-export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClickGoToMain }) {
+export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const [maxTeamLength, setMaxTeamLength] = useState(1);
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
@@ -16,15 +16,7 @@ export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClic
   };
 
   useEffect(() => {
-    ranks.map(team => {
-      setMaxTeamLength(prev => {
-        if(prev < team.length) {
-          return team.length;
-        } else {
-          return prev;
-        }
-      })
-    })
+    ranks.map(team => setMaxTeamLength(prev => prev < team.length ? team.length : prev))
   }, [ranks]);
 
   return (
@@ -42,7 +34,6 @@ export default function TeamResultBox({ ranks, startAt, onClickPlayAgain, onClic
         </div>
       </div>
       <div className={styles.mainFooter}>
-        {/* <div className={styles.btn} onClick={onClickPlayAgain}>한번 더 하기</div> */}
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       {
