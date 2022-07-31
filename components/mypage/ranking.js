@@ -116,7 +116,7 @@ export default function RankingBox() {
         ranking?.map(elem =>
           <Rank
             key={elem._id}
-            rank={elem.ranking}
+            ranking={elem.ranking}
             nickname={elem.gitId}
             image={elem.avatarUrl}
             rankImg={getRankImg(elem.rank, elem.ranking)}

@@ -57,13 +57,6 @@ const getRankImg = (rank, ranking) => {
   return imgUrl;
 };
 
-const getPercent = (rank, total) => {
-  if(rank && total) {
-    return (parseInt(rank / total * 1000) / 10);
-  }
-  return 100;
-};
-
 export function MyInfoMini({ myInfo }) {
  return (
    <div className={styles.myInfoMini}>
@@ -82,7 +75,7 @@ export function MyInfoMini({ myInfo }) {
         </div>
         <div className={styles.myInfoMiniRow}>
           <div className={styles.fieldTitleDark}>내 랭킹</div>
-          <div className={styles.pointTextDark}>{`${myInfo?.ranking ?? 0}등`}</div>
+          <div className={styles.pointTextDark}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}`}</div>
         </div>
       </div>
     </div>
@@ -90,7 +83,7 @@ export function MyInfoMini({ myInfo }) {
  )
 }
 
-export function MyInfoBox({ myInfo, totalUser=0 }) {
+export function MyInfoBox({ myInfo }) {
   return (
     <div className={styles.infoTab}>
       <div className={styles.myProfileBox}>
@@ -117,29 +110,29 @@ export function MyInfoBox({ myInfo, totalUser=0 }) {
           <div className={styles.myInfoRow}>
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>내 랭킹</div>
-              <div className={styles.percentText}>{`${myInfo?.ranking ?? 0}등 (상위 ${getPercent(myInfo?.ranking, totalUser)}%)`}</div>
+              <div className={styles.percentText}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`} (상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>사용 언어</div>
-              <div className={styles.percentText}>{myInfo?.mostLanguage ?? ''}</div>
+              <div className={styles.percentText}>{myInfo?.mostLanguage ? myInfo?.mostLanguage : '-'}</div>
             </div>
           </div>
           <div className={styles.splitterHorizontal} />
           <div className={styles.myInfoRow}>
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>평균 통과율</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.totalPassRate / (myInfo?.totalSolo + myInfo?.totalTeam)) ?? 0}%`}</div>
+              <div className={styles.percentText}>{`${parseInt(myInfo?.totalPassRate ?? 0 / (myInfo?.totalSolo + myInfo?.totalTeam))}%`}</div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>Solo 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winSolo / myInfo?.totalSolo * 100) ?? 0}%`}</div>
+              <div className={styles.percentText}>{`${parseInt(myInfo?.winSolo ?? 0 / myInfo?.totalSolo * 100)}%`}</div>
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.myInfoCol}>
               <div className={styles.fieldTitle}>Team 승률</div>
-              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam / myInfo?.totalTeam * 100) ?? 0}%`}</div>
+              <div className={styles.percentText}>{`${parseInt(myInfo?.winTeam ?? 0 / myInfo?.totalTeam * 100)}%`}</div>
             </div>
           </div>
         </div>
