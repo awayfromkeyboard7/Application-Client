@@ -466,7 +466,7 @@ export default function Code() {
                 </div>
               </ReflexContainer>
           }
-          <div className={isSelectOpen ? isMobile ? styles.selectListMobile : styles.selectList : styles.hidden}>
+          <div className={isSelectOpen ? (isMobile ? styles.selectListMobile : styles.selectList) : styles.hidden}>
             {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
             <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
             <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>

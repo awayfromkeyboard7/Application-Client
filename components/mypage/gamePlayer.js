@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GamePlayer({ info, onClickPlayer, onClickId, myInfo = null }) {
+export default function GamePlayer({ info, onClickCode, onClickId, myInfo = null }) {
   const [isEmoji, setIsEmoji] = useState(false);
   const ranking = useMemo(() => convertRank(), [info.ranking]);
 
@@ -39,7 +39,7 @@ export default function GamePlayer({ info, onClickPlayer, onClickId, myInfo = nu
       <div className={styles.gameHistoryPlayerInfoBox}>
         <div className={styles.gameHistoryPlayerNickname} onClick={onClickId}>{myInfo ? myInfo.gitId : info.gitId}</div>
         <div className={styles.gameHistoryPlayerPassRate}>{`✅ ${parseInt(info.passRate)}%`}</div>
-        <div className={styles.gameHistoryPlayerLanguage} onClick={onClickPlayer}>{info.language}</div>
+        <div className={styles.gameHistoryPlayerLanguage} onClick={onClickCode}>{info.language}</div>
       </div>
     </div>
   )

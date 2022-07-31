@@ -11,10 +11,30 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
 
+  const getCode = async (codeId, language) => {
+    console.log('get code >>> ', codeId, language);
+    await fetch(`/server/api/code/getCode`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        codeId
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setPlayerCode(data.info);
+        setPlayerLanguage(language);
+        setIsOpenCode(true);
+      }
+    })
+    .catch(error => console.log('[/components/result/soloBox] getCode error >> ', error));
+  };
+
   const onClickCode = (player) => {
-    setPlayerCode(player.code);
-    setPlayerLanguage(player.language);
-    setIsOpenCode(true);
+    getCode(player.code, player.language);
   };
 
   const onClickId = (userId) => {

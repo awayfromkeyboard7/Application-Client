@@ -9,10 +9,30 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
 
+  const getCode = async (codeId, language) => {
+    console.log('get code >>> ', codeId, language);
+    await fetch(`/server/api/code/getCode`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        codeId
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setPlayerCode(data.info);
+        setPlayerLanguage(language);
+        setIsOpenCode(true);
+      }
+    })
+    .catch(error => console.log('[/components/result/soloBox] getCode error >> ', error));
+  };
+
   const onClickCode = (player) => {
-    setPlayerCode(player.code);
-    setPlayerLanguage(player.language);
-    setIsOpenCode(true);
+    getCode(player.code, player.language);
   };
 
   useEffect(() => {
