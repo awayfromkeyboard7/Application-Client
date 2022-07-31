@@ -327,10 +327,10 @@ export default function UserPopup({ userId, onClick }) {
                   </div>
                 </div>
               </div>
-              <div className={styles.splitterHorizontal} />
+              {/* <div className={styles.splitterHorizontal} />
               <div className={styles.rowchartArea}>
                 <BarChart data={userGameLog} />
-              </div>
+              </div> */}
               <div className={styles.splitterHorizontal} />
               <div className={styles.sorryannie}>
                 <div className={styles.btn} onClick={onClick}>닫기</div>
