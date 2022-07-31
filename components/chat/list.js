@@ -16,7 +16,6 @@ export default function ChatList({ friend }) {
     });
 
     socket.on('sendChatMessage', message => {
-      console.log("sendChatMessage message :::: ", message);
       if (message['senderId'] === friend.gitId) {
         setChatList(prev => [...prev, message]);
         socket.emit('resetUnreadCount', friend.gitId);
@@ -56,7 +55,8 @@ export default function ChatList({ friend }) {
       text,
       senderId: data?.gitId,
       sendAt: new Date().getTime()
-    }
+    };
+
     if(text !== '') {
       socket.emit('sendChatMessage', friend.gitId, newMessage);
       setChatList([...chatList, newMessage]);
@@ -66,9 +66,6 @@ export default function ChatList({ friend }) {
  
   const unixToTime = (ts) => {
     const date = new Date(ts);
-    const year = date.getFullYear();
-    const month = '0' + (date.getMonth()+1);
-    const day = date.getDate();
     let hour = '0' + date.getHours();
     const min = '0' + date.getMinutes();
     const isAM = date.getHours() < 12 ? true : false;

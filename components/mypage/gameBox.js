@@ -35,14 +35,14 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
         gameLogId
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setGameInfo(data.info);
-          setIsGetGameInfo(true);
-        }
-      })
-      .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setGameInfo(data.info);
+        setIsGetGameInfo(true);
+      }
+    })
+    .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
   };
 
   const unixToTime = (ts) => {
@@ -77,15 +77,15 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
       }
       return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
     }
-    if (gameInfo?.teamA[0].ranking === gameInfo?.teamB[0].ranking) {
+    if(gameInfo?.teamA[0].ranking === gameInfo?.teamB[0].ranking) {
       return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
     }
     return (gameInfo?.teamB[0].ranking < gameInfo?.teamA[0].ranking) ^ checkMyTeam();
   };
 
   const checkMyTeam = () => {
-    for (let member of gameInfo?.teamA) {
-      if (member.gitId === data?.gitId) {
+    for(let member of gameInfo?.teamA) {
+      if(member.gitId === data?.gitId) {
         return true;
       }
     }
@@ -101,9 +101,9 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   };
 
   const getMyRanking = () => {
-    if (gameInfo?.userHistory) {
-      for (let info of gameInfo.userHistory) {
-        if (info?.gitId === data?.gitId) {
+    if(gameInfo?.userHistory) {
+      for(let info of gameInfo.userHistory) {
+        if(info?.gitId === data?.gitId) {
           return info.ranking;
         }
       }
@@ -207,11 +207,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
       {
         isOpenCode
         && <div className={styles.codeBackground}>
-          <div className={styles.codeBox}>
-            <Code code={playerCode} language={playerLanguage} />
-            <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
+            <div className={styles.codeBox}>
+              <Code code={playerCode} language={playerLanguage} />
+              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
+            </div>
           </div>
-        </div>
       }
       {
         isPopup

@@ -22,8 +22,6 @@ const getRankName = (rank, ranking) => {
     case 5:
       myrank = 'Master';
       break;
-    default:
-      myrank = 'Bronze'
   }
   if (ranking === 1) {
     myrank = 'King';
@@ -52,8 +50,6 @@ const getRankImg = (rank, ranking) => {
     case 5:
       imgUrl = '/rank/rank5.png';
       break;
-    default:
-      imgUrl = '/rank/rank0.png';
   }
   if (ranking == 1) {
     imgUrl = '/rank/king.png';
@@ -75,7 +71,7 @@ export function MyInfoMini({ myInfo }) {
       <div className={styles.myProfileIcon}>
         <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
         <div className={styles.myRank}>
-          <Image src={getRankImg(myInfo.rank, myInfo.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+          <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
         </div>
       </div>
       <div className={styles.myInfoCol}>
@@ -106,13 +102,13 @@ export function MyInfoBox({ myInfo, totalUser=0 }) {
             <div className={styles.myProfileIcon}>
               <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
               <div className={styles.myRank}>
-                <Image src={getRankImg(myInfo.rank, myInfo.ranking) ?? '/rank/rank0.png'} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+                <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
               </div>
             </div>
             <div className={styles.myInfoCol}>
               <div className={styles.nickname}>{myInfo?.gitId}</div>
               <div className={styles.rankBox}>
-                <div className={styles.fieldTitle}>{getRankName(myInfo?.rank, myInfo?.ranking) ?? 0}</div>
+                <div className={styles.fieldTitle}>{getRankName(myInfo?.rank, myInfo?.ranking)}</div>
                 <div className={styles.pointText}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
               </div>
             </div>

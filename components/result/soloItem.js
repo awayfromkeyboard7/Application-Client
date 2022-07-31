@@ -13,7 +13,7 @@ export default function SoloResultItem({ info, startAt, onClickCode, onClickId, 
   }, [info.passRate, idx]);
 
   const convertRank = (rank) => {
-    let result;
+    let result = rank;
     switch(rank) {
       case 1:
         result = '🥇';
@@ -30,9 +30,6 @@ export default function SoloResultItem({ info, startAt, onClickCode, onClickId, 
       case 0:
         result = '-';
         setIsEmoji(false);
-        break;
-      default:
-        result = rank;
         break;
     }
     return result;

@@ -22,6 +22,7 @@ export default function RankingItem({ rank, nickname, image, rankImg, language, 
         break;
       default:
         setRankText(rank);
+        setIsEmoji(false);
         break;
     }
   }, [rank]);
@@ -36,7 +37,7 @@ export default function RankingItem({ rank, nickname, image, rankImg, language, 
         <Image src={image ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIcon} alt="프로필" />
       </div> */}
         <div className={styles.nickname} onClick={onClickId}>{nickname}</div>
-        <div className={styles.winRate}>{winrate}%</div>
+        <div className={styles.winRate}>{`${winrate}%`}</div>
       <div className={styles.rankIcon}>
         <Image src={language ?? '/default_profile.jpg'} width={20} height={20} className={styles.rankIcon} alt="프로필" />
       </div>

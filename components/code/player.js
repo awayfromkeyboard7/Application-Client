@@ -30,17 +30,17 @@ export default function Player({ players }) {
 
   return (
     <div className={styles.container}>
-      {
-        players?.map(player => 
-          <div className={styles.playerBox} key={player._id}>
-          {
-            player.passRate < 0
-            ? <InactivePlayer player={player} />
-            : <ActivePlayer player={player} />
-          }
-          </div>
-        )
-      }
+    {
+      players?.map(player => 
+        <div className={styles.playerBox} key={player._id}>
+        {
+          player.passRate < 0
+          ? <InactivePlayer player={player} />
+          : <ActivePlayer player={player} />
+        }
+        </div>
+      )
+    }
     </div>
   )
 }

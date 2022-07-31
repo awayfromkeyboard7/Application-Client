@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import Rank from '../rank/item';
+import Rank from './rankingItem';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -33,18 +33,18 @@ export default function RankingBox() {
         count: 20
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setStart(prev => prev + 20);
-          setRanking(prev => [...prev, ...data.ranking]);
-          setIsLoading(false);
-          if(data.ranking.length === 0) {
-            setIsEnd(true);
-          }
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        setStart(prev => prev + 20);
+        setRanking(prev => [...prev, ...data.ranking]);
+        setIsLoading(false);
+        if(data.ranking.length === 0) {
+          setIsEnd(true);
         }
-      })
-      .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
   };
 
   const getRankImg = (rank, ranking) => {

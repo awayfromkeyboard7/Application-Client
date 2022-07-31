@@ -36,15 +36,15 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setMyInfo(data.UserInfo);
-          setGameLogs(data.UserInfo.gameLogHistory.reverse());
-          setIsLoading(false);
-        }
-      })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setMyInfo(data.UserInfo);
+        setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        setIsLoading(false);
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const getUserCount = async () => {
@@ -54,13 +54,13 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setTotalCount(data.count);
-        }
-      })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setTotalCount(data.count);
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const logout = async () => {

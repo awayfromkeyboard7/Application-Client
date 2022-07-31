@@ -47,13 +47,6 @@ export default function ResultPage() {
     };
   }, [router.isReady]);
 
-  const goToWait = () => {
-    router.replace({
-      pathname: '/code/wait',
-      query: { mode: router?.query?.mode }
-    });
-  };
-
   const goToMyPage = () => {
     router.replace('/mypage');
   };
@@ -78,13 +71,11 @@ export default function ResultPage() {
                 ranks={ranks.slice(0, 4)} 
                 startAt={gameStartAt}
                 onClickGoToMain={goToLobby} 
-                onClickPlayAgain={goToWait}
               />
             : <Result 
                 ranks={ranks} 
                 startAt={gameStartAt}
                 onClickGoToMain={goToLobby} 
-                onClickPlayAgain={goToWait}
               />
           }
           <Sidebar />
