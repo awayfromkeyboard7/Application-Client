@@ -66,7 +66,7 @@ export default function Sidebar({ menu='friends', players=null, hide=false }) {
             : <ChatRoomList friend={friend} />
           }
           </div> 
-          <div className={styles.collapseTag} onClick={closeSidebar}>
+          <div className={isMobile ? styles.collapseTagMobile : styles.collapseTag} onClick={closeSidebar}>
             <Image src="/collapse.png" width={30} height={30} className={styles.collapseTag} alt="close sidebar" />
           </div> 
         </div>

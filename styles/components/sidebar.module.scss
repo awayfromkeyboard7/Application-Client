@@ -78,6 +78,7 @@
   justify-content: center;
 }
 
+.collapseTagMobile,
 .collapseTag {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -92,5 +93,9 @@
   position: absolute;
   top: 50vh;
   left: -32px;
+  z-index: 0;
+}
+
+.collapseTag {
   z-index: 9999;
 }
