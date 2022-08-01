@@ -1,9 +1,11 @@
 import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
+import { EditorView, basicSetup } from 'codemirror';
+import { EditorState } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { python } from '@codemirror/lang-python';
 import { javascript } from '@codemirror/lang-javascript';
-import { indentWithTab } from '@codemirror/commands';
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { tags as t } from '@lezer/highlight';
 import { useEffect, useRef } from 'react';
 import * as random from 'lib0/random';
 import '../../styles/components/code/editor.module.css';
@@ -25,6 +27,15 @@ export const usercolors = [
 ];
 
 const ivory = '#abb2bf',
+  chalky = "#e5c07b",
+  coral = "#e06c75",
+  cyan = "#56b6c2",
+  invalid = "#ffffff",
+  stone = "#7d8799", // Brightened compared to original to increase contrast
+  malibu = "#61afef",
+  sage = "#98c379",
+  whiskey = "#d19a66",
+  violet = "#c678dd",
   darkBackground = '#1e1f27',
   highlightBackground = 'rgba(0, 0, 0, 0.3)',
   background = '#282A35',
@@ -81,25 +92,31 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
             color: '#ffffff',
             backgroundColor: background
           },
-          'span': {
-            // color: 'rgb(159, 70, 217)'
-            color: 'rgb(255, 248, 118)'
-          },
-          '.ͼa': {
-            color: '#C9414D'
-          },
-          '.ͼb': {
-            color: '#EC7F37'
-          },
-          '.ͼc': {
-            color: '#E7C335'
-          },
-          '.ͼd': {
-            color: '#4FA757'
-          },
-          '.ͼf': {
-            color: '#1C9ACF'
-          },
+          // 'span': {
+          //   // color: 'rgb(159, 70, 217)'
+          //   color: 'rgb(255, 248, 118)'
+          // },
+          // '.ͼa': {
+          //   color: '#C9414D'
+          // },
+          // '.ͼb': {
+          //   color: '#EC7F37'
+          // },
+          // '.ͼc': {
+          //   color: '#E7C335'
+          // },
+          // '.ͼd': {
+          //   color: '#4FA757'
+          // },
+          // '.ͼf': {
+          //   color: '#1C9ACF'
+          // },
+          // '.ͼv': {
+          //   color: '#528bff'
+          // },
+          // '.ͼq': {
+          //   color: '565656'
+          // },
           // done
           '.cm-content': {
             caretColor: cursor
@@ -188,10 +205,55 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
               backgroundColor: highlightBackground,
               color: ivory
             }
-          }
+          },
         },
         { dark: true }
       );
+
+      const materialPalenightHighlightStyle = HighlightStyle.define([
+        // {tag: t.keyword,
+        //  color: violet},
+        // {tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
+        //  color: coral},
+        // {tag: [t.function(t.variableName), t.labelName],
+        //  color: malibu},
+        // {tag: [t.color, t.constant(t.name), t.standard(t.name)],
+        //  color: whiskey},
+        // {tag: [t.definition(t.name), t.separator],
+        //  color: ivory},
+        // {tag: [t.typeName, t.className, t.number, t.changed, t.annotation, t.modifier, t.self, t.namespace],
+        //  color: chalky},
+        // {tag: [t.operator, t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string)],
+        //  color: cyan},
+        // {tag: [t.meta, t.comment],
+        //  color: stone},
+        // {tag: t.strong,
+        //  fontWeight: "bold"},
+        // {tag: t.emphasis,
+        //  fontStyle: "italic"},
+        // {tag: t.strikethrough,
+        //  textDecoration: "line-through"},
+        // {tag: t.link,
+        //  color: stone,
+        //  textDecoration: "underline"},
+        // {tag: t.heading,
+        //  fontWeight: "bold",
+        //  color: coral},
+        // {tag: [t.atom, t.bool, t.special(t.variableName)],
+        //  color: whiskey },
+        // {tag: [t.processingInstruction, t.string, t.inserted],
+        //  color: sage},
+        // {tag: t.invalid,
+        //  color: invalid},
+        { tag: t.comment, color: '#6272a4' },
+        { tag: t.string, color: '#f1fa8c' },
+        { tag: t.atom, color: '#bd93f9' },
+        { tag: t.meta, color: '#f8f8f2' },
+        { tag: [t.keyword, t.operator, t.tagName], color: '#ff79c6' },
+        { tag: [t.function(t.propertyName), t.propertyName], color: '#66d9ef' },
+        { tag: [t.definition(t.variableName), t.function(t.variableName), t.className, t.attributeName], color: '#50fa7b' },
+        { tag: t.atom, color: '#bd93f9' },
+      ]);
 
       const state = EditorState.create({
         doc: ytext.toString(),
@@ -199,9 +261,10 @@ const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
           keymap.of([...yUndoManagerKeymap]),
           basicSetup,
           langMode,
-          keymap.of([indentWithTab]),
+          EditorView.lineWrapping,
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,
+          syntaxHighlighting(materialPalenightHighlightStyle)
         ],
       });
 
