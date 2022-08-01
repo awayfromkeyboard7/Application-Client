@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import { hasCookie, getCookie, setCookie } from 'cookies-next';
@@ -7,6 +8,7 @@ import Chart from '../components/chart';
 import styles from '../styles/components/userPopup.module.scss';
 
 export default function UserPopup({ userId, onClick }) {
+  const router = useRouter();
   const { data } = useSession();
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
@@ -107,7 +109,16 @@ export default function UserPopup({ userId, onClick }) {
         'Content-Type': 'application/json',
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setCookie('following', JSON.stringify(data.UserInfo.following));
@@ -127,7 +138,16 @@ export default function UserPopup({ userId, onClick }) {
         userId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setInfo(data.UserInfo);

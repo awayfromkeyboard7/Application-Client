@@ -14,14 +14,12 @@ export default NextAuth({
           image: profile.avatar_url,
         }
       },
-    
     }),
   ],
+  session: {
+    maxAge: 2 * 60 * 60
+  },
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      console.log('[api/auth] redirect callback', url, baseUrl);
-      return baseUrl
-    },
     async jwt({ token, user, account, profile, isNewUser }) {
       // Persist the OAuth access_token to the token right after signin
       console.log('[api/auth] jwt callback', token, user, account, profile, isNewUser);
@@ -29,8 +27,6 @@ export default NextAuth({
         token.accessToken = account.access_token;
         token.gitId = profile.login;
         token.avatarUrl = profile.avatar_url;
-        token.id = profile.id;
-        token.nodeId = profile.node_id;
       }
       return token
     },
@@ -39,8 +35,6 @@ export default NextAuth({
       // Send properties to the client, like an access_token from a provider.
       session.gitId = token.gitId
       session.avatarUrl = token.avatarUrl
-      session.nodeId = token.nodeId
-      session.id = token.id
       session.accessToken = token.accessToken
       return session
     }

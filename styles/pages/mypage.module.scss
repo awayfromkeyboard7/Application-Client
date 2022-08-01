@@ -506,6 +506,11 @@
   text-overflow: ellipsis;
 }
 
+.gameHistoryPlayerNickname {
+  max-width: 3.53125rem !important;
+  white-space: pre-wrap;
+}
+
 .gameHistoryPlayerPassRate,
 .gameHistoryPlayerLanguage {
   margin-left: 4px;
