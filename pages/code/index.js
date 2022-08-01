@@ -301,7 +301,6 @@ export default function Code() {
           pathname: '/',
           query: { msg: 'loginTimeout' }
         });
-        return;
       }
       return;
     })
@@ -333,7 +332,6 @@ export default function Code() {
           pathname: '/',
           query: { msg: 'loginTimeout' }
         });
-        return;
       }
       return;
     })
