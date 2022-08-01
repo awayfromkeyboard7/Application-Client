@@ -411,8 +411,8 @@ export default function Code() {
                   : <div />
                 }
                   <div className={styles.footerRight}>
-                    <div className={styles.btn} onClick={execCode}>코드 실행</div>
-                    <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
+                    <div className={`${styles.btn} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : execCode}>코드 실행</div>
+                    <div className={`${styles.btn} ${styles.btnSubmit} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : goToResult}>코드 제출</div>
                   </div>
                 </div>
               </div>
