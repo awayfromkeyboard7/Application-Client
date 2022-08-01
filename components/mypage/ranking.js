@@ -127,9 +127,9 @@ export default function RankingBox() {
       {
         isPopup
         && <UserPopup
-          userId={targetId}
-          onClick={() => setIsPopup(false)}
-        />
+            userId={targetId}
+            onClick={() => setIsPopup(false)}
+          />
       }
     </div>
   )

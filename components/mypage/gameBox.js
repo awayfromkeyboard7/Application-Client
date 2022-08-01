@@ -18,7 +18,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
-    if (idx < gameLogIdx && !isGetGameInfo) {
+    if (idx < gameLogIdx && !isGetGameInfo && isFilter) {
     // if(!isGetGameInfo) {
       getGameInfo();
     }
@@ -219,10 +219,10 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
     <div className={isFilter && isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-          ? checkTeamGameWin()
-            ? <TeamGameWin />
-            : <TeamGameLose />
-          : <SoloGame />
+        ? checkTeamGameWin()
+          ? <TeamGameWin />
+          : <TeamGameLose />
+        : <SoloGame />
       }
       {
         isOpenCode

@@ -26,17 +26,11 @@ export default function RankingItem({ ranking, nickname, image, rankImg, languag
         break;
       default:
         setRankText(ranking);
-        if(ranking < 100) {
-          setRankingStyle(styles.ranking);
-        } else if(ranking < 1000) {
-          setRankingStyle(styles.ranking100);
-        } else if(ranking < 10000) {
-          setRankingStyle(styles.ranking1000);
-        } else if(ranking < 100000) {
-          setRankingStyle(styles.ranking10000);
-        } else {
-          setRankingStyle(styles.ranking100000);
-        }
+        if(ranking < 100) setRankingStyle(styles.ranking);
+        else if(ranking < 1000) setRankingStyle(styles.ranking100);
+        else if(ranking < 10000) setRankingStyle(styles.ranking1000);
+        else if(ranking < 100000) setRankingStyle(styles.ranking10000);
+        else setRankingStyle(styles.ranking100000);
         break;
     }
   }, [ranking]);
