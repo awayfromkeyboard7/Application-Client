@@ -28,6 +28,7 @@ export default function Code() {
   const [playerList, setPlayerList] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
   const [outputs, setOutputs] = useState({});
+  const [isExecuting, setIsExecuting] = useState(false);
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
   const [codeTitle, setCodeTitle] = useState('solution.py');
@@ -211,8 +212,14 @@ export default function Code() {
 
   const goToResult = async() => {
     if(!isSubmit) {
+      setIsExecuting(true);
       await judgeCode(true);
     }
+  };
+
+  const execCode = async() => {
+    setIsExecuting(true);
+    await judgeCode();
   };
 
   const checkMyTeam = (team) => {
@@ -322,7 +329,9 @@ export default function Code() {
         gitId: data?.gitId,
         code: code ?? '',
         problemId: problems?._id ?? '',
-        language: selectedLang
+        language: selectedLang,
+        gameLogId: router.query.gameLogId,
+        submit
       })
     })
     .then(res => res.json())
@@ -330,6 +339,7 @@ export default function Code() {
       if (router?.query?.mode === 'team') {
         socket.emit('shareJudgedCode', data, router?.query?.roomId);
       }
+      setIsExecuting(false);
       setOutputs(data);
       setPassRate(data.passRate);
       if(submit === true) {
@@ -387,7 +397,7 @@ export default function Code() {
                   />
                 </div>
                 <div className={styles.resultTitle}>실행 결과</div>
-                <Output outputs={outputs}/>
+                <Output outputs={outputs} isExecuting={isExecuting} />
                 <div className={styles.resultTitle}>플레이어</div>
                 {
                   router?.query?.mode === 'team'
@@ -401,7 +411,7 @@ export default function Code() {
                   : <div />
                 }
                   <div className={styles.footerRight}>
-                    <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
+                    <div className={styles.btn} onClick={execCode}>코드 실행</div>
                     <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
                   </div>
                 </div>
@@ -447,7 +457,7 @@ export default function Code() {
                         <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
                         <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
                           <div className={styles.resultTitle}>실행 결과</div>
-                          <Output outputs={outputs}/>
+                          <Output outputs={outputs} isExecuting={isExecuting} />
                         </ReflexElement>
                       </ReflexContainer>
                     </ReflexElement>
@@ -460,8 +470,8 @@ export default function Code() {
                   : <div />
                 }
                   <div className={styles.footerRight}>
-                    <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
-                    <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
+                    <div className={`${styles.btn} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : execCode}>코드 실행</div>
+                    <div className={`${styles.btn} ${styles.btnSubmit} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : goToResult}>코드 제출</div>
                   </div>
                 </div>
               </ReflexContainer>
