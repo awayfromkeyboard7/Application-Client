@@ -54,6 +54,7 @@ export default function Voice({ team }) {
     return () => {
       peerInstance.current?.off('open');
       peerInstance.current?.off('call');
+      peerInstance.current?.destroy();
       socket.off('getPeerId');
     };
   }, [team?.length]);
