@@ -11,7 +11,7 @@ import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../components/voice'));
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
-import Editor from '../../components/code/editor';
+import { CodeEditor } from '../../components/codeEditor';
 import Problem from '../../components/code/problem';
 import Player from '../../components/code/player';
 import TeamPlayer from '../../components/code/teamPlayer';
@@ -379,7 +379,7 @@ export default function Code() {
                   <div className={styles.codeTitle}>{codeTitle}</div>
                 </div>
                 <div className={styles.codeAreaMobile}>
-                  <Editor 
+                  <CodeEditor 
                     doc={doc} 
                     provider={provider} 
                     gitId={data?.gitId} 
@@ -436,7 +436,7 @@ export default function Code() {
                             </div>
                           </div>
                           <div className={styles.codeArea}>
-                            <Editor 
+                            <CodeEditor 
                               doc={doc} 
                               provider={provider} 
                               gitId={data?.gitId} 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Item from './soloItem';
-import Code from '../mypage/code';
+import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/components/result.module.scss';
 
@@ -61,12 +61,11 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
       </div>
       {
         isOpenCode
-        && <div className={styles.codeBackground}>
-            <div className={styles.codeBox}>
-              <Code code={playerCode} language={playerLanguage} />
-              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
-            </div>
-          </div>
+        && <CodePopup 
+            code={playerCode} 
+            language={playerLanguage}
+            onClose={() => setIsOpenCode(false)}
+          />
       }
       {
         isPopup

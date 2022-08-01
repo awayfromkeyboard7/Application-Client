@@ -59,7 +59,7 @@ const getRankImg = (rank, ranking) => {
   return imgUrl;
 };
 
-export function MyInfoMini({ myInfo }) {
+export const MyInfoMini = ({ myInfo }) => {
  return (
    <div className={styles.myInfoMini}>
     <div className={styles.myInfoRow}>
@@ -85,7 +85,7 @@ export function MyInfoMini({ myInfo }) {
   )
 }
 
-export function MyInfoBox({ myInfo }) {
+export const MyInfoBox = ({ myInfo }) => {
   const [isDetail, setIsDetail] = useState(false);
 
   return (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
-import Code from './code';
+import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -226,12 +226,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
       }
       {
         isOpenCode
-        && <div className={styles.codeBackground}>
-            <div className={styles.codeBox}>
-              <Code code={playerCode} language={playerLanguage} />
-              <div className={styles.btn} onClick={() => setIsOpenCode(false)}>닫기</div>
-            </div>
-          </div>
+        && <CodePopup 
+            code={playerCode} 
+            language={playerLanguage}
+            onClose={() => setIsOpenCode(false)}
+          />
       }
       {
         isPopup
