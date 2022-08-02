@@ -181,6 +181,10 @@ export default function WaitPage() {
         sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl, userId: player.userId })
       }
     };
+
+    if (sendPlayers.length === 8) {
+      goToCode();
+    }
     
     socket.once('getRoomId', async (roomId, status) => {
       if (status === 'waiting') {
