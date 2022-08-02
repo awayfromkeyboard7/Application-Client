@@ -9,12 +9,7 @@ import BarChart from './barchart';
 import styles from '../styles/components/userPopup.module.scss';
 
 
-
-// "2022-08-02T17:33:13.506Z"
-
 export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameInfo }) {
-  //gameInfo 는 단일게임 하나만 받아와서 쓸모 없음.
-  //gameLogs 로 게임들 찾아서 배열에 넣어서 해결해야할듯.
 
   const router = useRouter();
   const { data } = useSession();
@@ -23,31 +18,7 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
   const [isFollow, setIsFollow] = useState(false);
   const [targetUserId, setTargetUserId] = useState('');
   const [isDetail, setIsDetail] = useState(false);
-  const [gameLogData, setGameLogData] = useState('')
   const pathName = window.location.pathname
-  const gameLogIdLength = Object.keys(gameLogs).length
-  const RankLogArr = []
-
-  // const hours = leftPad(source.getHours());
-  // const Mnutes = leftPad(source.getMinutes());
-
-  function formatDate(date) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear(),
-      hours = d.getHours(),
-      minutes = d.getMinutes();
-
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-
-    return [month, day, hours, minutes].join('-');
-  }
-
-  console.log("MDMDMDMDMDMDMDMDMDMDMMDMDMDMDMDMDMDMDMDM", formatDate("2022-08-02T17:33:13.506Z"))
 
   useEffect(() => {
     if (userId) {
@@ -80,11 +51,6 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
   useEffect(() => {
     socket.emit('getFollowingList');
   }, [isFollow]);
-
-  useEffect(() => {
-    pushGameInfo();
-  }, [])
-
 
 
   const getRankName = (rank, ranking) => {
@@ -180,50 +146,6 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
       .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
   };
 
-  const getGameInfo = async (gameLogId) => {
-    await fetch(`/server/api/gamelog/getGameLog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        gameLogId
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          const userHistoryData = data.info.userHistory
-          const hisrotyLength = userHistoryData.length
-          if (data.info.gameMode !== "team") {
-            for (let i = 0; i < hisrotyLength; i++) {
-              if (userHistoryData[i].ranking !== 0) {
-                if (RankLogArr.length >= 20) {
-                  break;
-                } else {
-                  const submitAt = userHistoryData[i].submitAt
-                  const date = formatDate(submitAt)
-                  RankLogArr.push({ language: userHistoryData[i].language, ranking: userHistoryData[i].ranking, submitAt: date, passRate: userHistoryData[i].passRate / 10 })
-                }
-              }
-            }
-          }
-          setGameLogData(RankLogArr)
-        }
-      })
-      .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
-  };
-
-  const pushGameInfo = async () => {
-    for (let i = 0; i < gameLogIdLength; i++) {
-      if (RankLogArr >= 20) {
-        break;
-      } else {
-        getGameInfo(gameLogs[i])
-      }
-    }
-  }
-
   const onClickFollow = () => {
     socket.emit('followMember', info._id);
     setMyFollowing(prev => [...prev, info._id]);
@@ -237,10 +159,12 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
   };
 
   const goToUserPage = () => {
+
     router.push({
       pathname: '/userpage',
       query: { targetUserId: targetUserId }
     });
+
     onClick();
   };
 
@@ -333,18 +257,6 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
           </div>
         </div>
 
-      }
-      {
-        isDetail
-        && <>
-          <div className={styles.infoTab}>
-            <div className={styles.myProfileBox}>
-              <div className={styles.chartArea}>
-                <BarChart RankLogArr={gameLogData} />
-              </div>
-            </div>
-          </div>
-        </>
       }
     </div>
   )
