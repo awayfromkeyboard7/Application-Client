@@ -8,15 +8,8 @@ import styles from '../../styles/components/wait.module.scss';
 export default function WaitBox({ type, players, countdown, onClickPlayAgain, onClickGoToMain }) {
   const router = useRouter();
   const { data } = useSession();
-  const [userLine1, setUserLine1] = useState([]);
-  const [userLine2, setUserLine2] = useState([]);
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
-
-  useEffect(() => {
-    setUserLine1(players.slice(0, 4));
-    setUserLine2(players.slice(4));
-  }, [players]);
 
   const secToTime = (s) => {
     const min = '0' + String(parseInt((s % 3600) / 60));
@@ -43,7 +36,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
       <div className={styles.mainBody}> 
         <div className={styles.waitBox}>
         {
-          userLine1?.map((item, idx) => 
+          players.slice(0, 4)?.map((item, idx) => 
             <Item info={item} key={idx} onClickId={() => onClickId(item.userId)} />
           )
         }
@@ -51,7 +44,7 @@ export default function WaitBox({ type, players, countdown, onClickPlayAgain, on
         <div className={styles.waitBox}>
         {
           type !== 'team'
-          && userLine2?.map((item, idx) => 
+          && players.slice(4)?.map((item, idx) => 
             <Item info={item} key={idx} onClickId={() => onClickId(item.userId)}/>
           )
         }

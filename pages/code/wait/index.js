@@ -182,7 +182,7 @@ export default function WaitPage() {
       }
     };
 
-    if (sendPlayers.length === 8) {
+    if (sendPlayers.length === 8 && players[0]?.gitId === data?.gitId) {
       goToCode();
     }
     
