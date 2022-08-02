@@ -9,6 +9,13 @@
   height:100% !important;
 }
 
+.CodeMirrorPopup *,
+.CodeMirror * {
+  font-family: D2Coding !important;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
 .codeBackground {
   width: 100%;
   height: 100%;
