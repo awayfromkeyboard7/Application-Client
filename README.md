@@ -12,5 +12,5 @@
 
 배포 사이트 : [바로가기](https://bluefrog-six.vercel.app/)
 
-
-
+![코드뚝딱 포스터_(완완완)0803_page-0001](https://user-images.githubusercontent.com/53402709/182480011-56fed0f6-fa5d-4a70-8ffe-2c1ba36c8ac2.jpg)
+[코드뚝딱 포스터_(완완완)0803.pdf](https://github.com/awayfromkeyboard7/Application-Client/files/9245887/_.0803.pdf)
