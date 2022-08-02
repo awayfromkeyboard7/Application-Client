@@ -10,16 +10,17 @@ import GameHistory from '../../components/mypage/gameHistory';
 import Loading from '../../components/loading';
 import styles from '../../styles/pages/mypage.module.scss'
 
-export default function MyPage() {
+export default function UserPage() {
   const router = useRouter();
+  const targetUserId = router.query.targetUserId;
   const { status } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
 
   useEffect(() => {
-    getUserInfo();
-  }, []);
+    getTargetUserInfo();
+  }, [targetUserId]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -27,22 +28,25 @@ export default function MyPage() {
     }
   }, [status]);
 
-  const getUserInfo = async () => {
-    await fetch(`/server/api/user/getMyInfo`, {
-      method: 'GET',
+  const getTargetUserInfo = async () => {
+    await fetch(`/server/api/user/getUserInfo`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify({
+        userId: targetUserId
+      })
     })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setMyInfo(data.UserInfo);
+          setMyInfo(data.UserInfo)
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
           setIsLoading(false);
         }
       })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+      .catch(error => console.log('[/pages/userpage] getUserInfo error >> ', error));
   };
 
   const logout = async () => {

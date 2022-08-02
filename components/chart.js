@@ -14,7 +14,7 @@ export default function Chart({ data }) {
 
   const getUserLangInfo = (languages) => {
     const langInfo = languages;
-    if(langInfo) {
+    if (langInfo) {
       const langLength = Object.keys(langInfo).length;
       const langKey = Object.keys(langInfo);
       const langValue = Object.values(langInfo);
@@ -23,7 +23,7 @@ export default function Chart({ data }) {
       for (let i = 0; i < langLength; i++) {
         langArr.push({ name: langKey[i], value: langValue[i] });
       }
-      
+
       setUserLangData(langArr);
     }
   };
@@ -34,8 +34,8 @@ export default function Chart({ data }) {
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text className={styles.rechartsFontSize} x={cx} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
-      {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
+      <text className={styles.rechartsFontSize} x={cx} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
       </text >
     );
   };
@@ -53,12 +53,13 @@ export default function Chart({ data }) {
           outerRadius="100%"
           fill="#8884d8"
           dataKey="value"
+          isAnimationActive={false}
         >
-        {
-          userLangData?.map((entry, index) => (
-            < Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))
-        }
+          {
+            userLangData?.map((entry, index) => (
+              < Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))
+          }
         </Pie>
       </PieChart>
     </ResponsiveContainer>
