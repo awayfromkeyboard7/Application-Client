@@ -6,7 +6,7 @@ import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, filter }) {
+export default function GameBox({ gameLogId }) {
   const router = useRouter();
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
@@ -16,8 +16,6 @@ export default function GameBox({ gameLogId, filter }) {
   const [playerLanguage, setPlayerLanguage] = useState('Python');
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
-  
-  const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
     getGameInfo();
@@ -127,14 +125,6 @@ export default function GameBox({ gameLogId, filter }) {
     return false;
   };
 
-  function checkFilter() {
-    switch (filter) {
-      case 'all': return true;
-      case 'team': return gameInfo?.gameMode === 'team';
-      case 'solo': return gameInfo?.gameMode !== 'team';
-    }
-  };
-
   const getMyRanking = () => {
     if(gameInfo?.userHistory) {
       for(let info of gameInfo.userHistory) {
@@ -231,7 +221,7 @@ export default function GameBox({ gameLogId, filter }) {
   };
 
   return (
-    <div className={isFilter && isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
+    <div className={isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
         ? checkTeamGameWin()

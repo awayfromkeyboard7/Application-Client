@@ -17,6 +17,8 @@ export default function MyPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
+  const [teamGameLogs, setTeamGameLogs] = useState([]);
+  const [soloGameLogs, setSoloGameLogs] = useState([]);
 
   useEffect(() => {
     if(isLogin) {
@@ -51,6 +53,8 @@ export default function MyPage() {
       if (data.success) {
         setMyInfo(data.UserInfo);
         setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        setSoloGameLogs(data.UserInfo.soloGameLogHistory.reverse());
+        setTeamGameLogs(data.UserInfo.teamGameLogHistory.reverse());
         setIsLoading(false);
       }
     })
@@ -76,7 +80,11 @@ export default function MyPage() {
                   <MyInfoBox myInfo={myInfo} data={data} />
                   <RankingBox />
                 </div>
-                <GameHistory gameLogs={gameLogs} />
+                <GameHistory 
+                  totalLogs={gameLogs} 
+                  soloLogs={soloGameLogs}
+                  teamLogs={teamGameLogs} 
+                />
               </div>
           }
         </>
