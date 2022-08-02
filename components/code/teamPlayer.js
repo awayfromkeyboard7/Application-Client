@@ -22,7 +22,7 @@ export default function TeamPlayer({ teams }) {
         <Image src={team[0].avatarUrl ?? '/default_profile.jpg'} width={40} height={40} className={styles.profileIconInactive} alt="user profile" />
         <div className={styles.infoBox}>
           <div className={`${styles.nickname} ${styles.textGray}`}>{getTeamMemberGitId(team)}</div>
-          <div className={`${styles.info} ${styles.textGray}`}>Clashing...</div>
+          <div className={`${styles.info} ${styles.textGray}`}>뚝딱ing...</div>
         </div>
       </>
     )
