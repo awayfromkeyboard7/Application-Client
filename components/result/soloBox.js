@@ -14,7 +14,6 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [isPopup, setIsPopup] = useState(false);
 
   const getCode = async (codeId, language) => {
-    console.log('get code >>> ', codeId, language);
     await fetch(`/server/api/code/getCode`, {
       method: 'POST',
       headers: {

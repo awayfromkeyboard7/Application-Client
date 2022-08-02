@@ -12,7 +12,6 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const [playerLanguage, setPlayerLanguage] = useState('Python');
 
   const getCode = async (codeId, language) => {
-    console.log('get code >>> ', codeId, language);
     await fetch(`/server/api/code/getCode`, {
       method: 'POST',
       headers: {

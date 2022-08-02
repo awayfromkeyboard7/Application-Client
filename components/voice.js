@@ -21,7 +21,7 @@ export default function Voice({ team }) {
 
   useEffect(() => {
     const initVoice = async () => {
-      console.log('init voice team >>>', team);
+      console.log('[peer] init team voice >>', team);
       const Peer = (await import('peerjs')).default;
       peer = new Peer();
 
@@ -66,35 +66,13 @@ export default function Voice({ team }) {
       for (let i = 0; i < peers.length; i++) {
         if(peers[i][0] === team[j].gitId) {
           if(peers[i][1] && peers[i][1] !== '' && !muteFlag[j]) {
-            console.log('voice flag trueeeee', j, peers[i][0], team[j]);
             voiceFlag.push(true);
           } else {
-            console.log('voice flag falsssse', j, peers[i][0], team[j]);
             voiceFlag.push(false);
           }
-          // break;
         }
       }
     }
-    // for (let i = 0; i < peers.length; i++) {
-    //   // if(peers[i][1] && peers[i][1] !== '' && !muteFlag[i]) {
-    //   //   voiceFlag.push(true);
-    //   // } else {
-    //   //   voiceFlag.push(false);
-    //   // }
-    //   for(let j = 0; j < team.length; j++) {
-    //     if(peers[i][0] === team[j].gitId) {
-    //       if(peers[i][1] && peers[i][1] !== '' && !muteFlag[j]) {
-    //         console.log('voice flag trueeeee', j, peers[i][0], team[j]);
-    //         voiceFlag[j] = true;
-    //       } else {
-    //         console.log('voice flag falsssse', j, peers[i][0], team[j]);
-    //         voiceFlag[j] = false;
-    //       }
-    //       // break;
-    //     }
-    //   }
-    // }
     setTeamVoiceFlag(voiceFlag);
   }, [remotePeerIdValue, muteFlag]);
 
@@ -103,11 +81,9 @@ export default function Voice({ team }) {
       const peers = Object.entries(remotePeerIdValue);
       for (let i = 0; i < peers.length; i++) {
         if (peers[i][0] !== data?.gitId) {
-          // call(memberVoiceRefs.current[i], peers[i][1], i);
           for(let j = 0; j < team.length; j++) {
             if(peers[i][0] === team[j].gitId) {
               call(memberVoiceRefs.current[j], peers[i][1], j);
-              // break;
             }
           }
         }

@@ -210,7 +210,7 @@ export default function WaitPage() {
             socket.emit('startGame', data.gameLogId);
           }
         })
-        .catch(error => console.log('error >> ', error));
+        .catch(error => console.log('[/pages/code create GameLog error >> ', error));
       }
     });
 

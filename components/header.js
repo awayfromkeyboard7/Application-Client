@@ -10,7 +10,6 @@ import styles from '../styles/components/header.module.scss';
 export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=>{}, isCustom=false, customHeader=null }) {
   const router = useRouter();
   const { data, status } = useSession();
-  const [isValidUser, setIsValidUser] = useState(false);
 
   useEffect(() => {
     if(status === 'authenticated') {
@@ -19,7 +18,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         if(router.isReady) {
           socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
           checkValidUser(true);
-          setIsValidUser(true);
         }
       } else {
         if(data.accessToken) {
@@ -35,7 +33,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
     deleteCookie('jwt');
     deleteCookie('sidebar');
     checkValidUser(false);
-    setIsValidUser(false);
   };
 
   const goToLobby = () => {
@@ -58,7 +55,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
         if(router.isReady) {
           socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
           checkValidUser(true);
-          setIsValidUser(true);
         }
       } else {
         deleteCookies();
@@ -84,7 +80,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
             </div>
             <div className={styles.headerRow}>
             {
-              isValidUser
+              status === 'authenticated'
               ? <div className={styles.myPageBtn} onClick={onClickBtn}>{label}</div>
               : <div className={styles.loginBtn}  onClick={() => signIn('github')}>
                   <Image src="/github.png" alt="github Logo" width={20} height={20} />
