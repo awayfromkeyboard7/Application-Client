@@ -12,6 +12,7 @@ import CheckValidAccess from '../../../components/checkValidAccess';
 export default function MatchPage() {
   const router = useRouter();  
   const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
   const [gameLogId, setGameLogId] = useState('');
   const [roomId, setRoomId] = useState('');
   const [teamA, setTeamA] = useState([]);
@@ -24,7 +25,7 @@ export default function MatchPage() {
   }, [status]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && isLogin) {
       socket.on('matchingComplete', (teamA, teamB) => {
         setTeamA(teamA);
         setTeamB(teamB);
@@ -47,7 +48,7 @@ export default function MatchPage() {
       socket.off('getTeamInfo');
       socket.off('teamGameStart');
     };
-  }, [router.isReady]);
+  }, [router.isReady, isLogin]);
 
 
   useEffect(() => {
@@ -77,11 +78,12 @@ export default function MatchPage() {
   }, [gameLogId]);
 
   const goToLobby = () => {
-    if (router?.query?.mode === 'team') {
+    if(isLogin) {
       socket.emit('exitWait');
+    }
+    if (router?.query?.mode === 'team') {
       router.replace('/');
     } else {
-      socket.emit('exitWait');
       router.replace('/');
     }
   };
@@ -92,20 +94,26 @@ export default function MatchPage() {
 
   return (
     <Layout 
-      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
+      header={
+        <Header 
+          label="마이페이지" 
+          onClickBtn={goToMyPage} 
+          checkValidUser={(isValidUser) => setIsLogin(isValidUser)} 
+        />
+      }
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          { router.isReady && <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." /> }
           { 
-            router.isReady
-            && <CheckValidAccess check={router?.query?.roomId} message="유효하지 않은 게임입니다." />
+            isLogin
+            && <Match 
+                teamA={teamA.slice(0, 4)}
+                teamB={teamB.slice(0, 4)}
+                onClickGoToMain={goToLobby} 
+              />
           }
-          <Match 
-            teamA={teamA.slice(0, 4)}
-            teamB={teamB.slice(0, 4)}
-            onClickGoToMain={goToLobby} 
-          />
-          <Sidebar hide />
+          { isLogin && <Sidebar hide />}
         </>
       }
     />

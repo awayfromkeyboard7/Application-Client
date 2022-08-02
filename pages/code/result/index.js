@@ -13,6 +13,7 @@ import CheckValidAccess from '../../../components/checkValidAccess';
 export default function ResultPage() {
   const router = useRouter();  
   const { status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
   const [ranks, setRanks] = useState([]);
   const [gameStartAt, setGameStartAt] = useState();
   
@@ -23,7 +24,7 @@ export default function ResultPage() {
   }, [status]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && isLogin) {
       if(router?.query?.mode === 'team') {
         socket.on('getTeamRanking', (result, startAt) => {
           if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {
@@ -45,7 +46,7 @@ export default function ResultPage() {
       socket.off('getTeamRanking');
       socket.off('getRanking');
     };
-  }, [router.isReady]);
+  }, [router.isReady, isLogin]);
 
   const goToMyPage = () => {
     router.replace('/mypage');
@@ -57,28 +58,33 @@ export default function ResultPage() {
 
   return (
     <Layout 
-      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
+      header={
+        <Header 
+          label="마이페이지" 
+          onClickBtn={goToMyPage} 
+          checkValidUser={(isValidUser) => setIsLogin(isValidUser)} 
+        />
+      }
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          { 
-            router.isReady
-            && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
-          }
+          { router.isReady && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." /> }
           {
-            router?.query?.mode === 'team'
-            ? <TeamResult 
-                ranks={ranks.slice(0, 4)} 
-                startAt={gameStartAt}
-                onClickGoToMain={goToLobby} 
-              />
-            : <Result 
-                ranks={ranks} 
-                startAt={gameStartAt}
-                onClickGoToMain={goToLobby} 
-              />
+            isLogin
+            && (router?.query?.mode === 'team'
+                ? <TeamResult 
+                    ranks={ranks.slice(0, 4)} 
+                    startAt={gameStartAt}
+                    onClickGoToMain={goToLobby} 
+                  />
+                : <Result 
+                    ranks={ranks} 
+                    startAt={gameStartAt}
+                    onClickGoToMain={goToLobby} 
+                  />
+              )
           }
-          <Sidebar />
+          { isLogin && <Sidebar /> }
         </>
       }
     />

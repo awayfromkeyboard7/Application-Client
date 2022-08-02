@@ -18,13 +18,8 @@ export default function Home() {
   const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    if(data?.gitId) {
-      socket.emit('exitWait');
-    }
-  }, [data?.gitId]);
-
-  useEffect(() => {
     if(isLogin) {
+      socket.emit('exitWait');
       socket.on('comeon', userInfo => {
         setSender(userInfo);
         setIsNoti(true);

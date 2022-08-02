@@ -13,13 +13,16 @@ import styles from '../../styles/pages/mypage.module.scss'
 export default function MyPage() {
   const router = useRouter();
   const { status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
 
   useEffect(() => {
-    getUserInfo();
-  }, []);
+    if(isLogin) {
+      getUserInfo();
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -54,17 +57,26 @@ export default function MyPage() {
 
   return (
     <Layout
-      header={<Header label="로그아웃" onClickBtn={logout} />}
+      header={
+        <Header 
+          label="로그아웃" 
+          onClickBtn={logout} 
+          checkValidUser={(isValidUser) => setIsLogin(isValidUser)} 
+        />
+      }
       body={
         <>
           {status !== 'authenticated' && isLoading && <Loading />}
-          <div className={styles.mainBox}>
-            <div className={styles.mainCol}>
-              <MyInfoBox myInfo={myInfo} />
-              <RankingBox />
-            </div>
-            <GameHistory gameLogs={gameLogs} />
-          </div>
+          { 
+            isLogin
+            && <div className={styles.mainBox}>
+                <div className={styles.mainCol}>
+                  <MyInfoBox myInfo={myInfo} />
+                  <RankingBox />
+                </div>
+                <GameHistory gameLogs={gameLogs} />
+              </div>
+          }
         </>
       }
     />
