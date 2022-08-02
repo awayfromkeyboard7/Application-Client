@@ -202,6 +202,12 @@ export const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
         break;
     }
 
+    // const updateListenerExtension = EditorView.updateListener.of((update) => {
+    //   if (update.docChanged) {
+    //     console.log('code mirror textingg.....', update.state.doc.toString());
+    //   }
+    // });
+
     if(doc) {
       const ytext = doc.getText('codemirror');
 
@@ -220,7 +226,8 @@ export const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
           EditorView.lineWrapping,
           yCollab(ytext, provider.awareness),
           materialPalenightTheme,
-          syntaxHighlighting(materialPalenightHighlightStyle)
+          syntaxHighlighting(materialPalenightHighlightStyle),
+          // updateListenerExtension
         ],
       });
 

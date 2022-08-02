@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Chart from '../../components/chart';
 import styles from '../../styles/pages/mypage.module.scss';
 
-const getRankName = (rank, ranking) => {
+function getRankName(rank, ranking) {
   let myrank = 'Bronze';
   switch (rank) {
     case 0:
@@ -31,7 +31,7 @@ const getRankName = (rank, ranking) => {
   return myrank;
 };
 
-const getRankImg = (rank, ranking) => {
+function getRankImg(rank, ranking) {
   let imgUrl = '/rank/rank0.png';
   switch (rank) {
     case 0:
@@ -60,33 +60,38 @@ const getRankImg = (rank, ranking) => {
 };
 
 export const MyInfoMini = ({ myInfo, data }) => {
- return (
-   <div className={styles.myInfoMini}>
-    <div className={styles.myInfoRow}>
-      <div className={styles.myProfileIcon}>
-        <Image src={myInfo?.avatarUrl ? myInfo.avatarUrl : (data?.avatarUrl ?? '/default_profile.jpg')} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
-        <div className={styles.myRank}>
-          <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+  const rankImg = useMemo(() => getRankImg(myInfo.rank, myInfo.ranking), [myInfo.rank, myInfo.ranking]);
+  const rankName = useMemo(() => getRankName(myInfo?.rank, myInfo?.ranking), [myInfo.rank, myInfo.ranking]);
+
+  return (
+    <div className={styles.myInfoMini}>
+      <div className={styles.myInfoRow}>
+        <div className={styles.myProfileIcon}>
+          <Image src={myInfo?.avatarUrl ? myInfo.avatarUrl : (data?.avatarUrl ?? '/default_profile.jpg')} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
+          <div className={styles.myRank}>
+            <Image src={rankImg} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+          </div>
         </div>
-      </div>
-      <div className={styles.myInfoCol}>
-        <div className={styles.nicknameDark}>{myInfo?.gitId ? myInfo.gitId : data?.gitId}</div>
-        <div className={styles.myInfoMiniRow}>
-          <div className={styles.fieldTitleDark}>{getRankName(myInfo?.rank, myInfo?.ranking) ?? 0}</div>
-          <div className={styles.pointTextDark}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
-        </div>
-        <div className={styles.myInfoMiniRow}>
-          <div className={styles.fieldTitleDark}>내 랭킹</div>
-          <div className={styles.pointTextDark}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}`}</div>
+        <div className={styles.myInfoCol}>
+          <div className={styles.nicknameDark}>{myInfo?.gitId ? myInfo.gitId : data?.gitId}</div>
+          <div className={styles.myInfoMiniRow}>
+            <div className={styles.fieldTitleDark}>{rankName}</div>
+            <div className={styles.pointTextDark}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
+          </div>
+          <div className={styles.myInfoMiniRow}>
+            <div className={styles.fieldTitleDark}>내 랭킹</div>
+            <div className={styles.pointTextDark}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}`}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   )
 }
 
 export const MyInfoBox = ({ myInfo, data }) => {
   const [isDetail, setIsDetail] = useState(false);
+  const rankImg = useMemo(() => getRankImg(myInfo.rank, myInfo.ranking), [myInfo.rank, myInfo.ranking]);
+  const rankName = useMemo(() => getRankName(myInfo?.rank, myInfo?.ranking), [myInfo.rank, myInfo.ranking]);
 
   return (
     <div className={styles.infoTab}>
@@ -99,13 +104,13 @@ export const MyInfoBox = ({ myInfo, data }) => {
             <div className={styles.myProfileIcon}>
               <Image src={myInfo?.avatarUrl ? myInfo.avatarUrl : (data?.avatarUrl ?? '/default_profile.jpg')} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
               <div className={styles.myRank}>
-                <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
+                <Image src={rankImg} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
               </div>
             </div>
             <div className={styles.myInfoCol}>
               <div className={styles.nickname}>{myInfo?.gitId ? myInfo.gitId : data?.gitId}</div>
               <div className={styles.rankBox}>
-                <div className={styles.fieldTitle}>{getRankName(myInfo?.rank, myInfo?.ranking)}</div>
+                <div className={styles.fieldTitle}>{rankName}</div>
                 <div className={styles.pointText}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
               </div>
             </div>

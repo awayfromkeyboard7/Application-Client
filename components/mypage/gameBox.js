@@ -6,7 +6,7 @@ import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
+export default function GameBox({ gameLogId, filter }) {
   const router = useRouter();
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
@@ -20,11 +20,8 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
-    if (idx < gameLogIdx && !isGetGameInfo && isFilter) {
-    // if(!isGetGameInfo) {
-      getGameInfo();
-    }
-  }, [gameLogIdx, idx, isGetGameInfo]);
+    getGameInfo();
+  }, []);
   
   const getGameInfo = async () => {
     await fetch(`/server/api/gamelog/getGameLog`, {
@@ -150,7 +147,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   };
 
   const TeamGameWin = () => {
-    return (
+    return useMemo(() => (
       <div className={styles.gameHistoryItemBlue}>
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
@@ -174,11 +171,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </div>
-    )
+    ), [gameInfo])
   };
 
   const TeamGameLose = () => {
-    return (
+    return useMemo(() => (
       <div className={styles.gameHistoryItemRed}>
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
@@ -202,11 +199,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </div>
-    )
+    ), [gameInfo])
   };
 
   const SoloGame = () => {
-    return (
+    return useMemo(() => (
       <>
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
@@ -230,7 +227,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </>
-    )
+    ), [gameInfo]);
   };
 
   return (

@@ -4,16 +4,16 @@ import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ gameLogs }) {
   const listRef = useRef();
-  const [gameLogIdx, setGameLogIdx] = useState(10);
+  const [gameLogIdx, setGameLogIdx] = useState(20);
   // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
 
   const [filter, setFilter] = useState('all');
 
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
-    // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
-    if((scrollHeight - scrollTop) < clientHeight + 180) {
-      setGameLogIdx(prev => prev + 5 < gameLogs.length ? prev + 5 : gameLogs.length);
+    // console.log('on scroll e >>> ', scrollHeight - scrollTop, clientHeight);
+    if((scrollHeight - scrollTop) < clientHeight + 900) {
+      setGameLogIdx(prev => prev + 10 < gameLogs.length ? prev + 10 : gameLogs.length);
     }
   };
 
@@ -34,8 +34,9 @@ export default function GameHistory({ gameLogs }) {
       <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
       {
         gameLogs?.map((gameLogId, idx) => 
-          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} />
-        )
+          idx < gameLogIdx
+          && <GameBox gameLogId={gameLogId} isRender={true} filter={filter} key={gameLogId} />
+        ) 
       }
       </div>
     </div>

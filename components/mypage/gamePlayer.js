@@ -1,14 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GamePlayer({ info, onClickCode, onClickId, myInfo = null }) {
+export default function GamePlayer({ info, onClickCode, onClickId, myInfo=null }) {
   const [isEmoji, setIsEmoji] = useState(false);
   const ranking = useMemo(() => convertRank(), [info.ranking]);
-
-  useEffect(() => {
-    convertRank()
-  }, [])
 
   function convertRank() {
     switch (info.ranking) {
