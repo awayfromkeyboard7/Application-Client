@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import Rank from './rankingItem';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function RankingBox() {
+  const router = useRouter();
   const listRef = useRef();
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
@@ -33,7 +35,16 @@ export default function RankingBox() {
         count: 20
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setStart(prev => prev + 20);

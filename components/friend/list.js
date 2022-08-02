@@ -74,7 +74,16 @@ export default function FriendList({ onClick, players=null }) {
         'Content-Type': 'application/json',
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setMyInfo(data.UserInfo);
@@ -95,7 +104,16 @@ export default function FriendList({ onClick, players=null }) {
         gitId: searchText
       }),
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setSearchList([data.UserInfo]);

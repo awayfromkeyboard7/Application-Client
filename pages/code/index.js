@@ -254,7 +254,16 @@ export default function Code() {
         mode: router?.query?.mode
       }),
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setProblems(data.info.problemId);
@@ -294,6 +303,15 @@ export default function Code() {
         submitAt: new Date()
       })
     })
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+      }
+      return;
+    })
     .catch(error => console.log('[/pages/code] submitCode error >> ', error));
   };
 
@@ -316,6 +334,15 @@ export default function Code() {
         submitAt: new Date()
       })
     })
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+      }
+      return;
+    })
     .catch(error => console.log('[/pages/code] submitCodeTeam error >> ', error));
   }
 
@@ -335,7 +362,16 @@ export default function Code() {
         submit
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if (router?.query?.mode === 'team' && isLogin) {
         socket.emit('shareJudgedCode', data, router?.query?.roomId);

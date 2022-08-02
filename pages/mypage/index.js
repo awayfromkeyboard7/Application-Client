@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSession, signOut } from 'next-auth/react';
-import { deleteCookie } from 'cookies-next';
+import { useSession } from 'next-auth/react';
+import logout from '../../lib/logout';
 import Layout from '../../components/layouts/main';
 import Header from '../../components/header';
 import { MyInfoBox } from '../../components/mypage/myInfo';
@@ -37,7 +37,16 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         setMyInfo(data.UserInfo);
@@ -46,13 +55,6 @@ export default function MyPage() {
       }
     })
     .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
-  };
-
-  const logout = async () => {
-    deleteCookie('jwt');
-    deleteCookie('sidebar');
-    signOut();
-    router.replace('/');
   };
 
   return (

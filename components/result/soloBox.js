@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Item from './soloItem';
 import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/components/result.module.scss';
 
 export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
+  const router = useRouter();
   const [isOpenCode, setIsOpenCode] = useState(false);
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
@@ -22,7 +24,16 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
         codeId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         setPlayerCode(data.info);

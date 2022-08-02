@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
 import { CodePopup } from '../codeEditor';
@@ -6,6 +7,7 @@ import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
+  const router = useRouter();
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
   const [isGetGameInfo, setIsGetGameInfo] = useState(false);
@@ -35,7 +37,16 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
         gameLogId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         setGameInfo(data.info);
@@ -56,7 +67,16 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
         codeId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         setPlayerCode(data.info);

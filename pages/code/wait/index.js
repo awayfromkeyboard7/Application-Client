@@ -195,7 +195,16 @@ export default function WaitPage() {
             roomId : roomId
           })
         })
-        .then(res => res.json())
+        .then(res => {
+          if(res.status === 403) {
+            router.replace({
+              pathname: '/',
+              query: { msg: 'loginTimeout' }
+            });
+            return;
+          }
+          return res.json();
+        })
         .then(data => {
           if(data.success && isLogin) {
             socket.emit('startGame', data.gameLogId);

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { socket } from '../lib/socket';
+import logout from '../lib/logout';
 import Layout from '../components/layouts/main';
 import Header from '../components/header';
 import LobbyBox from '../components/lobby/box';
@@ -86,6 +87,15 @@ export default function Home() {
                 content="게임에 참가하시려면 로그인이 필요합니다."
                 label="메인으로"
                 onClick={() => setIsPopup(false)} 
+              />
+          } 
+          {
+            router.query.msg === 'loginTimeout'
+            && <Popup 
+                title="⛔️로그인이 필요합니다.⛔️"
+                content={`로그인 유효시간이 만료되었습니다.\n다시 로그인해주세요.`}
+                label="메인으로"
+                onClick={logout} 
               />
           } 
           {
