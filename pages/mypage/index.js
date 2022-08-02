@@ -12,7 +12,7 @@ import styles from '../../styles/pages/mypage.module.scss'
 
 export default function MyPage() {
   const router = useRouter();
-  const { status } = useSession();
+  const { data, status } = useSession();
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
@@ -73,7 +73,7 @@ export default function MyPage() {
             isLogin
             && <div className={styles.mainBox}>
                 <div className={styles.mainCol}>
-                  <MyInfoBox myInfo={myInfo} />
+                  <MyInfoBox myInfo={myInfo} data={data} />
                   <RankingBox />
                 </div>
                 <GameHistory gameLogs={gameLogs} />

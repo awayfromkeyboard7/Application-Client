@@ -153,7 +153,7 @@ export default function FriendList({ onClick, players=null }) {
 
   return (
     <> 
-      <MyInfoMini myInfo={myInfo} />
+      <MyInfoMini myInfo={myInfo} data={data} />
       <div className={styles.headerTitleActive}>친구목록</div>
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputBox}>

@@ -59,18 +59,18 @@ const getRankImg = (rank, ranking) => {
   return imgUrl;
 };
 
-export const MyInfoMini = ({ myInfo }) => {
+export const MyInfoMini = ({ myInfo, data }) => {
  return (
    <div className={styles.myInfoMini}>
     <div className={styles.myInfoRow}>
       <div className={styles.myProfileIcon}>
-        <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
+        <Image src={myInfo?.avatarUrl ? myInfo.avatarUrl : (data?.avatarUrl ?? '/default_profile.jpg')} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
         <div className={styles.myRank}>
           <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
         </div>
       </div>
       <div className={styles.myInfoCol}>
-        <div className={styles.nicknameDark}>{myInfo?.gitId}</div>
+        <div className={styles.nicknameDark}>{myInfo?.gitId ? myInfo.gitId : data?.gitId}</div>
         <div className={styles.myInfoMiniRow}>
           <div className={styles.fieldTitleDark}>{getRankName(myInfo?.rank, myInfo?.ranking) ?? 0}</div>
           <div className={styles.pointTextDark}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
@@ -85,7 +85,7 @@ export const MyInfoMini = ({ myInfo }) => {
   )
 }
 
-export const MyInfoBox = ({ myInfo }) => {
+export const MyInfoBox = ({ myInfo, data }) => {
   const [isDetail, setIsDetail] = useState(false);
 
   return (
@@ -97,13 +97,13 @@ export const MyInfoBox = ({ myInfo }) => {
         <div className={styles.myProfileBody}>
           <div className={styles.myInfoRow}>
             <div className={styles.myProfileIcon}>
-              <Image src={myInfo.avatarUrl ?? '/default_profile.jpg'} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
+              <Image src={myInfo?.avatarUrl ? myInfo.avatarUrl : (data?.avatarUrl ?? '/default_profile.jpg')} width={80} height={80} className={styles.myProfileIcon} alt="프로필이미지" />
               <div className={styles.myRank}>
                 <Image src={getRankImg(myInfo.rank, myInfo.ranking)} width={30} height={30} className={styles.rankIcon} alt="프로필이미지" />
               </div>
             </div>
             <div className={styles.myInfoCol}>
-              <div className={styles.nickname}>{myInfo?.gitId}</div>
+              <div className={styles.nickname}>{myInfo?.gitId ? myInfo.gitId : data?.gitId}</div>
               <div className={styles.rankBox}>
                 <div className={styles.fieldTitle}>{getRankName(myInfo?.rank, myInfo?.ranking)}</div>
                 <div className={styles.pointText}>{`${myInfo?.totalScore ?? 0 * 5} Point`}</div>
