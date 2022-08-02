@@ -30,13 +30,19 @@ export default function Chart({ data }) {
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    let x = cx + radius * Math.cos(-midAngle * RADIAN);
+    let y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    if(x < cx) {
+      x += (cx - x) * 0.15;
+    } else if(cx < x) {
+      x -= (x - cx) * 0.15;
+    }
 
     return (
-      <text className={styles.rechartsFontSize} x={cx} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
-      {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
-      </text >
+      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
+      { percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%` }
+      </text>
     );
   };
 

@@ -42,10 +42,6 @@ export default function UserPopup({ userId, onClick }) {
     });
   }, [myFollowing, info]);
 
-  useEffect(() => {
-    socket.emit('getFollowingList');
-  }, [isFollow]);
-
   const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
     switch (rank) {
