@@ -244,7 +244,7 @@ export default function Code() {
   };
 
   const getProblem = async() => {
-    await fetch(`/server/api/gamelog/problem?mode=${router?.query?.mode}&gamelogid=${router?.query?.gameLogId}`, {
+    await fetch(`/server/api/gamelog/problem?mode=${router?.query?.mode}&id=${router?.query?.gameLogId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export default function Code() {
     })
     .then(data => {
       if(data.success) {
-        setProblems(data.info.problem);
+        setProblems(data.info.problemId);
         if(router?.query?.mode === 'team') {
           if(checkMyTeam(data.info.teamA)) {
             checkValidUser(data.info.teamA);
@@ -284,8 +284,8 @@ export default function Code() {
   const submitCode = async() => {
     const code = doc?.getText('codemirror');
 
-    await fetch(`/server/api/gamelog/update`, {
-      method: 'POST',
+    await fetch(`/server/api/gamelog/solo`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -314,8 +314,8 @@ export default function Code() {
   const submitCodeTeam = async() => {
     const code = doc?.getText('codemirror');
 
-    await fetch(`/server/api/gamelog/updateTeam`, {
-      method: 'POST',
+    await fetch(`/server/api/gamelog/team`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

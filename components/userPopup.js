@@ -99,7 +99,7 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const getMyInfo = async () => {
-    await fetch(`/server/api/user/info?userId=getmyinformation`, {
+    await fetch(`/server/api/user/info?id=getmyinformation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const getUserInfo = async () => {
-    await fetch(`/server/api/user/info?userId=${userId}`, {
+    await fetch(`/server/api/user/info?id=${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

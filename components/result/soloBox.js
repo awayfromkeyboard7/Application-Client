@@ -16,7 +16,7 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [isEnd, setIsEnd] = useState(true);
 
   const getCode = async (codeId, language) => {
-    await fetch(`/server/api/code?codeId=${codeId}`, {
+    await fetch(`/server/api/code?id=${codeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

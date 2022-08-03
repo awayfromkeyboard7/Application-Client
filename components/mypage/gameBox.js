@@ -22,14 +22,11 @@ export default function GameBox({ gameLogId }) {
   }, []);
   
   const getGameInfo = async () => {
-    await fetch(`/server/api/gamelog/getGameLog`, {
-      method: 'POST',
+    await fetch(`/server/api/gamelog?id=${gameLogId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        gameLogId
-      })
     })
     .then(res => {
       if(res.status === 403) {
@@ -51,7 +48,7 @@ export default function GameBox({ gameLogId }) {
   };
 
   const getCode = async (codeId, language) => {
-    await fetch(`/server/api/code?codeId=${codeId}`, {
+    await fetch(`/server/api/code?id=${codeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
