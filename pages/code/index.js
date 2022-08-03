@@ -244,15 +244,11 @@ export default function Code() {
   };
 
   const getProblem = async() => {
-    await fetch(`/server/api/gamelog/getProblem`, {
-      method: 'POST',
+    await fetch(`/server/api/gamelog/problem?mode=${router?.query?.mode}&gamelogid=${router?.query?.gameLogId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        gameLogId: router?.query?.gameLogId,
-        mode: router?.query?.mode
-      }),
     })
     .then(res => {
       if(res.status === 403) {
@@ -266,7 +262,7 @@ export default function Code() {
     })
     .then(data => {
       if(data.success) {
-        setProblems(data.info.problemId);
+        setProblems(data.info.problem);
         if(router?.query?.mode === 'team') {
           if(checkMyTeam(data.info.teamA)) {
             checkValidUser(data.info.teamA);

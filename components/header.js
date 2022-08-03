@@ -13,7 +13,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
 
   useEffect(() => {
     if(status === 'authenticated') {
-      // console.log('data', data);
+      console.log('data', data);
       if(hasCookie('jwt')) {
         if(router.isReady) {
           socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);

@@ -68,7 +68,7 @@ export default function FriendList({ onClick, players=null }) {
   };
 
   const getMyInfo = async() => {
-    await fetch(`/server/api/user/getMyInfo`, {
+    await fetch(`/server/api/user/info?userId=getmyinformation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

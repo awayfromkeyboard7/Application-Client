@@ -51,14 +51,11 @@ export default function GameBox({ gameLogId }) {
   };
 
   const getCode = async (codeId, language) => {
-    await fetch(`/server/api/code/getCode`, {
-      method: 'POST',
+    await fetch(`/server/api/code?codeId=${codeId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        codeId
-      })
     })
     .then(res => {
       if(res.status === 403) {
