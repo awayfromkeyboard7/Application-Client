@@ -45,7 +45,10 @@ export default function Main({ header, body }) {
     <div className={styles.container}>
       <Head>
         <title>{`{ CODE: '뚝딱' }`}</title>
-        <meta name="description" content="Jungle Online Judge" />
+        <meta name="description" content="{ CODE: '뚝딱' } 비기너들을 위한 온라인 코딩게임" />
+        <meta property="og:title" content="{ CODE: '뚝딱' }" />
+	      <meta property="og:description" content="{ CODE: '뚝딱' } 비기너들을 위한 온라인 코딩게임" />
+        <meta property="og:image" content="https://avatars.githubusercontent.com/u/108448256?s=200&v=4" />
         <link rel="icon" href="/frog.ico" />
       </Head>
       { status === 'loading' && <Loading /> }

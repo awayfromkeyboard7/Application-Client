@@ -196,7 +196,7 @@ export default function WaitPage() {
           body: JSON.stringify({ 
             players: sendPlayers,
             totalUsers: sendPlayers.length,
-            roomId : roomId
+            roomId
           })
         })
         .then(res => {
