@@ -328,6 +328,17 @@
   background-color: $navy-light-color;
 }
 
+.gameHistorySubHeader {
+  padding: 0.5rem;
+  padding-left: 1.25rem;
+  overflow: hidden;
+  font-size: 0.85rem;
+  line-height: 1rem;
+  // font-weight: bold;
+  color: $gray-light-color;
+  border-bottom: 2px solid $navy-color;
+}
+
 .gameHistoryBody {
   height: 100%;
   padding: 0.625rem;

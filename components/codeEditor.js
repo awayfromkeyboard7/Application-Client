@@ -3,6 +3,7 @@ import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
+import { indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
 import { javascript } from '@codemirror/lang-javascript';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
@@ -220,7 +221,7 @@ export const CodeEditor = ({ doc, provider, gitId, selectedLang }) => {
       const state = EditorState.create({
         doc: ytext.toString(),
         extensions: [
-          keymap.of([...yUndoManagerKeymap]),
+          keymap.of([...yUndoManagerKeymap, indentWithTab]),
           basicSetup,
           langMode,
           EditorView.lineWrapping,

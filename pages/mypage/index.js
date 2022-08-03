@@ -84,6 +84,10 @@ export default function MyPage() {
                   totalLogs={gameLogs} 
                   soloLogs={soloGameLogs}
                   teamLogs={teamGameLogs} 
+                  winSolo={myInfo?.winSolo ?? 0}
+                  winTeam={myInfo?.winTeam ?? 0}
+                  totalSolo={myInfo?.totalSolo ?? 0}
+                  totalTeam={myInfo?.totalTeam ?? 0}
                 />
               </div>
           }

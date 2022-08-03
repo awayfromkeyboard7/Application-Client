@@ -2,16 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ totalLogs, teamLogs, soloLogs }) {
+export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, winTeam, totalSolo, totalTeam }) {
   const listRef = useRef();
   const [gameLogs, setGameLogs] = useState([]);
   const [gameLogIdx, setGameLogIdx] = useState(20);
+  const [gameInfo, setGameInfo] = useState('');
   // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     if(totalLogs) {
       setGameLogs(totalLogs);
+      setGameInfo(`${totalSolo + totalTeam}게임 ${winSolo + winTeam}승 ${(totalSolo + totalTeam) - (winSolo + winTeam)}패`);
     }
   }, [totalLogs]);
 
@@ -20,16 +22,19 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs }) {
       case 'all':
         if(totalLogs) {
           setGameLogs(totalLogs);
+          setGameInfo(`${totalSolo + totalTeam}게임 ${winSolo + winTeam}승 ${(totalSolo + totalTeam) - (winSolo + winTeam)}패`);
         }
         break;
       case 'solo':
         if(soloLogs) {
           setGameLogs(soloLogs);
+          setGameInfo(`${totalSolo}게임 ${winSolo}승 ${(totalSolo) - (winSolo)}패`);
         }
         break;
       case 'team':
         if(teamLogs) {
           setGameLogs(teamLogs);
+          setGameInfo(`${totalTeam}게임 ${winTeam}승 ${(totalTeam) - (winTeam)}패`);
         }
         break;
     }
@@ -59,6 +64,7 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs }) {
           </div>
         </div>
       </div>
+      <div className={styles.gameHistorySubHeader}>{gameInfo}</div>
       <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
       {
         gameLogs?.map((gameLogId, idx) => 

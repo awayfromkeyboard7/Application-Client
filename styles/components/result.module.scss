@@ -1,12 +1,14 @@
 @import '../variables.module.scss';
 
 .body {
+  height: calc(100vh - 3.75rem);
   padding: 1.5rem;
   display: flex;
   flex: 1;
   flex-direction: column;
   background-color: $navy-color;
   position: relative;
+  overflow: auto;
 }
 
 .mainHeader {
@@ -24,6 +26,7 @@
 }
 
 .mainBody {
+  // height: 100%;
   display: flex;
   flex: 1;
   align-items: center;
@@ -38,13 +41,19 @@
 }
 
 .resultBox {
+  // max-height: 100%;
+  // height: min-content;
   width: 80%;
+  min-width: 22.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
   background-color: $white-dark-color;
   border-radius: 0.625rem;
+  overflow: auto;
 }
 
 .resultItemMine,
