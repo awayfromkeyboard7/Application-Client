@@ -5,7 +5,7 @@ import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId, gameLogs }) {
+export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
   const [isGetGameInfo, setIsGetGameInfo] = useState(false);
@@ -235,7 +235,6 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
         && <UserPopup
             userId={targetId}
             onClick={() => setIsPopup(false)}
-            userInfoId={userInfoId}
           />
       }
     </div>

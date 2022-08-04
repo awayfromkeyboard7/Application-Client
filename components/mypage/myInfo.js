@@ -85,14 +85,14 @@ export const MyInfoMini = ({ myInfo }) => {
   )
 }
 
-export const MyInfoBox = ({ myInfo }) => {
+export const MyInfoBox = ({ myInfo, isMine=true }) => {
   const [isDetail, setIsDetail] = useState(false);
 
   return (
     <div className={styles.infoTab}>
       <div className={styles.myProfileBox}>
         <div className={styles.myProfileHeader}>
-          <div className={styles.myProfileTitle}>내 정보</div>
+          <div className={styles.myProfileTitle}>{isMine ? '내 정보' : '유저 정보'}</div>
         </div>
         <div className={styles.myProfileBody}>
           <div className={styles.myInfoRow}>

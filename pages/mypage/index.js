@@ -63,7 +63,7 @@ export default function MyPage() {
               <MyInfoBox myInfo={myInfo} />
               <RankingBox />
             </div>
-            <GameHistory gameLogs={gameLogs} userInfoId={myInfo._id} />
+            <GameHistory gameLogs={gameLogs} />
           </div>
         </>
       }

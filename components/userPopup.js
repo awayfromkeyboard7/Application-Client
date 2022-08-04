@@ -7,7 +7,7 @@ import { socket } from '../lib/socket';
 import Chart from '../components/chart';
 import styles from '../styles/components/userPopup.module.scss';
 
-export default function UserPopup({ userId, onClick, userInfoId }) {
+export default function UserPopup({ userId, onClick }) {
   const router = useRouter();
   const { data } = useSession();
   const [info, setInfo] = useState({});
@@ -159,8 +159,11 @@ export default function UserPopup({ userId, onClick, userInfoId }) {
       pathname: '/userpage',
       query: { targetUserId }
     });
-
     onClick();
+  };
+
+  const goToMyPage = () => {
+    router.push('/mypage');
   };
 
   const sideState = () => {
@@ -204,7 +207,10 @@ export default function UserPopup({ userId, onClick, userInfoId }) {
                   </div>
                 </div>
                 {
-                  (router?.pathname !== "/mypage" || router?.pathname !== "/userpage") || info._id === userInfoId ? null : <div className={styles.inviteBtn} onClick={goToUserPage} >유저전적</div>
+                  !(router?.pathname === "/mypage" || router?.pathname === "/userpage") || (info.gitId === data?.gitId) || (info._id === router?.query?.targetUserId) ? null : <div className={styles.inviteBtn} onClick={goToUserPage} >유저전적</div>
+                }
+                {
+                  !(router?.pathname === "/mypage" || router?.pathname === "/userpage") || (info.gitId !== data?.gitId) ? null : <div className={styles.inviteBtn} onClick={goToMyPage}>마이페이지</div>
                 }
               </div>
               <div className={styles.splitterHorizontal} />

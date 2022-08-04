@@ -12,15 +12,16 @@ import styles from '../../styles/pages/mypage.module.scss'
 
 export default function UserPage() {
   const router = useRouter();
-  const targetUserId = router.query.targetUserId;
   const { status } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
 
   useEffect(() => {
-    getTargetUserInfo();
-  }, [targetUserId]);
+    if(router?.query?.targetUserId) {
+      getTargetUserInfo();
+    }
+  }, [router?.query?.targetUserId]);
 
   useEffect(() => {
     if(status === 'unauthenticated') {
@@ -35,13 +36,13 @@ export default function UserPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: targetUserId
+        userId: router?.query?.targetUserId
       })
     })
       .then(res => res.json())
       .then(data => {
         if(data.success) {
-          setMyInfo(data.UserInfo)
+          setMyInfo(data.UserInfo);
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
           setIsLoading(false);
         }
@@ -61,13 +62,13 @@ export default function UserPage() {
       header={<Header label="로그아웃" onClickBtn={logout} />}
       body={
         <>
-          {status !== 'authenticated' && isLoading && <Loading />}
+          { status !== 'authenticated' && isLoading && <Loading /> }
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
               <MyInfoBox myInfo={myInfo} />
               <RankingBox />
             </div>
-            <GameHistory gameLogs={gameLogs} userInfoId={myInfo._id} />
+            <GameHistory gameLogs={gameLogs} />
           </div>
         </>
       }

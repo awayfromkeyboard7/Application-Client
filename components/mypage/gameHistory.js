@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameHistory({ gameLogs, userInfoId }) {
+export default function GameHistory({ gameLogs }) {
   const listRef = useRef();
   const [gameLogIdx, setGameLogIdx] = useState(10);
   // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
