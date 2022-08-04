@@ -15,15 +15,15 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [isPopup, setIsPopup] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
 
-  useEffect(() => {
-    let flag = true;
-    ranks?.map(rank => {
-      if(rank.passRate < 0) {
-        flag = false;
-      }
-    });
-    setIsEnd(flag);
-  }, [ranks]);
+  // useEffect(() => {
+  //   let flag = true;
+  //   ranks?.map(rank => {
+  //     if(rank.passRate < 0) {
+  //       flag = false;
+  //     }
+  //   });
+  //   setIsEnd(flag);
+  // }, [ranks]);
 
   const getCode = async (codeId, language) => {
     await fetch(`/server/api/code?id=${codeId}`, {
@@ -74,11 +74,11 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
           )
         }
         </div>
-        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
       <div className={styles.mainFooter}>
+        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
-      {
+      {/* {
         isEnd
         && <Banner
             title="아쉬운 결과...😅 성장하고 싶다면?"
@@ -87,7 +87,7 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
             label="SW정글 지원하기"
             onClose={() => setIsEnd(false)} 
           />
-      }
+      } */}
       {
         isOpenCode
         && <CodePopup 
