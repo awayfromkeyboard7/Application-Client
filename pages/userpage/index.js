@@ -23,7 +23,7 @@ export default function UserPage() {
   }, [targetUserId]);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if(status === 'unauthenticated') {
       router.replace('/');
     }
   }, [status]);
@@ -40,7 +40,7 @@ export default function UserPage() {
     })
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
+        if(data.success) {
           setMyInfo(data.UserInfo)
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
           setIsLoading(false);

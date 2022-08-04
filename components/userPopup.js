@@ -7,8 +7,7 @@ import { socket } from '../lib/socket';
 import Chart from '../components/chart';
 import styles from '../styles/components/userPopup.module.scss';
 
-export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameInfo }) {
-
+export default function UserPopup({ userId, onClick, userInfoId }) {
   const router = useRouter();
   const { data } = useSession();
   const [info, setInfo] = useState({});
@@ -100,7 +99,7 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
         imgUrl = '/rank/rank5.png';
         break;
     }
-    if (ranking == 1) {
+    if(ranking == 1) {
       imgUrl = '/rank/king.png';
     }
     return imgUrl;
@@ -115,7 +114,7 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setCookie('following', JSON.stringify(data.UserInfo.following));
         setMyFollowing(data.UserInfo.following);
       }
@@ -135,7 +134,7 @@ export default function UserPopup({ userId, onClick, userInfoId, gameLogs, gameI
     })
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
+        if(data.success) {
           setTargetUserId(data.UserInfo._id);
           setInfo(data.UserInfo);
         }

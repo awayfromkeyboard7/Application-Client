@@ -20,7 +20,7 @@ export default function Chart({ data }) {
       const langValue = Object.values(langInfo);
       const langArr = [];
 
-      for (let i = 0; i < langLength; i++) {
+      for(let i = 0; i < langLength; i++) {
         langArr.push({ name: langKey[i], value: langValue[i] });
       }
 

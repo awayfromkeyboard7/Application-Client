@@ -34,7 +34,7 @@ export default function GameHistory({ gameLogs, userInfoId }) {
       <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
       {
         gameLogs?.map((gameLogId, idx) =>
-          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} userInfoId={userInfoId} gameLogs={gameLogs} />
+          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} />
         )
       }
       </div>

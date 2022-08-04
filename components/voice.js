@@ -62,7 +62,7 @@ export default function Voice({ team }) {
     let voiceFlag = [];
     const peers = Object.entries(remotePeerIdValue);
     for(let j = 0; j < team.length; j++) {
-      for (let i = 0; i < peers.length; i++) {
+      for(let i = 0; i < peers.length; i++) {
         if(peers[i][0] === team[j].gitId) {
           if(peers[i][1] && peers[i][1] !== '' && !muteFlag[j]) {
             console.log('voice flag trueeeee', j, peers[i][0], team[j]);
@@ -75,7 +75,7 @@ export default function Voice({ team }) {
         }
       }
     }
-    // for (let i = 0; i < peers.length; i++) {
+    // for(let i = 0; i < peers.length; i++) {
     //   // if(peers[i][1] && peers[i][1] !== '' && !muteFlag[i]) {
     //   //   voiceFlag.push(true);
     //   // } else {
@@ -100,8 +100,8 @@ export default function Voice({ team }) {
   useEffect(() => {
     if(voiceOn) {
       const peers = Object.entries(remotePeerIdValue);
-      for (let i = 0; i < peers.length; i++) {
-        if (peers[i][0] !== data?.gitId) {
+      for(let i = 0; i < peers.length; i++) {
+        if(peers[i][0] !== data?.gitId) {
           // call(memberVoiceRefs.current[i], peers[i][1], i);
           for(let j = 0; j < team.length; j++) {
             if(peers[i][0] === team[j].gitId) {

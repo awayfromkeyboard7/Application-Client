@@ -24,7 +24,7 @@ export default function MatchPage() {
   }, [status]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if(router.isReady) {
       socket.on('matchingComplete', (teamA, teamB) => {
         setTeamA(teamA);
         setTeamB(teamB);
@@ -37,7 +37,7 @@ export default function MatchPage() {
         setRoomId(roomId);
       });
       socket.emit('getTeamInfo', router?.query?.roomId);
-      if (router.query?.roomId === data?.gitId) {
+      if(router.query?.roomId === data?.gitId) {
         socket.emit('startMatching');
       }
     }
@@ -51,7 +51,7 @@ export default function MatchPage() {
 
 
   useEffect(() => {
-    if (router?.query?.mode === 'team') {
+    if(router?.query?.mode === 'team') {
       socket.on('exitTeamGame', () => {
         router.replace('/');
       });
@@ -77,7 +77,7 @@ export default function MatchPage() {
   }, [gameLogId]);
 
   const goToLobby = () => {
-    if (router?.query?.mode === 'team') {
+    if(router?.query?.mode === 'team') {
       socket.emit('exitWait');
       router.replace('/');
     } else {

@@ -5,7 +5,7 @@ import styles from '../../styles/pages/mypage.module.scss';
 
 const getRankName = (rank, ranking) => {
   let myrank = 'Bronze';
-  switch (rank) {
+  switch(rank) {
     case 0:
       myrank = 'Bronze';
       break;
@@ -25,7 +25,7 @@ const getRankName = (rank, ranking) => {
       myrank = 'Master';
       break;
   }
-  if (ranking === 1) {
+  if(ranking === 1) {
     myrank = 'King';
   }
   return myrank;
@@ -33,7 +33,7 @@ const getRankName = (rank, ranking) => {
 
 const getRankImg = (rank, ranking) => {
   let imgUrl = '/rank/rank0.png';
-  switch (rank) {
+  switch(rank) {
     case 0:
       imgUrl = '/rank/rank0.png';
       break;
@@ -53,7 +53,7 @@ const getRankImg = (rank, ranking) => {
       imgUrl = '/rank/rank5.png';
       break;
   }
-  if (ranking == 1) {
+  if(ranking == 1) {
     imgUrl = '/rank/king.png';
   }
   return imgUrl;

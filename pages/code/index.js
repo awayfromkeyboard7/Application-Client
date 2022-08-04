@@ -44,7 +44,7 @@ export default function Code() {
 
   // ADDED FROM HERE
   // useBeforeunload((event) => {
-  //   if (!isSubmit) {
+  //   if(!isSubmit) {
   //     // goToResult();
   //     event.preventDefault();
   //   }
@@ -155,7 +155,7 @@ export default function Code() {
   useEffect(() => {
     const submitResult = async() => {
       if(router.isReady) {
-        if (router?.query?.mode === 'team'){
+        if(router?.query?.mode === 'team'){
           await submitCodeTeam();
           socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
         }
@@ -327,7 +327,7 @@ export default function Code() {
     })
     .then(res => res.json())
     .then(data => {
-      if (router?.query?.mode === 'team') {
+      if(router?.query?.mode === 'team') {
         socket.emit('shareJudgedCode', data, router?.query?.roomId);
       }
       setOutputs(data);

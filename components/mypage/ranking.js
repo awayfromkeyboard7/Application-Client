@@ -17,7 +17,7 @@ export default function RankingBox() {
   }, []);
 
   useEffect(() => {
-    if (isLoading && !isEnd) {
+    if(isLoading && !isEnd) {
       pagingRanking();
     }
   }, [isLoading, isEnd]);
@@ -49,7 +49,7 @@ export default function RankingBox() {
 
   const getRankImg = (rank, ranking) => {
     let imgUrl = '/rank/rank0.png';
-    switch (rank) {
+    switch(rank) {
       case 0:
         imgUrl = '/rank/rank0.png';
         break;
@@ -71,7 +71,7 @@ export default function RankingBox() {
       default:
         imgUrl = '/rank/rank0.png';
     }
-    if (ranking == 1) {
+    if(ranking == 1) {
       imgUrl = '/rank/king.png';
     }
     return imgUrl;
@@ -79,7 +79,7 @@ export default function RankingBox() {
 
   const getLangImg = (language) => {
     let imgUrl = null;
-    switch (language) {
+    switch(language) {
       case 'Python':
         imgUrl = '/rank/Python.png';
         break;
@@ -97,7 +97,7 @@ export default function RankingBox() {
 
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
-    if ((scrollHeight - scrollTop) < clientHeight + 360) {
+    if((scrollHeight - scrollTop) < clientHeight + 360) {
       setIsLoading(true);
     }
   };

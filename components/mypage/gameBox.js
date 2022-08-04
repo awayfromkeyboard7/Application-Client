@@ -18,7 +18,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
   const isFilter = useMemo(() => checkFilter(), [filter]);
 
   useEffect(() => {
-    if (idx < gameLogIdx && !isGetGameInfo && isFilter) {
+    if(idx < gameLogIdx && !isGetGameInfo && isFilter) {
       getGameInfo();
     }
   }, [gameLogIdx, idx, isGetGameInfo]);
@@ -35,7 +35,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setGameInfo(data.info);
         setIsGetGameInfo(true);
       }
@@ -56,7 +56,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setPlayerCode(data.info);
         setPlayerLanguage(language);
         setIsOpenCode(true);
@@ -236,8 +236,6 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
             userId={targetId}
             onClick={() => setIsPopup(false)}
             userInfoId={userInfoId}
-            gameLogs={gameLogs}
-            gameInfo={gameInfo}
           />
       }
     </div>

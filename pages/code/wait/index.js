@@ -85,9 +85,9 @@ export default function WaitPage() {
     socket.on('timeLimit', (ts) => {
       setCountdown(parseInt(ts / 1000));
     });
-    if (router.isReady) {
-      if (router?.query?.mode === 'team'){
-        if (router?.query?.roomId === data?.gitId) {
+    if(router.isReady) {
+      if(router?.query?.mode === 'team'){
+        if(router?.query?.roomId === data?.gitId) {
           socket.emit('createTeam');
         }
         socket.on('enterNewUserToTeam', (users) => {
@@ -130,8 +130,8 @@ export default function WaitPage() {
 
   useEffect(() => {
     if(countdown === 5) {
-      if (router.isReady) {
-        if (router?.query?.mode === 'team'){
+      if(router.isReady) {
+        if(router?.query?.mode === 'team'){
           if(players[0]?.gitId === data?.gitId && !isMatching) {
             goToMatch();
           }
@@ -145,8 +145,8 @@ export default function WaitPage() {
   }, [countdown, router.isReady]);
 
   useEffect(() => {
-    if (router.isReady) {
-      if (router?.query?.mode === 'team') {
+    if(router.isReady) {
+      if(router?.query?.mode === 'team') {
         socket.on('exitTeamGame', () => {
           router.replace('/');
         });
@@ -182,7 +182,7 @@ export default function WaitPage() {
     };
     
     socket.once('getRoomId', async (roomId, status) => {
-      if (status === 'waiting') {
+      if(status === 'waiting') {
         await fetch(`/server/api/gamelog/createNew`, {
           method: 'POST',
           headers: {

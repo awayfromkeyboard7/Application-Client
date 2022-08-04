@@ -23,7 +23,7 @@ export default function ResultPage() {
   }, [status]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if(router.isReady) {
       if(router?.query?.mode === 'team') {
         socket.on('getTeamRanking', (result, startAt) => {
           if(result.length !== 0 && result[0].length !== 0 && result[1].length !== 0) {

@@ -24,7 +24,7 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setPlayerCode(data.info);
         setPlayerLanguage(language);
         setIsOpenCode(true);

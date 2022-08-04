@@ -11,7 +11,7 @@ export default function GamePlayer({ info, onClickCode, onClickId, myInfo = null
   }, [])
 
   function convertRank() {
-    switch (info.ranking) {
+    switch(info.ranking) {
       case 0:
         setIsEmoji(false);
         return '-';
