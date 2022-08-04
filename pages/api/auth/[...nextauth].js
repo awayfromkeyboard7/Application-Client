@@ -22,6 +22,7 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }) {
       // Persist the OAuth access_token to the token right after signin
+      // console.log('[api/auth] jwt callback', token, user, account, profile, isNewUser);
       console.log('[api/auth] jwt callback', token, user, account, profile, isNewUser);
       if(profile) {
         token.accessToken = account.access_token;
@@ -31,7 +32,7 @@ export default NextAuth({
       return token
     },
     async session({ session, token, user }) {
-      console.log('[api/auth] session callback', session, token, user);
+      // console.log('[api/auth] session callback', session, token, user);
       // Send properties to the client, like an access_token from a provider.
       session.gitId = token.gitId
       session.avatarUrl = token.avatarUrl

@@ -100,7 +100,7 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const getMyInfo = async () => {
-    await fetch(`/server/api/user/getMyInfo`, {
+    await fetch(`/server/api/user/info?id=getmyinformation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -126,14 +126,11 @@ export default function UserPopup({ userId, onClick }) {
   };
 
   const getUserInfo = async () => {
-    await fetch(`/server/api/user/getUserInfo`, {
-      method: 'POST',
+    await fetch(`/server/api/user/info?id=${userId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        userId
-      })
     })
     .then(res => {
       if(res.status === 403) {

@@ -68,7 +68,7 @@ export default function FriendList({ onClick, players=null }) {
   };
 
   const getMyInfo = async() => {
-    await fetch(`/server/api/user/getMyInfo`, {
+    await fetch(`/server/api/user/info?id=getmyinformation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -95,14 +95,11 @@ export default function FriendList({ onClick, players=null }) {
   };
 
   const findUser = async() => {
-    await fetch(`/server/api/user/search`, {
-      method: 'POST',
+    await fetch(`/server/api/user/search?gitid=${searchText}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        gitId: searchText
-      }),
     })
     .then(res => {
       if(res.status === 403) {

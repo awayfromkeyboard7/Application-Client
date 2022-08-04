@@ -33,7 +33,7 @@ export default function MyPage() {
   }, [status]);
 
   const getUserInfo = async () => {
-    await fetch(`/server/api/user/getMyInfo`, {
+    await fetch(`/server/api/user/info?id=getmyinformation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

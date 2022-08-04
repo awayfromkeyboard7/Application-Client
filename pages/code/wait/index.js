@@ -188,7 +188,7 @@ export default function WaitPage() {
     
     socket.once('getRoomId', async (roomId, status) => {
       if(status === 'waiting') {
-        await fetch(`/server/api/gamelog/createNew`, {
+        await fetch(`/server/api/gamelog`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

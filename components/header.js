@@ -13,7 +13,6 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
 
   useEffect(() => {
     if(status === 'authenticated') {
-      // console.log('data', data);
       if(hasCookie('jwt')) {
         if(router.isReady) {
           socket.emit('setGitId', getCookie('jwt'), router?.query?.mode, router?.query?.roomId);
@@ -40,14 +39,12 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   };
 
   const sendAccessToken = async(accessToken) => {
-    await fetch(`/server/api/user/get-info`, {
-      method: 'POST',
+    await fetch(`/server/api/user/login`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: accessToken,
       },
-      body: JSON.stringify({
-        accessToken
-      })
     })
     .then(res => res.json())
     .then(data => {

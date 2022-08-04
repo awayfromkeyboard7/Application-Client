@@ -12,14 +12,11 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const [playerLanguage, setPlayerLanguage] = useState('Python');
 
   const getCode = async (codeId, language) => {
-    await fetch(`/server/api/code/getCode`, {
-      method: 'POST',
+    await fetch(`/server/api/code?id=${codeId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        codeId
-      })
     })
     .then(res => {
       if(res.status === 403) {
