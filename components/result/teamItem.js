@@ -51,6 +51,8 @@ export default function TeamResultItem({ teamInfo, startAt, onClickCode, maxLeng
         result = '-';
         setIsEmoji(false);
         break;
+      default:
+        setIsEmoji(false);
     }
     return result;
   }

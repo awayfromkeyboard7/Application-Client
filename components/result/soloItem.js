@@ -31,6 +31,8 @@ export default function SoloResultItem({ info, startAt, onClickCode, onClickId, 
         result = '-';
         setIsEmoji(false);
         break;
+      default:
+        setIsEmoji(false);
     }
     return result;
   }

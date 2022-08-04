@@ -73,26 +73,6 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
             <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
           )
         }
-        {/* {
-          ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
-          )
-        }
-        {
-          ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
-          )
-        }
-        {
-          ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
-          )
-        }
-        {
-          ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
-          )
-        } */}
         </div>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
@@ -105,7 +85,7 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
             content="SW정글 5기 지금 바로 지원하러~!"
             img="https://swjungle.net/static/image/big-icon.png"
             label="SW정글 지원하기"
-            onClose={() => setIsEnd(true)} 
+            onClose={() => setIsEnd(false)} 
           />
       }
       {
