@@ -5,7 +5,7 @@ import styles from '../../styles/pages/mypage.module.scss';
 
 function getRankName(rank, ranking) {
   let myrank = 'Bronze';
-  switch (rank) {
+  switch(rank) {
     case 0:
       myrank = 'Bronze';
       break;
@@ -25,7 +25,7 @@ function getRankName(rank, ranking) {
       myrank = 'Master';
       break;
   }
-  if (ranking === 1) {
+  if(ranking === 1) {
     myrank = 'King';
   }
   return myrank;
@@ -33,7 +33,7 @@ function getRankName(rank, ranking) {
 
 function getRankImg(rank, ranking) {
   let imgUrl = '/rank/rank0.png';
-  switch (rank) {
+  switch(rank) {
     case 0:
       imgUrl = '/rank/rank0.png';
       break;
@@ -53,7 +53,7 @@ function getRankImg(rank, ranking) {
       imgUrl = '/rank/rank5.png';
       break;
   }
-  if (ranking == 1) {
+  if(ranking == 1) {
     imgUrl = '/rank/king.png';
   }
   return imgUrl;
@@ -88,7 +88,7 @@ export const MyInfoMini = ({ myInfo, data }) => {
   )
 }
 
-export const MyInfoBox = ({ myInfo, data }) => {
+export const MyInfoBox = ({ myInfo, data, isMine=true }) => {
   const [isDetail, setIsDetail] = useState(false);
   const rankImg = useMemo(() => getRankImg(myInfo.rank, myInfo.ranking), [myInfo.rank, myInfo.ranking]);
   const rankName = useMemo(() => getRankName(myInfo?.rank, myInfo?.ranking), [myInfo.rank, myInfo.ranking]);
@@ -97,7 +97,7 @@ export const MyInfoBox = ({ myInfo, data }) => {
     <div className={styles.infoTab}>
       <div className={styles.myProfileBox}>
         <div className={styles.myProfileHeader}>
-          <div className={styles.myProfileTitle}>내 정보</div>
+          <div className={styles.myProfileTitle}>{isMine ? '내 정보' : '유저 정보'}</div>
         </div>
         <div className={styles.myProfileBody}>
           <div className={styles.myInfoRow}>
@@ -125,7 +125,7 @@ export const MyInfoBox = ({ myInfo, data }) => {
                 <div className={styles.splitterHorizontal} />
                 <div className={styles.myInfoRow}>
                   <div className={styles.myInfoCol}>
-                    <div className={styles.fieldTitle}>내 랭킹</div>
+                    <div className={styles.fieldTitle}>{isMine ? '내 랭킹' : '유저 랭킹'}</div>
                     <div className={styles.percentText} style={{ paddingTop: '0.25rem', paddingBottom: 0, overflow: 'hidden' }}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}\n(상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
                   </div>
                   <div className={styles.splitterVertical} />

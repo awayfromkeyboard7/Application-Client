@@ -23,7 +23,7 @@ export default NextAuth({
     async jwt({ token, user, account, profile, isNewUser }) {
       // Persist the OAuth access_token to the token right after signin
       console.log('[api/auth] jwt callback', token, user, account, profile, isNewUser);
-      if (profile) {
+      if(profile) {
         token.accessToken = account.access_token;
         token.gitId = profile.login;
         token.avatarUrl = profile.avatar_url;

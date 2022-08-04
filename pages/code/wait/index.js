@@ -146,8 +146,8 @@ export default function WaitPage() {
   }, [countdown, router.isReady, isLogin]);
 
   useEffect(() => {
-    if (router.isReady) {
-      if (router?.query?.mode === 'team') {
+    if(router.isReady) {
+      if(router?.query?.mode === 'team') {
         socket.on('exitTeamGame', () => {
           router.replace('/');
         });
@@ -187,7 +187,7 @@ export default function WaitPage() {
     }
     
     socket.once('getRoomId', async (roomId, status) => {
-      if (status === 'waiting') {
+      if(status === 'waiting') {
         await fetch(`/server/api/gamelog/createNew`, {
           method: 'POST',
           headers: {
