@@ -24,10 +24,12 @@ import styles from '../../styles/pages/code.module.scss';
 export default function Code() {
   const router = useRouter();  
   const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
   const [problems, setProblems] = useState({});
   const [playerList, setPlayerList] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
   const [outputs, setOutputs] = useState({});
+  const [isExecuting, setIsExecuting] = useState(false);
   const [passRate, setPassRate] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
   const [codeTitle, setCodeTitle] = useState('solution.py');
@@ -114,7 +116,7 @@ export default function Code() {
 
       if(isDoc === false && router?.query?.gameLogId) {
         const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${data?.gitId}_${router?.query?.gameLogId}`
-        console.log('yjs url :::: ', url);
+        // console.log('yjs url :::: ', url);
         let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop/yjs'] });
         setDoc(yDoc);
         setProvider(yProvider);
@@ -154,8 +156,8 @@ export default function Code() {
   
   useEffect(() => {
     const submitResult = async() => {
-      if(router.isReady) {
-        if(router?.query?.mode === 'team'){
+      if(router.isReady && isLogin) {
+        if (router?.query?.mode === 'team'){
           await submitCodeTeam();
           socket.emit('submitCodeTeam', router?.query?.gameLogId, router?.query?.roomId);
         }
@@ -177,7 +179,7 @@ export default function Code() {
       submitResult();
       // setIsSubmit(false);
     }
-  }, [isSubmit, router.isReady]);
+  }, [isSubmit, router.isReady, isLogin]);
 
   useEffect(() => {
     onChangeLang(selectedLang);
@@ -211,8 +213,14 @@ export default function Code() {
 
   const goToResult = async() => {
     if(!isSubmit) {
+      setIsExecuting(true);
       await judgeCode(true);
     }
+  };
+
+  const execCode = async() => {
+    setIsExecuting(true);
+    await judgeCode();
   };
 
   const checkMyTeam = (team) => {
@@ -246,7 +254,16 @@ export default function Code() {
         mode: router?.query?.mode
       }),
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setProblems(data.info.problemId);
@@ -286,6 +303,15 @@ export default function Code() {
         submitAt: new Date()
       })
     })
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+      }
+      return;
+    })
     .catch(error => console.log('[/pages/code] submitCode error >> ', error));
   };
 
@@ -308,6 +334,15 @@ export default function Code() {
         submitAt: new Date()
       })
     })
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+      }
+      return;
+    })
     .catch(error => console.log('[/pages/code] submitCodeTeam error >> ', error));
   }
 
@@ -322,14 +357,26 @@ export default function Code() {
         gitId: data?.gitId,
         code: code ?? '',
         problemId: problems?._id ?? '',
-        language: selectedLang
+        language: selectedLang,
+        gameLogId: router.query.gameLogId,
+        submit
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
-      if(router?.query?.mode === 'team') {
+      if (router?.query?.mode === 'team' && isLogin) {
         socket.emit('shareJudgedCode', data, router?.query?.roomId);
       }
+      setIsExecuting(false);
       setOutputs(data);
       setPassRate(data.passRate);
       if(submit === true) {
@@ -356,121 +403,124 @@ export default function Code() {
               </div>
             </>
           } 
+          checkValidUser={(isValidUser) => setIsLogin(isValidUser)} 
         />
       }
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
-          { 
-            router.isReady
-            && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." />
-          }
+          { router.isReady && <CheckValidAccess check={router?.query?.gameLogId} message="유효하지 않은 게임입니다." /> }
           {
-            isMobile
-            ? <div className={styles.bodyColMobile}>
-                <div className={styles.codeHeaderMobile}>
-                <div className={styles.codeTitle}>언어선택</div>
-                  <div className={styles.toggleBtn} onClick={() => setIsSelectOpen(prev => !prev)}>
-                    {selectedLang}
+            isLogin
+            && <>
+            {
+              isMobile
+              ? <div className={styles.bodyColMobile}>
+                  <div className={styles.codeHeaderMobile}>
+                  <div className={styles.codeTitle}>언어선택</div>
+                    <div className={styles.toggleBtn} onClick={() => setIsSelectOpen(prev => !prev)}>
+                      {selectedLang}
+                    </div>
+                  </div>
+                  { problems && <Problem problems={problems} />}
+                  <div className={styles.codeHeaderMobile}>
+                    <div className={styles.codeTitle}>{codeTitle}</div>
+                  </div>
+                  <div className={styles.codeAreaMobile}>
+                    <CodeEditor 
+                      doc={doc} 
+                      provider={provider} 
+                      gitId={data?.gitId} 
+                      selectedLang={selectedLang}
+                    />
+                  </div>
+                  <div className={styles.resultTitle}>실행 결과</div>
+                  <Output outputs={outputs} isExecuting={isExecuting} />
+                  <div className={styles.resultTitle}>플레이어</div>
+                  {
+                    router?.query?.mode === 'team'
+                    ? <TeamPlayer teams={playerList} />
+                    : <Player players={playerList} />
+                  }
+                  <div className={styles.footer}>
+                  {
+                    router?.query?.mode === 'team'
+                    ? <Voice team={myTeam}/>
+                    : <div />
+                  }
+                    <div className={styles.footerRight}>
+                      <div className={`${styles.btn} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : execCode}>코드 실행</div>
+                      <div className={`${styles.btn} ${styles.btnSubmit} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : goToResult}>코드 제출</div>
+                    </div>
                   </div>
                 </div>
-                { problems && <Problem problems={problems} />}
-                <div className={styles.codeHeaderMobile}>
-                  <div className={styles.codeTitle}>{codeTitle}</div>
-                </div>
-                <div className={styles.codeAreaMobile}>
-                  <CodeEditor 
-                    doc={doc} 
-                    provider={provider} 
-                    gitId={data?.gitId} 
-                    selectedLang={selectedLang}
-                  />
-                </div>
-                <div className={styles.resultTitle}>실행 결과</div>
-                <Output outputs={outputs}/>
-                <div className={styles.resultTitle}>플레이어</div>
-                {
-                  router?.query?.mode === 'team'
-                  ? <TeamPlayer teams={playerList} />
-                  : <Player players={playerList} />
-                }
-                <div className={styles.footer}>
-                {
-                  router?.query?.mode === 'team'
-                  ? <Voice team={myTeam}/>
-                  : <div />
-                }
-                  <div className={styles.footerRight}>
-                    <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
-                    <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
-                  </div>
-                </div>
-              </div>
-            : <ReflexContainer>
-                <ReflexElement className={styles.body} flex={1}>
-                  <ReflexContainer orientation='vertical'>
-                    <ReflexElement className={styles.bodyCol}>
-                      <ReflexContainer orientation='horizontal'>
-                        <ReflexElement flex={0.7} style={{ overflow: 'hidden' }}>
-                          { problems && <Problem problems={problems}/>}
-                        </ReflexElement>
-                        <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
-                        <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
-                          <div className={styles.resultTitle}>플레이어</div>
-                          {
-                            router?.query?.mode === 'team'
-                            ? <TeamPlayer teams={playerList} />
-                            : <Player players={playerList} />
-                          }
-                        </ReflexElement>
-                      </ReflexContainer>
-                    </ReflexElement>
-                    <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', width: '0.625rem', borderLeft: '0', borderRight: '1px solid rgba(0,0,0,0.5)' }} />
-                    <ReflexElement className={styles.bodyCol} flex={0.65}>
-                      <ReflexContainer orientation='horizontal'>
-                        <ReflexElement flex={0.7} minSize={40} style={{ overflow: 'hidden' }}>
-                          <div className={styles.codeHeader}>
-                            <div className={styles.codeTitle}>{codeTitle}</div>
-                            <div className={styles.toggleBtn} onClick={() => setIsSelectOpen(prev => !prev)}>
-                              {selectedLang}
+              : <ReflexContainer>
+                  <ReflexElement className={styles.body} flex={1}>
+                    <ReflexContainer orientation='vertical'>
+                      <ReflexElement className={styles.bodyCol}>
+                        <ReflexContainer orientation='horizontal'>
+                          <ReflexElement flex={0.7} style={{ overflow: 'hidden' }}>
+                            { problems && <Problem problems={problems}/>}
+                          </ReflexElement>
+                          <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
+                          <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
+                            <div className={styles.resultTitle}>플레이어</div>
+                            {
+                              router?.query?.mode === 'team'
+                              ? <TeamPlayer teams={playerList} />
+                              : <Player players={playerList} />
+                            }
+                          </ReflexElement>
+                        </ReflexContainer>
+                      </ReflexElement>
+                      <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', width: '0.625rem', borderLeft: '0', borderRight: '1px solid rgba(0,0,0,0.5)' }} />
+                      <ReflexElement className={styles.bodyCol} flex={0.65}>
+                        <ReflexContainer orientation='horizontal'>
+                          <ReflexElement flex={0.7} minSize={40} style={{ overflow: 'hidden' }}>
+                            <div className={styles.codeHeader}>
+                              <div className={styles.codeTitle}>{codeTitle}</div>
+                              <div className={styles.toggleBtn} onClick={() => setIsSelectOpen(prev => !prev)}>
+                                {selectedLang}
+                              </div>
                             </div>
-                          </div>
-                          <div className={styles.codeArea}>
-                            <CodeEditor 
-                              doc={doc} 
-                              provider={provider} 
-                              gitId={data?.gitId} 
-                              selectedLang={selectedLang}
-                            />
-                          </div>
-                        </ReflexElement>
-                        <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
-                        <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
-                          <div className={styles.resultTitle}>실행 결과</div>
-                          <Output outputs={outputs}/>
-                        </ReflexElement>
-                      </ReflexContainer>
-                    </ReflexElement>
-                  </ReflexContainer>
-                </ReflexElement>
-                <div className={styles.footer}>
-                {
-                  router?.query?.mode === 'team'
-                  ? <Voice team={myTeam}/>
-                  : <div />
-                }
-                  <div className={styles.footerRight}>
-                    <div className={styles.btn} onClick={judgeCode}>코드 실행</div>
-                    <div className={`${styles.btn} ${styles.btnSubmit}`} onClick={goToResult}>코드 제출</div>
+                            <div className={styles.codeArea}>
+                              <CodeEditor 
+                                doc={doc} 
+                                provider={provider} 
+                                gitId={data?.gitId} 
+                                selectedLang={selectedLang}
+                              />
+                            </div>
+                          </ReflexElement>
+                          <ReflexSplitter style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '0.625rem', borderTop: '1px solid rgba(0,0,0,0.5)', borderBottom: '0' }} />
+                          <ReflexElement minSize={40} style={{ overflow: 'hidden' }}>
+                            <div className={styles.resultTitle}>실행 결과</div>
+                            <Output outputs={outputs} isExecuting={isExecuting} />
+                          </ReflexElement>
+                        </ReflexContainer>
+                      </ReflexElement>
+                    </ReflexContainer>
+                  </ReflexElement>
+                  <div className={styles.footer}>
+                  {
+                    router?.query?.mode === 'team'
+                    ? <Voice team={myTeam}/>
+                    : <div />
+                  }
+                    <div className={styles.footerRight}>
+                      <div className={`${styles.btn} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : execCode}>코드 실행</div>
+                      <div className={`${styles.btn} ${styles.btnSubmit} ${isExecuting ? styles.btnDisable : null}`} onClick={isExecuting ? () => {} : goToResult}>코드 제출</div>
+                    </div>
                   </div>
-                </div>
-              </ReflexContainer>
+                </ReflexContainer>
+            }
+            <div className={isSelectOpen ? (isMobile ? styles.selectListMobile : styles.selectList) : styles.hidden}>
+              {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
+              <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
+              <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
+            </div>
+          </>
           }
-          <div className={isSelectOpen ? (isMobile ? styles.selectListMobile : styles.selectList) : styles.hidden}>
-            {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
-            <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
-            <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
-          </div>
         </>
       }
     />

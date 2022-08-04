@@ -24,14 +24,12 @@ export default function SearchItem({ user, myInfo, isOnline }) {
   }, [myFollowing, user]);
 
   const onClickFollow = () => {
-    console.log('onclick follow!!!!', user._id);
     socket.emit('followMember', user._id);
     setMyFollowing(prev => [...prev, user._id]);
     setIsFollow(true);
   };
   
   const onClickUnFollow = () => {
-    console.log('onclick unfollow!!!!', user._id);
     socket.emit('unFollowMember', user._id);
     setMyFollowing(prev => prev.filter(userId => userId !== user._id));
     setIsFollow(false);

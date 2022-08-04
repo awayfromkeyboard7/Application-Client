@@ -12,6 +12,7 @@ import CheckValidAccess from '../../../components/checkValidAccess';
 export default function WaitPage() {
   const router = useRouter();
   const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
   const defaultUsers = [
     {
       id: 1,
@@ -85,9 +86,9 @@ export default function WaitPage() {
     socket.on('timeLimit', (ts) => {
       setCountdown(parseInt(ts / 1000));
     });
-    if(router.isReady) {
-      if(router?.query?.mode === 'team'){
-        if(router?.query?.roomId === data?.gitId) {
+    if (router.isReady && isLogin) {
+      if (router?.query?.mode === 'team'){
+        if (router?.query?.roomId === data?.gitId) {
           socket.emit('createTeam');
         }
         socket.on('enterNewUserToTeam', (users) => {
@@ -126,12 +127,12 @@ export default function WaitPage() {
       socket.off('enterNewUser');
       socket.off('startGame');
     };
-  }, [router.isReady]);
+  }, [router.isReady, isLogin]);
 
   useEffect(() => {
     if(countdown === 5) {
-      if(router.isReady) {
-        if(router?.query?.mode === 'team'){
+      if (router.isReady && isLogin) {
+        if (router?.query?.mode === 'team'){
           if(players[0]?.gitId === data?.gitId && !isMatching) {
             goToMatch();
           }
@@ -142,7 +143,7 @@ export default function WaitPage() {
         }
       }
     }
-  }, [countdown, router.isReady]);
+  }, [countdown, router.isReady, isLogin]);
 
   useEffect(() => {
     if(router.isReady) {
@@ -180,6 +181,10 @@ export default function WaitPage() {
         sendPlayers.push({ gitId: player.gitId, avatarUrl: player.avatarUrl, userId: player.userId })
       }
     };
+
+    if (sendPlayers.length === 8 && players[0]?.gitId === data?.gitId) {
+      goToCode();
+    }
     
     socket.once('getRoomId', async (roomId, status) => {
       if(status === 'waiting') {
@@ -191,23 +196,32 @@ export default function WaitPage() {
           body: JSON.stringify({ 
             players: sendPlayers,
             totalUsers: sendPlayers.length,
-            roomId : roomId
+            roomId
           })
         })
-        .then(res => res.json())
+        .then(res => {
+          if(res.status === 403) {
+            router.replace({
+              pathname: '/',
+              query: { msg: 'loginTimeout' }
+            });
+            return;
+          }
+          return res.json();
+        })
         .then(data => {
-          if(data.success) {
+          if(data.success && isLogin) {
             socket.emit('startGame', data.gameLogId);
           }
         })
-        .catch(error => console.log('error >> ', error));
+        .catch(error => console.log('[/pages/code create GameLog error >> ', error));
       }
     });
 
     return () => {
       socket.off('getRoomId');
     }
-  }, [players]);
+  }, [players, isLogin]);
   
   const startGame = async() => {
     socket.emit('getRoomId');
@@ -244,22 +258,28 @@ export default function WaitPage() {
 
   return (
     <Layout 
-      header={<Header label="마이페이지" onClickBtn={goToMyPage} />}
+      header={
+        <Header 
+          label="마이페이지" 
+          onClickBtn={goToMyPage} 
+          checkValidUser={(isValidUser) => setIsLogin(isValidUser)} 
+        />
+      }
       body={
         <>
           { status !== 'authenticated' && <Loading /> }
+          { router.isReady && <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." /> }
           { 
-            router.isReady
-            && <CheckValidAccess check={router?.query?.mode} message="메인 화면에서 모드를 선택해주세요." />
+            isLogin
+            && <Wait 
+                type={router?.query?.mode} 
+                players={players} 
+                countdown={countdown}
+                onClickGoToMain={goToLobby} 
+                onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
+              />
           }
-          <Wait 
-            type={router?.query?.mode} 
-            players={players} 
-            countdown={countdown}
-            onClickGoToMain={goToLobby} 
-            onClickPlayAgain={router?.query?.mode === 'team' ? goToMatch : goToCode}
-          />
-          <Sidebar players={players} />
+          { isLogin && <Sidebar players={players} /> }
         </>
       }
     />

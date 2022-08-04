@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
 import { CodePopup } from '../codeEditor';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
 
-export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
+export default function GameBox({ gameLogId }) {
+  const router = useRouter();
   const { data } = useSession();
   const [gameInfo, setGameInfo] = useState({});
   const [isGetGameInfo, setIsGetGameInfo] = useState(false);
@@ -15,14 +17,10 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
 
-  const isFilter = useMemo(() => checkFilter(), [filter]);
-
   useEffect(() => {
-    if(idx < gameLogIdx && !isGetGameInfo && isFilter) {
-      getGameInfo();
-    }
-  }, [gameLogIdx, idx, isGetGameInfo]);
-
+    getGameInfo();
+  }, []);
+  
   const getGameInfo = async () => {
     await fetch(`/server/api/gamelog/getGameLog`, {
       method: 'POST',
@@ -33,7 +31,16 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
         gameLogId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setGameInfo(data.info);
@@ -44,7 +51,6 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   };
 
   const getCode = async (codeId, language) => {
-    console.log('get code >>> ', codeId, language);
     await fetch(`/server/api/code/getCode`, {
       method: 'POST',
       headers: {
@@ -54,7 +60,16 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
         codeId
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setPlayerCode(data.info);
@@ -110,14 +125,6 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
     return false;
   };
 
-  function checkFilter() {
-    switch(filter) {
-      case 'all': return true;
-      case 'team': return gameInfo?.gameMode === 'team';
-      case 'solo': return gameInfo?.gameMode !== 'team';
-    }
-  };
-
   const getMyRanking = () => {
     if(gameInfo?.userHistory) {
       for(let info of gameInfo.userHistory) {
@@ -130,7 +137,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
   };
 
   const TeamGameWin = () => {
-    return (
+    return useMemo(() => (
       <div className={styles.gameHistoryItemBlue}>
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
@@ -154,11 +161,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </div>
-    )
+    ), [gameInfo])
   };
 
   const TeamGameLose = () => {
-    return (
+    return useMemo(() => (
       <div className={styles.gameHistoryItemRed}>
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
@@ -182,11 +189,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </div>
-    )
+    ), [gameInfo])
   };
 
   const SoloGame = () => {
-    return (
+    return useMemo(() => (
       <>
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
@@ -210,11 +217,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
           </div>
         </div>
       </>
-    )
+    ), [gameInfo]);
   };
 
   return (
-    <div className={isFilter && isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
+    <div className={isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
         ? checkTeamGameWin()

@@ -1,34 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SW정글 4기 나만의 무기
+## { CODE: '뚝딱' }
 
-## Getting Started
+프로젝트 기간 : 2022.06.30 ~ 2022.08.06
 
-First, run the development server:
+팀원 :
+👨‍💻[손승우](https://github.com/Son0-0)
+👨‍💻[박도현](https://github.com/dd0114)
+👨‍💻[박형규](https://github.com/park-hg)
+👨‍💻[정의성](https://github.com/EilLagerTodd)
+👩‍💻[이혜진](https://github.com/annie1229)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+배포 사이트 : [{ CODE: '뚝딱' }](https://bluefrog-six.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![코드뚝딱](https://user-images.githubusercontent.com/53402709/182548678-85d2455f-dfd1-49ab-afa2-cc3414d62a1c.jpg)
+[코드뚝딱.pdf](https://github.com/awayfromkeyboard7/Application-Client/files/9248947/-.pdf)

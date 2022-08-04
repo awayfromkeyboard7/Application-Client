@@ -1,0 +1,117 @@
+@import '../variables.module.scss';
+
+.popupBackground {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+}
+
+.popupBox {
+  width: 32rem;
+  height: 20rem;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.625rem;
+  background-color: #fff;
+  position: relative;
+}
+
+.popupTitle {
+  color: #000;
+  font-size: 1.75rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.popupText {
+  color: #000;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.25rem;
+  white-space: pre-wrap;
+}
+
+.popupBtn {
+  height:3rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: 0.625rem;
+  color: #fff;
+  background-color: #32A272;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #327F5F;
+  }
+}
+
+.bannerBox {
+  height: 6rem;
+  width: 80%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-between;
+  background-color: #32A272;
+}
+
+.bannerCol {
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.bannerTitle {
+  color: $navy-super-dark-color;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bannerText{
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.imgBox {
+  height: 6rem;
+  width: 6rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: $white-dark-color;
+}
+.closeBtn {
+  width: 30px;
+  height: 30px;
+  position:absolute;
+  top: 10px;
+  right: 10px;
+}

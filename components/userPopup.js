@@ -13,7 +13,6 @@ export default function UserPopup({ userId, onClick }) {
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
-  const [targetUserId, setTargetUserId] = useState('');
   const [isDetail, setIsDetail] = useState(false);
 
   useEffect(() => {
@@ -43,11 +42,6 @@ export default function UserPopup({ userId, onClick }) {
       }
     });
   }, [myFollowing, info]);
-
-  useEffect(() => {
-    socket.emit('getFollowingList');
-  }, [isFollow]);
-
 
   const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
@@ -112,7 +106,16 @@ export default function UserPopup({ userId, onClick }) {
         'Content-Type': 'application/json',
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
     .then(data => {
       if(data.success) {
         setCookie('following', JSON.stringify(data.UserInfo.following));
@@ -132,14 +135,22 @@ export default function UserPopup({ userId, onClick }) {
         userId
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          setTargetUserId(data.UserInfo._id);
-          setInfo(data.UserInfo);
-        }
-      })
-      .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
+    .then(res => {
+      if(res.status === 403) {
+        router.replace({
+          pathname: '/',
+          query: { msg: 'loginTimeout' }
+        });
+        return;
+      }
+      return res.json();
+    })
+    .then(data => {
+      if(data.success) {
+        setInfo(data.UserInfo);
+      }
+    })
+    .catch(error => console.log('[/component/userPopup] getUserInfo error >> ', error));
   };
 
   const onClickFollow = () => {
@@ -157,7 +168,7 @@ export default function UserPopup({ userId, onClick }) {
   const goToUserPage = () => {
     router.push({
       pathname: '/userpage',
-      query: { targetUserId }
+      query: { targetUserId: info._id }
     });
     onClick();
   };
