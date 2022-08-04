@@ -221,7 +221,7 @@ export default function UserPopup({ userId, onClick }) {
                   !(router?.pathname === "/mypage" || router?.pathname === "/userpage") || (info.gitId === data?.gitId) || (info._id === router?.query?.targetUserId) ? null : <div className={styles.inviteBtn} onClick={goToUserPage} >유저전적</div>
                 }
                 {
-                  !(router?.pathname === "/mypage" || router?.pathname === "/userpage") || (info.gitId !== data?.gitId) ? null : <div className={styles.inviteBtn} onClick={goToMyPage}>마이페이지</div>
+                  !(router?.pathname === "/userpage") || (info.gitId !== data?.gitId) ? null : <div className={styles.inviteBtn} onClick={goToMyPage}>마이페이지</div>
                 }
               </div>
               <div className={styles.splitterHorizontal} />

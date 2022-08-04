@@ -16,6 +16,8 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [myInfo, setMyInfo] = useState({});
   const [gameLogs, setGameLogs] = useState([]);
+  const [teamGameLogs, setTeamGameLogs] = useState([]);
+  const [soloGameLogs, setSoloGameLogs] = useState([]);
 
   useEffect(() => {
     if(router?.query?.targetUserId) {
@@ -44,6 +46,8 @@ export default function UserPage() {
         if(data.success) {
           setMyInfo(data.UserInfo);
           setGameLogs(data.UserInfo.gameLogHistory.reverse());
+          setSoloGameLogs(data.UserInfo.soloGameLogHistory.reverse());
+          setTeamGameLogs(data.UserInfo.teamGameLogHistory.reverse());
           setIsLoading(false);
         }
       })
@@ -68,7 +72,15 @@ export default function UserPage() {
               <MyInfoBox myInfo={myInfo} isMine={false} />
               <RankingBox />
             </div>
-            <GameHistory gameLogs={gameLogs} />
+            <GameHistory 
+              totalLogs={gameLogs} 
+              soloLogs={soloGameLogs}
+              teamLogs={teamGameLogs} 
+              winSolo={myInfo?.winSolo ?? 0}
+              winTeam={myInfo?.winTeam ?? 0}
+              totalSolo={myInfo?.totalSolo ?? 0}
+              totalTeam={myInfo?.totalTeam ?? 0}
+            />
           </div>
         </>
       }
