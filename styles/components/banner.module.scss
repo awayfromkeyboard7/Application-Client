@@ -58,6 +58,17 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(50px);
+  }
+  to {
+      opacity: 3;
+      transform: none;
+  }
+}
+
 .bannerBox {
   height: 6rem;
   width: 80%;
@@ -68,6 +79,8 @@
   align-self: center;
   justify-content: space-between;
   background-color: #32A272;
+  position: relative;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .bannerCol {
@@ -108,10 +121,19 @@
   justify-content: center;
   background-color: $white-dark-color;
 }
+
 .closeBtn {
   width: 30px;
   height: 30px;
   position:absolute;
   top: 10px;
   right: 10px;
+}
+
+.closeBannerBtn {
+  width: 30px;
+  height: 30px;
+  position:absolute;
+  top: -20px;
+  right: -30px;
 }

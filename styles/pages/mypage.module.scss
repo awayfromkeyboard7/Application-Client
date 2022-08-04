@@ -117,6 +117,34 @@
   justify-content: center;
 }
 
+// @keyframes rotationRight {
+//   from {
+//       transform: rotate(-180deg);
+//   }
+//   to {
+//       transform: rotate(0deg);
+//   }
+// }
+
+// @keyframes rotationLeft {
+//   from {
+//       transform: rotate(180deg);
+//   }
+//   to {
+//       transform: rotate(0deg);
+//   }
+// }
+
+// .detailOpenIcon {
+//   &:active {
+//     animation: rotationRight 0.5s ease;
+//   }
+// }
+
+// .detailCloseIcon {
+//   animation: rotationLeft 0.5s ease;
+// }
+
 .chartBox {
   height: 100%;
   flex: 1;

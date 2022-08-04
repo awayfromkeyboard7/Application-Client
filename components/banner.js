@@ -21,17 +21,20 @@ export function BannerPopup({ title, content, img=null, label, onClose }) {
 
 export function Banner({ title, content, img=null, label, onClose }) {
   return (
-    <a className={styles.bannerBox} target='_blank' href='https://swjungle.net/' rel='noreferrer'>
+    <div className={styles.bannerBox}>
+      <div className={styles.closeBannerBtn} onClick={onClose}>
+        <Image src="/close.png" width={18} height={18} alt="close banner"/>
+      </div>
       <div className={styles.bannerCol}>
         <div className={styles.bannerTitle}>{title}</div>
         <div className={styles.bannerText}>{content}</div>
       </div>
       { 
         img 
-        && <div className={styles.imgBox}>
+        && <a className={styles.imgBox} target='_blank' href='https://swjungle.net/' rel='noreferrer'>
             <img src={img} height="50" object-fit="contain" alt="banner image" /> 
-          </div>
+          </a>
       }
-    </a>
+    </div>
   )
 }
