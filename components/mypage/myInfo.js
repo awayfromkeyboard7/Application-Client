@@ -120,7 +120,7 @@ export const MyInfoBox = ({ myInfo, isMine=true }) => {
                 <div className={styles.splitterHorizontal} />
                 <div className={styles.myInfoRow}>
                   <div className={styles.myInfoCol}>
-                    <div className={styles.fieldTitle}>내 랭킹</div>
+                    <div className={styles.fieldTitle}>{isMine ? '내 랭킹' : '유저 랭킹'}</div>
                     <div className={styles.percentText} style={{ paddingTop: '0.25rem', paddingBottom: 0, overflow: 'hidden' }}>{`${myInfo?.ranking === 9999999999 ? '-' : `${myInfo?.ranking ?? 0}등`}\n(상위 ${myInfo?.rankingPercent ?? 100}%)`}</div>
                   </div>
                   <div className={styles.splitterVertical} />

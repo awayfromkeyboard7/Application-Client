@@ -34,7 +34,7 @@ export default function Chart({ data }) {
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text className={styles.rechartsFontSize} x={cx} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text className={styles.rechartsFontSize} x={cx} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
         {percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%`}
       </text >
     );

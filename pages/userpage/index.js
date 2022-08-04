@@ -65,7 +65,7 @@ export default function UserPage() {
           { status !== 'authenticated' && isLoading && <Loading /> }
           <div className={styles.mainBox}>
             <div className={styles.mainCol}>
-              <MyInfoBox myInfo={myInfo} />
+              <MyInfoBox myInfo={myInfo} isMine={false} />
               <RankingBox />
             </div>
             <GameHistory gameLogs={gameLogs} />

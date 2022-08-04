@@ -201,7 +201,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter }) {
               gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
             }
             </div>
-            <div className={styles.splitterVertical} />
+            <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
             {
               gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
