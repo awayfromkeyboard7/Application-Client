@@ -25,7 +25,7 @@ export default function RankingBox() {
   }, [isLoading, isEnd]);
 
   const pagingRanking = async () => {
-    await fetch(`/server/api/user/paging?start=${start}&count=20`, {
+    await fetch(`/server/api/user/rank?start=${start}&count=20`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
