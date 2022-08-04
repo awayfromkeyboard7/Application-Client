@@ -14,7 +14,7 @@ export default function Chart({ data }) {
 
   const getUserLangInfo = (languages) => {
     const langInfo = languages;
-    if (langInfo) {
+    if(langInfo) {
       const langLength = Object.keys(langInfo).length;
       const langKey = Object.keys(langInfo);
       const langValue = Object.values(langInfo);
@@ -55,11 +55,11 @@ export default function Chart({ data }) {
           dataKey="value"
           isAnimationActive={false}
         >
-          {
-            userLangData?.map((entry, index) => (
-              < Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))
-          }
+        {
+          userLangData?.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))
+        }
         </Pie>
       </PieChart>
     </ResponsiveContainer>

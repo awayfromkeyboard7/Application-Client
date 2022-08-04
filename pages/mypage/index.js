@@ -22,7 +22,7 @@ export default function MyPage() {
   }, []);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if(status === 'unauthenticated') {
       router.replace('/');
     }
   }, [status]);
@@ -34,15 +34,15 @@ export default function MyPage() {
         'Content-Type': 'application/json',
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setMyInfo(data.UserInfo);
-          setGameLogs(data.UserInfo.gameLogHistory.reverse());
-          setIsLoading(false);
-        }
-      })
-      .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        setMyInfo(data.UserInfo);
+        setGameLogs(data.UserInfo.gameLogHistory.reverse());
+        setIsLoading(false);
+      }
+    })
+    .catch(error => console.log('[/pages/mypage] getUserInfo error >> ', error));
   };
 
   const logout = async () => {

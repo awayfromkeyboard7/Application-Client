@@ -17,14 +17,11 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
 
   const isFilter = useMemo(() => checkFilter(), [filter]);
 
-  const dataArr = []
-
   useEffect(() => {
     if (idx < gameLogIdx && !isGetGameInfo && isFilter) {
       getGameInfo();
     }
   }, [gameLogIdx, idx, isGetGameInfo]);
-
 
   const getGameInfo = async () => {
     await fetch(`/server/api/gamelog/getGameLog`, {
@@ -36,14 +33,14 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
         gameLogId
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setGameInfo(data.info);
-          setIsGetGameInfo(true);
-        }
-      })
-      .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setGameInfo(data.info);
+        setIsGetGameInfo(true);
+      }
+    })
+    .catch(error => console.log('[/components/mypage/gameBox] getGameLog error >> ', error));
   };
 
   const getCode = async (codeId, language) => {
@@ -57,15 +54,15 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
         codeId
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setPlayerCode(data.info);
-          setPlayerLanguage(language);
-          setIsOpenCode(true);
-        }
-      })
-      .catch(error => console.log('[/components/mypage/gameBox] getCode error >> ', error));
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setPlayerCode(data.info);
+        setPlayerLanguage(language);
+        setIsOpenCode(true);
+      }
+    })
+    .catch(error => console.log('[/components/mypage/gameBox] getCode error >> ', error));
   };
 
   const unixToTime = (ts) => {
@@ -89,24 +86,24 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
   };
 
   const checkTeamGameWin = () => {
-    if (gameInfo?.teamA[0].ranking === 0 || gameInfo?.teamB[0].ranking === 0) {
-      if (0 < gameInfo?.teamA[0].ranking) {
+    if(gameInfo?.teamA[0].ranking === 0 || gameInfo?.teamB[0].ranking === 0) {
+      if(0 < gameInfo?.teamA[0].ranking) {
         return checkMyTeam();
       }
-      if (0 < gameInfo?.teamB[0].ranking) {
+      if(0 < gameInfo?.teamB[0].ranking) {
         return !checkMyTeam();
       }
       return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
     }
-    if (gameInfo?.teamA[0].ranking === gameInfo?.teamB[0].ranking) {
+    if(gameInfo?.teamA[0].ranking === gameInfo?.teamB[0].ranking) {
       return (gameInfo?.teamA[0].passRate < gameInfo?.teamB[0].passRate) ^ checkMyTeam();
     }
     return (gameInfo?.teamB[0].ranking < gameInfo?.teamA[0].ranking) ^ checkMyTeam();
   };
 
   const checkMyTeam = () => {
-    for (let member of gameInfo?.teamA) {
-      if (member.gitId === data?.gitId) {
+    for(let member of gameInfo?.teamA) {
+      if(member.gitId === data?.gitId) {
         return true;
       }
     }
@@ -114,7 +111,7 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
   };
 
   function checkFilter() {
-    switch (filter) {
+    switch(filter) {
       case 'all': return true;
       case 'team': return gameInfo?.gameMode === 'team';
       case 'solo': return gameInfo?.gameMode !== 'team';
@@ -122,9 +119,9 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
   };
 
   const getMyRanking = () => {
-    if (gameInfo?.userHistory) {
-      for (let info of gameInfo.userHistory) {
-        if (info?.gitId === data?.gitId) {
+    if(gameInfo?.userHistory) {
+      for(let info of gameInfo.userHistory) {
+        if(info?.gitId === data?.gitId) {
           return info.ranking;
         }
       }
@@ -144,15 +141,15 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -172,15 +169,15 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo?.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamA?.map(player => <GamePlayer info={gameInfo?.teamA[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamA[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVerticalGray} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.teamB?.map(player => <GamePlayer info={gameInfo?.teamB[0]} myInfo={player} onClickCode={() => onClickCode(gameInfo?.teamB[0])} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -200,15 +197,15 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
           <div className={styles.gameHistoryDate}>{unixToTime(gameInfo.startAt)}</div>
           <div className={styles.gameHistoryPlayersBox}>
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.userHistory?.slice(0, 4).map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
             <div className={styles.splitterVertical} />
             <div className={styles.gameHistoryPlayersCol}>
-              {
-                gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
-              }
+            {
+              gameInfo?.userHistory?.slice(4)?.map(player => <GamePlayer info={player} onClickCode={() => onClickCode(player)} onClickId={() => onClickId(player)} key={player.gitId} />)
+            }
             </div>
           </div>
         </div>
@@ -220,28 +217,28 @@ export default function GameBox({ gameLogId, gameLogIdx, idx, filter, userInfoId
     <div className={isFilter && isGetGameInfo ? styles.gameHistoryItem : styles.hidden}>
       {
         gameInfo?.gameMode === 'team'
-          ? checkTeamGameWin()
-            ? <TeamGameWin />
-            : <TeamGameLose />
-          : <SoloGame />
+        ? checkTeamGameWin()
+          ? <TeamGameWin />
+          : <TeamGameLose />
+        : <SoloGame />
       }
       {
         isOpenCode
         && <CodePopup
-          code={playerCode}
-          language={playerLanguage}
-          onClose={() => setIsOpenCode(false)}
-        />
+            code={playerCode}
+            language={playerLanguage}
+            onClose={() => setIsOpenCode(false)}
+          />
       }
       {
         isPopup
         && <UserPopup
-          userId={targetId}
-          onClick={() => setIsPopup(false)}
-          userInfoId={userInfoId}
-          gameLogs={gameLogs}
-          gameInfo={gameInfo}
-        />
+            userId={targetId}
+            onClick={() => setIsPopup(false)}
+            userInfoId={userInfoId}
+            gameLogs={gameLogs}
+            gameInfo={gameInfo}
+          />
       }
     </div>
   )

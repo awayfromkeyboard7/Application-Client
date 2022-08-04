@@ -12,7 +12,7 @@ export default function GameHistory({ gameLogs, userInfoId }) {
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
     // console.log('on scroll e >>> ', scrollHeight, clientHeight, scrollTop);
-    if ((scrollHeight - scrollTop) < clientHeight + 180) {
+    if((scrollHeight - scrollTop) < clientHeight + 180) {
       setGameLogIdx(prev => prev + 5 < gameLogs.length ? prev + 5 : gameLogs.length);
     }
   };
@@ -32,11 +32,11 @@ export default function GameHistory({ gameLogs, userInfoId }) {
         </div>
       </div>
       <div className={styles.gameHistoryBody} ref={listRef} onScroll={onScroll}>
-        {
-          gameLogs?.map((gameLogId, idx) =>
-            <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} userInfoId={userInfoId} gameLogs={gameLogs} />
-          )
-        }
+      {
+        gameLogs?.map((gameLogId, idx) =>
+          <GameBox gameLogId={gameLogId} gameLogIdx={gameLogIdx} idx={idx} filter={filter} key={gameLogId} userInfoId={userInfoId} gameLogs={gameLogs} />
+        )
+      }
       </div>
     </div>
   )
