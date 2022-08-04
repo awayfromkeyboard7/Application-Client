@@ -32,14 +32,11 @@ export default function UserPage() {
   }, [status]);
 
   const getTargetUserInfo = async () => {
-    await fetch(`/server/api/user/getUserInfo`, {
-      method: 'POST',
+    await fetch(`/server/api/user/info?id=${router?.query?.targetUserId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: router?.query?.targetUserId
-      })
+      }
     })
       .then(res => res.json())
       .then(data => {
