@@ -29,6 +29,7 @@
   // height: 100%;
   display: flex;
   flex: 1;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -46,7 +47,7 @@
   width: 80%;
   min-width: 22.5rem;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
   display: flex;
@@ -229,6 +230,7 @@
 
 .btn {
   height: 2rem;
+  margin-top: 1rem;
   padding: 0.5rem;
   flex-direction: row;
   align-items: center;

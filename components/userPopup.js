@@ -13,15 +13,16 @@ export default function UserPopup({ userId, onClick }) {
   const [info, setInfo] = useState({});
   const [myFollowing, setMyFollowing] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
+  const [isDetail, setIsDetail] = useState(false);
 
   useEffect(() => {
-    if (userId) {
+    if(userId) {
       getUserInfo();
     }
   }, [userId]);
 
   useEffect(() => {
-    if (!hasCookie('following')) {
+    if(!hasCookie('following')) {
       getMyInfo();
     } else {
       setMyFollowing(JSON.parse(getCookie('following')));
@@ -29,14 +30,14 @@ export default function UserPopup({ userId, onClick }) {
   }, []);
 
   useEffect(() => {
-    if (myFollowing.length) {
+    if(myFollowing.length) {
       setCookie('following', JSON.stringify(myFollowing));
     }
   }, [myFollowing]);
 
   useEffect(() => {
     myFollowing?.map(userId => {
-      if (userId === info._id) {
+      if(userId === info._id) {
         setIsFollow(true);
       }
     });
@@ -44,7 +45,7 @@ export default function UserPopup({ userId, onClick }) {
 
   const getRankName = (rank, ranking) => {
     let myrank = 'Bronze';
-    switch (rank) {
+    switch(rank) {
       case 0:
         myrank = 'Bronze';
         break;
@@ -64,7 +65,7 @@ export default function UserPopup({ userId, onClick }) {
         myrank = 'Master';
         break;
     }
-    if (ranking === 1) {
+    if(ranking === 1) {
       myrank = 'King';
     }
     return myrank;
@@ -72,7 +73,7 @@ export default function UserPopup({ userId, onClick }) {
 
   const getRankImg = (rank, ranking) => {
     let imgUrl = '/rank/rank0.png';
-    switch (rank) {
+    switch(rank) {
       case 0:
         imgUrl = '/rank/rank0.png';
         break;
@@ -92,7 +93,7 @@ export default function UserPopup({ userId, onClick }) {
         imgUrl = '/rank/rank5.png';
         break;
     }
-    if (ranking == 1) {
+    if(ranking == 1) {
       imgUrl = '/rank/king.png';
     }
     return imgUrl;
@@ -161,6 +162,26 @@ export default function UserPopup({ userId, onClick }) {
     setIsFollow(false);
   };
 
+  const goToUserPage = () => {
+    router.push({
+      pathname: '/userpage',
+      query: { targetUserId: info._id }
+    });
+    onClick();
+  };
+
+  const goToMyPage = () => {
+    router.push('/mypage');
+  };
+
+  const sideState = () => {
+    if(isDetail) {
+      setIsDetail(false);
+    } else {
+      setIsDetail(true);
+    }
+  };
+
   return (
     <div className={styles.popupBackground}>
     {
@@ -169,8 +190,8 @@ export default function UserPopup({ userId, onClick }) {
           <div className={styles.myProfileBox}>
             <div className={styles.myProfileHeader}>
               <div className={styles.myProfileTitle}>내 정보</div>
-              {  
-                data?.gitId === info.gitId  
+              {
+                data?.gitId === info.gitId
                 ? null
                 : isFollow
                   ? <div className={styles.inviteBtnClicked} onClick={onClickUnFollow}>언팔로우</div>
@@ -193,6 +214,12 @@ export default function UserPopup({ userId, onClick }) {
                     <div className={styles.pointText}>{`${info?.totalScore ?? 0 * 5} Point`}</div>
                   </div>
                 </div>
+                {
+                  !(router?.pathname === "/mypage" || router?.pathname === "/userpage") || (info.gitId === data?.gitId) || (info._id === router?.query?.targetUserId) ? null : <div className={styles.inviteBtn} onClick={goToUserPage} >유저전적</div>
+                }
+                {
+                  !(router?.pathname === "/userpage") || (info.gitId !== data?.gitId) ? null : <div className={styles.inviteBtn} onClick={goToMyPage}>마이페이지</div>
+                }
               </div>
               <div className={styles.splitterHorizontal} />
               <div className={styles.myInfoRow}>

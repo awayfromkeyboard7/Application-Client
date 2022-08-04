@@ -11,10 +11,7 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, wi
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    if(totalLogs) {
-      setGameLogs(totalLogs);
-      setGameInfo(`${totalSolo + totalTeam}게임 ${winSolo + winTeam}승 ${(totalSolo + totalTeam) - (winSolo + winTeam)}패`);
-    }
+    onChangeFilter(filter);
   }, [totalLogs]);
 
   const onChangeFilter = (select) => {

@@ -13,7 +13,7 @@ export default function FriendItem({ user, isOnline, onClick, isInvite }) {
     socket.emit('getUnreadMessage', user.gitId);
 
     socket.on('unreadMessage', message => {
-      if (message['senderId'] === user.gitId) {
+      if(message['senderId'] === user.gitId) {
         setMessageCount(message['count']);
       }
     });

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Item from './soloItem';
 import { CodePopup } from '../codeEditor';
@@ -13,7 +13,17 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
   const [playerLanguage, setPlayerLanguage] = useState('Python');
   const [targetId, setTatgetId] = useState('');
   const [isPopup, setIsPopup] = useState(false);
-  const [isEnd, setIsEnd] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  useEffect(() => {
+    let flag = true;
+    ranks?.map(rank => {
+      if(rank.passRate < 0) {
+        flag = false;
+      }
+    });
+    setIsEnd(flag);
+  }, [ranks]);
 
   const getCode = async (codeId, language) => {
     await fetch(`/server/api/code?id=${codeId}`, {
@@ -33,7 +43,7 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
       return res.json();
     })
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setPlayerCode(data.info);
         setPlayerLanguage(language);
         setIsOpenCode(true);
@@ -63,21 +73,41 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
             <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
           )
         }
+        {/* {
+          ranks?.map((item, idx) => 
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
+          )
+        }
+        {
+          ranks?.map((item, idx) => 
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
+          )
+        }
+        {
+          ranks?.map((item, idx) => 
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
+          )
+        }
+        {
+          ranks?.map((item, idx) => 
+            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
+          )
+        } */}
         </div>
+        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
       </div>
-      {/* {
-        !isEnd
+      <div className={styles.mainFooter}>
+      </div>
+      {
+        isEnd
         && <Banner
-            title="아쉬운 결과..😅 성장하고 싶다면?"
+            title="아쉬운 결과...😅 성장하고 싶다면?"
             content="SW정글 5기 지금 바로 지원하러~!"
             img="https://swjungle.net/static/image/big-icon.png"
             label="SW정글 지원하기"
-            onClose={() => setIsEnd(false)} 
+            onClose={() => setIsEnd(true)} 
           />
-      } */}
-      <div className={styles.mainFooter}>
-        <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>
-      </div>
+      }
       {
         isOpenCode
         && <CodePopup 
@@ -93,16 +123,6 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
             onClick={() => setIsPopup(false)}
           />
       }
-      {/* {
-        isEnd
-        && <BannerPopup
-            title="아쉬운 결과..😅 성장하고 싶다면?"
-            content="SW정글 5기 지금 바로 지원하러~!"
-            img="https://swjungle.net/static/image/logo.png"
-            label="SW정글 지원하기"
-            onClose={() => setIsEnd(false)} 
-          />
-      } */}
     </div>
   )
 }

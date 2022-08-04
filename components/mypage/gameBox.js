@@ -39,7 +39,7 @@ export default function GameBox({ gameLogId }) {
       return res.json();
     })
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setGameInfo(data.info);
         setIsGetGameInfo(true);
       }
@@ -65,7 +65,7 @@ export default function GameBox({ gameLogId }) {
       return res.json();
     })
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setPlayerCode(data.info);
         setPlayerLanguage(language);
         setIsOpenCode(true);
@@ -225,8 +225,8 @@ export default function GameBox({ gameLogId }) {
       }
       {
         isOpenCode
-        && <CodePopup 
-            code={playerCode} 
+        && <CodePopup
+            code={playerCode}
             language={playerLanguage}
             onClose={() => setIsOpenCode(false)}
           />
@@ -241,3 +241,5 @@ export default function GameBox({ gameLogId }) {
     </div>
   )
 }
+
+
