@@ -20,10 +20,10 @@ export default function Chart({ data }) {
       const langValue = Object.values(langInfo);
       const langArr = [];
 
-      for (let i = 0; i < langLength; i++) {
+      for(let i = 0; i < langLength; i++) {
         langArr.push({ name: langKey[i], value: langValue[i] });
       }
-      
+
       setUserLangData(langArr);
     }
   };
@@ -59,10 +59,11 @@ export default function Chart({ data }) {
           outerRadius="100%"
           fill="#8884d8"
           dataKey="value"
+          isAnimationActive={false}
         >
         {
           userLangData?.map((entry, index) => (
-            < Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))
         }
         </Pie>

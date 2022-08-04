@@ -32,7 +32,7 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
       return res.json();
     })
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setPlayerCode(data.info);
         setPlayerLanguage(language);
         setIsOpenCode(true);

@@ -50,7 +50,7 @@ export default function MyPage() {
       return res.json();
     })
     .then(data => {
-      if (data.success) {
+      if(data.success) {
         setMyInfo(data.UserInfo);
         setGameLogs(data.UserInfo.gameLogHistory.reverse());
         setSoloGameLogs(data.UserInfo.soloGameLogHistory.reverse());

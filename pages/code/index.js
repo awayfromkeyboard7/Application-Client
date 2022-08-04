@@ -46,7 +46,7 @@ export default function Code() {
 
   // ADDED FROM HERE
   // useBeforeunload((event) => {
-  //   if (!isSubmit) {
+  //   if(!isSubmit) {
   //     // goToResult();
   //     event.preventDefault();
   //   }

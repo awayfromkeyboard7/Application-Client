@@ -7,7 +7,7 @@ export default function GamePlayer({ info, onClickCode, onClickId, myInfo=null }
   const ranking = useMemo(() => convertRank(), [info.ranking]);
 
   function convertRank() {
-    switch (info.ranking) {
+    switch(info.ranking) {
       case 0:
         setIsEmoji(false);
         return '-';
