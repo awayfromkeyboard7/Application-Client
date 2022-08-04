@@ -135,7 +135,7 @@ export const MyInfoBox = ({ myInfo, data, isMine=true }) => {
                   </div>
                   <div className={styles.splitterVertical} />
                   <div className={styles.chartBox}>
-                    <Chart data={myInfo?.language} />
+                    <Chart data={myInfo?.language} isSmall />
                   </div>
                 </div>
                 <div className={styles.splitterHorizontal} />

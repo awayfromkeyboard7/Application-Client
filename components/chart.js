@@ -5,7 +5,7 @@ import styles from '../styles/components/chart.module.scss';
 const COLORS = ["#326e9e", "#e2d14a", "#5f92c6", "#f37821"];
 const RADIAN = Math.PI / 180;
 
-export default function Chart({ data }) {
+export default function Chart({ data, isSmall=false }) {
   const [userLangData, setUserLangData] = useState([]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function Chart({ data }) {
     }
 
     return (
-      <text className={styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
+      <text className={isSmall ? styles.rechartsFontSizeSmall : styles.rechartsFontSize} x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
       { percent === 0 ? null : `${userLangData[index]['name']} ${(percent * 100).toFixed(0)}%` }
       </text>
     );
