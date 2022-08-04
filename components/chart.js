@@ -59,7 +59,6 @@ export default function Chart({ data, isSmall=false }) {
           outerRadius="100%"
           fill="#8884d8"
           dataKey="value"
-          isAnimationActive={false}
         >
         {
           userLangData?.map((entry, index) => (
