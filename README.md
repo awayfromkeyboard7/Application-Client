@@ -10,7 +10,8 @@
 👨‍💻[정의성](https://github.com/EilLagerTodd)
 👩‍💻[이혜진](https://github.com/annie1229)
 
-배포 사이트 : [{ CODE: '뚝딱' }](https://bluefrog-six.vercel.app/)
+배포 사이트 : [{ CODE: '뚝딱' }](https://bluefrog-six.vercel.app/)<br/>
+발표 영상 : [발표 영상](https://youtu.be/B_xjtqqtH-E)
 
 ![코드뚝딱](https://user-images.githubusercontent.com/53402709/182548678-85d2455f-dfd1-49ab-afa2-cc3414d62a1c.jpg)
 [코드뚝딱.pdf](https://github.com/awayfromkeyboard7/Application-Client/files/9248947/-.pdf)
