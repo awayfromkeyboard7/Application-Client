@@ -19,6 +19,14 @@ export default function RankingBox() {
   }, []);
 
   useEffect(() => {
+    if(listRef.current?.clientHeight) {
+      if(!isEnd && ranking.length * 48 < listRef?.current?.clientHeight) {
+        setIsLoading(true);
+      }
+    }
+  }, [listRef.current]);
+
+  useEffect(() => {
     if(isLoading && !isEnd) {
       pagingRanking();
     }
@@ -46,9 +54,7 @@ export default function RankingBox() {
         setStart(prev => prev + 20);
         setRanking(prev => [...prev, ...data.ranking]);
         setIsLoading(false);
-        if(data.ranking.length === 0) {
-          setIsEnd(true);
-        }
+        setIsEnd(!data.next);
       }
     })
     .catch(error => console.log('[/pages/mypage] pagingRanking error >> ', error));
@@ -104,7 +110,7 @@ export default function RankingBox() {
 
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
-    if((scrollHeight - scrollTop) < clientHeight + 360) {
+    if((scrollHeight - scrollTop) < clientHeight * 1.5) {
       setIsLoading(true);
     }
   };
