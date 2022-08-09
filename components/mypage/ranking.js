@@ -11,20 +11,18 @@ export default function RankingBox() {
   const [isPopup, setIsPopup] = useState(false);
   const [ranking, setRanking] = useState([]);
   const [start, setStart] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [count, setCount] = useState(20);
+  const [isLoading, setIsLoading] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-
-  useEffect(() => {
-    pagingRanking();
-  }, []);
 
   useEffect(() => {
     if(listRef.current?.clientHeight) {
       if(!isEnd && ranking.length * 48 < listRef?.current?.clientHeight) {
         setIsLoading(true);
       }
+      setCount(parseInt(listRef?.current?.clientHeight / 48));
     }
-  }, [listRef.current]);
+  }, [listRef.current?.clientHeight]);
 
   useEffect(() => {
     if(isLoading && !isEnd) {
@@ -33,7 +31,7 @@ export default function RankingBox() {
   }, [isLoading, isEnd]);
 
   const pagingRanking = async () => {
-    await fetch(`/server/api/user/rank?start=${start}&count=20`, {
+    await fetch(`/server/api/user/rank?start=${start}&count=${count}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +49,7 @@ export default function RankingBox() {
     })
     .then(data => {
       if(data.success) {
-        setStart(prev => prev + 20);
+        setStart(prev => prev + count);
         setRanking(prev => [...prev, ...data.ranking]);
         setIsLoading(false);
         setIsEnd(!data.next);
