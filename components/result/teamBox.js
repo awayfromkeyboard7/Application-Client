@@ -11,6 +11,10 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const [playerCode, setPlayerCode] = useState('');
   const [playerLanguage, setPlayerLanguage] = useState('Python');
 
+  useEffect(() => {
+    ranks.map(team => setMaxTeamLength(prev => prev < team.length ? team.length : prev))
+  }, [ranks]);
+
   const getCode = async (codeId, language) => {
     await fetch(`/server/api/code?id=${codeId}`, {
       method: 'GET',
@@ -41,10 +45,6 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
   const onClickCode = (player) => {
     getCode(player.code, player.language);
   };
-
-  useEffect(() => {
-    ranks.map(team => setMaxTeamLength(prev => prev < team.length ? team.length : prev))
-  }, [ranks]);
 
   return (
     <div className={styles.body}>

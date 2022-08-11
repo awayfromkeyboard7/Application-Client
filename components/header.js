@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -11,7 +11,7 @@ export default function Header({ label="", onClickBtn=()=>{}, checkValidUser=()=
   const router = useRouter();
   const { data, status } = useSession();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(status === 'authenticated') {
       if(hasCookie('jwt')) {
         if(router.isReady) {
