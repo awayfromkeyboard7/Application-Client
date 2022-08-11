@@ -1,14 +1,29 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
 export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, winTeam, totalSolo, totalTeam }) {
   const listRef = useRef();
   const [gameLogs, setGameLogs] = useState([]);
-  const [gameLogIdx, setGameLogIdx] = useState(20);
+  const [gameLogIdx, setGameLogIdx] = useState(10);
   const [gameInfo, setGameInfo] = useState('');
-  // const [gameLogIdx, setGameLogIdx] = useState(gameLogs.length);
+  const [count, setCount] = useState(10);
   const [filter, setFilter] = useState('all');
+
+  useLayoutEffect(() => {
+    function updateListHeight() {
+      if(listRef.current?.clientHeight) {
+        if(gameLogIdx * 180 < listRef?.current?.clientHeight) {
+          setGameLogIdx(parseInt(listRef?.current?.clientHeight / 180) * 1.5);
+          setCount(parseInt(listRef?.current?.clientHeight / 180) * 1.5);
+        }
+      }
+    }
+    window.addEventListener('resize', updateListHeight);
+    return () => {
+      window.removeEventListener('resize', updateListHeight);
+    }
+  }, []);
 
   useEffect(() => {
     onChangeFilter(filter);
@@ -35,15 +50,14 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, wi
         }
         break;
     }
-    setGameLogIdx(20);
+    setGameLogIdx(count);
     setFilter(select);
   };
 
   const onScroll = (e) => {
     const { scrollHeight, clientHeight, scrollTop } = e.target;
-    // console.log('on scroll e >>> ', scrollHeight - scrollTop, clientHeight);
-    if((scrollHeight - scrollTop) < clientHeight + 900) {
-      setGameLogIdx(prev => prev + 10 < gameLogs.length ? prev + 10 : gameLogs.length);
+    if((scrollHeight - scrollTop) < clientHeight + (180 * count * 0.5)) {
+      setGameLogIdx(prev => prev + count < gameLogs.length ? prev + count : gameLogs.length);
     }
   };
 

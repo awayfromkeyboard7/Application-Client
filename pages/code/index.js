@@ -6,7 +6,6 @@ import { useMediaQuery } from 'react-responsive';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-import { useBeforeunload } from 'react-beforeunload';
 import { socket } from '../../lib/socket';
 const Voice = dynamic(() => import('../../components/voice'));
 import Layout from '../../components/layouts/main';
@@ -43,32 +42,6 @@ export default function Code() {
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   let yDoc = new Y.Doc();
-
-  // ADDED FROM HERE
-  // useBeforeunload((event) => {
-  //   if(!isSubmit) {
-  //     // goToResult();
-  //     event.preventDefault();
-  //   }
-  // });
-
-  // const routeChangeStart = useCallback(url => {
-  //   if(!isSubmit) {
-  //     // if(confirm('게임을 종료하시기 전에 코드를 제출하시겠습니까?')) {
-  //       goToResult();
-  //       router.events.emit('routeChangeError');
-  //       throw 'Abort route change. Please ignore this error.';
-  //     // }
-  //   }
-  // }, [router.asPath, router.events, isSubmit, problems]);
-
-  // useEffect(() => {
-  //   router.events.on('routeChangeStart', routeChangeStart);
-  //   return () => {
-  //     router.events.off('routeChangeStart', routeChangeStart);
-  //   }
-  // }, [routeChangeStart, router.events]);
-  // TO HERE
 
   useEffect(() => {
     if(router.isReady) {
@@ -116,7 +89,6 @@ export default function Code() {
 
       if(isDoc === false && router?.query?.gameLogId) {
         const url = router?.query?.mode === 'team' ? `${router?.query?.roomId}_${router?.query?.gameLogId}` : `${data?.gitId}_${router?.query?.gameLogId}`
-        // console.log('yjs url :::: ', url);
         let yProvider = new WebrtcProvider(url, yDoc, { signaling: ['wss://hjannie.shop/yjs'] });
         setDoc(yDoc);
         setProvider(yProvider);
@@ -177,7 +149,6 @@ export default function Code() {
 
     if(isSubmit) {
       submitResult();
-      // setIsSubmit(false);
     }
   }, [isSubmit, router.isReady, isLogin]);
 
@@ -201,9 +172,6 @@ export default function Code() {
       case 'Python':
         setCodeTitle('solution.py');
         break;
-      // case 'C++':
-      //   setCodeTitle('solution.cpp');
-      //   break;
     }
   };
 
@@ -511,7 +479,6 @@ export default function Code() {
                 </ReflexContainer>
             }
             <div className={isSelectOpen ? (isMobile ? styles.selectListMobile : styles.selectList) : styles.hidden}>
-              {/* <div className={styles.selectElem} onClick={() => setSelectedLang('C++')}>C++</div> */}
               <div className={styles.selectElem} onClick={() => setSelectedLang('Python')}>Python</div>
               <div className={styles.selectElem} onClick={() => setSelectedLang('JavaScript')}>JavaScript</div>
             </div>

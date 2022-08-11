@@ -60,7 +60,7 @@ function getRankImg(rank, ranking) {
 };
 
 export const MyInfoMini = ({ myInfo, data }) => {
-  const rankImg = useMemo(() => getRankImg(myInfo.rank, myInfo.ranking), [myInfo.rank, myInfo.ranking]);
+  const rankImg = useMemo(() => getRankImg(myInfo?.rank, myInfo?.ranking), [myInfo.rank, myInfo.ranking]);
   const rankName = useMemo(() => getRankName(myInfo?.rank, myInfo?.ranking), [myInfo.rank, myInfo.ranking]);
 
   return (

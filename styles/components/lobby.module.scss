@@ -7,16 +7,17 @@
 
   &:hover {
     background-color: rgb(89, 0, 148);
+
+    div {
+      color: #fff;
+      transform: scale(1.2);
+      transition-duration: .5s;
+    }
   }
 
   div {
     display: flex;
     flex-direction: column;
-    &:hover {
-      color: #fff;
-      transform: scale(1.2);
-      transition-duration: .5s;
-    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import Image from 'next/image';
 import { useMediaQuery } from 'react-responsive';
 import { getCookie, setCookie } from 'cookies-next';
@@ -13,7 +13,7 @@ export default function Sidebar({ menu='friends', players=null, hide=false }) {
   const [friend, setFriend] = useState({});
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(getCookie('sidebar') === false || isMobile || hide) {
       setIsSidebarOpen(false);
     }
