@@ -25,10 +25,11 @@ export default function RankingBox() {
       }
     }
     window.addEventListener('resize', updateListHeight);
+    updateListHeight();
     return () => {
       window.removeEventListener('resize', updateListHeight);
     }
-  }, []);
+  }, [isEnd, ranking]);
 
   useEffect(() => {
     if(isLoading && !isEnd) {
