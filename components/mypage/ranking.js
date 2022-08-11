@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Rank from './rankingItem';
 import UserPopup from '../userPopup';
@@ -15,14 +15,20 @@ export default function RankingBox() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
-  useEffect(() => {
-    if(listRef.current?.clientHeight) {
-      if(!isEnd && ranking.length * 48 < listRef?.current?.clientHeight) {
-        setIsLoading(true);
+  useLayoutEffect(() => {
+    function updateListHeight() {
+      if(listRef.current?.clientHeight) {
+        if(!isEnd && ranking.length * 48 < listRef?.current?.clientHeight) {
+          setIsLoading(true);
+        }
+        setCount(parseInt(listRef?.current?.clientHeight / 48));
       }
-      setCount(parseInt(listRef?.current?.clientHeight / 48));
     }
-  }, [listRef.current?.clientHeight]);
+    window.addEventListener('resize', updateListHeight);
+    return () => {
+      window.removeEventListener('resize', updateListHeight);
+    }
+  }, []);
 
   useEffect(() => {
     if(isLoading && !isEnd) {
