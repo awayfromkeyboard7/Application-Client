@@ -55,13 +55,16 @@ export default function SoloResultBox({ ranks, startAt, onClickGoToMain }) {
         <div className={styles.mainTitle}>{`개인전(${ranks?.length}인) 결과`}</div>
       </div>
       <div className={styles.mainBody}> 
-        <div className={styles.resultBox}>
-        {
-          ranks?.map((item, idx) => 
-            <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
-          )
-        }
-        </div>
+      {
+        ranks.length
+        && <div className={styles.resultBox}>
+          {
+            ranks?.map((item, idx) => 
+              <Item info={item} startAt={startAt} onClickCode={() => onClickCode(item)} onClickId={() => onClickId(item.userId)} key={item.gitId} idx={idx} />
+            )
+          }
+          </div>
+      }
       </div>
       <div className={styles.mainFooter}>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>

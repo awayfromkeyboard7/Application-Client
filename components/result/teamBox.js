@@ -52,13 +52,16 @@ export default function TeamResultBox({ ranks, startAt, onClickGoToMain }) {
         <div className={styles.mainTitle}>팀전 결과</div>
       </div>
       <div className={styles.mainBody}> 
-        <div className={styles.resultBox}>
-        {
-          ranks?.map((item, idx) => 
-            <Item teamInfo={item} startAt={startAt} onClickCode={() => onClickCode(item[0])} maxLength={maxTeamLength} key={item[0].gitId} idx={idx} />
-          )
-        }
-        </div>
+      {
+        ranks.length
+        && <div className={styles.resultBox}>
+          {
+            ranks?.map((item, idx) => 
+              <Item teamInfo={item} startAt={startAt} onClickCode={() => onClickCode(item[0])} maxLength={maxTeamLength} key={item[0].gitId} idx={idx} />
+            )
+          }
+          </div>
+      }
       </div>
       <div className={styles.mainFooter}>
         <div className={styles.btn} onClick={onClickGoToMain}>메인으로</div>

@@ -74,7 +74,7 @@ export default function MyPage() {
         <>
           {status !== 'authenticated' && isLoading && <Loading />}
           { 
-            isLogin
+            isLogin & !isLoading
             && <div className={styles.mainBox}>
                 <div className={styles.mainCol}>
                   <MyInfoBox myInfo={myInfo} data={data} />
