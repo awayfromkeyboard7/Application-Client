@@ -20,10 +20,11 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, wi
       }
     }
     window.addEventListener('resize', updateListHeight);
+    updateListHeight();
     return () => {
       window.removeEventListener('resize', updateListHeight);
     }
-  }, []);
+  }, [gameLogIdx]);
 
   useEffect(() => {
     onChangeFilter(filter);
