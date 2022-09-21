@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import GamePlayer from './gamePlayer';
@@ -131,7 +131,7 @@ export default function GameBox({ gameLogId }) {
   };
 
   const TeamGameWin = () => {
-    return useMemo(() => (
+    return (
       <div className={styles.gameHistoryItemBlue}>
         <div className={styles.gameHistoryColorTagBlue} />
         <div className={styles.gameHistoryMain}>
@@ -155,11 +155,11 @@ export default function GameBox({ gameLogId }) {
           </div>
         </div>
       </div>
-    ), [gameInfo])
+    );
   };
 
   const TeamGameLose = () => {
-    return useMemo(() => (
+    return (
       <div className={styles.gameHistoryItemRed}>
         <div className={styles.gameHistoryColorTagRed} />
         <div className={styles.gameHistoryMain}>
@@ -183,11 +183,11 @@ export default function GameBox({ gameLogId }) {
           </div>
         </div>
       </div>
-    ), [gameInfo])
+    );
   };
 
   const SoloGame = () => {
-    return useMemo(() => (
+    return (
       <>
         <div className={styles.gameHistoryColorTag} />
         <div className={styles.gameHistoryMain}>
@@ -211,7 +211,7 @@ export default function GameBox({ gameLogId }) {
           </div>
         </div>
       </>
-    ), [gameInfo]);
+    );
   };
 
   return (

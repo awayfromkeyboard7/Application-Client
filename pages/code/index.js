@@ -161,7 +161,7 @@ export default function Code() {
     const min = '0' + String(parseInt((s % 3600) / 60));
     const sec = '0' + String(parseInt(s % 60));
     
-    return `${min.substr(-2)}분 ${sec.substr(-2)}초`;
+    return `${min.slice(-2)}분 ${sec.slice(-2)}초`;
   };
 
   const onChangeLang = (lang) => {

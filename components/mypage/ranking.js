@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { FixedSizeList } from 'react-window';
 import Rank from './rankingItem';
 import UserPopup from '../userPopup';
 import styles from '../../styles/pages/mypage.module.scss';
@@ -120,6 +121,24 @@ export default function RankingBox() {
     }
   };
 
+  const Row = ({ index, style }) => {
+    const elem = ranking[index];
+    return (
+      <div style={style}>
+        <Rank
+          key={elem._id}
+          ranking={elem.ranking}
+          nickname={elem.gitId}
+          image={elem.avatarUrl}
+          rankImg={getRankImg(elem.rank, elem.ranking)}
+          language={getLangImg(elem.mostLanguage)}
+          winrate={(elem.totalSolo + elem.totalTeam) ? parseInt(100 * (elem.winSolo + elem.winTeam) / (elem.totalSolo + elem.totalTeam)) : 0}
+          onClickId={() => onClickId(elem._id)}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className={styles.rankTab}>
       <div className={styles.rankTabHeader}>
@@ -127,7 +146,7 @@ export default function RankingBox() {
       </div>
       <div className={styles.rankTabMenu}></div>
       <div className={styles.rankingBox} ref={listRef} onScroll={onScroll}>
-      {
+      {/* {
         ranking?.map(elem =>
           <Rank
             key={elem._id}
@@ -140,7 +159,15 @@ export default function RankingBox() {
             onClickId={() => onClickId(elem._id)}
           />
         )
-      }
+      } */}
+      <FixedSizeList
+        height={300}
+        itemCount={ranking?.length}
+        itemSize={48}
+        width={342}
+      >
+        {Row}
+      </FixedSizeList>
       </div>
       {
         isPopup

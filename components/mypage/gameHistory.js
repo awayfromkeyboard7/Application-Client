@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { FixedSizeList } from 'react-window';
 import GameBox from './gameBox';
 import styles from '../../styles/pages/mypage.module.scss';
 
@@ -62,6 +63,14 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, wi
     }
   };
 
+  const Row = ({ index, style }) => {
+    return (
+      <div style={style}>
+        <GameBox gameLogId={gameLogs[index]} key={`${filter}_${gameLogs[index]}`} />
+      </div>
+    )
+  }
+
   return (
     <div className={styles.historyTab}>
       <div className={styles.gameHistoryHeader}>
@@ -81,9 +90,17 @@ export default function GameHistory({ totalLogs, teamLogs, soloLogs, winSolo, wi
       {
         gameLogs?.map((gameLogId, idx) => 
           idx < gameLogIdx
-          && <GameBox gameLogId={gameLogId} isRender={true} filter={filter} key={`${filter}_${gameLogId}`} />
+          && <GameBox gameLogId={gameLogId} key={`${filter}_${gameLogId}`} />
         ) 
       }
+      {/* <FixedSizeList
+        height={659}
+        itemCount={gameLogs.length}
+        itemSize={190}
+        width={639}
+      >
+        {Row}
+      </FixedSizeList> */}
       </div>
     </div>
   )
